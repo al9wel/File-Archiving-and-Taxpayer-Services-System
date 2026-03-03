@@ -1,9 +1,12 @@
-export function App() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="font-medium">Hello World</div>
-    </div>
-  )
-}
+import { Button } from "./components/ui/button"
 
+const App = () => {
+    return (
+        <>
+            <div className="flex justify-center items-center h-100">
+                <Button variant="default" size="lg">مرحبا</Button>
+            </div>
+        </>
+    )
+}
 export default App
