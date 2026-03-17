@@ -1,12 +1,20 @@
-import { Button } from "./components/ui/button"
-
+import NavBar from "@/components/layout/NavBar"
+import SideBar from "@/components/layout/SideBar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 const App = () => {
     return (
         <>
-            <div className="flex justify-center items-center h-100">
-                <Button variant="default" size="lg">مرحبا</Button>
-            </div>
+            <SidebarProvider>
+                <SideBar />
+                <main className="w-full">
+                    <NavBar />
+                </main>
+            </SidebarProvider>
         </>
     )
 }
 export default App
+
+
+
+
