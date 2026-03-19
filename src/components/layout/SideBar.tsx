@@ -98,19 +98,19 @@ export default function SideBar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
-            <SidebarFooter>
-                <SidebarMenu>
-                    <SidebarMenuItem>
+            <SidebarFooter className={`${open ? "p-2" : "p-1"} transition-all duration-300`}>
+                <SidebarMenu >
+                    <SidebarMenuItem >
                         <Card>
-                            <CardHeader className={`flex justify-start items-center gap-2 ${open ? "" : "p-0"} transition-all duration-300`}>
+                            <CardHeader className={`flex  items-center gap-2 p-1 ${open ? "justify-start" : "  justify-center"} transition-all duration-300`}>
                                 <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
-                                {open && <div className="flex flex-col justify-center items-start">
+                                {open && <div className={` transition-all duration-300 flex flex-col justify-center items-start`}>
                                     <h1 className="font-bold">حمزه الوجيه</h1>
                                     <p>مدير</p>
                                 </div>}
                             </CardHeader>
-                            <CardContent className={`${open ? "" : "flex justify-start items-start -mr-4"} transition-all duration-200 flex-col gap-2`}>
-                                <Button variant={"destructive"} size={"lg"} className={`${open ? "w-full" : "w-fit"}`}>
+                            <CardContent className={`${open ? "" : "flex justify-center items-start -mr-3.5"} transition-all duration-200 flex-col gap-2`}>
+                                <Button variant={"destructive"} size={"lg"} className={`${open ? "w-full" : "w-fit"} cursor-pointer`}>
                                     <LogOut></LogOut>
                                     {open && "تسجيل الخروج"}
                                 </Button>
