@@ -12,17 +12,20 @@ import {
 } from "@/components/ui/sidebar"
 import { Home, LogOut, Settings, } from "lucide-react"
 import TaxLogo from "@/assets/TaxLogo.png"
+import TaxLogoDark from "@/assets/TaxLogoDark.png"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardHeader } from "../ui/card"
 import { NavLink } from "react-router-dom"
+import { useTheme } from "@/app/providers/ThemeProvider"
 
 export default function SideBar() {
     const { open } = useSidebar()
+    const { theme } = useTheme()
     return (
         <Sidebar side="right" variant="floating" collapsible="icon" className="z-101">
             <SidebarHeader className="border-b-2  flex justify-center items-start overflow-hidden">
                 <div className={`${open ? "w-50" : "w-42 -mr-1.5"} transition-all duration-200  flex items-center`}>
-                    <img src={TaxLogo} alt="logo" className="w-full h-full" />
+                    <img src={theme === "light" ? TaxLogo : TaxLogoDark} alt="logo" className="w-full h-full" />
                 </div>
             </SidebarHeader>
             <SidebarContent >
