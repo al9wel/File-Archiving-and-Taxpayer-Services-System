@@ -1,4 +1,4 @@
-import { useTheme } from "@/providers/ThemeProvider"
+import { useTheme } from "@/app/providers/ThemeProvider"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { Separator } from "../ui/separator"
