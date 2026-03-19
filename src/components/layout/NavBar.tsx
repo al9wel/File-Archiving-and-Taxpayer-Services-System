@@ -14,7 +14,7 @@ export default function NavBar() {
         }
     }
     return (
-        <header className="flex w-full">
+        <header className="flex w-full sticky top-0 z-45">
             <nav className="w-full m-2 px-4 py-4 border bg-sidebar rounded-md flex flex-col sm:flex-row justify-center sm:justify-between items-start sm:items-center gap-2 sm:gap-0">
                 <div className="flex items-center">
                     <SidebarTrigger className=" cursor-pointer text-foreground/90" />
