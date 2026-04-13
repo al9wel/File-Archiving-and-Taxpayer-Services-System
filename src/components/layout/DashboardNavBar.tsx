@@ -1,10 +1,10 @@
-import { useTheme } from "@/app/providers/ThemeProvider"
+import { useTheme } from "@/hooks/useTheme"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
-import { Separator } from "../ui/separator"
+import { Separator } from "@/components/ui/separator"
 import { Moon, Sun } from "lucide-react"
 
-export default function NavBar() {
+export default function DashboardNavBar() {
     const { theme, setTheme } = useTheme()
     const toggleTheme = () => {
         if (theme === "light") {

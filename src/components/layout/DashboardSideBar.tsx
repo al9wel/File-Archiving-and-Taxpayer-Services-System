@@ -11,12 +11,12 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar"
 import { Home, LogOut, Settings, } from "lucide-react"
-import TaxLogo from "@/assets/TaxLogo.png"
-import TaxLogoDark from "@/assets/TaxLogoDark.png"
-import { Button } from "../ui/button"
-import { Card, CardContent, CardHeader } from "../ui/card"
+import TaxLogo from "@/assets/images/TaxLogo.png"
+import TaxLogoDark from "@/assets/images/TaxLogoDark.png"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { NavLink } from "react-router-dom"
-import { useTheme } from "@/app/providers/ThemeProvider"
+import { useTheme } from "@/hooks/useTheme"
 
 export default function SideBar() {
     const { open } = useSidebar()
@@ -33,7 +33,7 @@ export default function SideBar() {
                     <SidebarGroupContent >
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <NavLink to="/" end>
+                                <NavLink to="/dashboard" end>
                                     {({ isActive }) => (
                                         <SidebarMenuButton isActive={isActive} className=" text-[17px] font-medium cursor-pointer">
                                             <Home className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
@@ -91,7 +91,7 @@ export default function SideBar() {
                     <SidebarGroupContent className="border-t-2">
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <NavLink to="/settings">
+                                <NavLink to="/dashboard/settings">
                                     {({ isActive }) => (
                                         <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
                                             <Settings className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
@@ -122,7 +122,7 @@ export default function SideBar() {
                                 </div>}
                             </CardHeader>
                             <CardContent className={`${open ? "" : "flex justify-center items-start -mr-3.5"} transition-all duration-200 flex-col gap-2`}>
-                                <NavLink to={"/signin"}>
+                                <NavLink to={"/"}>
                                     <Button variant={"destructive"} size={"lg"} className={`${open ? "w-full" : "w-fit"} cursor-pointer`}>
                                         <LogOut></LogOut>
                                         {open && "تسجيل الخروج"}
