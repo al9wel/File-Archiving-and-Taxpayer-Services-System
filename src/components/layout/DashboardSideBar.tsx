@@ -17,10 +17,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { NavLink } from "react-router-dom"
 import { useTheme } from "@/hooks/useTheme"
+import { useAuth } from "@/hooks/useAuth"
+import { useLogout } from "@/features/auth/hooks/useLogout"
 
 export default function SideBar() {
     const { open } = useSidebar()
     const { theme } = useTheme()
+    const { user } = useAuth()
+    const logout = useLogout()
     return (
         <Sidebar side="right" variant="floating" collapsible="icon" className="z-101">
             <SidebarHeader className="border-b-2  flex justify-center items-start overflow-hidden">
@@ -115,19 +119,29 @@ export default function SideBar() {
                     <SidebarMenuItem >
                         <Card>
                             <CardHeader className={`flex  items-center gap-2 p-1 ${open ? "justify-start" : "  justify-center"} transition-all duration-300`}>
-                                <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
+                                {user?.image ? (
+                                    <img src={user.image} alt="User profile" className="w-8 h-8 rounded-full object-cover" />
+                                ) : (
+                                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                        {user?.firstName?.charAt(0) || 'U'}
+                                    </div>
+                                )}
                                 {open && <div className={` transition-all duration-300 flex flex-col justify-center items-start`}>
-                                    <h1 className="font-bold">حمزه الوجيه</h1>
-                                    <p>مدير</p>
+                                    <h1 className="font-bold text-sm truncate w-32">{user?.firstName} {user?.lastName}</h1>
+                                    <p className="text-xs text-muted-foreground truncate w-32">{user?.role || 'Guest'}</p>
                                 </div>}
                             </CardHeader>
                             <CardContent className={`${open ? "" : "flex justify-center items-start -mr-3.5"} transition-all duration-200 flex-col gap-2`}>
-                                <NavLink to={"/"}>
-                                    <Button variant={"destructive"} size={"lg"} className={`${open ? "w-full" : "w-fit"} cursor-pointer`}>
-                                        <LogOut></LogOut>
-                                        {open && "تسجيل الخروج"}
-                                    </Button>
-                                </NavLink>
+                                <Button 
+                                    variant={"destructive"} 
+                                    size={"lg"} 
+                                    onClick={() => logout.mutate()}
+                                    disabled={logout.isPending}
+                                    className={`${open ? "w-full" : "w-fit"} cursor-pointer`}
+                                >
+                                    <LogOut />
+                                    {open && (logout.isPending ? "جاري الخروج..." : "تسجيل الخروج")}
+                                </Button>
                             </CardContent>
                         </Card>
                     </SidebarMenuItem>

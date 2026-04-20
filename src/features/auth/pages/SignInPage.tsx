@@ -1,11 +1,23 @@
 import { NavLink } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { FileArchive, Eye, EyeOff, ArrowRight, LayoutDashboard } from "lucide-react"
+import { FileArchive, Eye, EyeOff, ArrowRight, LayoutDashboard, Loader2 } from "lucide-react"
 import { useState } from "react"
 import TaxLogo from "@/assets/images/TaxLogo.png"
+import { useLogin } from "@/features/auth/hooks/useLogin"
 
 const SignInPage = () => {
     const [showPassword, setShowPassword] = useState(false)
+    const login = useLogin()
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        const userName = formData.get("username") as string
+        const password = formData.get("password") as string
+
+        if (!userName || !password) return
+        login.mutate({ userName, password })
+    }
 
     return (
         <div className="min-h-screen flex" dir="rtl">
@@ -79,8 +91,14 @@ const SignInPage = () => {
                         </p>
                     </div>
 
-                    {/* Form (UI only - no logic) */}
-                    <div className="space-y-5">
+                    {/* Form logic */}
+                    <form onSubmit={handleSubmit} className="space-y-5">
+
+                        {login.isError && (
+                            <div className="p-3 rounded-xl bg-red-100 text-red-600 border border-red-200 text-sm">
+                                {login.error.message || "حدث خطأ أثناء تسجيل الدخول. يرجى التحقق من بياناتك."}
+                            </div>
+                        )}
 
                         {/* Username field */}
                         <div className="space-y-1.5">
@@ -89,9 +107,11 @@ const SignInPage = () => {
                             </label>
                             <input
                                 id="username"
+                                name="username"
                                 type="text"
                                 placeholder="أدخل اسم المستخدم"
                                 className="w-full border border-border rounded-xl px-4 py-3 text-sm bg-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all duration-200"
+                                required
                             />
                         </div>
 
@@ -103,9 +123,11 @@ const SignInPage = () => {
                             <div className="relative">
                                 <input
                                     id="password"
+                                    name="password"
                                     type={showPassword ? "text" : "password"}
                                     placeholder="أدخل كلمة المرور"
                                     className="w-full border border-border rounded-xl px-4 py-3 pl-12 text-sm bg-input text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all duration-200"
+                                    required
                                 />
                                 <button
                                     type="button"
@@ -130,16 +152,20 @@ const SignInPage = () => {
                         </div>
 
                         {/* Dashboard Button */}
-                        <NavLink to="/dashboard">
-                            <Button
-                                size="lg"
-                                className="w-full cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl gap-2 mt-2"
-                                id="goto-dashboard-btn"
-                            >
+                        <Button
+                            type="submit"
+                            size="lg"
+                            disabled={login.isPending}
+                            className="w-full cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl gap-2 mt-2"
+                            id="goto-dashboard-btn"
+                        >
+                            {login.isPending ? (
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
                                 <LayoutDashboard className="w-4 h-4" />
-                                دخول لوحة التحكم
-                            </Button>
-                        </NavLink>
+                            )}
+                            {login.isPending ? "جاري الدخول..." : "دخول لوحة التحكم"}
+                        </Button>
 
                         {/* Divider */}
                         <div className="relative mt-4">
@@ -156,6 +182,7 @@ const SignInPage = () => {
                             <Button
                                 size="lg"
                                 variant="outline"
+                                type="button"
                                 className="w-full cursor-pointer rounded-xl gap-2"
                                 id="goto-home-btn"
                             >
@@ -163,7 +190,7 @@ const SignInPage = () => {
                                 العودة إلى الرئيسية
                             </Button>
                         </NavLink>
-                    </div>
+                    </form>
 
                     {/* Footer note */}
                     <p className="text-center text-xs text-muted-foreground">

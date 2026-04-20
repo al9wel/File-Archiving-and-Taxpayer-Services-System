@@ -42,7 +42,11 @@ const features = [
     },
 ]
 
+import { useAuth } from "@/hooks/useAuth"
+
 const HomePage = () => {
+    const { isAuthenticated } = useAuth()
+
     return (
         <div className="w-full" dir="rtl">
 
@@ -76,12 +80,21 @@ const HomePage = () => {
                             </p>
 
                             <div className="flex flex-wrap items-center gap-3 mt-2">
-                                <NavLink to="/auth">
-                                    <Button size="lg" className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl gap-2">
-                                        تسجيل الدخول
-                                        <ChevronLeft className="w-4 h-4" />
-                                    </Button>
-                                </NavLink>
+                                {isAuthenticated ? (
+                                    <NavLink to="/dashboard">
+                                        <Button size="lg" className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl gap-2 bg-primary">
+                                            لوحة التحكم
+                                            <ChevronLeft className="w-4 h-4" />
+                                        </Button>
+                                    </NavLink>
+                                ) : (
+                                    <NavLink to="/auth">
+                                        <Button size="lg" className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl gap-2 bg-primary">
+                                            تسجيل الدخول
+                                            <ChevronLeft className="w-4 h-4" />
+                                        </Button>
+                                    </NavLink>
+                                )}
                                 <NavLink to="/about">
                                     <Button size="lg" variant="outline" className="cursor-pointer rounded-xl gap-2">
                                         تعرف على النظام
@@ -187,11 +200,19 @@ const HomePage = () => {
                     <p className="text-muted-foreground mb-8 text-base leading-relaxed">
                         سجّل دخولك الآن للوصول إلى لوحة التحكم وإدارة ملفاتك الضريبية بكل سهولة.
                     </p>
-                    <NavLink to="/auth">
-                        <Button size="lg" className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl px-8">
-                            دخول النظام
-                        </Button>
-                    </NavLink>
+                    {isAuthenticated ? (
+                        <NavLink to="/dashboard">
+                            <Button size="lg" className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl px-8">
+                                الانتقال إلى لوحة التحكم
+                            </Button>
+                        </NavLink>
+                    ) : (
+                        <NavLink to="/auth">
+                            <Button size="lg" className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl px-8">
+                                دخول النظام
+                            </Button>
+                        </NavLink>
+                    )}
                 </div>
             </section>
 

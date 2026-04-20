@@ -5,6 +5,7 @@ import { Menu, X, Moon, Sun } from "lucide-react"
 import TaxLogo from "@/assets/images/TaxLogo.png"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTheme } from "@/hooks/useTheme"
+import { useAuth } from "@/hooks/useAuth"
 
 const navLinks = [
     { label: "الرئيسية", to: "/" },
@@ -15,6 +16,7 @@ export default function LandingNavbar() {
     const [mobileOpen, setMobileOpen] = useState(false)
     const isMobile = useIsMobile()
     const { theme, setTheme } = useTheme()
+    const { isAuthenticated, user, logout } = useAuth()
 
     const toggleTheme = () => {
         setTheme(theme === "light" ? "dark" : "light")
@@ -63,11 +65,31 @@ export default function LandingNavbar() {
                         }
                     </Button>
 
-                    <NavLink to="/auth" className="hidden md:block">
-                        <Button className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl">
-                            تسجيل الدخول
-                        </Button>
-                    </NavLink>
+                    {isAuthenticated && user ? (
+                        <div className="hidden md:flex items-center gap-2">
+                            <NavLink to="/dashboard" className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-accent transition-colors border border-transparent hover:border-border">
+                                {user.image ? (
+                                    <img src={user.image} alt={user.firstName} className="w-8 h-8 rounded-full object-cover border border-border" />
+                                ) : (
+                                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-sm">
+                                        {user.firstName?.charAt(0)}
+                                    </div>
+                                )}
+                                <span className="text-sm font-medium text-foreground max-w-[100px] truncate">
+                                    {user.firstName} {user.lastName}
+                                </span>
+                            </NavLink>
+                            <Button onClick={logout} variant="ghost" className="text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl cursor-pointer">
+                                تسجيل خروج
+                            </Button>
+                        </div>
+                    ) : (
+                        <NavLink to="/auth" className="hidden md:block">
+                            <Button className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl">
+                                تسجيل الدخول
+                            </Button>
+                        </NavLink>
+                    )}
 
                     {/* Mobile menu button */}
                     {isMobile && (
@@ -101,11 +123,35 @@ export default function LandingNavbar() {
                             {link.label}
                         </NavLink>
                     ))}
-                    <NavLink to="/auth" onClick={() => setMobileOpen(false)}>
-                        <Button className="w-full mt-2 cursor-pointer hover:bg-primary-hover">
-                            تسجيل الدخول
-                        </Button>
-                    </NavLink>
+                    {isAuthenticated && user ? (
+                        <div className="pt-2 mt-2 border-t border-border space-y-2">
+                            <div className="flex items-center gap-3 px-4 py-2">
+                                {user.image ? (
+                                    <img src={user.image} alt={user.firstName} className="w-10 h-10 rounded-full object-cover border border-border" />
+                                ) : (
+                                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                                        {user.firstName?.charAt(0)}
+                                    </div>
+                                )}
+                                <div className="flex flex-col">
+                                    <span className="text-sm font-medium text-foreground">{user.firstName} {user.lastName}</span>
+                                    <span className="text-xs text-muted-foreground">{user.role}</span>
+                                </div>
+                            </div>
+                            <NavLink to="/dashboard" onClick={() => setMobileOpen(false)}>
+                                <Button variant="outline" className="w-full justify-start cursor-pointer">لوحة التحكم</Button>
+                            </NavLink>
+                            <Button onClick={() => { logout(); setMobileOpen(false); }} variant="ghost" className="w-full justify-start cursor-pointer text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30">
+                                تسجيل خروج
+                            </Button>
+                        </div>
+                    ) : (
+                        <NavLink to="/auth" onClick={() => setMobileOpen(false)}>
+                            <Button className="w-full mt-2 cursor-pointer hover:bg-primary-hover">
+                                تسجيل الدخول
+                            </Button>
+                        </NavLink>
+                    )}
                 </div>
             )}
         </header>
