@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom"
+import { ROUTES } from "@/constants/routes"
 import { Button } from "@/components/ui/button"
 import {
     FileArchive,
@@ -154,13 +155,13 @@ const AboutPage = () => {
                         استفد من منظومة الخدمات الضريبية الإلكترونية المتكاملة وسجّل دخولك الآن.
                     </p>
                     <div className="flex flex-wrap gap-3 justify-center">
-                        <NavLink to="/auth">
+                        <NavLink to={ROUTES.PUBLIC.AUTH}>
                             <Button size="lg" className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl gap-2">
                                 تسجيل الدخول
                                 <ArrowLeft className="w-4 h-4" />
                             </Button>
                         </NavLink>
-                        <NavLink to="/">
+                        <NavLink to={ROUTES.PUBLIC.HOME}>
                             <Button size="lg" variant="outline" className="cursor-pointer rounded-xl">
                                 العودة للرئيسية
                             </Button>

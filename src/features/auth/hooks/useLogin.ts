@@ -3,6 +3,7 @@ import { authApi } from '../api/authApi';
 import type { LoginParams } from '@/types';
 import { useAuthStore } from '@/app/store/authStore';
 import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/constants/routes';
 
 export const useLogin = () => {
   const setUser = useAuthStore((state) => state.setUser);
@@ -23,7 +24,7 @@ export const useLogin = () => {
       setUser(response.data.user);
 
       // 4. Redirect to Dashboard
-      navigate('/dashboard');
+      navigate(ROUTES.DASHBOARD.MAIN);
     },
   });
 };

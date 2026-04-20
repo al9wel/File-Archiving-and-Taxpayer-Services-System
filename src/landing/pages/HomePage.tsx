@@ -43,6 +43,7 @@ const features = [
 ]
 
 import { useAuth } from "@/hooks/useAuth"
+import { ROUTES } from "@/constants/routes"
 
 const HomePage = () => {
     const { isAuthenticated } = useAuth()
@@ -81,21 +82,21 @@ const HomePage = () => {
 
                             <div className="flex flex-wrap items-center gap-3 mt-2">
                                 {isAuthenticated ? (
-                                    <NavLink to="/dashboard">
+                                    <NavLink to={ROUTES.DASHBOARD.MAIN}>
                                         <Button size="lg" className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl gap-2 bg-primary">
                                             لوحة التحكم
                                             <ChevronLeft className="w-4 h-4" />
                                         </Button>
                                     </NavLink>
                                 ) : (
-                                    <NavLink to="/auth">
+                                    <NavLink to={ROUTES.PUBLIC.AUTH}>
                                         <Button size="lg" className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl gap-2 bg-primary">
                                             تسجيل الدخول
                                             <ChevronLeft className="w-4 h-4" />
                                         </Button>
                                     </NavLink>
                                 )}
-                                <NavLink to="/about">
+                                <NavLink to={ROUTES.PUBLIC.ABOUT}>
                                     <Button size="lg" variant="outline" className="cursor-pointer rounded-xl gap-2">
                                         تعرف على النظام
                                         <ArrowLeft className="w-4 h-4" />
@@ -201,13 +202,13 @@ const HomePage = () => {
                         سجّل دخولك الآن للوصول إلى لوحة التحكم وإدارة ملفاتك الضريبية بكل سهولة.
                     </p>
                     {isAuthenticated ? (
-                        <NavLink to="/dashboard">
+                        <NavLink to={ROUTES.DASHBOARD.MAIN}>
                             <Button size="lg" className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl px-8">
                                 الانتقال إلى لوحة التحكم
                             </Button>
                         </NavLink>
                     ) : (
-                        <NavLink to="/auth">
+                        <NavLink to={ROUTES.PUBLIC.AUTH}>
                             <Button size="lg" className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl px-8">
                                 دخول النظام
                             </Button>

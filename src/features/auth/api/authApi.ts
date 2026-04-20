@@ -17,7 +17,7 @@ export const authApi = {
 
     // Added based on user feedback to fetch user using ID. 
     // Wait, wait... the endpoint in apiResource ('app_users') would be '/app_users/{id}'.
-    getUser: (id: string | number): Promise<{ success: boolean; data: User }> => {
+    getUser: (id: string | number): Promise<{ data: User; message: string }> => {
         return fetchClient(`/app_users/${id}`, {
             method: 'GET',
         });

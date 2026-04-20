@@ -6,10 +6,11 @@ import TaxLogo from "@/assets/images/TaxLogo.png"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTheme } from "@/hooks/useTheme"
 import { useAuth } from "@/hooks/useAuth"
+import { ROUTES } from "@/constants/routes"
 
 const navLinks = [
-    { label: "الرئيسية", to: "/" },
-    { label: "عن النظام", to: "/about" },
+    { label: "الرئيسية", to: ROUTES.PUBLIC.HOME },
+    { label: "عن النظام", to: ROUTES.PUBLIC.ABOUT },
 ]
 
 export default function LandingNavbar() {
@@ -27,7 +28,7 @@ export default function LandingNavbar() {
             <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between" dir="rtl">
 
                 {/* Logo */}
-                <NavLink to="/" className="flex items-center gap-2 shrink-0">
+                <NavLink to={ROUTES.PUBLIC.HOME} className="flex items-center gap-2 shrink-0">
                     <img src={TaxLogo} alt="شعار نظام الضرائب" className="h-10 w-auto object-contain" />
                 </NavLink>
 
@@ -37,7 +38,7 @@ export default function LandingNavbar() {
                         <NavLink
                             key={link.to}
                             to={link.to}
-                            end={link.to === "/"}
+                            end={link.to === ROUTES.PUBLIC.HOME}
                             className={({ isActive }) =>
                                 `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
                                     ? "bg-primary text-primary-foreground"
@@ -65,18 +66,18 @@ export default function LandingNavbar() {
                         }
                     </Button>
 
-                    {isAuthenticated && user ? (
+                    {isAuthenticated ? (
                         <div className="hidden md:flex items-center gap-2">
-                            <NavLink to="/dashboard" className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-accent transition-colors border border-transparent hover:border-border">
-                                {user.image ? (
-                                    <img src={user.image} alt={user.firstName} className="w-8 h-8 rounded-full object-cover border border-border" />
+                            <NavLink to={ROUTES.DASHBOARD.MAIN} className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-accent transition-colors border border-transparent hover:border-border">
+                                {user!.image ? (
+                                    <img src={user!.image} alt={user!.firstName} className="w-8 h-8 rounded-full object-cover border border-border" />
                                 ) : (
                                     <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-sm">
-                                        {user.firstName?.charAt(0)}
+                                        {user!.firstName?.charAt(0)}
                                     </div>
                                 )}
                                 <span className="text-sm font-medium text-foreground max-w-[100px] truncate">
-                                    {user.firstName} {user.lastName}
+                                    {user!.firstName} {user!.lastName}
                                 </span>
                             </NavLink>
                             <Button onClick={logout} variant="ghost" className="text-red-500 hover:text-red-600 hover:bg-red-50 rounded-xl cursor-pointer">
@@ -84,7 +85,7 @@ export default function LandingNavbar() {
                             </Button>
                         </div>
                     ) : (
-                        <NavLink to="/auth" className="hidden md:block">
+                        <NavLink to={ROUTES.PUBLIC.AUTH} className="hidden md:block">
                             <Button className="cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl">
                                 تسجيل الدخول
                             </Button>
@@ -111,7 +112,7 @@ export default function LandingNavbar() {
                         <NavLink
                             key={link.to}
                             to={link.to}
-                            end={link.to === "/"}
+                            end={link.to === ROUTES.PUBLIC.HOME}
                             onClick={() => setMobileOpen(false)}
                             className={({ isActive }) =>
                                 `block px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
@@ -123,22 +124,22 @@ export default function LandingNavbar() {
                             {link.label}
                         </NavLink>
                     ))}
-                    {isAuthenticated && user ? (
+                    {isAuthenticated ? (
                         <div className="pt-2 mt-2 border-t border-border space-y-2">
                             <div className="flex items-center gap-3 px-4 py-2">
-                                {user.image ? (
-                                    <img src={user.image} alt={user.firstName} className="w-10 h-10 rounded-full object-cover border border-border" />
+                                {user!.image ? (
+                                    <img src={user!.image} alt={user!.firstName} className="w-10 h-10 rounded-full object-cover border border-border" />
                                 ) : (
                                     <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-                                        {user.firstName?.charAt(0)}
+                                        {user!.firstName?.charAt(0)}
                                     </div>
                                 )}
                                 <div className="flex flex-col">
-                                    <span className="text-sm font-medium text-foreground">{user.firstName} {user.lastName}</span>
-                                    <span className="text-xs text-muted-foreground">{user.role}</span>
+                                    <span className="text-sm font-medium text-foreground">{user!.firstName} {user!.lastName}</span>
+                                    <span className="text-xs text-muted-foreground">{user!.role}</span>
                                 </div>
                             </div>
-                            <NavLink to="/dashboard" onClick={() => setMobileOpen(false)}>
+                            <NavLink to={ROUTES.DASHBOARD.MAIN} onClick={() => setMobileOpen(false)}>
                                 <Button variant="outline" className="w-full justify-start cursor-pointer">لوحة التحكم</Button>
                             </NavLink>
                             <Button onClick={() => { logout(); setMobileOpen(false); }} variant="ghost" className="w-full justify-start cursor-pointer text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30">
@@ -146,7 +147,7 @@ export default function LandingNavbar() {
                             </Button>
                         </div>
                     ) : (
-                        <NavLink to="/auth" onClick={() => setMobileOpen(false)}>
+                        <NavLink to={ROUTES.PUBLIC.AUTH} onClick={() => setMobileOpen(false)}>
                             <Button className="w-full mt-2 cursor-pointer hover:bg-primary-hover">
                                 تسجيل الدخول
                             </Button>

@@ -10,7 +10,20 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from "@/components/ui/sidebar"
-import { Home, LogOut, Settings, } from "lucide-react"
+import {
+    Home,
+    LogOut,
+    Settings,
+    FileArchive,
+    ArrowUpRightFromSquare,
+    ClipboardList,
+    Users,
+    UserCheck,
+    UserCog,
+    FileBarChart,
+    Info,
+    Bell
+} from "lucide-react"
 import TaxLogo from "@/assets/images/TaxLogo.png"
 import TaxLogoDark from "@/assets/images/TaxLogoDark.png"
 import { Button } from "@/components/ui/button"
@@ -19,6 +32,7 @@ import { NavLink } from "react-router-dom"
 import { useTheme } from "@/hooks/useTheme"
 import { useAuth } from "@/hooks/useAuth"
 import { useLogout } from "@/features/auth/hooks/useLogout"
+import { ROUTES } from "@/constants/routes"
 
 export default function SideBar() {
     const { open } = useSidebar()
@@ -37,57 +51,95 @@ export default function SideBar() {
                     <SidebarGroupContent >
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <NavLink to="/dashboard" end>
+                                <NavLink to={ROUTES.DASHBOARD.MAIN}>
                                     {({ isActive }) => (
                                         <SidebarMenuButton isActive={isActive} className=" text-[17px] font-medium cursor-pointer">
                                             <Home className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
-                                            <h1> الرئيسيه </h1>
+                                            <h1> الرئيسية </h1>
                                         </SidebarMenuButton>
                                     )}
                                 </NavLink>
                             </SidebarMenuItem>
-                            {/* <SidebarMenuItem>
-                                <SidebarMenuButton className=" mt-2 text-[17px] font-medium">
-                                    <FileArchive className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
-                                    <h1> الملفات </h1>
-                                </SidebarMenuButton>
+                            <SidebarMenuItem>
+                                <NavLink to={ROUTES.DASHBOARD.FILES}>
+                                    {({ isActive }) => (
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
+                                            <FileArchive className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                            <h1> الملفات </h1>
+                                        </SidebarMenuButton>
+                                    )}
+                                </NavLink>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton className=" mt-2 text-[17px] font-medium">
-                                    <ArrowUpRightFromSquare className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
-                                    <h1> حركة الملفات </h1>
-                                </SidebarMenuButton>
+                                <NavLink to={ROUTES.DASHBOARD.FILE_MOVEMENTS}>
+                                    {({ isActive }) => (
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
+                                            <ArrowUpRightFromSquare className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                            <h1> حركة الملفات </h1>
+                                        </SidebarMenuButton>
+                                    )}
+                                </NavLink>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton className=" mt-2 text-[17px] font-medium">
-                                    <ArrowUpRightFromSquare className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
-                                    <h1> الطلبات </h1>
-                                </SidebarMenuButton>
+                                <NavLink to={ROUTES.DASHBOARD.REQUESTS}>
+                                    {({ isActive }) => (
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
+                                            <ClipboardList className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                            <h1> الطلبات </h1>
+                                        </SidebarMenuButton>
+                                    )}
+                                </NavLink>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton className=" mt-2 text-[17px] font-medium">
-                                    <Home className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
-                                    <h1> الرئيسيه </h1>
-                                </SidebarMenuButton>
+                                <NavLink to={ROUTES.DASHBOARD.BASIC_INFO}>
+                                    {({ isActive }) => (
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
+                                            <Info className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                            <h1> معلومات أساسية </h1>
+                                        </SidebarMenuButton>
+                                    )}
+                                </NavLink>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton className=" mt-2 text-[17px] font-medium">
-                                    <FileArchive className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
-                                    <h1> الملفات </h1>
-                                </SidebarMenuButton>
+                                <NavLink to={ROUTES.DASHBOARD.NOTIFICATIONS}>
+                                    {({ isActive }) => (
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
+                                            <Bell className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                            <h1> الإشعارات </h1>
+                                        </SidebarMenuButton>
+                                    )}
+                                </NavLink>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton className=" mt-2 text-[17px] font-medium">
-                                    <ArrowUpRightFromSquare className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
-                                    <h1> حركة الملفات </h1>
-                                </SidebarMenuButton>
+                                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS}>
+                                    {({ isActive }) => (
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
+                                            <Users className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                            <h1> المكلفين </h1>
+                                        </SidebarMenuButton>
+                                    )}
+                                </NavLink>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton className=" mt-2 text-[17px] font-medium">
-                                    <ArrowUpRightFromSquare className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
-                                    <h1> الطلبات </h1>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem> */}
+                                <NavLink to={ROUTES.DASHBOARD.OFFICERS}>
+                                    {({ isActive }) => (
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
+                                            <UserCheck className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                            <h1> المأمورين </h1>
+                                        </SidebarMenuButton>
+                                    )}
+                                </NavLink>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                                <NavLink to={ROUTES.DASHBOARD.USERS}>
+                                    {({ isActive }) => (
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
+                                            <UserCog className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                            <h1> المستخدمين </h1>
+                                        </SidebarMenuButton>
+                                    )}
+                                </NavLink>
+                            </SidebarMenuItem>
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
@@ -95,21 +147,25 @@ export default function SideBar() {
                     <SidebarGroupContent className="border-t-2">
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <NavLink to="/dashboard/settings">
+                                <NavLink to={ROUTES.DASHBOARD.OPERATION_REPORTS}>
                                     {({ isActive }) => (
                                         <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
-                                            <Settings className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
-                                            <h1> الاعدادت </h1>
+                                            <FileBarChart className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                            <h1> تقرير العمليات </h1>
                                         </SidebarMenuButton>
                                     )}
                                 </NavLink>
                             </SidebarMenuItem>
-                            {/* <SidebarMenuItem>
-                                <SidebarMenuButton className=" mt-2 text-[17px] font-medium">
-                                    <FileArchive className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
-                                    <h1> الملفات </h1>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem> */}
+                            <SidebarMenuItem>
+                                <NavLink to={ROUTES.DASHBOARD.SETTINGS}>
+                                    {({ isActive }) => (
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
+                                            <Settings className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                            <h1> الإعدادات </h1>
+                                        </SidebarMenuButton>
+                                    )}
+                                </NavLink>
+                            </SidebarMenuItem>
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
@@ -132,9 +188,9 @@ export default function SideBar() {
                                 </div>}
                             </CardHeader>
                             <CardContent className={`${open ? "" : "flex justify-center items-start -mr-3.5"} transition-all duration-200 flex-col gap-2`}>
-                                <Button 
-                                    variant={"destructive"} 
-                                    size={"lg"} 
+                                <Button
+                                    variant={"destructive"}
+                                    size={"lg"}
                                     onClick={() => logout.mutate()}
                                     disabled={logout.isPending}
                                     className={`${open ? "w-full" : "w-fit"} cursor-pointer`}

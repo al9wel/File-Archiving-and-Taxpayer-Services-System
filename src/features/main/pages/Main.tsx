@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useLogout } from '@/features/auth/hooks/useLogout';
 import { ACTIONS } from '@/constants/permissions';
 
-const Dashboard = () => {
+const Main = () => {
     const { user } = useAuth();
     const canDeleteFile = usePermission(ACTIONS.DELETE_FILE);
     const canCreateFile = usePermission(ACTIONS.CREATE_FILE);
@@ -18,7 +18,7 @@ const Dashboard = () => {
     return (
         <div className='w-full p-8 flex flex-col gap-6 justify-start items-start'>
             <h1 className='text-3xl font-bold'>لوحة التحكم / Dashboard</h1>
-            
+
             <div className="bg-card p-6 rounded-lg shadow w-full max-w-2xl border">
                 <h2 className="text-xl font-semibold mb-4 text-card-foreground">User Information</h2>
                 <div className="flex flex-col gap-2 mb-6 text-muted-foreground">
@@ -29,15 +29,15 @@ const Dashboard = () => {
                 <h2 className="text-xl font-semibold mb-4 text-card-foreground">Permissions Test</h2>
                 <div className="flex gap-4">
                     {canCreateFile && (
-                        <button 
+                        <button
                             className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors"
                             onClick={() => { console.log('Create allowed'); alert('File created!'); }}
                         >
                             Create File (Allowed)
                         </button>
                     )}
-                    
-                    <button 
+
+                    <button
                         className={`${canDeleteFile ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400 cursor-not-allowed'} text-white px-4 py-2 rounded-md transition-colors`}
                         onClick={handleDelete}
                         disabled={!canDeleteFile}
@@ -47,7 +47,7 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <button 
+            <button
                 onClick={() => logout.mutate()}
                 className='mt-8 text-red-500 hover:underline'
             >
@@ -57,4 +57,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard
+export default Main

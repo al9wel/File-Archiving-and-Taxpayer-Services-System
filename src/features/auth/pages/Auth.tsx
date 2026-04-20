@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom"
+import { ROUTES } from "@/constants/routes"
 import { Button } from "@/components/ui/button"
 import { FileArchive, Eye, EyeOff, ArrowRight, LayoutDashboard, Loader2 } from "lucide-react"
 import { useState } from "react"
 import TaxLogo from "@/assets/images/TaxLogo.png"
 import { useLogin } from "@/features/auth/hooks/useLogin"
 
-const SignInPage = () => {
+const Auth = () => {
     const [showPassword, setShowPassword] = useState(false)
     const login = useLogin()
 
@@ -178,7 +179,7 @@ const SignInPage = () => {
                         </div>
 
                         {/* Back to Home Button */}
-                        <NavLink to="/">
+                        <NavLink to={ROUTES.PUBLIC.HOME}>
                             <Button
                                 size="lg"
                                 variant="outline"
@@ -204,4 +205,4 @@ const SignInPage = () => {
     )
 }
 
-export default SignInPage
+export default Auth
