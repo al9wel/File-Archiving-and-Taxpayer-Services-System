@@ -1,8 +1,11 @@
 import { NavLink } from "react-router-dom"
 import { FileArchive, Mail, Phone, MapPin, Facebook, Twitter, Linkedin } from "lucide-react"
 import TaxLogo from "@/assets/images/TaxLogo.png"
+import { useAuth } from "@/hooks/useAuth"
 
 export default function LandingFooter() {
+    const { isAuthenticated } = useAuth()
+
     return (
         <footer className="bg-foreground/5 border-t border-border pt-12 pb-6" dir="rtl">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,7 +39,7 @@ export default function LandingFooter() {
                             {[
                                 { label: "الرئيسية", to: "/" },
                                 { label: "عن النظام", to: "/about" },
-                                { label: "تسجيل الدخول", to: "/auth" },
+                                { label: isAuthenticated ? "لوحة التحكم" : "تسجيل الدخول", to: isAuthenticated ? "/dashboard" : "/auth" },
                             ].map((link) => (
                                 <NavLink
                                     key={link.to}
