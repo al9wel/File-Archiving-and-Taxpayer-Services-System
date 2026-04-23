@@ -3,7 +3,7 @@ import { authApi } from "../api/authApi"
 import { useAuth } from "@/hooks/useAuth"
 import { useEffect } from "react"
 
-export const useAuthMe = () => {
+export const useUser = () => {
     const { user, setUser, logout } = useAuth();
     const token = localStorage.getItem("access_token")
     const userId = localStorage.getItem("user_id")

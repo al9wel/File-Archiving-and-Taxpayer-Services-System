@@ -1,18 +1,46 @@
 import { usePermission } from '@/hooks/usePermission';
 import { useAuth } from '@/hooks/useAuth';
-import { useLogout } from '@/features/auth/hooks/useLogout';
 import { ACTIONS } from '@/constants/permissions';
+import { toast } from 'sonner';
 
 const Main = () => {
     const { user } = useAuth();
-    const canDeleteFile = usePermission(ACTIONS.DELETE_FILE);
-    const canCreateFile = usePermission(ACTIONS.CREATE_FILE);
-    const logout = useLogout();
+    const canDeleteFile = usePermission(ACTIONS.DELETE);
+    const canCreateFile = usePermission(ACTIONS.CREATE);
+    const canUpdateFile = usePermission(ACTIONS.UPDATE);
+    const canViewFile = usePermission(ACTIONS.VIEW);
 
     const handleDelete = () => {
-        console.log("Delete button clicked! Permission allowed:", canDeleteFile);
-        if (canDeleteFile) alert("File deleted!");
-        else alert("You don't have permission to delete files!");
+        if (canDeleteFile) {
+            toast.success("تم حذف الملف بنجاح")
+        }
+        else {
+            toast.error("ليس لديك صلاحية حذف الملفات")
+        }
+    };
+    const handleView = () => {
+        if (canViewFile) {
+            toast.success("تم عرض الملف بنجاح")
+        }
+        else {
+            toast.error("ليس لديك صلاحية عرض الملفات")
+        }
+    };
+    const handleUpdate = () => {
+        if (canUpdateFile) {
+            toast.success("تم تعديل الملف بنجاح")
+        }
+        else {
+            toast.error("   ليس لديك صلاحية تعديل الملفات")
+        }
+    };
+    const handleCreate = () => {
+        if (canCreateFile) {
+            toast.success("تم إنشاء الملف بنجاح")
+        }
+        else {
+            toast.error("ليس لديك صلاحية إنشاء الملفات")
+        }
     };
 
     return (
@@ -28,31 +56,32 @@ const Main = () => {
 
                 <h2 className="text-xl font-semibold mb-4 text-card-foreground">Permissions Test</h2>
                 <div className="flex gap-4">
-                    {canCreateFile && (
-                        <button
-                            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors"
-                            onClick={() => { console.log('Create allowed'); alert('File created!'); }}
-                        >
-                            Create File (Allowed)
-                        </button>
-                    )}
-
                     <button
-                        className={`${canDeleteFile ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400 cursor-not-allowed'} text-white px-4 py-2 rounded-md transition-colors`}
-                        onClick={handleDelete}
-                        disabled={!canDeleteFile}
+                        className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-md transition-colors"
+                        onClick={handleView}
                     >
-                        Delete File (Restricted)
+                        عرض ملف
+                    </button>
+                    <button
+                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors"
+                        onClick={handleCreate}
+                    >
+                        إنشاء ملف
+                    </button>
+                    <button
+                        className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-md transition-colors"
+                        onClick={handleUpdate}
+                    >
+                        تعديل ملف
+                    </button>
+                    <button
+                        className={`bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition-colors`}
+                        onClick={handleDelete}
+                    >
+                        حذف ملف
                     </button>
                 </div>
             </div>
-
-            <button
-                onClick={() => logout.mutate()}
-                className='mt-8 text-red-500 hover:underline'
-            >
-                Logout Test
-            </button>
         </div>
     )
 }

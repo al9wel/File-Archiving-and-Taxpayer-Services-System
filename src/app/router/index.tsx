@@ -1,5 +1,6 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import Auth from "@/features/auth/pages/Auth";
+import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
 import Main from "@/features/main/pages/Main";
 import Settings from "@/features/settings/pages/Settings";
 import Files from "@/features/files/pages/Files";
@@ -10,6 +11,9 @@ import Notifications from "@/features/notifications/pages/Notifications";
 import Taxpayers from "@/features/taxpayers/pages/Taxpayers";
 import Officers from "@/features/officers/pages/Officers";
 import Users from "@/features/users/pages/Users";
+import CreateUser from "@/features/users/pages/CreateUser";
+import UpdateUser from "@/features/users/pages/UpdateUser";
+import ShowUser from "@/features/users/pages/ShowUser";
 import OperationReports from "@/features/operation-reports/pages/OperationReports";
 import { createBrowserRouter, Navigate } from "react-router-dom"
 import LandingLayout from "@/components/layout/LandingLayout";
@@ -41,12 +45,15 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.PUBLIC.AUTH.split("/").pop(),
                 element: <Auth />,
-            }
+            },
+            {
+                path: ROUTES.PUBLIC.RESET_PASSWORD.split("/").pop(),
+                element: <ResetPasswordPage />,
+            },
         ]
     },
     {
         path: ROUTES.DASHBOARD.ROOT,
-        // Only allow these roles into the dashboard
         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.EMPLOYEE]} />,
         children: [
             {
@@ -62,7 +69,16 @@ export const router = createBrowserRouter([
                     { path: ROUTES.DASHBOARD.NOTIFICATIONS.split("/").pop(), element: <Notifications /> },
                     { path: ROUTES.DASHBOARD.TAXPAYERS.split("/").pop(), element: <Taxpayers /> },
                     { path: ROUTES.DASHBOARD.OFFICERS.split("/").pop(), element: <Officers /> },
-                    { path: ROUTES.DASHBOARD.USERS.split("/").pop(), element: <Users /> },
+                    {
+                        path: ROUTES.DASHBOARD.USERS.split("/").pop(),
+                        element: <ProtectedRoute allowedRoles={[ROLES.ADMIN]} />,
+                        children: [
+                            { index: true, element: <Users /> },
+                            { path: "create", element: <CreateUser /> },
+                            { path: ":id", element: <ShowUser /> },
+                            { path: ":id/edit", element: <UpdateUser /> },
+                        ]
+                    },
                     {
                         path: "",
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN]} />,

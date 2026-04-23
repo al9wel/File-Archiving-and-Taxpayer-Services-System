@@ -3,6 +3,7 @@ export const ROUTES = {
     HOME: "/",
     ABOUT: "/about",
     AUTH: "/auth",
+    RESET_PASSWORD: "/reset-password",
     UNAUTHORIZED: "/unauthorized",
   },
   DASHBOARD: {
@@ -16,6 +17,9 @@ export const ROUTES = {
     TAXPAYERS: "/dashboard/taxpayers",
     OFFICERS: "/dashboard/officers",
     USERS: "/dashboard/users",
+    USERS_CREATE: "/dashboard/users/create",
+    USERS_EDIT: "/dashboard/users/:id/edit",
+    USERS_SHOW: "/dashboard/users/:id",
     OPERATION_REPORTS: "/dashboard/operation-reports",
     SETTINGS: "/dashboard/settings",
   },
