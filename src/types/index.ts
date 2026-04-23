@@ -1,15 +1,5 @@
-export interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  dateOfBirth?: string | null;
-  idCard?: string;
-  userName?: string;
-  phone?: string;
-  image?: string;
-  role: string;
-  mustChangePassword?: boolean;
-}
+import type { User } from "./User";
+
 
 export interface LoginParams {
   userName?: string;
@@ -22,6 +12,6 @@ export interface LoginResponse {
   data: {
     access_token: string;
     must_change_password?: boolean;
-    user: User;
+    user: User | null;
   };
 }

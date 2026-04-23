@@ -7,6 +7,7 @@ import { ROUTES } from '@/constants/routes';
 
 export const useLogin = () => {
   const setUser = useAuthStore((state) => state.setUser);
+  const setNeedsPasswordReset = useAuthStore((state) => state.setNeedsPasswordReset);
   const navigate = useNavigate();
 
   return useMutation({
@@ -15,15 +16,26 @@ export const useLogin = () => {
       // 1. Save token
       localStorage.setItem('access_token', response.data.access_token);
 
-      // 2. Save user ID for future user fetching on refresh
+      // 2. Handle mandatory password change
+      if (response.data.must_change_password) {
+        setNeedsPasswordReset(true);
+        setUser(null);
+        navigate(ROUTES.PUBLIC.RESET_PASSWORD);
+        return;
+      }
+
+      // 3. Normal login flow
+      setNeedsPasswordReset(false);
+      
+      // Save user ID for future user fetching on refresh
       if (response.data.user?.id) {
         localStorage.setItem('user_id', response.data.user.id.toString());
       }
 
-      // 3. Update global Zustand auth store
+      // Update global Zustand auth store
       setUser(response.data.user);
 
-      // 4. Redirect to Dashboard
+      // Redirect to Dashboard
       navigate(ROUTES.DASHBOARD.MAIN);
     },
   });

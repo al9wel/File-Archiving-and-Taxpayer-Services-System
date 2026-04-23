@@ -1,12 +1,12 @@
 import { RouterProvider } from "react-router-dom"
 import AppProviders from "@/app/providers/AppProviders"
 import { router } from "@/app/router"
-import { useAuthMe } from "@/features/auth/hooks/useAuthMe"
+import { useUser } from "@/features/auth/hooks/useUser"
 import { Loader2 } from "lucide-react"
 
 const AppContent = () => {
     // isLoading is true while fetching the initial session, false otherwise.
-    const { isLoading } = useAuthMe()
+    const { isLoading } = useUser()
 
     if (isLoading) {
         return (
