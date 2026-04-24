@@ -56,8 +56,8 @@ export function DataTable<TData, TValue>({
     return (
         <div className="space-y-4" dir="rtl">
             {/* Table Header: Search + Add Button */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-1">
-                <div className="relative w-full max-w-md">
+            <div className="flex items-center justify-between gap-4 py-1">
+                <div className="flex-1 relative w-full max-w-md">
                     <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                         placeholder="البحث عن طريق الاسم..."
@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({
                 <NavLink to={ROUTES.DASHBOARD.USERS_CREATE}>
                     <Button className="w-full sm:w-auto h-12 px-6 rounded-2xl bg-primary hover:bg-primary-hover text-white shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-95">
                         <Plus className="h-5 w-5" />
-                        <span className="font-bold">إضافة مستخدم جديد</span>
+                        <span className="font-bold hidden sm:inline">إضافة مستخدم جديد</span>
                     </Button>
                 </NavLink>
             </div>

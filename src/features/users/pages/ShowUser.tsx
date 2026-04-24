@@ -23,28 +23,15 @@ const ShowUser = () => {
         )
     }
 
-    /**
-     * Helper to safely render various data types from the backend.
-     * Specifically handles:
-     * 1. Empty values (returns ---)
-     * 2. Laravel Date Objects (extracts the date string)
-     * 3. Primitive values (converts to string)
-     */
-    const formatValue = (value: any) => {
-        if (!value) return "---"
-        if (typeof value === 'object' && value.date) {
-            return value.date.split(" ")[0] // Format: YYYY-MM-DD
-        }
-        return value.toString()
-    }
+
 
     // Configuration for the information grid items
     const infoItems = [
-        { label: "رقم المستخدم", value: formatValue(user?.id), icon: Shield },
-        { label: "رقم الهاتف", value: formatValue(user?.phone), icon: Phone },
-        { label: "إسم المستخدم", value: formatValue(user?.userName), icon: Mail },
-        { label: "الدور الوظيفي", value: formatValue(user?.role), icon: Briefcase },
-        { label: "القسم", value: formatValue(user?.departmentName), icon: Briefcase },
+        { label: "رقم المستخدم", value: user?.id, icon: Shield },
+        { label: "رقم الهاتف", value: user?.phone, icon: Phone },
+        { label: "إسم المستخدم", value: user?.userName, icon: Mail },
+        { label: "الدور الوظيفي", value: user?.role, icon: Briefcase },
+        { label: "القسم", value: user?.departmentName, icon: Briefcase },
     ]
 
     return (
@@ -77,7 +64,7 @@ const ShowUser = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-10">
                     {/* Profile Card */}
-                    <Card className="lg:col-span-1 rounded-2xl overflow-hidden border shadow-sm h-fit">
+                    <Card className="lg:col-span-1 rounded-2xl overflow-hidden border shadow-sm ">
                         <div className="h-32 bg-primary/10 w-full" />
                         <CardContent className="px-6 pb-8 -mt-16 flex flex-col items-center text-center space-y-4">
                             <div className="w-32 h-32 rounded-full border-4 border-background bg-muted overflow-hidden shadow-lg">
@@ -95,56 +82,49 @@ const ShowUser = () => {
                             </div>
                         </CardContent>
                     </Card>
-
                     {/* Details Section */}
                     <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                         {infoItems.map((item, index) => (
-                            <Card key={index} className="rounded-2xl border-none bg-muted/30 shadow-none hover:bg-muted/50 transition-colors">
-                                <CardContent className="p-6 flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-xl bg-background border flex items-center justify-center text-primary shadow-sm">
+                            <Card key={index} className="rounded-2xl border shadow-sm hover:shadow-md transition-shadow">
+                                <CardContent className="p-6 flex items-center gap-4 text-right">
+                                    <div className="w-12 h-12 rounded-xl bg-primary/5 text-primary flex items-center justify-center shrink-0">
                                         <item.icon size={24} />
                                     </div>
-                                    <div className="space-y-1 text-right">
-                                        <p className="text-xs text-muted-foreground font-medium">{item.label}</p>
-                                        <p className="text-lg font-bold">{item.value || "---"}</p>
+                                    <div className="space-y-1 overflow-hidden">
+                                        <p className="text-sm text-muted-foreground">{item.label}</p>
+                                        <p className="text-lg font-bold truncate">
+                                            {item.value || "غير متوفر"}
+                                        </p>
                                     </div>
                                 </CardContent>
                             </Card>
                         ))}
 
-                        {/* ID Card Display */}
-                        <Card className="md:col-span-2 rounded-2xl border bg-muted/10">
-                            <CardContent className="p-6 space-y-4 text-right">
-                                <h3 className="font-bold flex items-center gap-2">
-                                    <Shield className="text-primary" size={20} />
-                                    نسخة بطاقة الهوية
-                                </h3>
-                                {user?.idCard ? (
-                                    <div className="p-4 bg-background border rounded-xl flex items-center justify-between">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-lg bg-red-100 text-red-600 flex items-center justify-center">
-                                                <FileText size={20} />
-                                            </div>
-                                            <span className="font-medium truncate max-w-[200px]">
-                                                {user.idCard.split('/').pop() || "National_ID.pdf"}
-                                            </span>
-                                        </div>
+                        {/* ID Card Card */}
+                        <Card className="rounded-2xl border shadow-sm hover:shadow-md transition-shadow">
+                            <CardContent className="p-6 flex items-center gap-4 text-right">
+                                <div className="w-12 h-12 rounded-xl bg-primary/5 text-primary flex items-center justify-center shrink-0">
+                                    <FileText size={24} />
+                                </div>
+                                <div className="space-y-1 overflow-hidden">
+                                    <p className="text-sm text-muted-foreground">نسخة بطاقة الهوية</p>
+                                    {user?.idCard ? (
                                         <Button
                                             variant="link"
-                                            className="cursor-pointer"
+                                            className="p-0 h-auto font-bold text-lg text-primary hover:text-primary-hover cursor-pointer"
                                             onClick={() => window.open(user.idCard, '_blank')}
                                         >
                                             عرض الملف
                                         </Button>
-                                    </div>
-                                ) : (
-                                    <div className="text-center py-8 text-muted-foreground italic border-2 border-dashed rounded-xl">
-                                        لم يتم رفع نسخة من البطاقة الشخصية
-                                    </div>
-                                )}
+                                    ) : (
+                                        <p className="text-lg font-bold truncate">غير متوفر</p>
+                                    )}
+                                </div>
                             </CardContent>
                         </Card>
                     </div>
+
+
                 </div>
             </div>
         </>
