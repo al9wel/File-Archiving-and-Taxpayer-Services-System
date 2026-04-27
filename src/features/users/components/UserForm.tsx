@@ -22,7 +22,7 @@ import {
 } from "lucide-react"
 import type { User as UserType } from "@/types/User"
 import { Card } from "@/components/ui/card"
-import { useDepartments } from "@/features/basic-info/hooks/useDepartments"
+import { useDepartments } from "@/features/basic-info/hooks/departments/useDepartments"
 
 const userSchema = z.object({
     firstName: z.string().min(2, "الاسم الأول يجب أن يكون حرفين على الأقل"),
@@ -115,7 +115,6 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
             formData.append("userName", values.userName)
         }
 
-        console.log("Submitting User Data...", Object.fromEntries(formData.entries()))
         onSubmit(formData)
     }
 

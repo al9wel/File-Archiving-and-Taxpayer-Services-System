@@ -5,13 +5,36 @@ import type { Department } from "@/types/Department";
  * API services for fetching basic information about departments.
  */
 export const departmentsApi = {
-    /**
-     * Fetches all available departments from the backend.
-     * @returns A promise with the department list data and a success message.
-     */
-    getDepartments: (): Promise<{ data: Department[], message: string }> => {
-        return fetchClient("/departments", {
-            method: "GET",
+    getDepartments: (): Promise<{ data: Department[]; message: string }> => {
+        return fetchClient('/departments', {
+            method: 'GET',
+        });
+    },
+
+    getDepartment: (id: string | number): Promise<{ data: Department; message: string }> => {
+        return fetchClient(`/departments/${id}`, {
+            method: 'GET',
+        });
+    },
+
+    createDepartment: (data: FormData): Promise<{ data: Department; message: string }> => {
+        return fetchClient('/departments', {
+            method: 'POST',
+            body: data,
+        });
+    },
+
+    updateDepartment: (id: string | number, data: FormData): Promise<{ data: Department; message: string }> => {
+        // Using PUT as per OpenAPI spec
+        return fetchClient(`/departments/${id}`, {
+            method: 'PUT',
+            body: data,
+        });
+    },
+
+    deleteDepartment: (id: string | number): Promise<{ message: string }> => {
+        return fetchClient(`/departments/${id}`, {
+            method: 'DELETE',
         });
     },
 };

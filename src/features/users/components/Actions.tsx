@@ -57,13 +57,13 @@ export const Actions = ({ user }: { user: User }) => {
                         <Trash2 className="h-4 w-4" />
                     </Button>
                 </AlertDialogTrigger>
-                <AlertDialogContent size="sm">
+                <AlertDialogContent size="sm" dir="rtl">
                     <AlertDialogHeader>
                         <div className="flex items-center gap-3">
                             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10 text-destructive">
                                 <AlertTriangle className="h-6 w-6" />
                             </div>
-                            <AlertDialogTitle>حذف المستخدم</AlertDialogTitle>
+                            <AlertDialogTitle className="text-right">حذف المستخدم</AlertDialogTitle>
                         </div>
                         <AlertDialogDescription className="text-right pt-2">
                             هل أنت متأكد من حذف الموظف <span className="font-bold text-foreground">{user.firstName} {user.lastName}</span>؟
@@ -71,7 +71,7 @@ export const Actions = ({ user }: { user: User }) => {
                             لا يمكن التراجع عن هذا الإجراء وسيتم إزالة كافة بياناته من النظام.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter className="flex-row-reverse gap-2 sm:gap-0">
+                    <AlertDialogFooter className="flex-row-reverse gap-3">
                         <AlertDialogAction
                             onClick={(e) => {
                                 e.preventDefault() // Prevent auto-close
