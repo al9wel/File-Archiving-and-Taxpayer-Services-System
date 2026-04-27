@@ -35,7 +35,7 @@ const CreateUser = () => {
                     desc="أدخل البيانات الأساسية وحدد الصلاحيات الوظيفية للموظف الجديد."
                 />
             </div>
-            <div className="container mx-auto px-3">
+            <div className="container mx-auto px-4 py-8 animate-in fade-in duration-500">
                 <UserForm onSubmit={handleSubmit} isLoading={isPending} />
             </div>
         </>

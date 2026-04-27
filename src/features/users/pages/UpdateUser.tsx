@@ -47,7 +47,7 @@ const UpdateUser = () => {
                     desc={`تعديل بيانات الموظف: ${user?.firstName} ${user?.lastName}`}
                 />
             </div>
-            <div className="container mx-auto px-3">
+            <div className="container mx-auto px-3 animate-in fade-in duration-500">
                 <UserForm initialData={user} onSubmit={handleSubmit} isLoading={isPending} />
             </div>
         </>

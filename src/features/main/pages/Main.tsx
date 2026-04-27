@@ -44,7 +44,7 @@ const Main = () => {
     };
 
     return (
-        <div className='w-full p-8 flex flex-col gap-6 justify-start items-start'>
+        <div className='w-full p-8 flex flex-col gap-6 justify-start items-start animate-in fade-in duration-500'>
             <h1 className='text-3xl font-bold'>لوحة التحكم / Dashboard</h1>
 
             <div className="bg-card p-6 rounded-lg shadow w-full max-w-2xl border">

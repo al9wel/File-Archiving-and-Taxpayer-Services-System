@@ -1,5 +1,10 @@
 import type { User } from "./User";
-
+export * from "./User";
+export * from "./Department";
+export * from "./ActivityType";
+export * from "./Region";
+export * from "./District";
+export * from "./PaymentType";
 
 export interface LoginParams {
   userName?: string;
