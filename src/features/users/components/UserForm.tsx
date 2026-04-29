@@ -23,6 +23,8 @@ import {
 import type { User as UserType } from "@/types/User"
 import { Card } from "@/components/ui/card"
 import { useDepartments } from "@/features/basic-info/hooks/departments/useDepartments"
+import { useAuth } from "@/hooks/useAuth"
+import { ROLES } from "@/constants/roles"
 
 const userSchema = z.object({
     firstName: z.string().min(2, "الاسم الأول يجب أن يكون حرفين على الأقل"),
@@ -47,6 +49,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
     const [imagePreview, setImagePreview] = useState<string | null>(null)
     const [idCardName, setIdCardName] = useState<string | null>(null)
     const { data: departments, isLoading: isLoadingDepts } = useDepartments()
+    const { user } = useAuth()
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<UserFormValues>({
         resolver: zodResolver(userSchema),
@@ -252,29 +255,36 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
                                     {errors.userName && <p className="text-sm font-medium text-destructive mt-1">{errors.userName.message}</p>}
                                 </div>
                             )}
+
                             <div className="md:col-span-2">
                                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-4 block">
                                     الدور الوظيفي *
                                 </label>
-                                <div className="grid grid-cols-3 pb-2 gap-4">
-                                    {roles.map((role) => (
-                                        <div
-                                            key={role.id}
-                                            onClick={() => setValue("role", role.id)}
-                                            className={`
+                                {(!initialData || user?.role === ROLES.ADMIN) ? (
+                                    <div className="grid grid-cols-3 pb-2 gap-4">
+                                        {roles.map((role) => (
+                                            <div
+                                                key={role.id}
+                                                onClick={() => setValue("role", role.id)}
+                                                className={`
                                                 cursor-pointer p-2 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all
                                                 ${watch("role") === role.id
-                                                    ? "border-primary bg-primary/5 text-primary shadow-sm"
-                                                    : "border-muted bg-background hover:bg-muted/30"}
+                                                        ? "border-primary bg-primary/5 text-primary shadow-sm"
+                                                        : "border-muted bg-background hover:bg-muted/30"}
                                             `}
-                                        >
-                                            <div className={`p-2 rounded-lg ${watch("role") === role.id ? "bg-primary/30" : "bg-muted"}`}>
-                                                <role.icon className="size-4 xl:size-5.5" />
+                                            >
+                                                <div className={`p-2 rounded-lg ${watch("role") === role.id ? "bg-primary/30" : "bg-muted"}`}>
+                                                    <role.icon className="size-4 xl:size-5.5" />
+                                                </div>
+                                                <span className="text-xs font-semibold">{role.label}</span>
                                             </div>
-                                            <span className="text-xs font-semibold">{role.label}</span>
-                                        </div>
-                                    ))}
-                                </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="w-full text-center pb-2">
+                                        <p className="text-xl text-red-400/80">الادمن فقط يمكنه تعديل الدور الوظيفي</p>
+                                    </div>
+                                )}
                                 {errors.role && <p className="text-sm font-medium text-destructive mt-1">{errors.role.message}</p>}
                             </div>
                         </div>

@@ -6,13 +6,13 @@ import Settings from "@/features/settings/pages/Settings";
 import Files from "@/features/files/pages/Files";
 import FileMovements from "@/features/file-movements/pages/FileMovements";
 import Requests from "@/features/requests/pages/Requests";
-import BasicInfo from "@/features/basic-info/pages/BasicInfo";
+import BasicInfoPage from "@/features/basic-info/pages/BasicInfoPage";
 import BasicInfoLayout from "@/features/basic-info/components/BasicInfoLayout";
-import DepartmentsPage from "@/features/basic-info/pages/departments/DepartmentsPage";
-import ActivityTypesPage from "@/features/basic-info/pages/activity-types/ActivityTypesPage";
-import PaymentTypesPage from "@/features/basic-info/pages/payment-types/PaymentTypesPage";
-import RegionsPage from "@/features/basic-info/pages/regions/RegionsPage";
-import DistrictsPage from "@/features/basic-info/pages/districts/DistrictsPage";
+import DepartmentsPage from "@/features/basic-info/pages/DepartmentsPage";
+import ActivityTypesPage from "@/features/basic-info/pages/ActivityTypesPage";
+import PaymentTypesPage from "@/features/basic-info/pages/PaymentTypesPage";
+import RegionsPage from "@/features/basic-info/pages/RegionsPage";
+import DistrictsPage from "@/features/basic-info/pages/DistrictsPage";
 import Notifications from "@/features/notifications/pages/Notifications";
 import Taxpayers from "@/features/taxpayers/pages/Taxpayers";
 import Officers from "@/features/officers/pages/Officers";
@@ -78,7 +78,7 @@ export const router = createBrowserRouter([
                         path: ROUTES.DASHBOARD.BASIC_INFO.ROOT.split("/").pop(),
                         element: <BasicInfoLayout />,
                         children: [
-                            { index: true, element: <BasicInfo /> },
+                            { index: true, element: <BasicInfoPage /> },
                             { path: ROUTES.DASHBOARD.BASIC_INFO.DEPARTMENTS.split("/").pop(), element: <DepartmentsPage /> },
                             { path: ROUTES.DASHBOARD.BASIC_INFO.ACTIVITY_TYPES.split("/").pop(), element: <ActivityTypesPage /> },
                             { path: ROUTES.DASHBOARD.BASIC_INFO.PAYMENT_TYPES.split("/").pop(), element: <PaymentTypesPage /> },
@@ -88,12 +88,17 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: ROUTES.DASHBOARD.USERS.split("/").pop(),
-                        element: <ProtectedRoute allowedRoles={[ROLES.ADMIN]} />,
+                        element: <Users />,
                         children: [
-                            { index: true, element: <Users /> },
-                            { path: "create", element: <CreateUser /> },
                             { path: ":id", element: <ShowUser /> },
-                            { path: ":id/edit", element: <UpdateUser /> },
+                            { path: "create", element: <CreateUser /> },
+                            {
+                                path: "",
+                                element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+                                children: [
+                                    { path: ":id/edit", element: <UpdateUser /> }
+                                ]
+                            },
                         ]
                     },
                     {
@@ -101,12 +106,6 @@ export const router = createBrowserRouter([
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN]} />,
                         children: [
                             { path: ROUTES.DASHBOARD.SETTINGS.split("/").pop(), element: <Settings /> },
-                        ]
-                    },
-                    {
-                        path: "",
-                        element: <ProtectedRoute allowedRoles={[ROLES.ADMIN]} />,
-                        children: [
                             { path: ROUTES.DASHBOARD.OPERATION_REPORTS.split("/").pop(), element: <OperationReports /> },
                         ]
                     },

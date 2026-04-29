@@ -7,18 +7,11 @@ import { ACTIONS } from "@/constants/permissions";
 import { toast } from "sonner";
 import { useDeleteDepartment } from "../../hooks/departments/useDeleteDepartment";
 import { useUpdateDepartment } from "../../hooks/departments/useUpdateDepartment";
+import { useMoveDepartmentUsers } from "../../hooks/departments/useMoveDepartmentUsers";
+import { useDepartments } from "../../hooks/departments/useDepartments";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { DepartmentForm } from "./DepartmentForm";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+// alert-dialog removed: replaced by Dialog-based delete flow
 import {
     Dialog,
     DialogContent,
@@ -40,15 +33,50 @@ export const DepartmentActions = ({ department }: DepartmentActionsProps) => {
 
     const { mutate: deleteDept, isPending: isDeleting } = useDeleteDepartment();
     const { mutate: updateDept, isPending: isUpdating } = useUpdateDepartment();
+    const { mutate: moveUsers, isPending: isMoving } = useMoveDepartmentUsers();
+    const { data: departments } = useDepartments();
+
+    const [deleteOption, setDeleteOption] = useState<"delete" | "move">("delete");
+    const [targetDeptId, setTargetDeptId] = useState<string | null>(null);
 
     const handleDelete = () => {
-        deleteDept(department.id, {
+        if (deleteOption === "delete") {
+            deleteDept(department.id, {
+                onSuccess: () => {
+                    toast.success("تم حذف القسم بنجاح");
+                    setIsDeleteAlertOpen(false);
+                },
+                onError: (error) => {
+                    toast.error(error.message || "حدث خطأ أثناء حذف القسم");
+                }
+            });
+            return;
+        }
+        // move then delete
+        if (!targetDeptId) {
+            toast.error("الرجاء اختيار قسم مستهدف لنقل المستخدمين إليه");
+            return;
+        }
+        const targetDept = departments?.find(d => d.id.toString() === targetDeptId);
+        if (!targetDept) {
+            toast.error("القسم المستهدف غير صالح");
+            return;
+        }
+        moveUsers({ oldId: department.id, newId: targetDept.id }, {
             onSuccess: () => {
-                toast.success("تم حذف القسم بنجاح");
-                setIsDeleteAlertOpen(false);
+                // after moving users, delete the department
+                deleteDept(department.id, {
+                    onSuccess: () => {
+                        toast.success("تم نقل المستخدمين وحذف القسم بنجاح");
+                        setIsDeleteAlertOpen(false);
+                    },
+                    onError: (error) => {
+                        toast.error(error.message || "حدث خطأ أثناء حذف القسم بعد النقل");
+                    }
+                });
             },
             onError: (error) => {
-                toast.error(error.message || "حدث خطأ أثناء حذف القسم");
+                toast.error(error.message || "حدث خطأ أثناء نقل المستخدمين");
             }
         });
     };
@@ -67,7 +95,6 @@ export const DepartmentActions = ({ department }: DepartmentActionsProps) => {
             }
         );
     };
-
     return (
         <div className="flex items-center justify-center gap-2">
             {/* Edit Dialog */}
@@ -96,10 +123,10 @@ export const DepartmentActions = ({ department }: DepartmentActionsProps) => {
                 </Dialog>
             )}
 
-            {/* Delete Alert */}
+            {/* Delete Dialog with two options: delete with users OR move users then delete */}
             {canDelete && (
-                <AlertDialog open={isDeleteAlertOpen} onOpenChange={setIsDeleteAlertOpen}>
-                    <AlertDialogTrigger asChild>
+                <Dialog open={isDeleteAlertOpen} onOpenChange={setIsDeleteAlertOpen}>
+                    <DialogTrigger asChild>
                         <Button
                             variant="outline"
                             size="icon"
@@ -107,49 +134,77 @@ export const DepartmentActions = ({ department }: DepartmentActionsProps) => {
                         >
                             <Trash2 className="size-4" />
                         </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent size="sm" dir="rtl">
-                        <AlertDialogHeader>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-lg" dir="rtl">
+                        <DialogHeader>
                             <div className="flex items-center gap-3">
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10 text-destructive">
                                     <AlertTriangle className="h-6 w-6" />
                                 </div>
-                                <AlertDialogTitle className="text-right">حذف القسم</AlertDialogTitle>
+                                <DialogTitle className="text-right">حذف القسم</DialogTitle>
                             </div>
-                            <AlertDialogDescription className="text-right pt-2">
-                                هل أنت متأكد من حذف قسم <span className="font-bold text-foreground">{department.name}</span>؟
-                                <br />
-                                لا يمكن التراجع عن هذا الإجراء وسيتم إزالته نهائياً من النظام.
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter className="flex-row-reverse gap-3">
-                            <AlertDialogAction
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    handleDelete();
-                                }}
+                        </DialogHeader>
+                        <div className="space-y-4 text-right">
+                            <p className="text-sm text-muted-foreground">
+                                حذف القسم سيؤثر على المستخدمين المرتبطين به. اختر أحد الخيارات أدناه.
+                            </p>
+                            <div
+                                className={`p-3 rounded-lg border ${deleteOption === "delete" ? "border-primary bg-primary/5" : "border-muted bg-background"} cursor-pointer`}
+                                onClick={() => setDeleteOption("delete")}>
+                                <h3 className="font-semibold">حذف القسم مع جميع المستخدمين المرتبطين</h3>
+                                <p className="text-sm text-muted-foreground">سيتم حذف القسم وجميع المستخدمين المرتبطين به نهائياً.</p>
+                            </div>
+                            <div
+                                className={`p-3 rounded-lg border ${deleteOption === "move" ? "border-primary bg-primary/5" : "border-muted bg-background"} cursor-pointer`}
+                                onClick={() => setDeleteOption("move")}>
+                                <h3 className="font-semibold">نقل المستخدمين لقسم آخر ثم الحذف</h3>
+                                <p className="text-sm text-muted-foreground">اختر قسماً لاستقبال المستخدمين ثم سيتم حذف القسم الحالي.</p>
+                                {deleteOption === "move" && (
+                                    <div className="mt-3">
+                                        <div className="h-12 w-full">
+                                            <Select
+                                                onValueChange={(val) => setTargetDeptId(val)}
+                                                value={targetDeptId || undefined}
+                                                defaultValue={undefined}
+                                            >
+                                                <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                                                    <SelectValue placeholder="إختر القسم المستهدف" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {departments?.filter(d => d.id !== department.id).map((dept) => (
+                                                        <SelectItem key={dept.id} value={dept.id.toString()}>
+                                                            {dept.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-end gap-3 mt-6">
+                            <Button variant="secondary" className="rounded-lg" onClick={() => setIsDeleteAlertOpen(false)} disabled={isDeleting || isMoving}>
+                                إلغاء
+                            </Button>
+                            <Button
                                 variant="destructive"
-                                className="rounded-lg min-w-[100px]"
-                                disabled={isDeleting}
+                                className="rounded-lg min-w-[120px]"
+                                onClick={handleDelete}
+                                disabled={isDeleting || isMoving}
                             >
-                                {isDeleting ? (
+                                {(isDeleting || isMoving) ? (
                                     <div className="flex items-center gap-2">
                                         <Loader2 className="h-4 w-4 animate-spin" />
-                                        <span>جاري الحذف...</span>
+                                        <span>جاري المعالجة...</span>
                                     </div>
                                 ) : (
-                                    "تأكيد الحذف"
+                                    deleteOption === "delete" ? "تأكيد الحذف" : "نقل المستخدمين ثم الحذف"
                                 )}
-                            </AlertDialogAction>
-                            <AlertDialogCancel
-                                className="rounded-lg"
-                                disabled={isDeleting}
-                            >
-                                إلغاء
-                            </AlertDialogCancel>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
+                            </Button>
+                        </div>
+                    </DialogContent>
+                </Dialog>
             )}
         </div>
     );

@@ -1,8 +1,8 @@
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useDistricts } from "../../hooks/districts/useDistricts";
-import { DistrictsTable } from "../../components/districts/DistrictsTable";
-import { CreateDistrictDialog } from "../../components/districts/CreateDistrictDialog";
+import { useDistricts } from "../hooks/districts/useDistricts";
+import { DistrictsTable } from "../components/districts/DistrictsTable";
+import { CreateDistrictDialog } from "../components/districts/CreateDistrictDialog";
 
 const DistrictsPage = () => {
     const { data: districts, isLoading, isError } = useDistricts();

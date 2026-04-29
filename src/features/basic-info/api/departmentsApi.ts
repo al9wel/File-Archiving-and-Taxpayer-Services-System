@@ -31,10 +31,15 @@ export const departmentsApi = {
             body: data,
         });
     },
-
     deleteDepartment: (id: string | number): Promise<{ message: string }> => {
         return fetchClient(`/departments/${id}`, {
             method: 'DELETE',
         });
     },
+    moveUsersDepartment:(oldDepId: string | number, newDepId: string | number): Promise<{ message: string }> => {
+        return fetchClient(`/departments/${oldDepId}/move-users`, {
+            method: 'POST',
+            body: JSON.stringify({ department_id: newDepId }),
+        });
+    }
 };

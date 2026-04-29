@@ -24,6 +24,8 @@ import { Input } from "@/components/ui/input"
 import { Search, ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft, Plus } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
+import { usePermission } from "@/hooks/usePermission"
+import { ACTIONS } from "@/constants/permissions"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -35,6 +37,7 @@ export function DataTable<TData, TValue>({
     data,
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+    const canCreate = usePermission(ACTIONS.CREATE);
 
     const table = useReactTable({
         data,
@@ -68,13 +71,14 @@ export function DataTable<TData, TValue>({
                         className="h-12 pr-11 bg-muted/80 dark:bg-muted/20 border-2 border-muted-foreground/20 rounded-2xl focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all shadow-sm placeholder:text-muted-foreground/70"
                     />
                 </div>
-
-                <NavLink to={ROUTES.DASHBOARD.USERS_CREATE}>
-                    <Button className="w-full sm:w-auto h-12 px-6 rounded-2xl bg-primary hover:bg-primary-hover text-white shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-95">
-                        <Plus className="h-5 w-5" />
-                        <span className="font-bold hidden sm:inline">إضافة مستخدم جديد</span>
-                    </Button>
-                </NavLink>
+                {canCreate && (
+                    <NavLink to={ROUTES.DASHBOARD.USERS_CREATE}>
+                        <Button className="w-full sm:w-auto h-12 px-6 rounded-2xl bg-primary hover:bg-primary-hover text-white shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-95">
+                            <Plus className="h-5 w-5" />
+                            <span className="font-bold hidden sm:inline">إضافة مستخدم جديد</span>
+                        </Button>
+                    </NavLink>
+                )}
             </div>
 
             {/* Table Area Section */}

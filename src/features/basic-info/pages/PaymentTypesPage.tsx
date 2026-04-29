@@ -1,11 +1,11 @@
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useRegions } from "../../hooks/regions/useRegions";
-import { RegionsTable } from "../../components/regions/RegionsTable";
-import { CreateRegionDialog } from "../../components/regions/CreateRegionDialog";
+import { usePaymentTypes } from "../hooks/payment-types/usePaymentTypes";
+import { PaymentTypesTable } from "../components/payment-types/PaymentTypesTable";
+import { CreatePaymentTypeDialog } from "../components/payment-types/CreatePaymentTypeDialog";
 
-const RegionsPage = () => {
-    const { data: regions, isLoading, isError } = useRegions();
+const PaymentTypesPage = () => {
+    const { data: paymentTypes, isLoading, isError } = usePaymentTypes();
 
     if (isError) {
         return (
@@ -20,7 +20,7 @@ const RegionsPage = () => {
         <div className="space-y-6 text-right animate-in fade-in duration-500">
             {/* Header Actions */}
             <div className="flex justify-end">
-                <CreateRegionDialog />
+                <CreatePaymentTypeDialog />
             </div>
 
             {/* Content Table */}
@@ -30,10 +30,10 @@ const RegionsPage = () => {
                     <p className="text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
                 </div>
             ) : (
-                <RegionsTable regions={regions || []} />
+                <PaymentTypesTable paymentTypes={paymentTypes || []} />
             )}
         </div>
     );
 };
 
-export default RegionsPage;
+export default PaymentTypesPage;
