@@ -1,11 +1,11 @@
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useDepartments } from "../../hooks/departments/useDepartments";
-import { DepartmentsTable } from "../../components/departments/DepartmentsTable";
-import { CreateDepartmentDialog } from "../../components/departments/CreateDepartmentDialog";
+import { useRegions } from "../hooks/regions/useRegions";
+import { RegionsTable } from "../components/regions/RegionsTable";
+import { CreateRegionDialog } from "../components/regions/CreateRegionDialog";
 
-const DepartmentsPage = () => {
-    const { data: departments, isLoading, isError } = useDepartments();
+const RegionsPage = () => {
+    const { data: regions, isLoading, isError } = useRegions();
 
     if (isError) {
         return (
@@ -20,7 +20,7 @@ const DepartmentsPage = () => {
         <div className="space-y-6 text-right animate-in fade-in duration-500">
             {/* Header Actions */}
             <div className="flex justify-end">
-                <CreateDepartmentDialog />
+                <CreateRegionDialog />
             </div>
 
             {/* Content Table */}
@@ -30,10 +30,10 @@ const DepartmentsPage = () => {
                     <p className="text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
                 </div>
             ) : (
-                <DepartmentsTable departments={departments || []} />
+                <RegionsTable regions={regions || []} />
             )}
         </div>
     );
 };
 
-export default DepartmentsPage;
+export default RegionsPage;

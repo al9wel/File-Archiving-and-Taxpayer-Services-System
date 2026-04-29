@@ -17,10 +17,15 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { ACTIONS } from "@/constants/permissions"
+import { usePermission } from "@/hooks/usePermission"
 
 export const Actions = ({ user }: { user: User }) => {
     const [isOpen, setIsOpen] = useState(false)
     const deleteUser = useDeleteUser()
+    const canUpdate = usePermission(ACTIONS.UPDATE);
+    const canDelete = usePermission(ACTIONS.DELETE);
+    const canView = usePermission(ACTIONS.VIEW);
 
     const handleDelete = () => {
         deleteUser.mutate(user.id, {
@@ -36,70 +41,75 @@ export const Actions = ({ user }: { user: User }) => {
 
     return (
         <div className="flex items-center justify-center gap-2">
-            <NavLink to={ROUTES.DASHBOARD.USERS_SHOW.replace(":id", user.id.toString())}>
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-primary">
-                    <Eye className="h-4 w-4" />
-                </Button>
-            </NavLink>
-            <NavLink to={ROUTES.DASHBOARD.USERS_EDIT.replace(":id", user.id.toString())}>
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600">
-                    <Pencil className="h-4 w-4" />
-                </Button>
-            </NavLink>
-
-            <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-                <AlertDialogTrigger asChild>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-destructive"
-                    >
-                        <Trash2 className="h-4 w-4" />
+            {canView && (
+                <NavLink to={ROUTES.DASHBOARD.USERS_SHOW.replace(":id", user.id.toString())}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-primary">
+                        <Eye className="h-4 w-4" />
                     </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent size="sm" dir="rtl">
-                    <AlertDialogHeader>
-                        <div className="flex items-center gap-3">
-                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10 text-destructive">
-                                <AlertTriangle className="h-6 w-6" />
-                            </div>
-                            <AlertDialogTitle className="text-right">حذف المستخدم</AlertDialogTitle>
-                        </div>
-                        <AlertDialogDescription className="text-right pt-2">
-                            هل أنت متأكد من حذف الموظف <span className="font-bold text-foreground">{user.firstName} {user.lastName}</span>؟
-                            <br />
-                            لا يمكن التراجع عن هذا الإجراء وسيتم إزالة كافة بياناته من النظام.
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter className="flex-row-reverse gap-3">
-                        <AlertDialogAction
-                            onClick={(e) => {
-                                e.preventDefault() // Prevent auto-close
-                                handleDelete()
-                            }}
-                            variant="destructive"
-                            className="rounded-lg min-w-[100px]"
-                            disabled={deleteUser.isPending}
+                </NavLink>
+            )}
+            {canUpdate && (
+                <NavLink to={ROUTES.DASHBOARD.USERS_EDIT.replace(":id", user.id.toString())}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600">
+                        <Pencil className="h-4 w-4" />
+                    </Button>
+                </NavLink>
+            )}
+            {canDelete && (
+                <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+                    <AlertDialogTrigger asChild>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-destructive"
                         >
-                            {deleteUser.isPending ? (
-                                <div className="flex items-center gap-2">
-                                    <Loader2 className="h-4 w-4 animate-spin" />
-                                    <span>جاري الحذف...</span>
+                            <Trash2 className="h-4 w-4" />
+                        </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent size="sm" dir="rtl">
+                        <AlertDialogHeader>
+                            <div className="flex items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                                    <AlertTriangle className="h-6 w-6" />
                                 </div>
-                            ) : (
-                                "تأكيد الحذف"
-                            )}
-                        </AlertDialogAction>
-                        <AlertDialogCancel 
-                            className="rounded-lg"
-                            disabled={deleteUser.isPending}
-                        >
-                            إلغاء
-                        </AlertDialogCancel>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+                                <AlertDialogTitle className="text-right">حذف المستخدم</AlertDialogTitle>
+                            </div>
+                            <AlertDialogDescription className="text-right pt-2">
+                                هل أنت متأكد من حذف الموظف <span className="font-bold text-foreground">{user.firstName} {user.lastName}</span>؟
+                                <br />
+                                لا يمكن التراجع عن هذا الإجراء وسيتم إزالة كافة بياناته من النظام.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter className="flex-row-reverse gap-3">
+                            <AlertDialogAction
+                                onClick={(e) => {
+                                    e.preventDefault() // Prevent auto-close
+                                    handleDelete()
+                                }}
+                                variant="destructive"
+                                className="rounded-lg min-w-[100px]"
+                                disabled={deleteUser.isPending}
+                            >
+                                {deleteUser.isPending ? (
+                                    <div className="flex items-center gap-2">
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                        <span>جاري الحذف...</span>
+                                    </div>
+                                ) : (
+                                    "تأكيد الحذف"
+                                )}
+                            </AlertDialogAction>
+                            <AlertDialogCancel
+                                className="rounded-lg"
+                                disabled={deleteUser.isPending}
+                            >
+                                إلغاء
+                            </AlertDialogCancel>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            )}
         </div>
     )
 }
-
+

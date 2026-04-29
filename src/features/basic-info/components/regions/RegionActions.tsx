@@ -117,7 +117,7 @@ export const RegionActions = ({ region }: RegionActionsProps) => {
                             <AlertDialogDescription className="text-right pt-2">
                                 هل أنت متأكد من حذف المنطقة <span className="font-bold text-foreground">{region.name}</span>؟
                                 <br />
-                                لا يمكن التراجع عن هذا الإجراء وسيتم إزالته نهائياً من النظام.
+                                . سيتم حذف جميع البيانات الخاصه بهذه المنطقة بما في ذلك الاحياء المرتبطه بها ولن تتمكن من استعادتها مرة أخرى.
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter className="flex-row-reverse gap-3">

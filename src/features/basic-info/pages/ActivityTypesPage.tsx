@@ -1,11 +1,11 @@
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { usePaymentTypes } from "../../hooks/payment-types/usePaymentTypes";
-import { PaymentTypesTable } from "../../components/payment-types/PaymentTypesTable";
-import { CreatePaymentTypeDialog } from "../../components/payment-types/CreatePaymentTypeDialog";
+import { useActivityTypes } from "../hooks/activity-types/useActivityTypes";
+import { ActivityTypesTable } from "../components/activity-types/ActivityTypesTable";
+import { CreateActivityTypeDialog } from "../components/activity-types/CreateActivityTypeDialog";
 
-const PaymentTypesPage = () => {
-    const { data: paymentTypes, isLoading, isError } = usePaymentTypes();
+const ActivityTypesPage = () => {
+    const { data: activityTypes, isLoading, isError } = useActivityTypes();
 
     if (isError) {
         return (
@@ -20,7 +20,7 @@ const PaymentTypesPage = () => {
         <div className="space-y-6 text-right animate-in fade-in duration-500">
             {/* Header Actions */}
             <div className="flex justify-end">
-                <CreatePaymentTypeDialog />
+                <CreateActivityTypeDialog />
             </div>
 
             {/* Content Table */}
@@ -30,10 +30,10 @@ const PaymentTypesPage = () => {
                     <p className="text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
                 </div>
             ) : (
-                <PaymentTypesTable paymentTypes={paymentTypes || []} />
+                <ActivityTypesTable activityTypes={activityTypes || []} />
             )}
         </div>
     );
 };
 
-export default PaymentTypesPage;
+export default ActivityTypesPage;

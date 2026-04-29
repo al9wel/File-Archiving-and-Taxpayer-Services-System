@@ -1,11 +1,11 @@
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useActivityTypes } from "../../hooks/activity-types/useActivityTypes";
-import { ActivityTypesTable } from "../../components/activity-types/ActivityTypesTable";
-import { CreateActivityTypeDialog } from "../../components/activity-types/CreateActivityTypeDialog";
+import { useDepartments } from "../hooks/departments/useDepartments";
+import { DepartmentsTable } from "../components/departments/DepartmentsTable";
+import { CreateDepartmentDialog } from "../components/departments/CreateDepartmentDialog";
 
-const ActivityTypesPage = () => {
-    const { data: activityTypes, isLoading, isError } = useActivityTypes();
+const DepartmentsPage = () => {
+    const { data: departments, isLoading, isError } = useDepartments();
 
     if (isError) {
         return (
@@ -20,7 +20,7 @@ const ActivityTypesPage = () => {
         <div className="space-y-6 text-right animate-in fade-in duration-500">
             {/* Header Actions */}
             <div className="flex justify-end">
-                <CreateActivityTypeDialog />
+                <CreateDepartmentDialog />
             </div>
 
             {/* Content Table */}
@@ -30,10 +30,10 @@ const ActivityTypesPage = () => {
                     <p className="text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
                 </div>
             ) : (
-                <ActivityTypesTable activityTypes={activityTypes || []} />
+                <DepartmentsTable departments={departments || []} />
             )}
         </div>
     );
 };
 
-export default ActivityTypesPage;
+export default DepartmentsPage;
