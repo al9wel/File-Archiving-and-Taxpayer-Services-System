@@ -88,17 +88,12 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: ROUTES.DASHBOARD.USERS.split("/").pop(),
-                        element: <Users />,
+                        element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
                         children: [
+                            { index: true, element: <Users /> },
                             { path: ":id", element: <ShowUser /> },
                             { path: "create", element: <CreateUser /> },
-                            {
-                                path: "",
-                                element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
-                                children: [
-                                    { path: ":id/edit", element: <UpdateUser /> }
-                                ]
-                            },
+                            { path: ":id/edit", element: <UpdateUser /> }
                         ]
                     },
                     {
