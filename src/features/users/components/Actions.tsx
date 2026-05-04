@@ -23,9 +23,9 @@ import { usePermission } from "@/hooks/usePermission"
 export const Actions = ({ user }: { user: User }) => {
     const [isOpen, setIsOpen] = useState(false)
     const deleteUser = useDeleteUser()
-    const canUpdate = usePermission(ACTIONS.UPDATE);
-    const canDelete = usePermission(ACTIONS.DELETE);
-    const canView = usePermission(ACTIONS.VIEW);
+    const canUpdate = usePermission(ACTIONS.UPDATE_USER);
+    const canDelete = usePermission(ACTIONS.DELETE_USER);
+    const canView = usePermission(ACTIONS.VIEW_USER);
 
     const handleDelete = () => {
         deleteUser.mutate(user.id, {

@@ -5,10 +5,10 @@ import { toast } from 'sonner';
 
 const Main = () => {
     const { user } = useAuth();
-    const canDeleteFile = usePermission(ACTIONS.DELETE);
-    const canCreateFile = usePermission(ACTIONS.CREATE);
-    const canUpdateFile = usePermission(ACTIONS.UPDATE);
-    const canViewFile = usePermission(ACTIONS.VIEW);
+    const canDeleteFile = usePermission(ACTIONS.DELETE_FILE);
+    const canCreateFile = usePermission(ACTIONS.CREATE_FILE);
+    const canUpdateFile = usePermission(ACTIONS.UPDATE_FILE);
+    const canViewFile = usePermission(ACTIONS.VIEW_FILE);
 
     const handleDelete = () => {
         if (canDeleteFile) {

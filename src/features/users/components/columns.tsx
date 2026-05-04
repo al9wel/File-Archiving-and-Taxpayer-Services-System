@@ -25,8 +25,16 @@ export const columns: ColumnDef<User>[] = [
                 role === "Admin" ? "bg-primary hover:bg-primary/90 text-white" :
                     role === "Manager" ? "bg-emerald-800 hover:bg-emerald-900 text-white border-transparent" :
                         role === "Employee" ? "bg-blue-800 hover:bg-blue-900 text-white border-transparent" :
-                            "";
-            return <Badge className={`rounded-xl px-4 py-1 h-7 w-15 text-xs  leading-none ${badgeClasses}`}>{role}</Badge>
+                            role === "Collectors_Manager" ? "bg-purple-800 hover:bg-purple-900 text-white border-transparent" :
+                                "";
+
+            const displayRole = role === "Collectors_Manager" ? "مدير المأمورين" :
+                role === "Employee" ? "موظف" :
+                    role === "Manager" ? "مدير" :
+                        role === "Admin" ? "ادمن" :
+                            role;
+
+            return <Badge className={`rounded-xl px-4 py-1 h-7 min-w-fit w-auto text-xs whitespace-nowrap justify-center leading-none ${badgeClasses}`}>{displayRole}</Badge>
         }
     },
     {

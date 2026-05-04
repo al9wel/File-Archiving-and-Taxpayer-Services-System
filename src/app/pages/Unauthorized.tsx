@@ -1,9 +1,11 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { ShieldAlert, ArrowLeft, Home } from "lucide-react"
 import { ROUTES } from "@/constants/routes"
 
 const Unauthorized = () => {
+    const navigate = useNavigate()
+
     return (
         <div className="min-h-screen w-full flex items-center justify-center bg-background p-4" dir="rtl">
             <div className="max-w-md w-full text-center space-y-8">
@@ -30,11 +32,18 @@ const Unauthorized = () => {
                             العودة للرئيسية
                         </Button>
                     </NavLink>
-                    <Button 
-                        variant="outline" 
-                        size="lg" 
+                    <Button
+                        variant="outline"
+                        size="lg"
+                        type="button"
                         className="w-full sm:w-auto gap-2 rounded-xl"
-                        onClick={() => window.history.back()}
+                        onClick={() => {
+                            if (window.history?.length > 1) {
+                                navigate(-1)
+                            } else {
+                                navigate(ROUTES.DASHBOARD.MAIN)
+                            }
+                        }}
                     >
                         <ArrowLeft size={18} />
                         الرجوع للخلف
@@ -46,3 +55,4 @@ const Unauthorized = () => {
 }
 
 export default Unauthorized
+

@@ -16,7 +16,7 @@ import { ACTIONS } from "@/constants/permissions";
 
 export const CreateRegionDialog = () => {
     const [open, setOpen] = useState(false);
-    const canCreate = usePermission(ACTIONS.CREATE);
+    const canCreate = usePermission(ACTIONS.CREATE_BASIC_INFO);
     const { mutate: createMutation, isPending } = useCreateRegion();
 
     const handleSubmit = (formData: FormData) => {

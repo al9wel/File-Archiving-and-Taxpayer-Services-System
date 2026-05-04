@@ -37,7 +37,7 @@ export function DataTable<TData, TValue>({
     data,
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const canCreate = usePermission(ACTIONS.CREATE);
+    const canCreate = usePermission(ACTIONS.CREATE_USER);
 
     const table = useReactTable({
         data,

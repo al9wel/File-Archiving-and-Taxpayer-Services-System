@@ -5,6 +5,9 @@ import { Loader2, User as UserIcon, Phone, Shield, Briefcase, Mail, ArrowLeft, P
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ROUTES } from "@/constants/routes"
+import { usePermission } from "@/hooks/usePermission"
+import { ACTIONS } from "@/constants/permissions"
+import ErrorState from "@/app/pages/ErrorState"
 
 /**
  * Page component to display detailed information about a specific user.
@@ -13,12 +16,18 @@ import { ROUTES } from "@/constants/routes"
 const ShowUser = () => {
     const { id } = useParams()
     const navigate = useNavigate()
-    const { data: user, isLoading } = useUser(id!)
+    const { data: user, isLoading, isError } = useUser(id!)
+    const canUpdate = usePermission(ACTIONS.UPDATE_USER)
+
+    if (isError) {
+        return <ErrorState />
+    }
 
     if (isLoading) {
         return (
-            <div className="flex h-[400px] w-full items-center justify-center">
+            <div className="flex flex-col h-[400px] w-full items-center justify-center space-y-4">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-muted-foreground animate-pulse">جاري جلب تفاصيل المستخدم...</p>
             </div>
         )
     }
@@ -53,13 +62,15 @@ const ShowUser = () => {
                         <ArrowLeft className="ml-2 h-4 w-4" />
                         رجوع
                     </Button>
-                    <Button
-                        onClick={() => navigate(ROUTES.DASHBOARD.USERS_EDIT.replace(":id", id!))}
-                        className="rounded-xl hover:bg-primary-hover cursor-pointer h-12 px-6 shadow-lg shadow-primary/20"
-                    >
-                        <Pencil className="ml-2 h-4 w-4" />
-                        تعديل البيانات
-                    </Button>
+                    {canUpdate && (
+                        <Button
+                            onClick={() => navigate(ROUTES.DASHBOARD.USERS_EDIT.replace(":id", id!))}
+                            className="rounded-xl hover:bg-primary-hover cursor-pointer h-12 px-6 shadow-lg shadow-primary/20"
+                        >
+                            <Pencil className="ml-2 h-4 w-4" />
+                            تعديل البيانات
+                        </Button>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-10">

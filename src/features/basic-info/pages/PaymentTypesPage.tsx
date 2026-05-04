@@ -1,19 +1,20 @@
 import { Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import ErrorState from "@/app/pages/ErrorState";
 import { usePaymentTypes } from "../hooks/payment-types/usePaymentTypes";
 import { PaymentTypesTable } from "../components/payment-types/PaymentTypesTable";
 import { CreatePaymentTypeDialog } from "../components/payment-types/CreatePaymentTypeDialog";
+import { usePermission } from "@/hooks/usePermission";
+import { ACTIONS } from "@/constants/permissions";
+import Unauthorized from "@/app/pages/Unauthorized";
 
 const PaymentTypesPage = () => {
     const { data: paymentTypes, isLoading, isError } = usePaymentTypes();
+    const canView = usePermission(ACTIONS.VIEW_BASIC_INFO);
+
+    if (!canView) return <Unauthorized />;
 
     if (isError) {
-        return (
-            <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-                <p className="text-red-600 font-bold">حدث خطأ أثناء تحميل البيانات</p>
-                <Button onClick={() => window.location.reload()}>إعادة المحاولة</Button>
-            </div>
-        );
+        return <ErrorState />;
     }
 
     return (
@@ -27,7 +28,7 @@ const PaymentTypesPage = () => {
             {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">
                     <Loader2 className="size-10 animate-spin text-primary" />
-                    <p className="text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
+                    <p className="text-muted-foreground animate-pulse">جاري جلب أنواع السداد...</p>
                 </div>
             ) : (
                 <PaymentTypesTable paymentTypes={paymentTypes?.data || []} />
