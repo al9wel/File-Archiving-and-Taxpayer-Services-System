@@ -109,7 +109,7 @@ export const DepartmentActions = ({ department }: DepartmentActionsProps) => {
                             <Pencil className="size-4" />
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-[500px] rounded-2xl p-6" dir="rtl">
+                    <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[500px] rounded-2xl p-6" dir="rtl">
                         <DialogHeader className="text-right">
                             <DialogTitle className="text-xl font-bold text-right">تعديل بيانات القسم</DialogTitle>
                         </DialogHeader>

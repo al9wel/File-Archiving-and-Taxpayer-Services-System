@@ -15,7 +15,9 @@ import RegionsPage from "@/features/basic-info/pages/RegionsPage";
 import DistrictsPage from "@/features/basic-info/pages/DistrictsPage";
 import Notifications from "@/features/notifications/pages/Notifications";
 import Taxpayers from "@/features/taxpayers/pages/Taxpayers";
-import TaxCollectors from "@/features/tax-collectors/pages/TaxCollectors";
+import TaxCollectorsLayout from "@/features/tax-collectors/components/TaxCollectorsLayout";
+import TaxCollectorsPage from "@/features/tax-collectors/pages/TaxCollectorsPage";
+import EmploymentTypesPage from "@/features/tax-collectors/pages/EmploymentTypesPage";
 import Users from "@/features/users/pages/Users";
 import CreateUser from "@/features/users/pages/CreateUser";
 import UpdateUser from "@/features/users/pages/UpdateUser";
@@ -115,7 +117,15 @@ export const router = createBrowserRouter([
                         path: "",
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.COLLECTOR_MANAGER]} />,
                         children: [
-                            { path: ROUTES.DASHBOARD.TAX_COLLECTORS.split("/").pop(), element: <TaxCollectors /> },
+                            {
+                                path: ROUTES.DASHBOARD.TAX_COLLECTORS.ROOT.split("/").pop(),
+                                element: <TaxCollectorsLayout />,
+                                children: [
+                                    { index: true, element: <Navigate to={ROUTES.DASHBOARD.TAX_COLLECTORS.COLLECTORS.split("/").pop() || ""} replace /> },
+                                    { path: ROUTES.DASHBOARD.TAX_COLLECTORS.COLLECTORS.split("/").pop(), element: <TaxCollectorsPage /> },
+                                    { path: ROUTES.DASHBOARD.TAX_COLLECTORS.EMPLOYMENT_TYPES.split("/").pop(), element: <EmploymentTypesPage /> },
+                                ]
+                            },
                         ]
                     },
 

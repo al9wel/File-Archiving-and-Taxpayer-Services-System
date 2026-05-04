@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useCreatePaymentType } from "../../hooks/payment-types/useCreatePaymentType";
-import { PaymentTypeForm } from "./PaymentTypeForm";
+import { useCreateTaxCollector } from "../../hooks/tax-collectors/useCreateTaxCollector";
+import { TaxCollectorForm } from "./TaxCollectorForm";
 import {
     Dialog,
     DialogContent,
@@ -14,19 +14,19 @@ import {
 import { usePermission } from "@/hooks/usePermission";
 import { ACTIONS } from "@/constants/permissions";
 
-export const CreatePaymentTypeDialog = () => {
+export const CreateTaxCollectorDialog = () => {
     const [open, setOpen] = useState(false);
-    const canCreate = usePermission(ACTIONS.CREATE_BASIC_INFO);
-    const { mutate: createMutation, isPending } = useCreatePaymentType();
+    const canCreate = usePermission(ACTIONS.CREATE_TAX_COLLECTOR);
+    const { mutate: createCollector, isPending } = useCreateTaxCollector();
 
     const handleSubmit = (formData: FormData) => {
-        createMutation(formData, {
+        createCollector(formData, {
             onSuccess: (res) => {
-                toast.success(res.message || "تم إضافة نوع السداد بنجاح");
+                toast.success(res.message || "تم إضافة المأمور بنجاح");
                 setOpen(false);
             },
             onError: (error) => {
-                toast.error(error.message || "حدث خطأ أثناء إضافة نوع السداد");
+                toast.error(error.message || "حدث خطأ أثناء إضافة المأمور");
             }
         });
     };
@@ -40,14 +40,14 @@ export const CreatePaymentTypeDialog = () => {
                     className="bg-[#911111] hover:bg-[#7a0e0e] text-white rounded-xl px-6 h-12 flex items-center gap-2 shadow-lg shadow-red-900/10 transition-all hover:scale-105 active:scale-95"
                 >
                     <Plus className="size-5" />
-                    <span>إضافة نوع سداد جديد</span>
+                    <span>إضافة مأمور جديد</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[500px] rounded-2xl p-6" dir="rtl">
+            <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[600px] rounded-2xl p-6" dir="rtl">
                 <DialogHeader className="text-right">
-                    <DialogTitle className="text-xl font-bold text-right">إضافة نوع سداد جديد</DialogTitle>
+                    <DialogTitle className="text-xl font-bold text-right">إضافة مأمور جديد</DialogTitle>
                 </DialogHeader>
-                <PaymentTypeForm
+                <TaxCollectorForm
                     onSubmit={handleSubmit}
                     onCancel={() => setOpen(false)}
                     isLoading={isPending}

@@ -5,24 +5,24 @@ import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Check, Loader2 } from "lucide-react";
-import type { Region } from "@/types/Region";
+import type { EmploymentType } from "@/types";
 
-const regionSchema = z.object({
-    name: z.string().min(2, "إسم المنطقة يجب أن يكون حرفين على الأقل"),
+const employmentTypeSchema = z.object({
+    name: z.string().min(2, "إسم نوع التوظيف يجب أن يكون حرفين على الأقل"),
 });
 
-type RegionFormValues = z.infer<typeof regionSchema>;
+type EmploymentTypeFormValues = z.infer<typeof employmentTypeSchema>;
 
-interface RegionFormProps {
-    initialData?: Region | null;
+interface EmploymentTypeFormProps {
+    initialData?: EmploymentType | null;
     onSubmit: (data: FormData) => void;
     onCancel: () => void;
     isLoading?: boolean;
 }
 
-export const RegionForm = ({ initialData, onSubmit, onCancel, isLoading }: RegionFormProps) => {
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm<RegionFormValues>({
-        resolver: zodResolver(regionSchema),
+export const EmploymentTypeForm = ({ initialData, onSubmit, onCancel, isLoading }: EmploymentTypeFormProps) => {
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<EmploymentTypeFormValues>({
+        resolver: zodResolver(employmentTypeSchema),
         defaultValues: {
             name: initialData?.name || "",
         }
@@ -36,7 +36,7 @@ export const RegionForm = ({ initialData, onSubmit, onCancel, isLoading }: Regio
         }
     }, [initialData, setValue]);
 
-    const onFormSubmit = (values: RegionFormValues) => {
+    const onFormSubmit = (values: EmploymentTypeFormValues) => {
         const formData = new FormData();
         formData.append("name", values.name);
         onSubmit(formData);
@@ -47,10 +47,10 @@ export const RegionForm = ({ initialData, onSubmit, onCancel, isLoading }: Regio
             <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center gap-1">
                     <span className="text-red-600">*</span>
-                    إسم المنطقة
+                    إسم نوع التوظيف
                 </label>
                 <Input
-                    placeholder="أدخل إسم المنطقة"
+                    placeholder="أدخل إسم نوع التوظيف"
                     {...register("name")}
                     className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-1 focus-visible:ring-red-600"
                 />
@@ -70,7 +70,7 @@ export const RegionForm = ({ initialData, onSubmit, onCancel, isLoading }: Regio
                     ) : (
                         <Check className="size-5" />
                     )}
-                    <span>{initialData ? "تحديث البيانات" : "حفظ بيانات المنطقة"}</span>
+                    <span>{initialData ? "تحديث البيانات" : "حفظ بيانات النوع"}</span>
                 </Button>
                 <Button 
                     type="button" 

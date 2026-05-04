@@ -25,7 +25,7 @@ const OperationReports = () => {
         <>
             <div className="w-full px-3 pt-3">
                 <DashboardHeader
-                    title="تقارير العمليات"
+                    title=" تقارير العمليات "
                     desc="مراقبة ومتابعة جميع العمليات والأنشطة في النظام"
                 />
             </div>
