@@ -22,7 +22,11 @@ export const ROUTES = {
     },
     NOTIFICATIONS: "/dashboard/notifications",
     TAXPAYERS: "/dashboard/taxpayers",
-    TAX_COLLECTORS: "/dashboard/tax-collectors",
+    TAX_COLLECTORS: {
+      ROOT: "/dashboard/tax-collectors",
+      COLLECTORS: "/dashboard/tax-collectors/collectors",
+      EMPLOYMENT_TYPES: "/dashboard/tax-collectors/employment-types",
+    },
     USERS: "/dashboard/users",
     USERS_CREATE: "/dashboard/users/create",
     USERS_EDIT: "/dashboard/users/:id/edit",

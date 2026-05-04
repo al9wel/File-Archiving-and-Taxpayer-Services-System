@@ -50,16 +50,16 @@ export const PaymentTypeForm = ({ initialData, onSubmit, onCancel, isLoading }: 
     };
 
     return (
-        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4 pt-4">
+        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6 pt-4" dir="rtl">
             <div className="space-y-2">
-                <label className="text-sm font-medium flex items-center justify-end gap-1">
+                <label className="text-sm font-medium flex items-center gap-1">
                     <span className="text-red-600">*</span>
                     إسم نوع السداد
                 </label>
                 <Input
                     placeholder="أدخل إسم نوع السداد"
                     {...register("name")}
-                    className="text-right h-12 rounded-xl bg-gray-50 dark:bg-muted border-none focus-visible:ring-1 focus-visible:ring-red-600"
+                    className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-1 focus-visible:ring-red-600"
                 />
                 {errors.name && (
                     <p className="text-sm text-red-600 text-right">{errors.name.message}</p>
@@ -67,17 +67,17 @@ export const PaymentTypeForm = ({ initialData, onSubmit, onCancel, isLoading }: 
             </div>
 
             <div className="space-y-2">
-                <label className="text-sm font-medium flex items-center justify-end gap-1">
+                <label className="text-sm font-medium flex items-center gap-1">
                     ملاحظات
                 </label>
                 <Input
                     placeholder="أدخل أي ملاحظات (اختياري)"
                     {...register("note")}
-                    className="text-right h-12 rounded-xl bg-gray-50 dark:bg-muted border-none focus-visible:ring-1 focus-visible:ring-red-600"
+                    className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-1 focus-visible:ring-red-600"
                 />
             </div>
 
-            <div className="flex flex-row-reverse items-center gap-4 pt-6">
+            <div className="flex items-center gap-4 pt-6">
                 <Button 
                     type="submit" 
                     disabled={isLoading}

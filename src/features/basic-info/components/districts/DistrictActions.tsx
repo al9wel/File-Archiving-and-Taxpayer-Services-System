@@ -80,7 +80,7 @@ export const DistrictActions = ({ district }: DistrictActionsProps) => {
                     >
                         <Pencil className="size-4" />
                     </Button>
-                    <DialogContent className="sm:max-w-[500px] rounded-2xl p-6" dir="rtl">
+                    <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[500px] rounded-2xl p-6" dir="rtl">
                         <DialogHeader className="text-right">
                             <DialogTitle className="text-xl font-bold text-right">تعديل بيانات الحي</DialogTitle>
                         </DialogHeader>

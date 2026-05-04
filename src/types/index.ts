@@ -5,6 +5,8 @@ export * from "./ActivityType";
 export * from "./Region";
 export * from "./District";
 export * from "./PaymentType";
+export * from "./EmploymentType";
+export * from "./TaxCollector";
 
 export interface LoginParams {
   userName?: string;
