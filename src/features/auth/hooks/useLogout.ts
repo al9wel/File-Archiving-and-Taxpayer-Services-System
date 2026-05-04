@@ -9,7 +9,7 @@ export const useLogout = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: authApi.logout,
+    mutationFn: async () => authApi.logout(),
     onSuccess: () => {
       // Clean up storage
       localStorage.removeItem('access_token');

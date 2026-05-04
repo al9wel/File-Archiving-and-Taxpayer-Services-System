@@ -21,8 +21,8 @@ export const CreateDepartmentDialog = () => {
 
     const handleSubmit = (formData: FormData) => {
         createDept(formData, {
-            onSuccess: () => {
-                toast.success("تم إضافة القسم بنجاح");
+            onSuccess: (res) => {
+                toast.success(res.message || "تم إضافة القسم بنجاح");
                 setOpen(false);
             },
             onError: (error) => {

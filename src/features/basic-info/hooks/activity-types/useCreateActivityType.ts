@@ -5,7 +5,7 @@ export const useCreateActivityType = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: activityTypesApi.createActivityType,
+        mutationFn: async (data: FormData) => activityTypesApi.createActivityType(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["activity-types"] });
         },

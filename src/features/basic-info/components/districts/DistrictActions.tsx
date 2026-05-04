@@ -42,8 +42,8 @@ export const DistrictActions = ({ district }: DistrictActionsProps) => {
 
     const handleDelete = () => {
         deleteMutation(district.id, {
-            onSuccess: () => {
-                toast.success("تم حذف الحي بنجاح");
+            onSuccess: (res) => {
+                toast.success(res.message || "تم حذف الحي بنجاح");
                 setIsDeleteAlertOpen(false);
             },
             onError: (error) => {
@@ -56,8 +56,8 @@ export const DistrictActions = ({ district }: DistrictActionsProps) => {
         updateMutation(
             { id: district.id, data: formData },
             {
-                onSuccess: () => {
-                    toast.success("تم تحديث بيانات الحي بنجاح");
+                onSuccess: (res) => {
+                    toast.success(res.message || "تم تحديث بيانات الحي بنجاح");
                     setIsEditDialogOpen(false);
                 },
                 onError: (error) => {

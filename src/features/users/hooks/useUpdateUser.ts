@@ -5,10 +5,7 @@ export const useUpdateUser = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: async ({ id, data }: { id: string | number; data: FormData }) => {
-            const res = await userApi.updateUser(id, data)
-            return res.data
-        },
+        mutationFn: async ({ id, data }: { id: string | number; data: FormData }) => userApi.updateUser(id, data),
 
         onSuccess: () => {
             queryClient.invalidateQueries({

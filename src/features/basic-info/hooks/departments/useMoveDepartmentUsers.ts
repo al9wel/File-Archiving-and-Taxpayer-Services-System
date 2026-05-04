@@ -5,10 +5,7 @@ export const useMoveDepartmentUsers = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async ({oldId, newId}:{oldId: string | number, newId: string | number}) => {
-            const res = await departmentsApi.moveUsersDepartment(oldId, newId);
-            return res.message;
-        },
+        mutationFn: async ({oldId, newId}:{oldId: string | number, newId: string | number}) => departmentsApi.moveUsersDepartment(oldId, newId),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["departments"],

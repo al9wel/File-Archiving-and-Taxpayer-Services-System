@@ -11,8 +11,8 @@ export const DistrictsTable = ({ districts }: DistrictsTableProps) => {
     const { data: regions } = useRegions();
 
     const getRegionName = (regionID?: number | string) => {
-        if (!regionID || !regions) return "غير معروف";
-        const region = regions.find(r => r?.id?.toString() === regionID?.toString());
+        if (!regionID || !regions?.data) return "غير معروف";
+        const region = regions.data.find(r => r?.id?.toString() === regionID?.toString());
         return region ? region.name : "غير معروف";
     };
 

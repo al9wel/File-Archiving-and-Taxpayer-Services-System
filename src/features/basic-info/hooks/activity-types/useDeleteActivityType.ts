@@ -5,7 +5,7 @@ export const useDeleteActivityType = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: activityTypesApi.deleteActivityType,
+        mutationFn: async (id: string | number) => activityTypesApi.deleteActivityType(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["activity-types"] });
         },

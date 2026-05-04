@@ -15,7 +15,7 @@ import RegionsPage from "@/features/basic-info/pages/RegionsPage";
 import DistrictsPage from "@/features/basic-info/pages/DistrictsPage";
 import Notifications from "@/features/notifications/pages/Notifications";
 import Taxpayers from "@/features/taxpayers/pages/Taxpayers";
-import Officers from "@/features/officers/pages/Officers";
+import TaxCollectors from "@/features/tax-collectors/pages/TaxCollectors";
 import Users from "@/features/users/pages/Users";
 import CreateUser from "@/features/users/pages/CreateUser";
 import UpdateUser from "@/features/users/pages/UpdateUser";
@@ -73,7 +73,7 @@ export const router = createBrowserRouter([
                     { path: ROUTES.DASHBOARD.REQUESTS.split("/").pop(), element: <Requests /> },
                     { path: ROUTES.DASHBOARD.NOTIFICATIONS.split("/").pop(), element: <Notifications /> },
                     { path: ROUTES.DASHBOARD.TAXPAYERS.split("/").pop(), element: <Taxpayers /> },
-                    { path: ROUTES.DASHBOARD.OFFICERS.split("/").pop(), element: <Officers /> },
+                    { path: ROUTES.DASHBOARD.TAX_COLLECTORS.split("/").pop(), element: <TaxCollectors /> },
                     {
                         path: ROUTES.DASHBOARD.BASIC_INFO.ROOT.split("/").pop(),
                         element: <BasicInfoLayout />,
@@ -101,7 +101,10 @@ export const router = createBrowserRouter([
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN]} />,
                         children: [
                             { path: ROUTES.DASHBOARD.SETTINGS.split("/").pop(), element: <Settings /> },
-                            { path: ROUTES.DASHBOARD.OPERATION_REPORTS.split("/").pop(), element: <OperationReports /> },
+                            {
+                                path: ROUTES.DASHBOARD.OPERATION_REPORTS.split("/").pop(),
+                                element: <OperationReports />
+                            },
                         ]
                     },
                 ]

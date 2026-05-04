@@ -236,7 +236,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
                                             <SelectValue placeholder={isLoadingDepts ? "جاري التحميل..." : "إختر القسم"} />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {departments?.map((dept) => (
+                                            {departments?.data?.map((dept) => (
                                                 <SelectItem key={dept.id} value={dept.id.toString()}>
                                                     {dept.name}
                                                 </SelectItem>

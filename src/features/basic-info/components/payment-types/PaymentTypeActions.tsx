@@ -42,8 +42,8 @@ export const PaymentTypeActions = ({ paymentType }: PaymentTypeActionsProps) => 
 
     const handleDelete = () => {
         deleteMutation(paymentType.id, {
-            onSuccess: () => {
-                toast.success("تم حذف نوع السداد بنجاح");
+            onSuccess: (res) => {
+                toast.success(res.message || "تم حذف نوع السداد بنجاح");
                 setIsDeleteAlertOpen(false);
             },
             onError: (error) => {
@@ -56,8 +56,8 @@ export const PaymentTypeActions = ({ paymentType }: PaymentTypeActionsProps) => 
         updateMutation(
             { id: paymentType.id, data: formData },
             {
-                onSuccess: () => {
-                    toast.success("تم تحديث بيانات نوع السداد بنجاح");
+                onSuccess: (res) => {
+                    toast.success(res.message || "تم تحديث بيانات نوع السداد بنجاح");
                     setIsEditDialogOpen(false);
                 },
                 onError: (error) => {

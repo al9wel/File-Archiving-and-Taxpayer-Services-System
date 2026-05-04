@@ -121,7 +121,7 @@ export default function SideBar() {
                                 </NavLink>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <NavLink to={ROUTES.DASHBOARD.OFFICERS}>
+                                <NavLink to={ROUTES.DASHBOARD.TAX_COLLECTORS}>
                                     {({ isActive }) => (
                                         <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
                                             <UserCheck className="-mr-0.5" style={{ width: "20px", height: "20px" }} />

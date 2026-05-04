@@ -11,7 +11,7 @@ export const useLogin = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (data: LoginParams) => authApi.login(data),
+    mutationFn: async (data: LoginParams) => authApi.login(data),
     onSuccess: (response) => {
       // 1. Save token
       localStorage.setItem('access_token', response.data.access_token);

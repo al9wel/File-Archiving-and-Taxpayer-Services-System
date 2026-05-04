@@ -5,10 +5,7 @@ export const useCreateUser = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: async (data: FormData) => {
-            const res = await userApi.createUser(data)
-            return res.data
-        },
+        mutationFn: async (data: FormData) => userApi.createUser(data),
 
         onSuccess: () => {
             queryClient.invalidateQueries({

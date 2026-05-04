@@ -5,7 +5,7 @@ export const useCreateDistrict = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: districtsApi.createDistrict,
+        mutationFn: async (data: FormData) => districtsApi.createDistrict(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["districts"] });
         },

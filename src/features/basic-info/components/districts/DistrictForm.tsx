@@ -76,7 +76,7 @@ export const DistrictForm = ({ initialData, onSubmit, onCancel, isLoading }: Dis
                         <SelectValue placeholder="اختر المنطقة" />
                     </SelectTrigger>
                     <SelectContent dir="rtl">
-                        {regions?.map((region) => (
+                        {regions?.data?.map((region) => (
                             region.id ? (
                                 <SelectItem key={region.id} value={region.id.toString()}>
                                     {region.name}

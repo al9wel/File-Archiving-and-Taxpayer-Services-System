@@ -42,8 +42,8 @@ export const DepartmentActions = ({ department }: DepartmentActionsProps) => {
     const handleDelete = () => {
         if (deleteOption === "delete") {
             deleteDept(department.id, {
-                onSuccess: () => {
-                    toast.success("تم حذف القسم بنجاح");
+                onSuccess: (res) => {
+                    toast.success(res.message || "تم حذف القسم بنجاح");
                     setIsDeleteAlertOpen(false);
                 },
                 onError: (error) => {
@@ -57,7 +57,7 @@ export const DepartmentActions = ({ department }: DepartmentActionsProps) => {
             toast.error("الرجاء اختيار قسم مستهدف لنقل المستخدمين إليه");
             return;
         }
-        const targetDept = departments?.find(d => d.id.toString() === targetDeptId);
+        const targetDept = departments?.data?.find(d => d.id.toString() === targetDeptId);
         if (!targetDept) {
             toast.error("القسم المستهدف غير صالح");
             return;
@@ -70,8 +70,8 @@ export const DepartmentActions = ({ department }: DepartmentActionsProps) => {
                         toast.success("تم نقل المستخدمين وحذف القسم بنجاح");
                         setIsDeleteAlertOpen(false);
                     },
-                    onError: (error) => {
-                        toast.error(error.message || "حدث خطأ أثناء حذف القسم بعد النقل");
+                    onError: () => {
+                        toast.error("حدث خطأ أثناء حذف القسم بعد النقل");
                     }
                 });
             },
@@ -85,8 +85,8 @@ export const DepartmentActions = ({ department }: DepartmentActionsProps) => {
         updateDept(
             { id: department.id, data: formData },
             {
-                onSuccess: () => {
-                    toast.success("تم تحديث بيانات القسم بنجاح");
+                onSuccess: (res) => {
+                    toast.success(res.message || "تم تحديث بيانات القسم بنجاح");
                     setIsEditDialogOpen(false);
                 },
                 onError: (error) => {
@@ -171,7 +171,7 @@ export const DepartmentActions = ({ department }: DepartmentActionsProps) => {
                                                     <SelectValue placeholder="إختر القسم المستهدف" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    {departments?.filter(d => d.id !== department.id).map((dept) => (
+                                                    {departments?.data?.filter(d => d.id !== department.id).map((dept) => (
                                                         <SelectItem key={dept.id} value={dept.id.toString()}>
                                                             {dept.name}
                                                         </SelectItem>

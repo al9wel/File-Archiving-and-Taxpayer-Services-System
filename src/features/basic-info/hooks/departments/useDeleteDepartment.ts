@@ -5,10 +5,7 @@ export const useDeleteDepartment = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (id: string | number) => {
-            const res = await departmentsApi.deleteDepartment(id);
-            return res;
-        },
+        mutationFn: async (id: string | number) => departmentsApi.deleteDepartment(id),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["departments"],
