@@ -1,7 +1,7 @@
 import { Building2, Activity, CreditCard, Navigation, Map, Loader2 } from "lucide-react";
 import { Card, CardContent, } from "@/components/ui/card";
 import { useBasicInfoStats } from "../hooks/basic-info/useBasicInfoStats";
-import { Button } from "@/components/ui/button";
+import ErrorState from "@/app/pages/ErrorState";
 
 const stats = [
     { title: "عدد الأقسام", value: "departments_count", icon: Building2, color: "bg-emerald-50 text-emerald-600", iconBg: "bg-emerald-100" },
@@ -14,19 +14,14 @@ const stats = [
 const BasicInfo = () => {
     const { data: statsData, isLoading, isError } = useBasicInfoStats();
     if (isError) {
-        return (
-            <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-                <p className="text-red-600 font-bold">حدث خطأ أثناء تحميل البيانات</p>
-                <Button onClick={() => window.location.reload()}>إعادة المحاولة</Button>
-            </div>
-        );
+        return <ErrorState />;
     }
     return (
         <>
             {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">
                     <Loader2 className="size-10 animate-spin text-primary" />
-                    <p className="text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
+                    <p className="text-muted-foreground animate-pulse">جاري جلب الإحصائيات الأساسية...</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in fade-in duration-500" >

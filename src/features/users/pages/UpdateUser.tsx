@@ -6,6 +6,10 @@ import { useNavigate, useParams } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { toast } from "sonner"
 import { Loader2 } from "lucide-react"
+import { usePermission } from "@/hooks/usePermission"
+import { ACTIONS } from "@/constants/permissions"
+import Unauthorized from "@/app/pages/Unauthorized"
+import ErrorState from "@/app/pages/ErrorState"
 
 /**
  * Page component for editing an existing user.
@@ -14,8 +18,9 @@ import { Loader2 } from "lucide-react"
 const UpdateUser = () => {
     const { id } = useParams()
     const navigate = useNavigate()
-    const { data: user, isLoading: isFetching } = useUser(id!)
+    const { data: user, isLoading: isFetching, isError } = useUser(id!)
     const { mutate: updateUser, isPending } = useUpdateUser()
+    const canUpdate = usePermission(ACTIONS.UPDATE_USER)
 
     const handleSubmit = (formData: FormData) => {
         updateUser({ id: id!, data: formData as any }, {
@@ -31,13 +36,20 @@ const UpdateUser = () => {
         })
     }
 
+    if (isError) {
+        return <ErrorState />
+    }
+
     if (isFetching) {
         return (
-            <div className="flex h-[400px] w-full items-center justify-center">
+            <div className="flex flex-col h-[400px] w-full items-center justify-center space-y-4">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-muted-foreground animate-pulse">جاري جلب بيانات المستخدم...</p>
             </div>
         )
     }
+
+    if (!canUpdate) return <Unauthorized />
 
     return (
         <>

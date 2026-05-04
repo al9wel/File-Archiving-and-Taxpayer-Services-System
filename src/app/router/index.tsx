@@ -60,32 +60,66 @@ export const router = createBrowserRouter([
     },
     {
         path: ROUTES.DASHBOARD.ROOT,
-        element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.EMPLOYEE]} />,
+        element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.EMPLOYEE, ROLES.COLLECTOR_MANAGER]} />,
         children: [
             {
                 path: "",
                 element: <DashboardLayout />,
                 children: [
+                    // ── Dashboard (ALL ROLES) ───────────────────────────────
                     { index: true, element: <Navigate to={ROUTES.DASHBOARD.MAIN.split("/").pop() || ""} replace /> },
                     { path: ROUTES.DASHBOARD.MAIN.split("/").pop(), element: <Main /> },
-                    { path: ROUTES.DASHBOARD.FILES.split("/").pop(), element: <Files /> },
-                    { path: ROUTES.DASHBOARD.FILE_MOVEMENTS.split("/").pop(), element: <FileMovements /> },
-                    { path: ROUTES.DASHBOARD.REQUESTS.split("/").pop(), element: <Requests /> },
-                    { path: ROUTES.DASHBOARD.NOTIFICATIONS.split("/").pop(), element: <Notifications /> },
-                    { path: ROUTES.DASHBOARD.TAXPAYERS.split("/").pop(), element: <Taxpayers /> },
-                    { path: ROUTES.DASHBOARD.TAX_COLLECTORS.split("/").pop(), element: <TaxCollectors /> },
+
+                    // ── Files (ADMIN, MANAGER, EMPLOYEE) ────────────────────
                     {
-                        path: ROUTES.DASHBOARD.BASIC_INFO.ROOT.split("/").pop(),
-                        element: <BasicInfoLayout />,
+                        path: "",
+                        element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.EMPLOYEE]} />,
                         children: [
-                            { index: true, element: <BasicInfoPage /> },
-                            { path: ROUTES.DASHBOARD.BASIC_INFO.DEPARTMENTS.split("/").pop(), element: <DepartmentsPage /> },
-                            { path: ROUTES.DASHBOARD.BASIC_INFO.ACTIVITY_TYPES.split("/").pop(), element: <ActivityTypesPage /> },
-                            { path: ROUTES.DASHBOARD.BASIC_INFO.PAYMENT_TYPES.split("/").pop(), element: <PaymentTypesPage /> },
-                            { path: ROUTES.DASHBOARD.BASIC_INFO.REGIONS.split("/").pop(), element: <RegionsPage /> },
-                            { path: ROUTES.DASHBOARD.BASIC_INFO.DISTRICTS.split("/").pop(), element: <DistrictsPage /> },
+                            { path: ROUTES.DASHBOARD.FILES.split("/").pop(), element: <Files /> },
                         ]
                     },
+
+                    // ── File Movements (ADMIN, MANAGER, COLLECTOR_MANAGER) ──
+                    {
+                        path: "",
+                        element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.COLLECTOR_MANAGER]} />,
+                        children: [
+                            { path: ROUTES.DASHBOARD.FILE_MOVEMENTS.split("/").pop(), element: <FileMovements /> },
+                        ]
+                    },
+
+                    // ── Requests, Basic Info, Taxpayers (ADMIN, MANAGER) ────
+                    {
+                        path: "",
+                        element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+                        children: [
+                            { path: ROUTES.DASHBOARD.REQUESTS.split("/").pop(), element: <Requests /> },
+                            { path: ROUTES.DASHBOARD.TAXPAYERS.split("/").pop(), element: <Taxpayers /> },
+                            {
+                                path: ROUTES.DASHBOARD.BASIC_INFO.ROOT.split("/").pop(),
+                                element: <BasicInfoLayout />,
+                                children: [
+                                    { index: true, element: <BasicInfoPage /> },
+                                    { path: ROUTES.DASHBOARD.BASIC_INFO.DEPARTMENTS.split("/").pop(), element: <DepartmentsPage /> },
+                                    { path: ROUTES.DASHBOARD.BASIC_INFO.ACTIVITY_TYPES.split("/").pop(), element: <ActivityTypesPage /> },
+                                    { path: ROUTES.DASHBOARD.BASIC_INFO.PAYMENT_TYPES.split("/").pop(), element: <PaymentTypesPage /> },
+                                    { path: ROUTES.DASHBOARD.BASIC_INFO.REGIONS.split("/").pop(), element: <RegionsPage /> },
+                                    { path: ROUTES.DASHBOARD.BASIC_INFO.DISTRICTS.split("/").pop(), element: <DistrictsPage /> },
+                                ]
+                            },
+                        ]
+                    },
+
+                    // ── Tax Collectors (ADMIN, MANAGER, COLLECTOR_MANAGER) ──
+                    {
+                        path: "",
+                        element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.COLLECTOR_MANAGER]} />,
+                        children: [
+                            { path: ROUTES.DASHBOARD.TAX_COLLECTORS.split("/").pop(), element: <TaxCollectors /> },
+                        ]
+                    },
+
+                    // ── Users (ADMIN, MANAGER) ──────────────────────────────
                     {
                         path: ROUTES.DASHBOARD.USERS.split("/").pop(),
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
@@ -96,15 +130,15 @@ export const router = createBrowserRouter([
                             { path: ":id/edit", element: <UpdateUser /> }
                         ]
                     },
+
+                    // ── Admin Only (Settings, Reports, Notifications) ───────
                     {
                         path: "",
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN]} />,
                         children: [
                             { path: ROUTES.DASHBOARD.SETTINGS.split("/").pop(), element: <Settings /> },
-                            {
-                                path: ROUTES.DASHBOARD.OPERATION_REPORTS.split("/").pop(),
-                                element: <OperationReports />
-                            },
+                            { path: ROUTES.DASHBOARD.OPERATION_REPORTS.split("/").pop(), element: <OperationReports /> },
+                            { path: ROUTES.DASHBOARD.NOTIFICATIONS.split("/").pop(), element: <Notifications /> },
                         ]
                     },
                 ]

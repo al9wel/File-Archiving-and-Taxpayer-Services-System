@@ -4,6 +4,10 @@ import { columns } from "../components/columns"
 import { useOperationReports } from "../hooks/useOperationReports"
 import { Loader2, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { usePermission } from "@/hooks/usePermission"
+import { ACTIONS } from "@/constants/permissions"
+import Unauthorized from "@/app/pages/Unauthorized"
+import ErrorState from "@/app/pages/ErrorState"
 
 /**
  * Operations Reports Page.
@@ -11,13 +15,11 @@ import { Button } from "@/components/ui/button"
  */
 const OperationReports = () => {
     const { data, isLoading, isError } = useOperationReports()
+    const canView = usePermission(ACTIONS.VIEW_REPORT)
+
+    if (!canView) return <Unauthorized />
     if (isError) {
-        return (
-            <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
-                <p className="text-red-600 font-bold">حدث خطأ أثناء تحميل البيانات</p>
-                <Button onClick={() => window.location.reload()}>إعادة المحاولة</Button>
-            </div>
-        );
+        return <ErrorState />
     }
     return (
         <>
@@ -30,8 +32,9 @@ const OperationReports = () => {
 
             <div className="container mx-auto px-3 animate-in fade-in duration-500 space-y-6">
                 {isLoading ? (
-                    <div className="flex h-[300px] items-center justify-center">
+                    <div className="flex flex-col h-[300px] items-center justify-center space-y-4">
                         <Loader2 className="animate-spin text-primary" size={32} />
+                        <p className="text-muted-foreground animate-pulse">جاري جلب تقارير العمليات...</p>
                     </div>
                 ) : (
                     <>

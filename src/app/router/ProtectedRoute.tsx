@@ -21,7 +21,7 @@ export function ProtectedRoute({ allowedRoles }: { allowedRoles: string[] }) {
 
   // 4. Role check
   if (!allowedRoles.includes(user.role)) {
-    return <Navigate to={ROUTES.PUBLIC.UNAUTHORIZED} />;
+    return <Navigate to={ROUTES.PUBLIC.UNAUTHORIZED} replace />;
   }
 
   return <Outlet />;

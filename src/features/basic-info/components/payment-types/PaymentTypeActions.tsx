@@ -34,8 +34,8 @@ export const PaymentTypeActions = ({ paymentType }: PaymentTypeActionsProps) => 
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
 
-    const canUpdate = usePermission(ACTIONS.UPDATE);
-    const canDelete = usePermission(ACTIONS.DELETE);
+    const canUpdate = usePermission(ACTIONS.UPDATE_BASIC_INFO);
+    const canDelete = usePermission(ACTIONS.DELETE_BASIC_INFO);
 
     const { mutate: deleteMutation, isPending: isDeleting } = useDeletePaymentType();
     const { mutate: updateMutation, isPending: isUpdating } = useUpdatePaymentType();

@@ -4,6 +4,9 @@ import { useCreateUser } from "../hooks/useCreateUser"
 import { useNavigate } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { toast } from "sonner"
+import { usePermission } from "@/hooks/usePermission"
+import { ACTIONS } from "@/constants/permissions"
+import Unauthorized from "@/app/pages/Unauthorized"
 
 /**
  * Page component for creating a new user.
@@ -12,6 +15,7 @@ import { toast } from "sonner"
 const CreateUser = () => {
     const navigate = useNavigate()
     const { mutate: createUser, isPending } = useCreateUser()
+    const canCreate = usePermission(ACTIONS.CREATE_USER)
 
     const handleSubmit = (formData: FormData) => {
         createUser(formData, {
@@ -26,6 +30,8 @@ const CreateUser = () => {
             }
         })
     }
+
+    if (!canCreate) return <Unauthorized />
 
     return (
         <>

@@ -19,6 +19,7 @@ import {
     UserCheck,
     UserCog,
     Loader2,
+    UsersRound,
 } from "lucide-react"
 import type { User as UserType } from "@/types/User"
 import { Card } from "@/components/ui/card"
@@ -125,6 +126,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
         { id: "Employee", label: "موظف", icon: User },
         { id: "Manager", label: "مدير", icon: UserCheck },
         { id: "Admin", label: "ادمن", icon: UserCog },
+        { id: "Collectors_Manager", label: "مدير المأمورين", icon: UsersRound },
     ]
 
     return (
@@ -261,7 +263,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
                                     الدور الوظيفي *
                                 </label>
                                 {(!initialData || user?.role === ROLES.ADMIN) ? (
-                                    <div className="grid grid-cols-3 pb-2 gap-4">
+                                    <div className="grid grid-cols-2 lg:grid-cols-4 pb-2 gap-4">
                                         {roles.map((role) => (
                                             <div
                                                 key={role.id}
