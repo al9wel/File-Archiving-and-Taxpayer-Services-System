@@ -30,7 +30,7 @@ const DepartmentsPage = () => {
                     <p className="text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
                 </div>
             ) : (
-                <DepartmentsTable departments={departments || []} />
+                <DepartmentsTable departments={departments?.data || []} />
             )}
         </div>
     );

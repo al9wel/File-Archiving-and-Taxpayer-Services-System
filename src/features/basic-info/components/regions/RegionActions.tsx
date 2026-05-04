@@ -42,8 +42,8 @@ export const RegionActions = ({ region }: RegionActionsProps) => {
 
     const handleDelete = () => {
         deleteMutation(region.id, {
-            onSuccess: () => {
-                toast.success("تم حذف المنطقة بنجاح");
+            onSuccess: (res) => {
+                toast.success(res.message || "تم حذف المنطقة بنجاح");
                 setIsDeleteAlertOpen(false);
             },
             onError: (error) => {
@@ -56,8 +56,8 @@ export const RegionActions = ({ region }: RegionActionsProps) => {
         updateMutation(
             { id: region.id, data: formData },
             {
-                onSuccess: () => {
-                    toast.success("تم تحديث بيانات المنطقة بنجاح");
+                onSuccess: (res) => {
+                    toast.success(res.message || "تم تحديث بيانات المنطقة بنجاح");
                     setIsEditDialogOpen(false);
                 },
                 onError: (error) => {

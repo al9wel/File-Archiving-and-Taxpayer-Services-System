@@ -3,6 +3,7 @@ import { DataTable } from "../components/data-table"
 import { columns } from "../components/columns"
 import { useUsers } from "../hooks/useUsers"
 import { Loader2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 /**
  * Main User Management page.
@@ -10,7 +11,15 @@ import { Loader2 } from "lucide-react"
  * access to create, view, edit, and delete operations.
  */
 const Users = () => {
-    const { data, isLoading, } = useUsers()
+    const { data, isLoading, isError } = useUsers()
+    if (isError) {
+        return (
+            <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+                <p className="text-red-600 font-bold">حدث خطأ أثناء تحميل البيانات</p>
+                <Button onClick={() => window.location.reload()}>إعادة المحاولة</Button>
+            </div>
+        );
+    }
     return (
         <>
 
@@ -23,7 +32,7 @@ const Users = () => {
                         <Loader2 className="animate-spin text-primary" size={32} />
                     </div>
                 ) : (
-                    <DataTable columns={columns} data={data || []} />
+                    <DataTable columns={columns} data={data?.data || []} />
                 )}
             </div>
         </>

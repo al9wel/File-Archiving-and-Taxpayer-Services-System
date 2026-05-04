@@ -5,11 +5,12 @@ import { Navigate } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { Button } from "@/components/ui/button"
 import { Loader2, Lock, Eye, EyeOff } from "lucide-react"
+import { toast } from "sonner"
 
 export default function ResetPasswordPage() {
     const { user, needsPasswordReset } = useAuth()
     const { mutate: resetPassword, isPending, isError, error } = useResetPassword()
-    
+
     const [showPassword, setShowPassword] = useState(false)
     const [formError, setFormError] = useState("")
 
@@ -26,7 +27,7 @@ export default function ResetPasswordPage() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setFormError("")
-        
+
         const formData = new FormData(e.currentTarget)
         const new_password = formData.get("new_password") as string
         const new_password_confirmation = formData.get("new_password_confirmation") as string
@@ -41,13 +42,17 @@ export default function ResetPasswordPage() {
             return
         }
 
-        resetPassword({ new_password, new_password_confirmation })
+        resetPassword({ new_password, new_password_confirmation }, {
+            onSuccess: (res) => {
+                toast.success(res.message || 'تم تغيير كلمة المرور بنجاح');
+            },
+        })
     }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-muted/40 px-4" dir="rtl">
             <div className="w-full max-w-md bg-card rounded-2xl shadow-lg border border-primary/10 overflow-hidden p-8 space-y-6">
-                
+
                 {/* Header */}
                 <div className="space-y-2 text-center">
                     <div className="flex justify-center mb-4">
@@ -63,14 +68,14 @@ export default function ResetPasswordPage() {
 
                 {/* Form Logic */}
                 <form onSubmit={handleSubmit} className="space-y-5 mt-4">
-                    
+
                     {/* Error Alerts */}
                     {formError && (
                         <div className="p-3 rounded-xl bg-red-100/50 text-red-600 border border-red-200 text-sm text-center">
                             {formError}
                         </div>
                     )}
-                    
+
                     {isError && (
                         <div className="p-3 rounded-xl bg-red-100/50 text-red-600 border border-red-200 text-sm text-center">
                             {error?.message || "فشل تغيير كلمة المرور، يرجى المحاولة مرة أخرى."}
@@ -120,10 +125,10 @@ export default function ResetPasswordPage() {
                     </div>
 
                     {/* Submit Button */}
-                    <Button 
-                        type="submit" 
+                    <Button
+                        type="submit"
                         size="lg"
-                        className="w-full h-12 text-md font-bold rounded-xl mt-2 cursor-pointer transition-all active:scale-95 shadow-lg shadow-primary/20" 
+                        className="w-full h-12 text-md font-bold rounded-xl mt-2 cursor-pointer transition-all active:scale-95 shadow-lg shadow-primary/20"
                         disabled={isPending}
                     >
                         {isPending ? (

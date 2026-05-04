@@ -38,7 +38,7 @@ const BasicInfo = () => {
                                     <CardContent className="p-4 flex items-center justify-between">
                                         <div className="text-right">
                                             <p className="text-xl font-bold text-foreground/70 mb-1">{stat.title}</p>
-                                            <h3 className="text-2xl font-bold text-foreground/90">{statsData?.[stat.value]}</h3>
+                                            <h3 className="text-2xl font-bold text-foreground/90">{statsData?.data?.[stat.value]}</h3>
                                         </div>
                                         <div className={`p-3 rounded-xl ${stat.iconBg}`}>
                                             <Icon className={`size-6 ${stat.color.split(' ')[1]}`} />
@@ -54,7 +54,7 @@ const BasicInfo = () => {
                         <CardContent className="p-4 flex items-center justify-between">
                             <div className="text-right">
                                 <p className="text-xl font-bold text-foreground/70 mb-1">{stats[4].title}</p>
-                                <h3 className="text-2xl font-bold text-foreground/90">{statsData?.[stats[4].value]}</h3>
+                                <h3 className="text-2xl font-bold text-foreground/90">{statsData?.data?.[stats[4].value]}</h3>
                             </div>
                             <div className={`p-3 rounded-xl ${stats[4].iconBg}`}>
                                 {(() => {

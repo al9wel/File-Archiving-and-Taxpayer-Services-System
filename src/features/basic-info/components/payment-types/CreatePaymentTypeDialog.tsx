@@ -21,8 +21,8 @@ export const CreatePaymentTypeDialog = () => {
 
     const handleSubmit = (formData: FormData) => {
         createMutation(formData, {
-            onSuccess: () => {
-                toast.success("تم إضافة نوع السداد بنجاح");
+            onSuccess: (res) => {
+                toast.success(res.message || "تم إضافة نوع السداد بنجاح");
                 setOpen(false);
             },
             onError: (error) => {

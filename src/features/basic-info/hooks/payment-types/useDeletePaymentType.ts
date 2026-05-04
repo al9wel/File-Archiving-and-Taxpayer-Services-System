@@ -5,7 +5,7 @@ export const useDeletePaymentType = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: paymentTypesApi.deletePaymentType,
+        mutationFn: async (id: string | number) => paymentTypesApi.deletePaymentType(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["payment-types"] });
         },

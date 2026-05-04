@@ -27,11 +27,11 @@ const ShowUser = () => {
 
     // Configuration for the information grid items
     const infoItems = [
-        { label: "رقم المستخدم", value: user?.id, icon: Shield },
-        { label: "رقم الهاتف", value: user?.phone, icon: Phone },
-        { label: "إسم المستخدم", value: user?.userName, icon: Mail },
-        { label: "الدور الوظيفي", value: user?.role, icon: Briefcase },
-        { label: "القسم", value: user?.departmentName, icon: Briefcase },
+        { label: "رقم المستخدم", value: user?.data?.id, icon: Shield },
+        { label: "رقم الهاتف", value: user?.data?.phone, icon: Phone },
+        { label: "إسم المستخدم", value: user?.data?.userName, icon: Mail },
+        { label: "الدور الوظيفي", value: user?.data?.role, icon: Briefcase },
+        { label: "القسم", value: user?.data?.departmentName, icon: Briefcase },
     ]
 
     return (
@@ -39,7 +39,7 @@ const ShowUser = () => {
             <div className="w-full px-3 pt-3">
                 <DashboardHeader
                     title=" تفاصيل المستخدم "
-                    desc={`عرض بيانات الموظف: ${user?.firstName} ${user?.lastName}`}
+                    desc={`عرض بيانات الموظف: ${user?.data?.firstName} ${user?.data?.lastName}`}
                 />
             </div>
 
@@ -68,8 +68,8 @@ const ShowUser = () => {
                         <div className="h-32 bg-primary/10 w-full" />
                         <CardContent className="px-6 pb-8 -mt-16 flex flex-col items-center text-center space-y-4">
                             <div className="w-32 h-32 rounded-full border-4 border-background bg-muted overflow-hidden shadow-lg">
-                                {user?.image ? (
-                                    <img src={user.image} alt="Profile" className="w-full h-full object-cover" />
+                                {user?.data?.image ? (
+                                    <img src={user.data.image} alt="Profile" className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center bg-primary/5 text-primary">
                                         <UserIcon size={64} />
@@ -77,8 +77,8 @@ const ShowUser = () => {
                                 )}
                             </div>
                             <div className="space-y-1">
-                                <h2 className="text-2xl font-bold">{user?.firstName} {user?.lastName}</h2>
-                                <p className="text-primary font-medium">{user?.role}</p>
+                                <h2 className="text-2xl font-bold">{user?.data?.firstName} {user?.data?.lastName}</h2>
+                                <p className="text-primary font-medium">{user?.data?.role}</p>
                             </div>
                         </CardContent>
                     </Card>
@@ -108,11 +108,11 @@ const ShowUser = () => {
                                 </div>
                                 <div className="space-y-1 overflow-hidden">
                                     <p className="text-sm text-muted-foreground">نسخة بطاقة الهوية</p>
-                                    {user?.idCard ? (
+                                    {user?.data?.idCard ? (
                                         <Button
                                             variant="link"
                                             className="p-0 h-auto font-bold text-lg text-primary hover:text-primary-hover cursor-pointer"
-                                            onClick={() => window.open(user.idCard, '_blank')}
+                                            onClick={() => window.open(user.data.idCard, '_blank')}
                                         >
                                             عرض الملف
                                         </Button>

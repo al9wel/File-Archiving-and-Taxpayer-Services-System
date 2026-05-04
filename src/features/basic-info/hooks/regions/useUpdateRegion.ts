@@ -5,8 +5,7 @@ export const useUpdateRegion = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ id, data }: { id: number | string; data: FormData }) =>
-            regionsApi.updateRegion(id, data),
+        mutationFn: async ({ id, data }: { id: number | string; data: FormData }) => regionsApi.updateRegion(id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["regions"] });
         },

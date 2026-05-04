@@ -15,8 +15,8 @@ const CreateUser = () => {
 
     const handleSubmit = (formData: FormData) => {
         createUser(formData, {
-            onSuccess: () => {
-                toast.success("تم إضافة المستخدم بنجاح")
+            onSuccess: (res) => {
+                toast.success(res.message || "تم إضافة المستخدم بنجاح")
                 setTimeout(() => {
                     navigate(ROUTES.DASHBOARD.USERS)
                 }, 1000)

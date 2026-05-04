@@ -22,7 +22,7 @@ export const ROUTES = {
     },
     NOTIFICATIONS: "/dashboard/notifications",
     TAXPAYERS: "/dashboard/taxpayers",
-    OFFICERS: "/dashboard/officers",
+    TAX_COLLECTORS: "/dashboard/tax-collectors",
     USERS: "/dashboard/users",
     USERS_CREATE: "/dashboard/users/create",
     USERS_EDIT: "/dashboard/users/:id/edit",

@@ -5,7 +5,7 @@ export const useDeleteDistrict = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: districtsApi.deleteDistrict,
+        mutationFn: async (id: string | number) => districtsApi.deleteDistrict(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["districts"] });
         },

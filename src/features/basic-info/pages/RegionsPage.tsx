@@ -30,7 +30,7 @@ const RegionsPage = () => {
                     <p className="text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
                 </div>
             ) : (
-                <RegionsTable regions={regions || []} />
+                <RegionsTable regions={regions?.data || []} />
             )}
         </div>
     );

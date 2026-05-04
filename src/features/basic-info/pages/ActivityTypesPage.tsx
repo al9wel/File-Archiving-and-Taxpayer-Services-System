@@ -30,7 +30,7 @@ const ActivityTypesPage = () => {
                     <p className="text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
                 </div>
             ) : (
-                <ActivityTypesTable activityTypes={activityTypes || []} />
+                <ActivityTypesTable activityTypes={activityTypes?.data || []} />
             )}
         </div>
     );

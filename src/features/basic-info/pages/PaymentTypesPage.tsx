@@ -30,7 +30,7 @@ const PaymentTypesPage = () => {
                     <p className="text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
                 </div>
             ) : (
-                <PaymentTypesTable paymentTypes={paymentTypes || []} />
+                <PaymentTypesTable paymentTypes={paymentTypes?.data || []} />
             )}
         </div>
     );

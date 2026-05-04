@@ -5,10 +5,7 @@ export const useCreateDepartment = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (data: FormData) => {
-            const res = await departmentsApi.createDepartment(data);
-            return res.data;
-        },
+        mutationFn: async (data: FormData) => departmentsApi.createDepartment(data),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["departments"],

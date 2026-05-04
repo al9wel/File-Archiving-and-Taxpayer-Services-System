@@ -30,7 +30,7 @@ const DistrictsPage = () => {
                     <p className="text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
                 </div>
             ) : (
-                <DistrictsTable districts={districts || []} />
+                <DistrictsTable districts={districts?.data || []} />
             )}
         </div>
     );

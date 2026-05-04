@@ -21,8 +21,8 @@ export const CreateActivityTypeDialog = () => {
 
     const handleSubmit = (formData: FormData) => {
         createMutation(formData, {
-            onSuccess: () => {
-                toast.success("تم إضافة نوع النشاط بنجاح");
+            onSuccess: (res) => {
+                toast.success(res.message || "تم إضافة نوع النشاط بنجاح");
                 setOpen(false);
             },
             onError: (error) => {

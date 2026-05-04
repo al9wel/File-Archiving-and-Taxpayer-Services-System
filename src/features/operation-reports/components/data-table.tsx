@@ -21,11 +21,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Search, ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft, Plus } from "lucide-react"
-import { NavLink } from "react-router-dom"
-import { ROUTES } from "@/constants/routes"
-import { usePermission } from "@/hooks/usePermission"
-import { ACTIONS } from "@/constants/permissions"
+import { Search, ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -37,7 +33,6 @@ export function DataTable<TData, TValue>({
     data,
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const canCreate = usePermission(ACTIONS.CREATE);
 
     const table = useReactTable({
         data,
@@ -58,27 +53,19 @@ export function DataTable<TData, TValue>({
 
     return (
         <div className="space-y-4" dir="rtl">
-            {/* Table Header: Search + Add Button */}
+            {/* Table Header: Search */}
             <div className="flex items-center justify-between gap-4 py-1">
                 <div className="flex-1 relative w-full max-w-md">
                     <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                        placeholder="البحث عن طريق الاسم..."
-                        value={(table.getColumn("firstName")?.getFilterValue() as string) ?? ""}
+                        placeholder="البحث عن طريق اسم العملية..."
+                        value={(table.getColumn("action")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
-                            table.getColumn("firstName")?.setFilterValue(event.target.value)
+                            table.getColumn("action")?.setFilterValue(event.target.value)
                         }
                         className="h-12 pr-11 bg-muted/80 dark:bg-muted/20 border-2 border-muted-foreground/20 rounded-2xl focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all shadow-sm placeholder:text-muted-foreground/70"
                     />
                 </div>
-                {canCreate && (
-                    <NavLink to={ROUTES.DASHBOARD.USERS_CREATE}>
-                        <Button className="w-full sm:w-auto h-12 px-6 rounded-2xl bg-primary hover:bg-primary-hover text-white shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-95">
-                            <Plus className="h-5 w-5" />
-                            <span className="font-bold hidden sm:inline">إضافة مستخدم جديد</span>
-                        </Button>
-                    </NavLink>
-                )}
             </div>
 
             {/* Table Area Section */}

@@ -5,9 +5,7 @@ export const useDeleteUser = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: async (id: string | number) => {
-            return userApi.deleteUser(id)
-        },
+        mutationFn: async (id: string | number) => userApi.deleteUser(id),
 
         onSuccess: () => {
             queryClient.invalidateQueries({

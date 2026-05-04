@@ -10,7 +10,7 @@ export const useUser = () => {
 
     const query = useQuery({
         queryKey: ["auth-me", userId],
-        queryFn: () => authApi.getUser(userId!),
+        queryFn: async () => authApi.getUser(userId!),
         // Only fetch if we have a session but NO user in Zustand yet
         enabled: !!token && !!userId && !user,
         retry: false,

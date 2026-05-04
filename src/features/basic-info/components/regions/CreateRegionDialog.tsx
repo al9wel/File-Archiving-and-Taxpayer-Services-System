@@ -21,8 +21,8 @@ export const CreateRegionDialog = () => {
 
     const handleSubmit = (formData: FormData) => {
         createMutation(formData, {
-            onSuccess: () => {
-                toast.success("تم إضافة المنطقة بنجاح");
+            onSuccess: (res) => {
+                toast.success(res.message || "تم إضافة المنطقة بنجاح");
                 setOpen(false);
             },
             onError: (error) => {

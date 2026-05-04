@@ -5,8 +5,7 @@ export const useUpdateActivityType = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ id, data }: { id: number | string; data: FormData }) =>
-            activityTypesApi.updateActivityType(id, data),
+        mutationFn: async ({ id, data }: { id: number | string; data: FormData }) => activityTypesApi.updateActivityType(id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["activity-types"] });
         },

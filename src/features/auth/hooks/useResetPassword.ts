@@ -10,10 +10,10 @@ export const useResetPassword = () => {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (data: { new_password: string; new_password_confirmation: string }) =>
+    mutationFn: async (data: { new_password: string; new_password_confirmation: string }) =>
       authApi.resetPassword(data),
     onSuccess: async () => {
-      toast.success('تم تغيير كلمة المرور بنجاح');
+
 
       // Clear reset flag
       setNeedsPasswordReset(false);

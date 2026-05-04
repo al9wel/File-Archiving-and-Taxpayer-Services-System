@@ -5,7 +5,7 @@ export const useCreateRegion = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: regionsApi.createRegion,
+        mutationFn: async (data: FormData) => regionsApi.createRegion(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["regions"] });
         },

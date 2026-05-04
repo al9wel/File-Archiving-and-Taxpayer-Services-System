@@ -21,8 +21,8 @@ export const CreateDistrictDialog = () => {
 
     const handleSubmit = (formData: FormData) => {
         createMutation(formData, {
-            onSuccess: () => {
-                toast.success("تم إضافة الحي بنجاح");
+            onSuccess: (res) => {
+                toast.success(res.message || "تم إضافة الحي بنجاح");
                 setOpen(false);
             },
             onError: (error) => {

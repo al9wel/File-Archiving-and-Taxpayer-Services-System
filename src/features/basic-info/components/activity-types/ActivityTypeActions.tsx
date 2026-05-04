@@ -42,8 +42,8 @@ export const ActivityTypeActions = ({ activityType }: ActivityTypeActionsProps) 
 
     const handleDelete = () => {
         deleteMutation(activityType.id, {
-            onSuccess: () => {
-                toast.success("تم حذف نوع النشاط بنجاح");
+            onSuccess: (res) => {
+                toast.success(res.message || "تم حذف نوع النشاط بنجاح");
                 setIsDeleteAlertOpen(false);
             },
             onError: (error) => {
@@ -56,8 +56,8 @@ export const ActivityTypeActions = ({ activityType }: ActivityTypeActionsProps) 
         updateMutation(
             { id: activityType.id, data: formData },
             {
-                onSuccess: () => {
-                    toast.success("تم تحديث بيانات نوع النشاط بنجاح");
+                onSuccess: (res) => {
+                    toast.success(res.message || "تم تحديث بيانات نوع النشاط بنجاح");
                     setIsEditDialogOpen(false);
                 },
                 onError: (error) => {

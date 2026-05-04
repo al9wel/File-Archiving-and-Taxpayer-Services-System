@@ -19,8 +19,8 @@ const UpdateUser = () => {
 
     const handleSubmit = (formData: FormData) => {
         updateUser({ id: id!, data: formData as any }, {
-            onSuccess: () => {
-                toast.success("تم تحديث بيانات المستخدم بنجاح")
+            onSuccess: (res) => {
+                toast.success(res.message || "تم تحديث بيانات المستخدم بنجاح")
                 setTimeout(() => {
                     navigate(ROUTES.DASHBOARD.USERS)
                 }, 1000)
@@ -44,11 +44,11 @@ const UpdateUser = () => {
             <div className="w-full px-3 pt-3 ">
                 <DashboardHeader
                     title=" تعديل بيانات المستخدم "
-                    desc={`تعديل بيانات الموظف: ${user?.firstName} ${user?.lastName}`}
+                    desc={`تعديل بيانات الموظف: ${user?.data?.firstName} ${user?.data?.lastName}`}
                 />
             </div>
             <div className="container mx-auto px-3 animate-in fade-in duration-500">
-                <UserForm initialData={user} onSubmit={handleSubmit} isLoading={isPending} />
+                <UserForm initialData={user?.data} onSubmit={handleSubmit} isLoading={isPending} />
             </div>
         </>
     )

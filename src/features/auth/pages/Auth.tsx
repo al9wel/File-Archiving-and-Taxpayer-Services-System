@@ -8,7 +8,7 @@ import { useLogin } from "@/features/auth/hooks/useLogin"
 
 const Auth = () => {
     const [showPassword, setShowPassword] = useState(false)
-    const login = useLogin()
+    const { mutate: login, isPending, isError, error } = useLogin()
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -17,7 +17,7 @@ const Auth = () => {
         const password = formData.get("password") as string
 
         if (!userName || !password) return
-        login.mutate({ userName, password })
+        login({ userName, password })
     }
 
     return (
@@ -95,9 +95,9 @@ const Auth = () => {
                     {/* Form logic */}
                     <form onSubmit={handleSubmit} className="space-y-5">
 
-                        {login.isError && (
+                        {isError && (
                             <div className="p-3 rounded-xl bg-red-100 text-red-600 border border-red-200 text-sm">
-                                {login.error.message || "حدث خطأ أثناء تسجيل الدخول. يرجى التحقق من بياناتك."}
+                                {(error as any)?.message || "حدث خطأ أثناء تسجيل الدخول. يرجى التحقق من بياناتك."}
                             </div>
                         )}
 
@@ -156,16 +156,16 @@ const Auth = () => {
                         <Button
                             type="submit"
                             size="lg"
-                            disabled={login.isPending}
+                            disabled={isPending}
                             className="w-full cursor-pointer hover:bg-primary-hover transition-all duration-200 rounded-xl gap-2 mt-2"
                             id="goto-dashboard-btn"
                         >
-                            {login.isPending ? (
+                            {isPending ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
                             ) : (
                                 <LayoutDashboard className="w-4 h-4" />
                             )}
-                            {login.isPending ? "جاري الدخول..." : "دخول لوحة التحكم"}
+                            {isPending ? "جاري الدخول..." : "دخول لوحة التحكم"}
                         </Button>
 
                         {/* Divider */}

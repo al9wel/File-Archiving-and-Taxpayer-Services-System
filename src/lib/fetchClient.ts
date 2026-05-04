@@ -24,7 +24,7 @@ export const fetchClient = async (endpoint: string, options: RequestInit = {}) =
   });
 
   if (!response.ok) {
-    let errorMessage = 'Something went wrong';
+    let errorMessage = 'حدث خطأ يرجى المحاولة في وقت اخر';
     try {
       const data = await response.json();
       errorMessage = data.message || data.error || errorMessage;

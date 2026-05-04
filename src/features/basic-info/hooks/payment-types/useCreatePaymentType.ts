@@ -5,7 +5,7 @@ export const useCreatePaymentType = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: paymentTypesApi.createPaymentType,
+        mutationFn: async (data: FormData) => paymentTypesApi.createPaymentType(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["payment-types"] });
         },

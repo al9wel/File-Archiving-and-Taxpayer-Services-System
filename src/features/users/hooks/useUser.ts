@@ -5,10 +5,7 @@ export const useUser = (id: string | number) => {
     return useQuery({
         queryKey: ["user", id],
 
-        queryFn: async () => {
-            const res = await userApi.getUser(id)
-            return res.data
-        },
+        queryFn: async () => userApi.getUser(id),
 
         enabled: !!id,
     })
