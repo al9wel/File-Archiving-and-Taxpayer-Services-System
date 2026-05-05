@@ -15,6 +15,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useEmploymentTypes } from "../../hooks/employment-types/useEmploymentTypes";
+import { useMoveEmploymentType } from "../../hooks/employment-types/useMoveEmploymentTyps";
 
 interface EmploymentTypeActionsProps {
     employmentType: EmploymentType;
@@ -23,24 +26,56 @@ interface EmploymentTypeActionsProps {
 export const EmploymentTypeActions = ({ employmentType }: EmploymentTypeActionsProps) => {
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
+    const [deleteOption, setDeleteOption] = useState<"delete" | "move">("delete");
+    const [targetEmpId, setTargetEmpId] = useState<string | null>(null);
 
     const canUpdate = usePermission(ACTIONS.UPDATE_TAX_COLLECTOR);
     const canDelete = usePermission(ACTIONS.DELETE_TAX_COLLECTOR);
 
     const { mutate: deleteType, isPending: isDeleting } = useDeleteEmploymentType();
     const { mutate: updateType, isPending: isUpdating } = useUpdateEmploymentType();
+    const { mutate: moveType, isPending: isMoving } = useMoveEmploymentType();
+    const { data: employmentTypes, } = useEmploymentTypes()
 
     const handleDelete = () => {
-        deleteType(employmentType.id, {
-            onSuccess: (res) => {
-                toast.success(res.message || "تم حذف نوع التوظيف بنجاح");
-                setIsDeleteAlertOpen(false);
+        if (deleteOption === "delete") {
+            deleteType(employmentType.id, {
+                onSuccess: (res) => {
+                    toast.success(res.message || "تم حذف نوع التوظيف بنجاح");
+                    setIsDeleteAlertOpen(false);
+                },
+                onError: (error) => {
+                    toast.error(error.message || "حدث خطأ أثناء حذف نوع التوظيف");
+                }
+            });
+            return;
+        };
+        if (!targetEmpId) {
+            toast.error("يرجى اختيار نوع توظيف ");
+            return;
+        }
+        const targetEmploymentType = employmentTypes?.data?.find(d => d.id.toString() === targetEmpId);
+        if (!targetEmploymentType) {
+            toast.error("يرجى اختيار نوع توظيف بديل");
+            return;
+        }
+        moveType({ newEmpId: targetEmpId, oldEmpId: employmentType.id }, {
+            onSuccess: () => {
+                deleteType(employmentType.id, {
+                    onSuccess: () => {
+                        toast.success("تم نقل المأمورين وحذف الوظيفة بنجاح");
+                        setIsDeleteAlertOpen(false);
+                    },
+                    onError: () => {
+                        toast.error("حدث خطأ أثناء حذف الوظيفه بعد النقل");
+                    }
+                })
             },
             onError: (error) => {
-                toast.error(error.message || "حدث خطأ أثناء حذف نوع التوظيف");
+                toast.error(error.message || "حدث خطأ أثناء نقل المأمورين");
             }
-        });
-    };
+        })
+    }
 
     const handleUpdate = (formData: FormData) => {
         updateType(
@@ -107,8 +142,43 @@ export const EmploymentTypeActions = ({ employmentType }: EmploymentTypeActionsP
                             </div>
                         </DialogHeader>
                         <div className="space-y-4 text-right">
-                            <h3 className="font-semibold">حذف نوع التوظيف مع جميع المأمورين المرتبطين</h3>
-                            <p className="text-sm text-muted-foreground">سيتم حذف نوع التوظيف وجميع المأمورين المرتبطين به نهائياً.</p>
+                            <p className="text-sm text-muted-foreground">
+                                حذف نوع التوظيف سيؤثر على المأمورين المرتبطين به. اختر أحد الخيارات أدناه.
+                            </p>
+                            <div
+                                className={`p-3 rounded-lg border ${deleteOption === "delete" ? "border-primary bg-primary/5" : "border-muted bg-background"} cursor-pointer`}
+                                onClick={() => setDeleteOption("delete")}>
+                                <h3 className="font-semibold">حذف نوع التوظيف مع جميع المأمورين المرتبطين</h3>
+                                <p className="text-sm text-muted-foreground">سيتم حذف نوع التوظيف وجميع المأمورين المرتبطين به نهائياً.</p>
+                            </div>
+                            <div
+                                className={`p-3 rounded-lg border ${deleteOption === "move" ? "border-primary bg-primary/5" : "border-muted bg-background"} cursor-pointer`}
+                                onClick={() => setDeleteOption("move")}>
+                                <h3 className="font-semibold">نقل المأمورين لنوع توظيف آخر ثم الحذف</h3>
+                                <p className="text-sm text-muted-foreground">اختر نوع توظيف لاستقبال المأمورين ثم سيتم حذف نوع التوظيف الحالي.</p>
+                                {deleteOption === "move" && (
+                                    <div className="mt-3">
+                                        <div className="h-12 w-full">
+                                            <Select
+                                                onValueChange={(val) => setTargetEmpId(val)}
+                                                value={targetEmpId || undefined}
+                                                defaultValue={undefined}
+                                            >
+                                                <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                                                    <SelectValue placeholder="إختر نوع التوظيف المستهدف" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {employmentTypes?.data?.filter(e => e.id !== employmentType.id).map((emp) => (
+                                                        <SelectItem key={emp.id} value={emp.id.toString()}>
+                                                            {emp.name}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                         <div className="flex items-center justify-end gap-3 mt-6">
                             <Button variant="secondary" className="rounded-lg" onClick={() => setIsDeleteAlertOpen(false)} disabled={isDeleting}>
@@ -118,15 +188,15 @@ export const EmploymentTypeActions = ({ employmentType }: EmploymentTypeActionsP
                                 variant="destructive"
                                 className="rounded-lg min-w-[120px]"
                                 onClick={handleDelete}
-                                disabled={isDeleting}
+                                disabled={isDeleting || isMoving}
                             >
-                                {isDeleting ? (
+                                {(isDeleting || isMoving) ? (
                                     <div className="flex items-center gap-2">
                                         <Loader2 className="h-4 w-4 animate-spin" />
-                                        <span>جاري الحذف...</span>
+                                        <span>جاري المعالجة...</span>
                                     </div>
                                 ) : (
-                                    "تأكيد الحذف"
+                                    deleteOption === "delete" ? "تأكيد الحذف" : "نقل المستخدمين ثم الحذف"
                                 )}
                             </Button>
                         </div>

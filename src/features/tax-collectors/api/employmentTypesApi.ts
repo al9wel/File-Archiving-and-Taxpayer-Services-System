@@ -33,4 +33,10 @@ export const employmentTypesApi = {
             method: 'DELETE',
         });
     },
+    moveTaxCollectorsEmploymentType: ({ newEmpId, oldEmpId }: { newEmpId: string | number, oldEmpId: string | number }): Promise<{ message: string }> => {
+        return fetchClient(`/job-types/${oldEmpId}/move-TaxCollectors`, {
+            method: 'POST',
+            body: JSON.stringify({ newJobTypeId: newEmpId })
+        });
+    },
 };
