@@ -39,7 +39,7 @@ export const departmentsApi = {
     moveUsersDepartment:(oldDepId: string | number, newDepId: string | number): Promise<{ message: string }> => {
         return fetchClient(`/departments/${oldDepId}/move-users`, {
             method: 'POST',
-            body: JSON.stringify({ department_id: newDepId }),
+            body: JSON.stringify({ departmentID: newDepId }),
         });
     }
 };

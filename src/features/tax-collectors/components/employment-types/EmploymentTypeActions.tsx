@@ -107,9 +107,8 @@ export const EmploymentTypeActions = ({ employmentType }: EmploymentTypeActionsP
                             </div>
                         </DialogHeader>
                         <div className="space-y-4 text-right">
-                            <p className="text-sm text-muted-foreground">
-                                هل أنت متأكد من رغبتك في حذف هذا النوع؟ لا يمكن التراجع عن هذا الإجراء.
-                            </p>
+                            <h3 className="font-semibold">حذف نوع التوظيف مع جميع المأمورين المرتبطين</h3>
+                            <p className="text-sm text-muted-foreground">سيتم حذف نوع التوظيف وجميع المأمورين المرتبطين به نهائياً.</p>
                         </div>
                         <div className="flex items-center justify-end gap-3 mt-6">
                             <Button variant="secondary" className="rounded-lg" onClick={() => setIsDeleteAlertOpen(false)} disabled={isDeleting}>

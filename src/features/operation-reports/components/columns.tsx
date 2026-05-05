@@ -14,8 +14,9 @@ const getName: Record<string, string> = {
     FileMovementModel: "حركة الملفات",
     RequestModel: "الطلبات",
     TaxpayerModel: "المكلفين",
-    OfficerModel: "المأمورين",
+    TaxCollectorModel: "المأمورين",
     NotificationModel: "الإشعارات",
+    JobTypeModel: "نوع التوظيف"
 }
 
 export const columns: ColumnDef<OperationReport>[] = [
