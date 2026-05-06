@@ -7,6 +7,8 @@ export * from "./District";
 export * from "./PaymentType";
 export * from "./EmploymentType";
 export * from "./TaxCollector";
+export * from "./IndividualTaxPayer";
+export * from "./TaxType";
 
 export interface LoginParams {
   userName?: string;

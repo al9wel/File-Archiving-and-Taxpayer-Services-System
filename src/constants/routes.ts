@@ -21,7 +21,22 @@ export const ROUTES = {
       DISTRICTS: "/dashboard/basic-info/districts",
     },
     NOTIFICATIONS: "/dashboard/notifications",
-    TAXPAYERS: "/dashboard/taxpayers",
+    TAXPAYERS: {
+      ROOT: "/dashboard/tax-payers",
+      PAYERS: {
+        ROOT: "/dashboard/tax-payers/payers",
+        CREATE: "/dashboard/tax-payers/payers/create",
+        EDIT: "/dashboard/tax-payers/payers/:id/edit",
+        SHOW: "/dashboard/tax-payers/payers/:id",
+      },
+      TYPES: "/dashboard/tax-payers/types",
+      INFO: {
+        ROOT: "/dashboard/tax-payers/info",
+        CREATE: "/dashboard/tax-payers/info/create",
+        EDIT: "/dashboard/tax-payers/info/:id/edit",
+        SHOW: "/dashboard/tax-payers/info/:id",
+      }
+    },
     TAX_COLLECTORS: {
       ROOT: "/dashboard/tax-collectors",
       COLLECTORS: "/dashboard/tax-collectors/collectors",
