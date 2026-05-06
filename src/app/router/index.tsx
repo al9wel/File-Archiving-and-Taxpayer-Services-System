@@ -14,7 +14,12 @@ import PaymentTypesPage from "@/features/basic-info/pages/PaymentTypesPage";
 import RegionsPage from "@/features/basic-info/pages/RegionsPage";
 import DistrictsPage from "@/features/basic-info/pages/DistrictsPage";
 import Notifications from "@/features/notifications/pages/Notifications";
-import Taxpayers from "@/features/taxpayers/pages/Taxpayers";
+import TaxPayersLayout from "@/features/tax-payers/components/TaxPayersLayout";
+import TaxTypesPage from "@/features/tax-payers/pages/tax-types/TaxTypesPage";
+import TaxInfoPage from "@/features/tax-payers/pages/tax-info/TaxInfoPage";
+import CreateTaxInfoPage from "@/features/tax-payers/pages/tax-info/CreateTaxInfoPage";
+import EditTaxInfoPage from "@/features/tax-payers/pages/tax-info/EditTaxInfoPage";
+import ViewTaxInfoPage from "@/features/tax-payers/pages/tax-info/ViewTaxInfoPage";
 import TaxCollectorsLayout from "@/features/tax-collectors/components/TaxCollectorsLayout";
 import TaxCollectorsPage from "@/features/tax-collectors/pages/TaxCollectorsPage";
 import EmploymentTypesPage from "@/features/tax-collectors/pages/EmploymentTypesPage";
@@ -32,6 +37,10 @@ import PublicRoute from "./PublicRoute";
 import Unauthorized from "@/app/pages/Unauthorized";
 import { ROLES } from "@/constants/roles";
 import { ROUTES } from "@/constants/routes";
+import IndividualTaxPayersPage from "@/features/tax-payers/pages/tax-payers/individual/IndividualTaxPayersPage";
+import EditIndividualTaxPayerPage from "@/features/tax-payers/pages/tax-payers/individual/EditIndividualTaxPayerPage";
+import ViewIndividualTaxPayerPage from "@/features/tax-payers/pages/tax-payers/individual/ViewIndividualTaxPayerPage";
+import CreateIndividualTaxPayerPage from "@/features/tax-payers/pages/tax-payers/individual/CreateIndividualTaxPayerPage";
 
 export const router = createBrowserRouter([
 
@@ -96,7 +105,32 @@ export const router = createBrowserRouter([
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
                         children: [
                             { path: ROUTES.DASHBOARD.REQUESTS.split("/").pop(), element: <Requests /> },
-                            { path: ROUTES.DASHBOARD.TAXPAYERS.split("/").pop(), element: <Taxpayers /> },
+                            {
+                                path: ROUTES.DASHBOARD.TAXPAYERS.ROOT.split("/").pop(),
+                                element: <TaxPayersLayout />,
+                                children: [
+                                    { index: true, element: <Navigate to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.ROOT.split("/").pop() || ""} replace /> },
+                                    {
+                                        path: ROUTES.DASHBOARD.TAXPAYERS.PAYERS.ROOT.split("/").pop(),
+                                        children: [
+                                            { index: true, element: <IndividualTaxPayersPage /> },
+                                            { path: "create", element: <CreateIndividualTaxPayerPage /> },
+                                            { path: ":id", element: <ViewIndividualTaxPayerPage /> },
+                                            { path: ":id/edit", element: <EditIndividualTaxPayerPage /> },
+                                        ]
+                                    },
+                                    { path: ROUTES.DASHBOARD.TAXPAYERS.TYPES.split("/").pop(), element: <TaxTypesPage /> },
+                                    {
+                                        path: ROUTES.DASHBOARD.TAXPAYERS.INFO.ROOT.split("/").pop(),
+                                        children: [
+                                            { index: true, element: <TaxInfoPage /> },
+                                            { path: "create", element: <CreateTaxInfoPage /> },
+                                            { path: ":id", element: <ViewTaxInfoPage /> },
+                                            { path: ":id/edit", element: <EditTaxInfoPage /> },
+                                        ]
+                                    },
+                                ]
+                            },
                             {
                                 path: ROUTES.DASHBOARD.BASIC_INFO.ROOT.split("/").pop(),
                                 element: <BasicInfoLayout />,
