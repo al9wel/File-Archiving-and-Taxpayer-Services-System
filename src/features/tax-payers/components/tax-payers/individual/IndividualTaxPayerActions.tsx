@@ -30,21 +30,21 @@ export const IndividualTaxPayerActions = ({ payer }: { payer: IndividualTaxPayer
     const canView = usePermission(ACTIONS.VIEW_TAX_PAYER);
 
     const handleDelete = () => {
-        deleteUser.mutate(payer.userInfo.id, {
+        deletePayer.mutate(payer.taxPayer.id, {
             onSuccess: () => {
-                deletePayer.mutate(payer.taxPayer.id, {
+                deleteUser.mutate(payer.userInfo.id, {
                     onSuccess: () => {
-                        toast.success("تم حذف المكلف بنجاح")
+                        toast.success("تم حذف المكلف وكافة بياناته بنجاح")
                         setIsOpen(false)
                     },
                     onError: (error: any) => {
-                        toast.error(error.message || "حدث خطأ أثناء حذف بيانات المكلف")
+                        toast.error(error.message || "حدث خطأ أثناء حذف بيانات المستخدم")
                         setIsOpen(false)
                     }
                 })
             },
             onError: (error: any) => {
-                toast.error(error.message || "حدث خطأ أثناء حذف المستخدم")
+                toast.error(error.message || "حدث خطأ أثناء حذف بيانات المكلف")
                 setIsOpen(false)
             }
         })
@@ -85,10 +85,10 @@ export const IndividualTaxPayerActions = ({ payer }: { payer: IndividualTaxPayer
                                 </div>
                                 <AlertDialogTitle className="text-right">حذف المكلف</AlertDialogTitle>
                             </div>
-                            <AlertDialogDescription className="text-right pt-2">
-                                هل أنت متأكد من حذف المكلف <span className="font-bold text-foreground">{payer.userInfo.fullName}</span>؟
-                                <br />
-                                لا يمكن التراجع عن هذا الإجراء وسيتم إزالة كافة بياناته من النظام.
+                            <AlertDialogDescription className="text-right pt-2 space-y-1">
+                                <div>هل أنت متأكد من حذف المكلف <span className="font-bold text-foreground">{payer.userInfo.fullName}</span>؟</div>
+                                <div className="text-destructive font-bold text-xs">تنبيه: سيتم حذف هذا المكلف وكافة بيانات المستخدم المرتبط به.</div>
+                                <div className="text-muted-foreground text-xs pt-1">لا يمكن التراجع عن هذا الإجراء وسيتم إزالة كافة بياناته من النظام.</div>
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter className="flex-row-reverse gap-3">
