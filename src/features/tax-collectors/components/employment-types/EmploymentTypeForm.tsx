@@ -5,7 +5,7 @@ import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Check, Loader2 } from "lucide-react";
-import type { EmploymentType } from "@/types";
+import type { EmploymentType } from "@/types/EmploymentType";
 
 const employmentTypeSchema = z.object({
     name: z.string().min(2, "إسم نوع التوظيف يجب أن يكون حرفين على الأقل"),
@@ -36,14 +36,17 @@ export const EmploymentTypeForm = ({ initialData, onSubmit, onCancel, isLoading 
         }
     }, [initialData, setValue]);
 
-    const onFormSubmit = (values: EmploymentTypeFormValues) => {
+    const handleFormSubmit = (values: EmploymentTypeFormValues) => {
         const formData = new FormData();
-        formData.append("name", values.name);
+        const fields = ["name"];
+        fields.forEach(field => {
+            formData.append(field, values[field as keyof EmploymentTypeFormValues]);
+        });
         onSubmit(formData);
     };
 
     return (
-        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6 pt-4" dir="rtl">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 pt-4" dir="rtl">
             <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center gap-1">
                     <span className="text-red-600">*</span>
@@ -70,7 +73,7 @@ export const EmploymentTypeForm = ({ initialData, onSubmit, onCancel, isLoading 
                     ) : (
                         <Check className="size-5" />
                     )}
-                    <span>{initialData ? "تحديث البيانات" : "حفظ بيانات النوع"}</span>
+                    <span>{initialData ? "تحديث البيانات" : "حفظ بيانات نوع التوظيف"}</span>
                 </Button>
                 <Button 
                     type="button" 

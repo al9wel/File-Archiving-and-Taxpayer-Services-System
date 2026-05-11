@@ -8,7 +8,7 @@ import { Check, Loader2 } from "lucide-react";
 import type { Region } from "@/types/Region";
 
 const regionSchema = z.object({
-    name: z.string().min(2, "إسم المنطقة يجب أن يكون حرفين على الأقل"),
+    name: z.string().min(2, "إسم المحافظة يجب أن يكون حرفين على الأقل"),
 });
 
 type RegionFormValues = z.infer<typeof regionSchema>;
@@ -36,21 +36,24 @@ export const RegionForm = ({ initialData, onSubmit, onCancel, isLoading }: Regio
         }
     }, [initialData, setValue]);
 
-    const onFormSubmit = (values: RegionFormValues) => {
+    const handleFormSubmit = (values: RegionFormValues) => {
         const formData = new FormData();
-        formData.append("name", values.name);
+        const fields = ["name"];
+        fields.forEach(field => {
+            formData.append(field, values[field as keyof RegionFormValues]);
+        });
         onSubmit(formData);
     };
 
     return (
-        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6 pt-4" dir="rtl">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 pt-4" dir="rtl">
             <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center gap-1">
                     <span className="text-red-600">*</span>
-                    إسم المنطقة
+                    إسم المحافظة
                 </label>
                 <Input
-                    placeholder="أدخل إسم المنطقة"
+                    placeholder="أدخل إسم المحافظة"
                     {...register("name")}
                     className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-1 focus-visible:ring-red-600"
                 />
@@ -70,7 +73,7 @@ export const RegionForm = ({ initialData, onSubmit, onCancel, isLoading }: Regio
                     ) : (
                         <Check className="size-5" />
                     )}
-                    <span>{initialData ? "تحديث البيانات" : "حفظ بيانات المنطقة"}</span>
+                    <span>{initialData ? "تحديث البيانات" : "حفظ بيانات المحافظة"}</span>
                 </Button>
                 <Button 
                     type="button" 

@@ -30,7 +30,7 @@ export const IndividualTaxPayerActions = ({ payer }: { payer: IndividualTaxPayer
     const canView = usePermission(ACTIONS.VIEW_TAX_PAYER);
 
     const handleDelete = () => {
-        deletePayer.mutate(payer.taxPayer.id, {
+        deletePayer.mutate(payer.taxPayerInfo.id, {
             onSuccess: () => {
                 deleteUser.mutate(payer.userInfo.id, {
                     onSuccess: () => {
@@ -53,14 +53,14 @@ export const IndividualTaxPayerActions = ({ payer }: { payer: IndividualTaxPayer
     return (
         <div className="flex items-center justify-center gap-2">
             {canView && (
-                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.SHOW.replace(":id", payer.userInfo.id.toString())}>
+                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.SHOW.replace(":id", payer.taxPayerInfo.id.toString())}>
                     <Button variant="ghost" size="icon" className="h-8 w-8 text-primary">
                         <Eye className="h-4 w-4" />
                     </Button>
                 </NavLink>
             )}
             {canUpdate && (
-                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.EDIT.replace(":id", payer.userInfo.id.toString())}>
+                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.EDIT.replace(":id", payer.taxPayerInfo.id.toString())}>
                     <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600">
                         <Pencil className="h-4 w-4" />
                     </Button>
@@ -86,9 +86,9 @@ export const IndividualTaxPayerActions = ({ payer }: { payer: IndividualTaxPayer
                                 <AlertDialogTitle className="text-right">حذف المكلف</AlertDialogTitle>
                             </div>
                             <AlertDialogDescription className="text-right pt-2 space-y-1">
-                                <div>هل أنت متأكد من حذف المكلف <span className="font-bold text-foreground">{payer.userInfo.fullName}</span>؟</div>
-                                <div className="text-destructive font-bold text-xs">تنبيه: سيتم حذف هذا المكلف وكافة بيانات المستخدم المرتبط به.</div>
-                                <div className="text-muted-foreground text-xs pt-1">لا يمكن التراجع عن هذا الإجراء وسيتم إزالة كافة بياناته من النظام.</div>
+                                <span className="block">هل أنت متأكد من حذف المكلف <span className="font-bold text-foreground">{payer.userInfo.fullName}</span>؟</span>
+                                <span className="block text-destructive font-bold text-xs">تنبيه: سيتم حذف هذا المكلف وكافة بيانات المستخدم المرتبط به.</span>
+                                <span className="block text-muted-foreground text-xs pt-1">لا يمكن التراجع عن هذا الإجراء وسيتم إزالة كافة بياناته من النظام.</span>
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter className="flex-row-reverse gap-3">

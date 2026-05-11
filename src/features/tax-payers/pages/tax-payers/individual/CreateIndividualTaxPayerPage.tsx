@@ -19,7 +19,7 @@ const CreateIndividualTaxPayerPage = () => {
         createTaxPayer(formData, {
             onSuccess: (res) => {
                 toast.success(res.message || "تم إضافة المكلف بنجاح")
-                navigate(ROUTES.DASHBOARD.TAXPAYERS.PAYERS.ROOT)
+                navigate(ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.ROOT)
             },
             onError: (error: any) => {
                 toast.error(error.message || "حدث خطأ أثناء إضافة المكلف")

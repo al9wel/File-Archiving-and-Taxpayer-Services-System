@@ -36,14 +36,17 @@ export const DepartmentForm = ({ initialData, onSubmit, onCancel, isLoading }: D
         }
     }, [initialData, setValue]);
 
-    const onFormSubmit = (values: DepartmentFormValues) => {
+    const handleFormSubmit = (values: DepartmentFormValues) => {
         const formData = new FormData();
-        formData.append("name", values.name);
+        const fields = ["name"];
+        fields.forEach(field => {
+            formData.append(field, values[field as keyof DepartmentFormValues]);
+        });
         onSubmit(formData);
     };
 
     return (
-        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6 pt-4" dir="rtl">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 pt-4" dir="rtl">
             <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center gap-1">
                     <span className="text-red-600">*</span>

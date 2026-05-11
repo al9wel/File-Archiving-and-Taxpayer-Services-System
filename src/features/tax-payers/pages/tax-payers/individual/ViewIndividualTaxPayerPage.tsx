@@ -28,21 +28,22 @@ const ViewTaxPayerPage = () => {
     const data = payer?.data;
 
     const infoItems = [
-        { label: "رقم المكلف", value: data?.taxPayer.id, icon: Shield },
+        { label: "الاسم التجاري", value: data?.taxPayerInfo?.tradeName, icon: Briefcase },
+        { label: "رقم المكلف", value: data?.taxPayerInfo?.id, icon: Shield },
         { label: "رقم المستخدم", value: data?.userInfo.id, icon: Hash },
         { label: "رقم الهاتف", value: data?.userInfo.phone, icon: Phone },
         { label: "الدور", value: "مكلف", icon: Briefcase },
         { label: "القسم", value: data?.userInfo.department?.name, icon: Briefcase },
-        { label: "نوع الملف", value: data?.taxPayer.fileType === "Individual" ? "فرد" : data?.taxPayer.fileType === "Company" ? "شركة" : "جمعية خيرية", icon: FileText },
+        { label: "نوع الملف", value: data?.taxPayerInfo?.fileType === "Individual" ? "فرد" : data?.taxPayerInfo?.fileType, icon: FileText },
     ]
 
     const documentItems = [
         { label: "نسخة بطاقة الهوية", value: data?.userInfo.idCard },
-        { label: "السجل التجاري", value: data?.taxPayer.commercialRecord },
-        { label: "رخصة النشاط", value: data?.taxPayer.activityLicense },
-        { label: "صورة اللوحة", value: data?.taxPayer.tradePict },
-        { label: "بطاقة التأمين", value: data?.taxPayer.insuranceCard },
-        { label: "وثيقة الملكية", value: data?.taxPayer.propertyDocPict },
+        { label: "السجل التجاري", value: data?.taxPayerInfo?.commercialRecord },
+        { label: "رخصة النشاط", value: data?.taxPayerInfo?.activityLicense },
+        { label: "صورة اللوحة", value: data?.taxPayerInfo?.tradePict },
+        { label: "بطاقة التأمين", value: data?.taxPayerInfo?.insuranceCard },
+        { label: "وثيقة الملكية", value: data?.taxPayerInfo?.propertyDocPict },
     ]
 
     return (
@@ -58,7 +59,7 @@ const ViewTaxPayerPage = () => {
                 </Button>
                 {canUpdate && (
                     <Button
-                        onClick={() => navigate(ROUTES.DASHBOARD.TAXPAYERS.PAYERS.EDIT.replace(":id", id!))}
+                        onClick={() => navigate(ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.EDIT.replace(":id", id!))}
                         className="rounded-xl hover:bg-primary-hover cursor-pointer h-12 px-6 shadow-lg shadow-primary/20"
                     >
                         <Pencil className="ml-2 h-4 w-4" /> تعديل البيانات
@@ -84,11 +85,11 @@ const ViewTaxPayerPage = () => {
                             )}
                         </div>
                         <div className="space-y-2 mb-4 text-center md:text-right">
-                            <h2 className="text-3xl font-black text-foreground">{data?.userInfo.fullName}</h2>
+                            <h2 className="text-3xl font-black text-foreground">{(data?.userInfo.firstName + " " + data?.userInfo.lastName)}</h2>
                             <div className="flex flex-wrap justify-center md:justify-start gap-2">
                                 <span className="px-4 py-1 rounded-full bg-primary/10 text-primary text-sm font-bold">مكلف</span>
                                 <span className="px-4 py-1 rounded-full bg-muted text-muted-foreground text-sm font-bold">
-                                    {data?.taxPayer.fileType === "Individual" ? "فرد" : data?.taxPayer.fileType === "Company" ? "شركة" : "جمعية خيرية"}
+                                    {data?.taxPayerInfo?.fileType === "Individual" ? "فرد" : data?.taxPayerInfo?.fileType}
                                 </span>
                             </div>
                         </div>

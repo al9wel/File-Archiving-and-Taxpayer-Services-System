@@ -1,0 +1,333 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Default module",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/companies": {
+      "post": {
+        "summary": "Create_TaxPayer_With_CompanyFile",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileType": {
+                    "example": "Company",
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "example": "عمار",
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "example": "باوزير",
+                    "type": "string"
+                  },
+                  "idCard": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\saal9\\Desktop\\Common MIME types - HTTP _ MDN.pdf"
+                  },
+                  "phone": {
+                    "example": "147852369",
+                    "type": "string"
+                  },
+                  "image": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\saal9\\Desktop\\alryan.png"
+                  },
+                  "role": {
+                    "example": "Tax_Payer",
+                    "type": "string"
+                  },
+                  "departmentID": {
+                    "example": "1",
+                    "type": "string"
+                  },
+                  "commercialRecord": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://D:\\NOS\\NOS.pdf"
+                  },
+                  "activityLicense": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\saal9\\Desktop\\Common MIME types - HTTP _ MDN.pdf"
+                  },
+                  "tradePict": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\saal9\\Desktop\\Common MIME types - HTTP _ MDN.pdf"
+                  },
+                  "insuranceCard": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\saal9\\Desktop\\Common MIME types - HTTP _ MDN.pdf"
+                  },
+                  "propertyDocPict": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\saal9\\Desktop\\Common MIME types - HTTP _ MDN.pdf"
+                  },
+                  "articlesOfIncorporation": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\saal9\\Desktop\\Common MIME types - HTTP _ MDN.pdf"
+                  },
+                  "govemorLicense": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\saal9\\Desktop\\Common MIME types - HTTP _ MDN.pdf"
+                  },
+                  "partnersIDCards": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\saal9\\Desktop\\Common MIME types - HTTP _ MDN.pdf"
+                  },
+                  "tradeName": {
+                    "example": "االي",
+                    "type": "string"
+                  }
+                }
+              },
+              "examples": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "Get_All_Companies",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/companies/1": {
+      "get": {
+        "summary": "Get_Company_By_ID",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update_Company",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "articlesOfIncorporation": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://D:\\NOS\\NOSS1.pdf"
+                  },
+                  "govemorLicense": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": ""
+                  },
+                  "partnersIDCards": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": ""
+                  }
+                }
+              },
+              "examples": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/companies/2": {
+      "delete": {
+        "summary": "Delete_Company",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {},
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "servers": [],
+  "security": []
+}

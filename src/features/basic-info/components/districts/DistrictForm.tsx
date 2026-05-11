@@ -5,19 +5,10 @@ import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Check, Loader2 } from "lucide-react";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import type { District } from "@/types/District";
-import { useRegions } from "../../hooks/regions/useRegions";
 
 const districtSchema = z.object({
-    name: z.string().min(2, "إسم الحي يجب أن يكون حرفين على الأقل"),
-    regionID: z.string().min(1, "يجب اختيار المنطقة"),
+    name: z.string().min(2, "إسم المديرية يجب أن يكون حرفين على الأقل"),
 });
 
 type DistrictFormValues = z.infer<typeof districtSchema>;
@@ -30,76 +21,39 @@ interface DistrictFormProps {
 }
 
 export const DistrictForm = ({ initialData, onSubmit, onCancel, isLoading }: DistrictFormProps) => {
-    const { data: regions } = useRegions();
-    
-    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<DistrictFormValues>({
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm<DistrictFormValues>({
         resolver: zodResolver(districtSchema),
         defaultValues: {
             name: initialData?.name || "",
-            regionID: (initialData?.regionID || initialData?.region_id || initialData?.region?.id)?.toString() || "",
         }
     });
-
-    const regionIDValue = watch("regionID");
 
     useEffect(() => {
         if (initialData) {
             setValue("name", initialData.name);
-            setValue("regionID", (initialData.regionID || initialData.region_id || initialData.region?.id)?.toString() || "");
         } else {
             setValue("name", "");
-            setValue("regionID", "");
         }
     }, [initialData, setValue]);
 
-    const onFormSubmit = (values: DistrictFormValues) => {
+    const handleFormSubmit = (values: DistrictFormValues) => {
         const formData = new FormData();
-        formData.append("name", values.name);
-        formData.append("regionID", values.regionID);
-        formData.append("region_id", values.regionID); // Fallback for snake_case
+        const fields = ["name"];
+        fields.forEach(field => {
+            formData.append(field, values[field as keyof DistrictFormValues]);
+        });
         onSubmit(formData);
     };
 
     return (
-        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6 pt-4" dir="rtl">
-            {/* Region Selection */}
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 pt-4" dir="rtl">
             <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center gap-1">
                     <span className="text-red-600">*</span>
-                    المنطقة
-                </label>
-                <div className="h-12 w-full">
-                    <Select
-                        onValueChange={(val) => setValue("regionID", val)}
-                        value={regionIDValue}
-                    >
-                        <SelectTrigger className="text-right w-full h-full rounded-xl bg-muted/30 border border-muted-foreground/10 focus:ring-1 focus:ring-red-600">
-                            <SelectValue placeholder="اختر المنطقة" />
-                        </SelectTrigger>
-                        <SelectContent dir="rtl">
-                            {regions?.data?.map((region) => (
-                                region.id ? (
-                                    <SelectItem key={region.id} value={region.id.toString()}>
-                                        {region.name}
-                                    </SelectItem>
-                                ) : null
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-                {errors.regionID && (
-                    <p className="text-sm text-red-600 text-right">{errors.regionID.message}</p>
-                )}
-            </div>
-
-            {/* District Name */}
-            <div className="space-y-2">
-                <label className="text-sm font-medium flex items-center gap-1">
-                    <span className="text-red-600">*</span>
-                    إسم الحي
+                    إسم المديرية
                 </label>
                 <Input
-                    placeholder="أدخل إسم الحي"
+                    placeholder="أدخل إسم المديرية"
                     {...register("name")}
                     className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-1 focus-visible:ring-red-600"
                 />
@@ -119,7 +73,7 @@ export const DistrictForm = ({ initialData, onSubmit, onCancel, isLoading }: Dis
                     ) : (
                         <Check className="size-5" />
                     )}
-                    <span>{initialData ? "تحديث البيانات" : "حفظ بيانات الحي"}</span>
+                    <span>{initialData ? "تحديث البيانات" : "حفظ بيانات المديرية"}</span>
                 </Button>
                 <Button 
                     type="button" 

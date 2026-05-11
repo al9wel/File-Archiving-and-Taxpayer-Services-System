@@ -17,9 +17,6 @@ import Notifications from "@/features/notifications/pages/Notifications";
 import TaxPayersLayout from "@/features/tax-payers/components/TaxPayersLayout";
 import TaxTypesPage from "@/features/tax-payers/pages/tax-types/TaxTypesPage";
 import TaxInfoPage from "@/features/tax-payers/pages/tax-info/TaxInfoPage";
-import CreateTaxInfoPage from "@/features/tax-payers/pages/tax-info/CreateTaxInfoPage";
-import EditTaxInfoPage from "@/features/tax-payers/pages/tax-info/EditTaxInfoPage";
-import ViewTaxInfoPage from "@/features/tax-payers/pages/tax-info/ViewTaxInfoPage";
 import TaxCollectorsLayout from "@/features/tax-collectors/components/TaxCollectorsLayout";
 import TaxCollectorsPage from "@/features/tax-collectors/pages/TaxCollectorsPage";
 import EmploymentTypesPage from "@/features/tax-collectors/pages/EmploymentTypesPage";
@@ -35,6 +32,7 @@ import AboutPage from "@/landing/pages/AboutPage";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import Unauthorized from "@/app/pages/Unauthorized";
+import AppErrorBoundary from "@/app/pages/AppErrorBoundary";
 import { ROLES } from "@/constants/roles";
 import { ROUTES } from "@/constants/routes";
 import IndividualTaxPayersPage from "@/features/tax-payers/pages/tax-payers/individual/IndividualTaxPayersPage";
@@ -42,11 +40,22 @@ import EditIndividualTaxPayerPage from "@/features/tax-payers/pages/tax-payers/i
 import ViewIndividualTaxPayerPage from "@/features/tax-payers/pages/tax-payers/individual/ViewIndividualTaxPayerPage";
 import CreateIndividualTaxPayerPage from "@/features/tax-payers/pages/tax-payers/individual/CreateIndividualTaxPayerPage";
 
+import CompanyTaxPayersPage from "@/features/tax-payers/pages/tax-payers/company/CompanyTaxPayersPage";
+import EditCompanyTaxPayerPage from "@/features/tax-payers/pages/tax-payers/company/EditCompanyTaxPayerPage";
+import ViewCompanyTaxPayerPage from "@/features/tax-payers/pages/tax-payers/company/ViewCompanyTaxPayerPage";
+import CreateCompanyTaxPayerPage from "@/features/tax-payers/pages/tax-payers/company/CreateCompanyTaxPayerPage";
+
+import CharitableCompanyTaxPayersPage from "@/features/tax-payers/pages/tax-payers/charitable-company/CharitableCompanyTaxPayersPage";
+import EditCharitableCompanyTaxPayerPage from "@/features/tax-payers/pages/tax-payers/charitable-company/EditCharitableCompanyTaxPayerPage";
+import ViewCharitableCompanyTaxPayerPage from "@/features/tax-payers/pages/tax-payers/charitable-company/ViewCharitableCompanyTaxPayerPage";
+import CreateCharitableCompanyTaxPayerPage from "@/features/tax-payers/pages/tax-payers/charitable-company/CreateCharitableCompanyTaxPayerPage";
+
 export const router = createBrowserRouter([
 
     {
         path: ROUTES.PUBLIC.HOME,
         element: <LandingLayout />,
+        errorElement: <AppErrorBoundary />,
         children: [
             { index: true, element: <HomePage /> },
             { path: ROUTES.PUBLIC.ABOUT.split("/").pop(), element: <AboutPage /> },
@@ -72,6 +81,7 @@ export const router = createBrowserRouter([
     {
         path: ROUTES.DASHBOARD.ROOT,
         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.EMPLOYEE, ROLES.COLLECTOR_MANAGER]} />,
+        errorElement: <AppErrorBoundary />,
         children: [
             {
                 path: "",
@@ -109,26 +119,41 @@ export const router = createBrowserRouter([
                                 path: ROUTES.DASHBOARD.TAXPAYERS.ROOT.split("/").pop(),
                                 element: <TaxPayersLayout />,
                                 children: [
-                                    { index: true, element: <Navigate to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.ROOT.split("/").pop() || ""} replace /> },
+                                    { index: true, element: <Navigate to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.ROOT.split("/").slice(-2).join("/")} replace /> },
                                     {
                                         path: ROUTES.DASHBOARD.TAXPAYERS.PAYERS.ROOT.split("/").pop(),
                                         children: [
-                                            { index: true, element: <IndividualTaxPayersPage /> },
-                                            { path: "create", element: <CreateIndividualTaxPayerPage /> },
-                                            { path: ":id", element: <ViewIndividualTaxPayerPage /> },
-                                            { path: ":id/edit", element: <EditIndividualTaxPayerPage /> },
+                                            {
+                                                path: ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.ROOT.split("/").pop(),
+                                                children: [
+                                                    { index: true, element: <IndividualTaxPayersPage /> },
+                                                    { path: "create", element: <CreateIndividualTaxPayerPage /> },
+                                                    { path: ":id", element: <ViewIndividualTaxPayerPage /> },
+                                                    { path: ":id/edit", element: <EditIndividualTaxPayerPage /> },
+                                                ]
+                                            },
+                                            {
+                                                path: ROUTES.DASHBOARD.TAXPAYERS.PAYERS.COMPANY.ROOT.split("/").pop(),
+                                                children: [
+                                                    { index: true, element: <CompanyTaxPayersPage /> },
+                                                    { path: "create", element: <CreateCompanyTaxPayerPage /> },
+                                                    { path: ":id", element: <ViewCompanyTaxPayerPage /> },
+                                                    { path: ":id/edit", element: <EditCompanyTaxPayerPage /> },
+                                                ]
+                                            },
+                                            {
+                                                path: ROUTES.DASHBOARD.TAXPAYERS.PAYERS.CHARITABLE_COMPANY.ROOT.split("/").pop(),
+                                                children: [
+                                                    { index: true, element: <CharitableCompanyTaxPayersPage /> },
+                                                    { path: "create", element: <CreateCharitableCompanyTaxPayerPage /> },
+                                                    { path: ":id", element: <ViewCharitableCompanyTaxPayerPage /> },
+                                                    { path: ":id/edit", element: <EditCharitableCompanyTaxPayerPage /> },
+                                                ]
+                                            },
                                         ]
                                     },
                                     { path: ROUTES.DASHBOARD.TAXPAYERS.TYPES.split("/").pop(), element: <TaxTypesPage /> },
-                                    {
-                                        path: ROUTES.DASHBOARD.TAXPAYERS.INFO.ROOT.split("/").pop(),
-                                        children: [
-                                            { index: true, element: <TaxInfoPage /> },
-                                            { path: "create", element: <CreateTaxInfoPage /> },
-                                            { path: ":id", element: <ViewTaxInfoPage /> },
-                                            { path: ":id/edit", element: <EditTaxInfoPage /> },
-                                        ]
-                                    },
+                                    { path: ROUTES.DASHBOARD.TAXPAYERS.INFO.split("/").pop(), element: <TaxInfoPage /> },
                                 ]
                             },
                             {
