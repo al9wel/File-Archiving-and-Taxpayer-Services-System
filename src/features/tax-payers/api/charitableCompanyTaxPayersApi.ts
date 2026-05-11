@@ -1,0 +1,38 @@
+import { fetchClient } from '@/lib/fetchClient'
+import type { CharitableCompanyTaxPayer } from '@/types/CharitableCompanyTaxPayer'
+
+export const charitableCompanyTaxPayersApi = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    createTaxPayer: (data: FormData): Promise<{ data: any; message: string }> => {
+        return fetchClient(`/charitable-companies`, {
+            method: 'POST',
+            body: data,
+        })
+    },
+
+    getTaxPayers: (): Promise<{ data: CharitableCompanyTaxPayer[]; message: string }> => {
+        return fetchClient('/charitable-companies', {
+            method: 'GET',
+        })
+    },
+
+    getTaxPayer: (id: string | number): Promise<{ data: CharitableCompanyTaxPayer; message: string }> => {
+        return fetchClient(`/charitable-companies/${id}`, {
+            method: 'GET',
+        })
+    },
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    updateTaxPayer: (id: string | number, data: FormData): Promise<{ data: any; message: string }> => {
+        return fetchClient(`/charitable-companies/${id}`, {
+            method: 'PUT',
+            body: data,
+        })
+    },
+
+    deleteTaxPayer: (id: string | number): Promise<{ message: string }> => {
+        return fetchClient(`/charitable-companies/${id}`, {
+            method: 'DELETE',
+        })
+    },
+}

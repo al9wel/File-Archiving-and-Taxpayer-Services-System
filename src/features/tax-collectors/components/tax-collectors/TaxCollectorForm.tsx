@@ -64,22 +64,22 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
         }
     };
 
-    const onFormSubmit = (values: TaxCollectorFormValues) => {
+    const handleFormSubmit = (values: TaxCollectorFormValues) => {
         const formData = new FormData();
-        formData.append("fullName", values.fullName);
-        formData.append("phone", values.phone);
-        formData.append("jobTypeId", values.jobTypeId);
-        formData.append("deptID", values.deptID);
-
-        if (values.idCard && values.idCard instanceof File) {
-            formData.append("idCard", values.idCard);
-        }
+        const fields = ["fullName", "phone", "jobTypeId", "deptID", "idCard"];
+        
+        fields.forEach(field => {
+            const value = values[field as keyof TaxCollectorFormValues];
+            if (value !== undefined && value !== null && value !== "") {
+                formData.append(field, value instanceof File ? value : String(value));
+            }
+        });
 
         onSubmit(formData);
     };
 
     return (
-        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6 pt-4 overflow-y-auto max-h-[70vh] px-1" dir="rtl">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 pt-4 overflow-y-auto max-h-[70vh] px-1" dir="rtl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Full Name */}
                 <div className="space-y-2 col-span-2">

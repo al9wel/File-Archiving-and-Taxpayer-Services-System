@@ -1,0 +1,212 @@
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Check, Loader2 } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useTaxTypes } from "../../hooks/tax-type/useTaxTypes";
+import { useIndividualTaxPayers } from "../../hooks/tax-payers/individual/useIndividualTaxPayers";
+import { useCompanyTaxPayers } from "../../hooks/tax-payers/company/useCompanyTaxPayers";
+import { useCharitableCompanyTaxPayers } from "../../hooks/tax-payers/charitable-company/useCharitableCompanyTaxPayers";
+
+const taxInfoSchema = z.object({
+    taxPayerId: z.string().min(1, "يجب اختيار المكلف"),
+    taxTypeId: z.string().min(1, "يجب اختيار نوع الضريبة"),
+    taxAmount: z.string().min(1, "يجب إدخال مبلغ الضريبة"),
+    lastPayment: z.string().min(1, "يجب إدخال آخر دفعة"),
+});
+
+type TaxInfoFormValues = z.infer<typeof taxInfoSchema>;
+
+interface TaxInfoFormProps {
+    initialData?: {
+        taxPayerId?: string | number;
+        taxTypeId?: string | number;
+        taxAmount?: string | number;
+        lastPayment?: string | number;
+    } | null;
+    onSubmit: (data: FormData) => void;
+    onCancel: () => void;
+    isLoading?: boolean;
+}
+
+export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxInfoFormProps) => {
+    const { data: taxTypes, isPending: isLoadingTaxTypes } = useTaxTypes();
+    const { data: individuals, isPending: isLoadingIndividuals } = useIndividualTaxPayers();
+    const { data: companies, isPending: isLoadingCompanies } = useCompanyTaxPayers();
+    const { data: charitableCompanies, isPending: isLoadingCharitable } = useCharitableCompanyTaxPayers();
+
+    const isDataLoading = isLoadingTaxTypes || isLoadingIndividuals || isLoadingCompanies || isLoadingCharitable;
+
+    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<TaxInfoFormValues>({
+        resolver: zodResolver(taxInfoSchema),
+        defaultValues: {
+            taxPayerId: initialData?.taxPayerId?.toString() || "",
+            taxTypeId: initialData?.taxTypeId?.toString() || "",
+            taxAmount: initialData?.taxAmount?.toString() || "",
+            lastPayment: initialData?.lastPayment?.toString() || "",
+        }
+    });
+
+    const taxPayerId = watch("taxPayerId");
+    const taxTypeId = watch("taxTypeId");
+
+    useEffect(() => {
+        if (initialData) {
+            setValue("taxPayerId", initialData.taxPayerId?.toString() || "");
+            setValue("taxTypeId", initialData.taxTypeId?.toString() || "");
+            setValue("taxAmount", initialData.taxAmount?.toString() || "");
+            setValue("lastPayment", initialData.lastPayment?.toString() || "");
+        }
+    }, [initialData, setValue]);
+
+    const handleFormSubmit = (values: TaxInfoFormValues) => {
+        const formData = new FormData();
+        const fields = Object.keys(values) as Array<keyof TaxInfoFormValues>;
+        
+        fields.forEach(fieldName => {
+            const value = values[fieldName];
+            if (value !== undefined && value !== null && value !== "") {
+                formData.append(fieldName, String(value));
+            }
+        });
+        
+        onSubmit(formData);
+    };
+
+    // 1. Prepare list of individuals
+    const individualList = (individuals?.data || []).map((p: any) => ({
+        id: p.taxPayerInfo?.id,
+        name: p.userInfo?.fullName || p.userInfo?.userName,
+        type: "فرد"
+    }));
+
+    // 2. Prepare list of companies
+    const companyList = (companies?.data || []).map((p: any) => ({
+        id: p.taxPayerInfo?.id,
+        name: p.taxPayerInfo?.tradeName || p.userInfo?.fullName,
+        type: "شركة"
+    }));
+
+    // 3. Prepare list of charitable companies
+    const charitableList = (charitableCompanies?.data || []).map((p: any) => ({
+        id: p.taxPayerInfo?.id,
+        name: p.taxPayerInfo?.tradeName || p.userInfo?.fullName,
+        type: "شركة خيرية"
+    }));
+
+    // 4. Combine all into one array and filter out any items without a valid ID
+    // Filtering by p.id ensures the Select component doesn't break if some data is incomplete
+    const allPayers = [...individualList, ...companyList, ...charitableList].filter(p => p.id);
+
+    // If initial critical data is loading, show a full form loader to prevent "hanging"
+    if (isDataLoading && !initialData) {
+        return (
+            <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-sm text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
+            </div>
+        );
+    }
+
+    return (
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 pt-2" dir="rtl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Tax Payer Select */}
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">المكلف <span className="text-red-600">*</span></label>
+                    <Select
+                        disabled={isLoading || isDataLoading}
+                        value={taxPayerId}
+                        onValueChange={(val) => setValue("taxPayerId", val, { shouldValidate: true })}
+                    >
+                        <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
+                            <SelectValue placeholder={isDataLoading ? "جاري التحميل..." : "اختر المكلف"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {allPayers.map((payer) => (
+                                <SelectItem key={payer.id} value={payer.id.toString()}>
+                                    {payer.name} ({payer.type})
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    {errors.taxPayerId && <p className="text-xs text-red-600">{errors.taxPayerId.message}</p>}
+                </div>
+
+                {/* Tax Type Select */}
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">نوع الضريبة <span className="text-red-600">*</span></label>
+                    <Select
+                        disabled={isLoading || isDataLoading}
+                        value={taxTypeId}
+                        onValueChange={(val) => setValue("taxTypeId", val, { shouldValidate: true })}
+                    >
+                        <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
+                            <SelectValue placeholder={isDataLoading ? "جاري التحميل..." : "اختر نوع الضريبة"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {(taxTypes?.data || []).map((type: any) => (
+                                <SelectItem key={type.id} value={type.id.toString()}>
+                                    {type.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    {errors.taxTypeId && <p className="text-xs text-red-600">{errors.taxTypeId.message}</p>}
+                </div>
+
+                {/* Tax Amount */}
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">مبلغ الضريبة <span className="text-red-600">*</span></label>
+                    <Input
+                        disabled={isLoading || isDataLoading}
+                        placeholder="0.00"
+                        type="number"
+                        {...register("taxAmount")}
+                        className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10"
+                    />
+                    {errors.taxAmount && <p className="text-xs text-red-600">{errors.taxAmount.message}</p>}
+                </div>
+
+                {/* Last Payment */}
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">آخر دفعة <span className="text-red-600">*</span></label>
+                    <Input
+                        disabled={isLoading || isDataLoading}
+                        placeholder="0.00"
+                        type="number"
+                        {...register("lastPayment")}
+                        className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10"
+                    />
+                    {errors.lastPayment && <p className="text-xs text-red-600">{errors.lastPayment.message}</p>}
+                </div>
+            </div>
+
+            <div className="flex items-center gap-3 pt-4">
+                <Button
+                    type="submit"
+                    disabled={isLoading || isDataLoading}
+                    className="bg-[#911111] hover:bg-[#7a0e0e] text-white rounded-xl h-12 flex-1 gap-2"
+                >
+                    {isLoading ? (
+                        <Loader2 className="size-5 animate-spin" />
+                    ) : (
+                        <Check className="size-5" />
+                    )}
+                    <span>{initialData ? "تحديث" : "حفظ"}</span>
+                </Button>
+                <Button
+                    type="button"
+                    onClick={onCancel}
+                    variant="outline"
+                    className="rounded-xl h-12 px-8 border-none bg-muted text-muted-foreground hover:bg-muted/80"
+                >
+                    إلغاء
+                </Button>
+            </div>
+        </form>
+    );
+};

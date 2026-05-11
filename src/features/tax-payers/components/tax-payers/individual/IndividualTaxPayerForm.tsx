@@ -23,6 +23,7 @@ const taxPayerSchema = z.object({
     role: z.string(),
     departmentID: z.string().min(1, "يرجى اختيار القسم"),
     fileType: z.enum(["Individual", "Company"]),
+    tradeName: z.string().min(2, "الاسم التجاري يجب أن يكون حرفين على الأقل"),
     image: z.any().optional(),
     idCard: z.any().optional(),
     commercialRecord: z.any().optional(),
@@ -54,34 +55,35 @@ export const IndividualTaxPayerForm = ({ initialData, onSubmit, isLoading }: Ind
     const { register, handleSubmit, setValue, watch, reset, formState: { errors } } = useForm<IndividualTaxPayerFormValues>({
         resolver: zodResolver(taxPayerSchema),
         defaultValues: {
-            firstName: initialData?.userInfo.fullName.split(' ')[0] || "",
-            lastName: initialData?.userInfo.fullName.split(' ').slice(1).join(' ') || "",
-            phone: initialData?.userInfo.phone || "",
+            firstName: (initialData?.userInfo?.fullName || "").split(' ')[0] || "",
+            lastName: (initialData?.userInfo?.fullName || "").split(' ').slice(1).join(' ') || "",
+            phone: initialData?.userInfo?.phone || "",
             role: initialData?.userInfo.role || "Tax_Payer",
             departmentID: initialData?.userInfo.department?.id.toString() || "1",
             fileType: "Individual",
+            tradeName: initialData?.taxPayerInfo?.tradeName || "",
         }
     })
 
     useEffect(() => {
         if (initialData) {
-            const names = initialData.userInfo.fullName.split(' ');
             reset({
-                firstName: names[0] || "",
-                lastName: names.slice(1).join(' ') || "",
-                phone: initialData.userInfo.phone,
-                role: initialData.userInfo.role,
-                departmentID: initialData.userInfo.department?.id.toString() || "1",
+                firstName: initialData.userInfo?.firstName || "",
+                lastName: initialData.userInfo?.lastName || "",
+                phone: initialData.userInfo?.phone || "",
+                role: initialData.userInfo?.role || "Tax_Payer",
+                departmentID: initialData.userInfo?.department?.id.toString() || "1",
                 fileType: "Individual",
+                tradeName: initialData.taxPayerInfo?.tradeName || "",
             });
 
-            if (initialData.userInfo.image) setImagePreview(initialData.userInfo.image);
-            if (initialData.userInfo.idCard) setIdCardName(initialData.userInfo.idCard.split('/').pop() || "الملف الحالي");
-            if (initialData.taxPayer.commercialRecord) setCommRecordName(initialData.taxPayer.commercialRecord.split('/').pop() || "الملف الحالي");
-            if (initialData.taxPayer.activityLicense) setLicenseName(initialData.taxPayer.activityLicense.split('/').pop() || "الملف الحالي");
-            if (initialData.taxPayer.tradePict) setTradePictName(initialData.taxPayer.tradePict.split('/').pop() || "الملف الحالي");
-            if (initialData.taxPayer.insuranceCard) setInsuranceName(initialData.taxPayer.insuranceCard.split('/').pop() || "الملف الحالي");
-            if (initialData.taxPayer.propertyDocPict) setPropertyDocName(initialData.taxPayer.propertyDocPict.split('/').pop() || "الملف الحالي");
+            if (initialData.userInfo?.image) setImagePreview(initialData.userInfo.image);
+            if (initialData.userInfo?.idCard) setIdCardName(initialData.userInfo.idCard.split('/').pop() || "الملف الحالي");
+            if (initialData.taxPayerInfo?.commercialRecord) setCommRecordName(initialData.taxPayerInfo.commercialRecord.split('/').pop() || "الملف الحالي");
+            if (initialData.taxPayerInfo?.activityLicense) setLicenseName(initialData.taxPayerInfo.activityLicense.split('/').pop() || "الملف الحالي");
+            if (initialData.taxPayerInfo?.tradePict) setTradePictName(initialData.taxPayerInfo.tradePict.split('/').pop() || "الملف الحالي");
+            if (initialData.taxPayerInfo?.insuranceCard) setInsuranceName(initialData.taxPayerInfo.insuranceCard.split('/').pop() || "الملف الحالي");
+            if (initialData.taxPayerInfo?.propertyDocPict) setPropertyDocName(initialData.taxPayerInfo.propertyDocPict.split('/').pop() || "الملف الحالي");
         }
     }, [initialData, reset])
 
@@ -100,11 +102,19 @@ export const IndividualTaxPayerForm = ({ initialData, onSubmit, isLoading }: Ind
 
     const handleFormSubmit = (values: IndividualTaxPayerFormValues) => {
         const formData = new FormData()
-        Object.entries(values).forEach(([key, value]) => {
+        const fields = [
+            "firstName", "lastName", "phone", "role", "departmentID",
+            "fileType", "tradeName", "image", "idCard", "commercialRecord",
+            "activityLicense", "tradePict", "insuranceCard", "propertyDocPict"
+        ]
+
+        fields.forEach(fieldName => {
+            const value = values[fieldName as keyof IndividualTaxPayerFormValues]
             if (value !== undefined && value !== null && value !== "") {
-                formData.append(key, value instanceof File ? value : String(value))
+                formData.append(fieldName, value instanceof File ? value : String(value))
             }
         })
+
         onSubmit(formData)
     }
 
@@ -176,11 +186,16 @@ export const IndividualTaxPayerForm = ({ initialData, onSubmit, isLoading }: Ind
                         </Select>
                     </div>
                     <div className="space-y-2 md:col-span-2">
+                        <label className="text-sm font-bold">الاسم التجاري *</label>
+                        <Input placeholder="أدخل اسم النشاط التجاري" {...register("tradeName")} className="h-12 rounded-xl bg-muted/30 border-none" />
+                        {errors.tradeName && <p className="text-xs text-destructive">{errors.tradeName.message}</p>}
+                    </div>
+                    <div className="space-y-2 md:col-span-2">
                         <label className="text-sm font-bold">نوع الملف الضريبي *</label>
-                        <Input 
-                            value="فردي (Individual)" 
-                            readOnly 
-                            className="h-12 rounded-xl bg-muted/30 border-none font-bold text-primary cursor-default focus-visible:ring-0" 
+                        <Input
+                            value="فردي (Individual)"
+                            readOnly
+                            className="h-12 rounded-xl bg-muted/30 border-none font-bold text-primary cursor-default focus-visible:ring-0"
                         />
                         <input type="hidden" {...register("fileType")} />
                     </div>

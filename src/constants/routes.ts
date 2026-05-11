@@ -25,17 +25,27 @@ export const ROUTES = {
       ROOT: "/dashboard/tax-payers",
       PAYERS: {
         ROOT: "/dashboard/tax-payers/payers",
-        CREATE: "/dashboard/tax-payers/payers/create",
-        EDIT: "/dashboard/tax-payers/payers/:id/edit",
-        SHOW: "/dashboard/tax-payers/payers/:id",
+        INDIVIDUAL: {
+          ROOT: "/dashboard/tax-payers/payers/individual",
+          CREATE: "/dashboard/tax-payers/payers/individual/create",
+          EDIT: "/dashboard/tax-payers/payers/individual/:id/edit",
+          SHOW: "/dashboard/tax-payers/payers/individual/:id",
+        },
+        COMPANY: {
+          ROOT: "/dashboard/tax-payers/payers/company",
+          CREATE: "/dashboard/tax-payers/payers/company/create",
+          EDIT: "/dashboard/tax-payers/payers/company/:id/edit",
+          SHOW: "/dashboard/tax-payers/payers/company/:id",
+        },
+        CHARITABLE_COMPANY: {
+          ROOT: "/dashboard/tax-payers/payers/charitable-company",
+          CREATE: "/dashboard/tax-payers/payers/charitable-company/create",
+          EDIT: "/dashboard/tax-payers/payers/charitable-company/:id/edit",
+          SHOW: "/dashboard/tax-payers/payers/charitable-company/:id",
+        }
       },
       TYPES: "/dashboard/tax-payers/types",
-      INFO: {
-        ROOT: "/dashboard/tax-payers/info",
-        CREATE: "/dashboard/tax-payers/info/create",
-        EDIT: "/dashboard/tax-payers/info/:id/edit",
-        SHOW: "/dashboard/tax-payers/info/:id",
-      }
+      INFO: "/dashboard/tax-payers/info",
     },
     TAX_COLLECTORS: {
       ROOT: "/dashboard/tax-collectors",

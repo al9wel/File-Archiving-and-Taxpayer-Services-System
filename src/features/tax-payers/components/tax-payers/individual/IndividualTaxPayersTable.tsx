@@ -72,7 +72,7 @@ export function TaxPayersTable<TData, TValue>({
                     />
                 </div>
                 {canCreate && (
-                    <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.CREATE}>
+                    <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.CREATE}>
                         <Button className="w-full sm:w-auto h-12 px-6 rounded-2xl bg-primary hover:bg-primary-hover text-white shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-95">
                             <Plus className="h-5 w-5" />
                             <span className="font-bold hidden sm:inline">إضافة مكلف جديد</span>

@@ -4,27 +4,28 @@ import { IndividualTaxPayerActions } from "./IndividualTaxPayerActions"
 import { Badge } from "@/components/ui/badge"
 
 export const columns: ColumnDef<IndividualTaxPayer>[] = [
-    {
-        accessorKey: "taxPayerId",
-        accessorFn: (row) => row.taxPayer.id,
-        header: "رقم المكلف",
-    },
+
     {
         accessorKey: "userId",
         accessorFn: (row) => row.userInfo.id,
         header: "رقم المستخدم",
     },
     {
+        accessorKey: "taxPayerId",
+        accessorFn: (row) => row.taxPayerInfo?.id,
+        header: "رقم المكلف",
+    },
+    {
         accessorKey: "fullName",
-        accessorFn: (row) => row.userInfo.fullName,
+        accessorFn: (row) => row.userInfo.firstName + " " + row.userInfo.lastName,
         header: "الاسم",
     },
     {
         accessorKey: "fileType",
-        accessorFn: (row) => row.taxPayer.fileType,
+        accessorFn: (row) => row.taxPayerInfo?.fileType,
         header: "نوع الملف",
         cell: ({ row }) => {
-            const type = row.original.taxPayer.fileType;
+            const type = row.original.taxPayerInfo?.fileType;
             return <Badge variant="outline" className="rounded-xl px-4 py-1">{type === "Individual" ? "فرد" : type}</Badge>
         }
     },

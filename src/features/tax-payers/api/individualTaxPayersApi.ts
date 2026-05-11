@@ -17,7 +17,7 @@ export const individualTaxPayersApi = {
     },
 
     getTaxPayer: (id: string | number): Promise<{ data: IndividualTaxPayer; message: string }> => {
-        return fetchClient(`/tax-payer-by-userId/${id}`, {
+        return fetchClient(`/tax-payers/${id}`, {
             method: 'GET',
         })
     },

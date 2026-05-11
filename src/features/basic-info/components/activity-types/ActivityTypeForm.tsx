@@ -36,14 +36,17 @@ export const ActivityTypeForm = ({ initialData, onSubmit, onCancel, isLoading }:
         }
     }, [initialData, setValue]);
 
-    const onFormSubmit = (values: ActivityTypeFormValues) => {
+    const handleFormSubmit = (values: ActivityTypeFormValues) => {
         const formData = new FormData();
-        formData.append("name", values.name);
+        const fields = ["name"];
+        fields.forEach(field => {
+            formData.append(field, values[field as keyof ActivityTypeFormValues]);
+        });
         onSubmit(formData);
     };
 
     return (
-        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6 pt-4" dir="rtl">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 pt-4" dir="rtl">
             <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center gap-1">
                     <span className="text-red-600">*</span>
@@ -70,7 +73,7 @@ export const ActivityTypeForm = ({ initialData, onSubmit, onCancel, isLoading }:
                     ) : (
                         <Check className="size-5" />
                     )}
-                    <span>{initialData ? "تحديث البيانات" : "حفظ بيانات النشاط الجديد"}</span>
+                    <span>{initialData ? "تحديث البيانات" : "حفظ بيانات نوع النشاط"}</span>
                 </Button>
                 <Button 
                     type="button" 

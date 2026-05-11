@@ -1,22 +1,32 @@
-import { usePermission } from "@/hooks/usePermission"
-import { ACTIONS } from "@/constants/permissions"
-import Unauthorized from "@/app/pages/Unauthorized"
-import { Button } from "@/components/ui/button"
-
+import { Loader2 } from "lucide-react";
+import ErrorState from "@/app/pages/ErrorState";
+import { useTaxInfos } from "../../hooks/tax-info/useTaxInfos";
+import { TaxInfosTable } from "../../components/tax-info/TaxInfosTable";
+import { usePermission } from "@/hooks/usePermission";
+import { ACTIONS } from "@/constants/permissions";
+import Unauthorized from "@/app/pages/Unauthorized";
+import { columns } from "../../components/tax-info/columns";
 
 const TaxInfoPage = () => {
-    const canView = usePermission(ACTIONS.VIEW_TAX_PAYER)
-    if (!canView) return <Unauthorized />
+    const { data: taxInfos, isLoading, isError } = useTaxInfos();
+    const canView = usePermission(ACTIONS.VIEW_TAX_PAYER);
+
+    if (!canView) return <Unauthorized />;
+
+    if (isError) return <ErrorState />;
 
     return (
-        <div className="space-y-6 animate-in fade-in duration-500 text-right">
-            <div className="bg-card p-10 rounded-2xl border border-dashed flex flex-col items-center justify-center text-muted-foreground">
-                <p className="text-xl font-bold">الميزة قيد التطوير</p>
-                <p>سيتم ربطها بالواجهة البرمجية فور جاهزيتها</p>
-                <Button className="mt-4" onClick={() => window.history.back()}>رجوع</Button>
-            </div>
+        <div className="space-y-6 text-right animate-in fade-in duration-500">
+            {isLoading ? (
+                <div className="flex flex-col items-center justify-center py-20 gap-4">
+                    <Loader2 className="size-10 animate-spin text-primary" />
+                    <p className="text-muted-foreground animate-pulse">جاري جلب البيانات الضريبية...</p>
+                </div>
+            ) : (
+                <TaxInfosTable columns={columns} data={taxInfos?.data || []} />
+            )}
         </div>
-    )
-}
+    );
+};
 
-export default TaxInfoPage
+export default TaxInfoPage;

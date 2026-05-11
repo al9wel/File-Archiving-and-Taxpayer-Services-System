@@ -25,8 +25,6 @@ const EditIndividualTaxPayerPage = () => {
 
     const handleSubmit = (formData: FormData) => {
         const userId = payer?.data?.userInfo.id;
-        const taxPayerId = payer?.data?.taxPayer.id;
-
         // 1. Prepare User Data
         const userFormData = new FormData()
         const userFields = ["firstName", "lastName", "phone", "departmentID", "image", "idCard"]
@@ -47,11 +45,11 @@ const EditIndividualTaxPayerPage = () => {
                 })
 
                 // 4. Update TaxPayer
-                updateTaxPayer({ id: taxPayerId!, data: taxPayerFormData }, {
+                updateTaxPayer({ id: id!, data: taxPayerFormData }, {
                     onSuccess: (res) => {
                         toast.success(res.message || "تم تحديث بيانات المكلف بنجاح")
                         setTimeout(() => {
-                            navigate(ROUTES.DASHBOARD.TAXPAYERS.PAYERS.ROOT)
+                            navigate(ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.ROOT)
                         }, 1000)
                     },
                     onError: (error: any) => {

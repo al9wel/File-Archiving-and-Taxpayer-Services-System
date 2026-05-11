@@ -1,12 +1,11 @@
 import {
     Dialog,
     DialogContent,
-    DialogHeader,
-    DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { User, Phone, Briefcase, Building2, FileText, Shield } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import type { TaxCollector } from "@/types";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface TaxCollectorDetailsDialogProps {
     taxCollector: TaxCollector;
@@ -16,82 +15,69 @@ interface TaxCollectorDetailsDialogProps {
 
 export const TaxCollectorDetailsDialog = ({ taxCollector, open, onOpenChange }: TaxCollectorDetailsDialogProps) => {
     const infoItems = [
-        { label: "رقم المأمور", value: taxCollector.id, icon: Shield },
-        { label: "رقم الهاتف", value: taxCollector.phone, icon: Phone },
-        { label: "نوع التوظيف", value: taxCollector.jobType?.name, icon: Briefcase },
-        { label: "القسم", value: taxCollector.department?.name, icon: Building2 },
+        { label: "رقم المأمور", value: taxCollector.id },
+        { label: "رقم الهاتف", value: taxCollector.phone },
+        { label: "نوع التوظيف", value: taxCollector.jobType?.name },
+        { label: "القسم", value: taxCollector.department?.name },
     ];
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[700px] rounded-2xl p-0 overflow-y-auto max-h-[90vh] border-none bg-gray-50 dark:bg-[#0b0f1a]" dir="rtl">
-                <DialogHeader className="p-4 bg-white dark:bg-[#111827] border-b">
-                    <DialogTitle className="text-xl font-bold text-right flex items-center gap-2">
-                        <User className="text-red-600 size-5" />
-                        تفاصيل المأمور
-                    </DialogTitle>
-                </DialogHeader>
-
-                <div className="p-4 space-y-4">
-                    <div className="space-y-1 text-right mb-2">
-                        <h2 className="text-xl font-bold text-gray-900 dark:text-white">{taxCollector.fullName}</h2>
-                        <p className="text-red-600 text-sm font-medium">{taxCollector.jobType?.name || taxCollector.jobType?.name || "مأمور"}</p>
+            <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[650px] rounded-3xl p-0 overflow-hidden border-none bg-gray-50 dark:bg-[#0b0f1a] shadow-2xl" dir="rtl">
+                <div className="overflow-y-auto max-h-[90vh] p-8">
+                    {/* Simple Title - Red colored accent */}
+                    <div className="mb-8 text-right border-r-4 border-red-600 pr-4">
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">تفاصيل المأمور</h2>
+                        <p className="text-red-600 font-medium text-sm">{taxCollector.fullName}</p>
                     </div>
 
-                    {/* Information Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {/* Details Grid - Exact match to ShowUser.tsx colors and styles */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                         {infoItems.map((item, index) => (
-                            <div key={index} className="p-3 rounded-xl bg-white dark:bg-[#111827] border border-gray-100 dark:border-white/5 shadow-sm">
-                                <div className="flex items-center gap-3 text-right">
-                                    <div className="w-9 h-9 rounded-lg bg-red-600/5 text-red-600 flex items-center justify-center shrink-0">
-                                        <item.icon size={18} />
-                                    </div>
-                                    <div className="space-y-0 overflow-hidden">
-                                        <p className="text-[11px] text-muted-foreground">{item.label}</p>
-                                        <p className="text-sm font-bold truncate">
-                                            {item.value || "غير متوفر"}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                            <Card key={index} className="rounded-2xl border border-gray-200/60 dark:border-white/5 shadow-sm bg-white dark:bg-[#111827] overflow-hidden hover:shadow-md transition-shadow">
+                                <CardContent className="p-5 text-right space-y-1">
+                                    <p className="text-sm text-muted-foreground font-medium">{item.label}</p>
+                                    <p className="text-lg font-bold truncate">
+                                        {item.value || "غير متوفر"}
+                                    </p>
+                                </CardContent>
+                            </Card>
                         ))}
 
                         {/* ID Card Item */}
-                        <div className="p-3 rounded-xl bg-white dark:bg-[#111827] border border-gray-100 dark:border-white/5 shadow-sm md:col-span-2">
-                            <div className="flex items-center justify-between gap-3 text-right">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-9 h-9 rounded-lg bg-red-600/5 text-red-600 flex items-center justify-center shrink-0">
-                                        <FileText size={18} />
-                                    </div>
-                                    <div className="space-y-0">
-                                        <p className="text-[11px] text-muted-foreground">نسخة بطاقة الهوية</p>
-                                        <p className="text-sm font-bold">الملف الرقمي</p>
-                                    </div>
+                        <Card className="rounded-2xl border border-gray-200/60 dark:border-white/5 shadow-sm bg-white dark:bg-[#111827] md:col-span-2 overflow-hidden hover:shadow-md transition-shadow">
+                            <CardContent className="p-5 flex items-center justify-between gap-4 text-right">
+                                <div className="space-y-1 overflow-hidden">
+                                    <p className="text-sm text-muted-foreground font-medium">نسخة بطاقة الهوية</p>
+                                    <p className="text-lg font-bold truncate">الملف الرقمي</p>
                                 </div>
 
                                 {taxCollector.idCard ? (
                                     <Button
+                                        variant="link"
                                         onClick={() => window.open(taxCollector.idCard, '_blank')}
-                                        className="rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-sm h-9 px-4 text-sm"
+                                        className="p-0 h-auto font-bold text-lg text-red-600 hover:text-red-700 cursor-pointer transition-colors"
                                     >
                                         عرض الملف
                                     </Button>
                                 ) : (
-                                    <span className="text-muted-foreground text-xs">غير متوفر</span>
+                                    <p className="text-lg font-bold truncate">غير متوفر</p>
                                 )}
-                            </div>
-                        </div>
+                            </CardContent>
+                        </Card>
                     </div>
-                </div>
 
-                <div className="p-3 bg-gray-100 dark:bg-[#111827]/50 flex justify-end">
-                    <Button
-                        variant="outline"
-                        onClick={() => onOpenChange(false)}
-                        className="rounded-xl px-6 h-10 border-none bg-white dark:bg-muted shadow-sm hover:bg-gray-50 text-sm"
-                    >
-                        إغلاق
-                    </Button>
+                    {/* Bottom Button */}
+                    <div className="flex justify-end pt-2">
+                        <Button 
+                            variant="secondary"
+                            onClick={() => onOpenChange(false)} 
+                            className="rounded-xl hover:bg-accent cursor-pointer h-12 px-8 flex items-center gap-2 font-bold shadow-sm"
+                        >
+                            <ArrowLeft className="h-4 w-4" />
+                            رجوع
+                        </Button>
+                    </div>
                 </div>
             </DialogContent>
         </Dialog>

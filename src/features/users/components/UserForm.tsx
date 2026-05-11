@@ -103,9 +103,8 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
         }
     }
 
-    const onFormSubmit = (values: UserFormValues) => {
+    const handleFormSubmit = (values: UserFormValues) => {
         const formData = new FormData()
-
         const commonFields = ["firstName", "lastName", "phone", "role", "departmentID", "image", "idCard"]
 
         commonFields.forEach(fieldName => {
@@ -130,7 +129,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
     ]
 
     return (
-        <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-8" dir="rtl">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-8" dir="rtl">
             <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
                 {/* Right Side: Uploads (1 column) */}
                 <div className="space-y-8">
