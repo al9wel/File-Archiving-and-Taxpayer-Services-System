@@ -7,6 +7,7 @@ export const useCreateCompanyTaxPayer = () => {
         mutationFn: (data: FormData) => companyTaxPayersApi.createTaxPayer(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["company-tax-payers"] })
+            queryClient.invalidateQueries({ queryKey: ["tax-payers"] })
         },
     })
 }

@@ -35,4 +35,12 @@ export const companyTaxPayersApi = {
             method: 'DELETE',
         })
     },
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    createTaxPayerExisting: (data: FormData): Promise<{ data: any; message: string }> => {
+        return fetchClient(`/companies/create-file-to-existing`, {
+            method: 'POST',
+            body: data,
+        })
+    },
 }

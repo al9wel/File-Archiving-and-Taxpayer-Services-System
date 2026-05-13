@@ -8,7 +8,7 @@ const DashboardLayout = () => {
     return (
         <SidebarProvider>
             <DashboardSideBar />
-            <main className="w-full">
+            <main className="flex-1 overflow-x-hidden">
                 <DashboardNavBar />
                 <Outlet />
             </main>

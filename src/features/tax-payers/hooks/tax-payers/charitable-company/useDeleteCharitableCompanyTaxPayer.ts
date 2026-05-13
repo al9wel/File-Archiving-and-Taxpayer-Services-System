@@ -7,6 +7,7 @@ export const useDeleteCharitableCompanyTaxPayer = () => {
         mutationFn: (id: string | number) => charitableCompanyTaxPayersApi.deleteTaxPayer(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["charitable-company-tax-payers"] })
+            queryClient.invalidateQueries({ queryKey: ["tax-payers"] })
         },
     })
 }

@@ -1,10 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { companyTaxPayersApi } from "../../../api/companyTaxPayersApi"
 
-export const useDeleteCompanyTaxPayer = () => {
+export const useCreateCompanyTaxPayerExisting = () => {
     const queryClient = useQueryClient()
+
     return useMutation({
-        mutationFn: (id: string | number) => companyTaxPayersApi.deleteTaxPayer(id),
+        mutationFn: (data: FormData) => companyTaxPayersApi.createTaxPayerExisting(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["company-tax-payers"] })
             queryClient.invalidateQueries({ queryKey: ["tax-payers"] })

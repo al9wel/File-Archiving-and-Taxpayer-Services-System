@@ -8,6 +8,7 @@ export const useUpdateCharitableCompanyTaxPayer = () => {
         onSuccess: (_, variables) => {
             queryClient.invalidateQueries({ queryKey: ["charitable-company-tax-payers"] })
             queryClient.invalidateQueries({ queryKey: ["charitable-company-tax-payers", variables.id] })
+            queryClient.invalidateQueries({ queryKey: ["tax-payers"] })
         },
     })
 }
