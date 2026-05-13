@@ -43,13 +43,16 @@ const EditIndividualTaxPayerPage = () => {
                     const value = formData.get(field)
                     if (value) taxPayerFormData.append(field, value)
                 })
-
+                const tradeNameFromFormData = formData.get("tradeName")
+                const tradeNameFromPayer = payer?.data?.taxPayerInfo.tradeName
+                const tradeName = tradeNameFromFormData === tradeNameFromPayer ? "" : tradeNameFromFormData
+                if (tradeName) taxPayerFormData.append("tradeName", tradeName)
                 // 4. Update TaxPayer
                 updateTaxPayer({ id: id!, data: taxPayerFormData }, {
                     onSuccess: (res) => {
                         toast.success(res.message || "تم تحديث بيانات المكلف بنجاح")
                         setTimeout(() => {
-                            navigate(ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.ROOT)
+                            navigate(ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.SHOW.replace(":id", id!.toString()))
                         }, 1000)
                     },
                     onError: (error: any) => {

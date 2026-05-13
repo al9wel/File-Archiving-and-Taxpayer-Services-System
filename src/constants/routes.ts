@@ -25,21 +25,16 @@ export const ROUTES = {
       ROOT: "/dashboard/tax-payers",
       PAYERS: {
         ROOT: "/dashboard/tax-payers/payers",
+        CREATE: "/dashboard/tax-payers/payers/create",
         INDIVIDUAL: {
-          ROOT: "/dashboard/tax-payers/payers/individual",
-          CREATE: "/dashboard/tax-payers/payers/individual/create",
           EDIT: "/dashboard/tax-payers/payers/individual/:id/edit",
           SHOW: "/dashboard/tax-payers/payers/individual/:id",
         },
         COMPANY: {
-          ROOT: "/dashboard/tax-payers/payers/company",
-          CREATE: "/dashboard/tax-payers/payers/company/create",
           EDIT: "/dashboard/tax-payers/payers/company/:id/edit",
           SHOW: "/dashboard/tax-payers/payers/company/:id",
         },
         CHARITABLE_COMPANY: {
-          ROOT: "/dashboard/tax-payers/payers/charitable-company",
-          CREATE: "/dashboard/tax-payers/payers/charitable-company/create",
           EDIT: "/dashboard/tax-payers/payers/charitable-company/:id/edit",
           SHOW: "/dashboard/tax-payers/payers/charitable-company/:id",
         }

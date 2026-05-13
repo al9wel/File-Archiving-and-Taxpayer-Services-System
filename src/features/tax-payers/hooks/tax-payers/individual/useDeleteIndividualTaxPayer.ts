@@ -7,6 +7,7 @@ export const useDeleteIndividualTaxPayer = () => {
         mutationFn: (id: string | number) => individualTaxPayersApi.deleteTaxPayer(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["individual-tax-payers"] })
+            queryClient.invalidateQueries({ queryKey: ["tax-payers"] })
         },
     })
 }

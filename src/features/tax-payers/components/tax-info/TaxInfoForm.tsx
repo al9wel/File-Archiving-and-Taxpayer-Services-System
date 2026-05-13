@@ -7,9 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Check, Loader2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTaxTypes } from "../../hooks/tax-type/useTaxTypes";
-import { useIndividualTaxPayers } from "../../hooks/tax-payers/individual/useIndividualTaxPayers";
-import { useCompanyTaxPayers } from "../../hooks/tax-payers/company/useCompanyTaxPayers";
-import { useCharitableCompanyTaxPayers } from "../../hooks/tax-payers/charitable-company/useCharitableCompanyTaxPayers";
+import { useTaxPayers } from "../../hooks/tax-payers/useTaxPayers";
 
 const taxInfoSchema = z.object({
     taxPayerId: z.string().min(1, "يجب اختيار المكلف"),
@@ -34,11 +32,9 @@ interface TaxInfoFormProps {
 
 export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxInfoFormProps) => {
     const { data: taxTypes, isPending: isLoadingTaxTypes } = useTaxTypes();
-    const { data: individuals, isPending: isLoadingIndividuals } = useIndividualTaxPayers();
-    const { data: companies, isPending: isLoadingCompanies } = useCompanyTaxPayers();
-    const { data: charitableCompanies, isPending: isLoadingCharitable } = useCharitableCompanyTaxPayers();
+    const { data: taxPayers, isPending: isLoadingTaxPayers } = useTaxPayers();
 
-    const isDataLoading = isLoadingTaxTypes || isLoadingIndividuals || isLoadingCompanies || isLoadingCharitable;
+    const isDataLoading = isLoadingTaxTypes || isLoadingTaxPayers;
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<TaxInfoFormValues>({
         resolver: zodResolver(taxInfoSchema),
@@ -65,41 +61,16 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
     const handleFormSubmit = (values: TaxInfoFormValues) => {
         const formData = new FormData();
         const fields = Object.keys(values) as Array<keyof TaxInfoFormValues>;
-        
+
         fields.forEach(fieldName => {
             const value = values[fieldName];
             if (value !== undefined && value !== null && value !== "") {
                 formData.append(fieldName, String(value));
             }
         });
-        
+
         onSubmit(formData);
     };
-
-    // 1. Prepare list of individuals
-    const individualList = (individuals?.data || []).map((p: any) => ({
-        id: p.taxPayerInfo?.id,
-        name: p.userInfo?.fullName || p.userInfo?.userName,
-        type: "فرد"
-    }));
-
-    // 2. Prepare list of companies
-    const companyList = (companies?.data || []).map((p: any) => ({
-        id: p.taxPayerInfo?.id,
-        name: p.taxPayerInfo?.tradeName || p.userInfo?.fullName,
-        type: "شركة"
-    }));
-
-    // 3. Prepare list of charitable companies
-    const charitableList = (charitableCompanies?.data || []).map((p: any) => ({
-        id: p.taxPayerInfo?.id,
-        name: p.taxPayerInfo?.tradeName || p.userInfo?.fullName,
-        type: "شركة خيرية"
-    }));
-
-    // 4. Combine all into one array and filter out any items without a valid ID
-    // Filtering by p.id ensures the Select component doesn't break if some data is incomplete
-    const allPayers = [...individualList, ...companyList, ...charitableList].filter(p => p.id);
 
     // If initial critical data is loading, show a full form loader to prevent "hanging"
     if (isDataLoading && !initialData) {
@@ -126,9 +97,9 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
                             <SelectValue placeholder={isDataLoading ? "جاري التحميل..." : "اختر المكلف"} />
                         </SelectTrigger>
                         <SelectContent>
-                            {allPayers.map((payer) => (
-                                <SelectItem key={payer.id} value={payer.id.toString()}>
-                                    {payer.name} ({payer.type})
+                            {taxPayers?.data.map((payer) => (
+                                <SelectItem key={payer.taxPayerId} value={payer.taxPayerId.toString()}>
+                                    {payer.tradeName} - <span className="text-primary/50 mx-2">{payer.taxPayerFileType === "Individual" ? "فرد" : payer.taxPayerFileType === "Company" ? "شركة" : "شركة خيرية"}</span>
                                 </SelectItem>
                             ))}
                         </SelectContent>

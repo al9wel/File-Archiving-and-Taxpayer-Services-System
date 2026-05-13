@@ -43,11 +43,15 @@ const EditCompanyTaxPayerPage = () => {
             onSuccess: () => {
                 // 3. Prepare Individual (TaxPayer) Data
                 const individualFormData = new FormData()
-                const individualFields = ["fileType", "tradeName", "commercialRecord", "activityLicense", "tradePict", "insuranceCard", "propertyDocPict"]
+                const individualFields = ["fileType", "commercialRecord", "activityLicense", "tradePict", "insuranceCard", "propertyDocPict"]
                 individualFields.forEach(field => {
                     const value = formData.get(field)
                     if (value) individualFormData.append(field, value)
                 })
+                const tradeNameFromFormData = formData.get("tradeName")
+                const tradeNameFromPayer = payer?.data?.taxPayerInfo.tradeName
+                const tradeName = tradeNameFromFormData === tradeNameFromPayer ? "" : tradeNameFromFormData
+                if (tradeName) individualFormData.append("tradeName", tradeName)
 
                 // 4. Update Individual (TaxPayer)
                 updateIndividual({ id: taxPayerId!, data: individualFormData }, {
@@ -65,7 +69,7 @@ const EditCompanyTaxPayerPage = () => {
                             onSuccess: (res) => {
                                 toast.success(res.message || "تم تحديث بيانات الشركة بنجاح")
                                 setTimeout(() => {
-                                    navigate(ROUTES.DASHBOARD.TAXPAYERS.PAYERS.COMPANY.ROOT)
+                                    navigate(ROUTES.DASHBOARD.TAXPAYERS.PAYERS.COMPANY.SHOW.replace(":id", companyId!.toString()))
                                 }, 1000)
                             },
                             onError: (error: any) => {

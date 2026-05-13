@@ -43,15 +43,20 @@ const EditCharitableCompanyTaxPayerPage = () => {
             onSuccess: () => {
                 // 3. Prepare TaxPayer Data
                 const taxPayerFormData = new FormData()
-                const taxPayerFields = ["fileType", "tradeName", "commercialRecord", "activityLicense", "tradePict", "insuranceCard", "propertyDocPict"]
+
+                const taxPayerFields = ["fileType", "commercialRecord", "activityLicense", "tradePict", "insuranceCard", "propertyDocPict"]
                 taxPayerFields.forEach(field => {
                     const value = formData.get(field)
-                    if (value) taxPayerFormData.append(field, value)
+                    if (value && value !== "") taxPayerFormData.append(field, value)
                 })
-
+                const tradeNameFromFormData = formData.get("tradeName")
+                const tradeNameFromPayer = payer?.data?.taxPayerInfo.tradeName
+                const tradeName = tradeNameFromFormData === tradeNameFromPayer ? "" : tradeNameFromFormData
+                if (tradeName) taxPayerFormData.append("tradeName", tradeName)
                 // 4. Update TaxPayer
                 updateIndividual({ id: taxPayerId!, data: taxPayerFormData }, {
                     onSuccess: () => {
+                        // toast.success("تم تحديث بيانات المكلف بنجاح")
                         // 5. Prepare Charitable Company Data
                         const charitableCompanyFormData = new FormData()
                         const charitableFields = ["byLawsCopy"]
@@ -65,7 +70,7 @@ const EditCharitableCompanyTaxPayerPage = () => {
                             onSuccess: (res) => {
                                 toast.success(res.message || "تم تحديث بيانات الشركة الخيرية بنجاح")
                                 setTimeout(() => {
-                                    navigate(ROUTES.DASHBOARD.TAXPAYERS.PAYERS.CHARITABLE_COMPANY.ROOT)
+                                    navigate(ROUTES.DASHBOARD.TAXPAYERS.PAYERS.CHARITABLE_COMPANY.SHOW.replace(":id", charitableCompanyId!.toString()))
                                 }, 1000)
                             },
                             onError: (error: any) => {
@@ -74,11 +79,13 @@ const EditCharitableCompanyTaxPayerPage = () => {
                         })
                     },
                     onError: (error: any) => {
+                        console.log(error);
                         toast.error(error.message || "حدث خطأ أثناء تحديث بيانات المكلف")
                     }
                 })
             },
             onError: (error: any) => {
+                console.log(error);
                 toast.error(error.message || "حدث خطأ أثناء تحديث بيانات المستخدم")
             }
         })

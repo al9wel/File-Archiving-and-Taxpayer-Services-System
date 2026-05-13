@@ -1,8 +1,5 @@
 import { useState } from "react"
-import type { CharitableCompanyTaxPayer } from "@/types/CharitableCompanyTaxPayer"
 import { useDeleteCharitableCompanyTaxPayer } from "../../../hooks/tax-payers/charitable-company/useDeleteCharitableCompanyTaxPayer"
-import { useDeleteIndividualTaxPayer } from "../../../hooks/tax-payers/individual/useDeleteIndividualTaxPayer"
-import { useDeleteUser } from "@/features/users/hooks/useDeleteUser"
 import { NavLink } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Eye, Pencil, Trash2, Loader2, AlertTriangle } from "lucide-react"
@@ -22,43 +19,19 @@ import {
 import { ACTIONS } from "@/constants/permissions"
 import { usePermission } from "@/hooks/usePermission"
 
-export const CharitableCompanyTaxPayerActions = ({ payer }: { payer: CharitableCompanyTaxPayer }) => {
+export const CharitableCompanyTaxPayerActions = ({ taxPayerId }: { taxPayerId: string | number | null }) => {
     const [isOpen, setIsOpen] = useState(false)
     const deleteCharitableCompany = useDeleteCharitableCompanyTaxPayer()
-    const deleteIndividual = useDeleteIndividualTaxPayer()
-    const deleteUser = useDeleteUser()
     const canUpdate = usePermission(ACTIONS.UPDATE_TAX_PAYER);
     const canDelete = usePermission(ACTIONS.DELETE_TAX_PAYER);
     const canView = usePermission(ACTIONS.VIEW_TAX_PAYER);
 
     const handleDelete = () => {
-        const charitableCompanyId = payer.charitableCompanyInfo.id;
-        const taxPayerId = payer.taxPayerInfo.id;
-        const userId = payer.userInfo.id;
-
         // 1. Delete Charitable Company Info
-        deleteCharitableCompany.mutate(charitableCompanyId, {
+        deleteCharitableCompany.mutate(taxPayerId!, {
             onSuccess: () => {
-                // 2. Delete Individual (TaxPayer) Info
-                deleteIndividual.mutate(taxPayerId, {
-                    onSuccess: () => {
-                        // 3. Delete User Info
-                        deleteUser.mutate(userId, {
-                            onSuccess: () => {
-                                toast.success("تم حذف المكلف وكافة بياناته بنجاح")
-                                setIsOpen(false)
-                            },
-                            onError: (error: any) => {
-                                toast.error(error.message || "حدث خطأ أثناء حذف بيانات المستخدم")
-                                setIsOpen(false)
-                            }
-                        })
-                    },
-                    onError: (error: any) => {
-                        toast.error(error.message || "حدث خطأ أثناء حذف بيانات المكلف")
-                        setIsOpen(false)
-                    }
-                })
+                toast.success("تم حذف المكلف و بياناته بنجاح")
+                setIsOpen(false)
             },
             onError: (error: any) => {
                 toast.error(error.message || "حدث خطأ أثناء حذف بيانات الشركة الخيرية")
@@ -70,14 +43,14 @@ export const CharitableCompanyTaxPayerActions = ({ payer }: { payer: CharitableC
     return (
         <div className="flex items-center justify-center gap-2">
             {canView && (
-                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.CHARITABLE_COMPANY.SHOW.replace(":id", payer.charitableCompanyInfo.id.toString())}>
+                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.CHARITABLE_COMPANY.SHOW.replace(":id", taxPayerId!.toString())}>
                     <Button variant="ghost" size="icon" className="h-8 w-8 text-primary">
                         <Eye className="h-4 w-4" />
                     </Button>
                 </NavLink>
             )}
             {canUpdate && (
-                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.CHARITABLE_COMPANY.EDIT.replace(":id", payer.charitableCompanyInfo.id.toString())}>
+                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.CHARITABLE_COMPANY.EDIT.replace(":id", taxPayerId!.toString())}>
                     <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600">
                         <Pencil className="h-4 w-4" />
                     </Button>
@@ -103,8 +76,7 @@ export const CharitableCompanyTaxPayerActions = ({ payer }: { payer: CharitableC
                                 <AlertDialogTitle className="text-right">حذف المكلف (شركة خيرية)</AlertDialogTitle>
                             </div>
                             <AlertDialogDescription className="text-right pt-2 space-y-1">
-                                <span className="block">هل أنت متأكد من حذف الشركة الخيرية <span className="font-bold text-foreground">{payer.userInfo.firstName} {payer.userInfo.lastName}</span>؟</span>
-                                <span className="block text-destructive font-bold text-xs">تنبيه: سيتم حذف كافة البيانات المرتبطة (شركة خيرية، مكلف، مستخدم).</span>
+                                <span className="block">هل أنت متأكد من حذف مكلف من نوع شركة خيرية </span>
                                 <span className="block text-muted-foreground text-xs pt-1">لا يمكن التراجع عن هذا الإجراء.</span>
                             </AlertDialogDescription>
                         </AlertDialogHeader>
@@ -116,9 +88,9 @@ export const CharitableCompanyTaxPayerActions = ({ payer }: { payer: CharitableC
                                 }}
                                 variant="destructive"
                                 className="rounded-lg min-w-[100px]"
-                                disabled={deleteCharitableCompany.isPending || deleteIndividual.isPending || deleteUser.isPending}
+                                disabled={deleteCharitableCompany.isPending}
                             >
-                                {deleteCharitableCompany.isPending || deleteIndividual.isPending || deleteUser.isPending ? (
+                                {deleteCharitableCompany.isPending ? (
                                     <div className="flex items-center gap-2">
                                         <Loader2 className="h-4 w-4 animate-spin" />
                                         <span>جاري الحذف...</span>
@@ -129,7 +101,7 @@ export const CharitableCompanyTaxPayerActions = ({ payer }: { payer: CharitableC
                             </AlertDialogAction>
                             <AlertDialogCancel
                                 className="rounded-lg"
-                                disabled={deleteCharitableCompany.isPending || deleteIndividual.isPending || deleteUser.isPending}
+                                disabled={deleteCharitableCompany.isPending}
                             >
                                 إلغاء
                             </AlertDialogCancel>

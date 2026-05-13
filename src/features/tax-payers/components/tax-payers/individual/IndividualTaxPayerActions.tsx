@@ -1,7 +1,5 @@
 import { useState } from "react"
-import type { IndividualTaxPayer } from "@/types/IndividualTaxPayer"
 import { useDeleteIndividualTaxPayer } from "../../../hooks/tax-payers/individual/useDeleteIndividualTaxPayer"
-import { useDeleteUser } from "@/features/users/hooks/useDeleteUser"
 import { NavLink } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Eye, Pencil, Trash2, Loader2, AlertTriangle } from "lucide-react"
@@ -21,27 +19,18 @@ import {
 import { ACTIONS } from "@/constants/permissions"
 import { usePermission } from "@/hooks/usePermission"
 
-export const IndividualTaxPayerActions = ({ payer }: { payer: IndividualTaxPayer }) => {
+export const IndividualTaxPayerActions = ({ taxPayerId }: { taxPayerId: string | number }) => {
     const [isOpen, setIsOpen] = useState(false)
     const deletePayer = useDeleteIndividualTaxPayer()
-    const deleteUser = useDeleteUser()
     const canUpdate = usePermission(ACTIONS.UPDATE_TAX_PAYER);
     const canDelete = usePermission(ACTIONS.DELETE_TAX_PAYER);
     const canView = usePermission(ACTIONS.VIEW_TAX_PAYER);
 
     const handleDelete = () => {
-        deletePayer.mutate(payer.taxPayerInfo.id, {
+        deletePayer.mutate(taxPayerId, {
             onSuccess: () => {
-                deleteUser.mutate(payer.userInfo.id, {
-                    onSuccess: () => {
-                        toast.success("تم حذف المكلف وكافة بياناته بنجاح")
-                        setIsOpen(false)
-                    },
-                    onError: (error: any) => {
-                        toast.error(error.message || "حدث خطأ أثناء حذف بيانات المستخدم")
-                        setIsOpen(false)
-                    }
-                })
+                toast.success("تم حذف المكلف وكافة  بنجاح")
+                setIsOpen(false)
             },
             onError: (error: any) => {
                 toast.error(error.message || "حدث خطأ أثناء حذف بيانات المكلف")
@@ -53,14 +42,14 @@ export const IndividualTaxPayerActions = ({ payer }: { payer: IndividualTaxPayer
     return (
         <div className="flex items-center justify-center gap-2">
             {canView && (
-                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.SHOW.replace(":id", payer.taxPayerInfo.id.toString())}>
+                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.SHOW.replace(":id", taxPayerId.toString())}>
                     <Button variant="ghost" size="icon" className="h-8 w-8 text-primary">
                         <Eye className="h-4 w-4" />
                     </Button>
                 </NavLink>
             )}
             {canUpdate && (
-                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.EDIT.replace(":id", payer.taxPayerInfo.id.toString())}>
+                <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.INDIVIDUAL.EDIT.replace(":id", taxPayerId.toString())}>
                     <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600">
                         <Pencil className="h-4 w-4" />
                     </Button>
@@ -86,8 +75,7 @@ export const IndividualTaxPayerActions = ({ payer }: { payer: IndividualTaxPayer
                                 <AlertDialogTitle className="text-right">حذف المكلف</AlertDialogTitle>
                             </div>
                             <AlertDialogDescription className="text-right pt-2 space-y-1">
-                                <span className="block">هل أنت متأكد من حذف المكلف <span className="font-bold text-foreground">{payer.userInfo.fullName}</span>؟</span>
-                                <span className="block text-destructive font-bold text-xs">تنبيه: سيتم حذف هذا المكلف وكافة بيانات المستخدم المرتبط به.</span>
+                                <span className="block">هل أنت متأكد من حذف المكلف ؟</span>
                                 <span className="block text-muted-foreground text-xs pt-1">لا يمكن التراجع عن هذا الإجراء وسيتم إزالة كافة بياناته من النظام.</span>
                             </AlertDialogDescription>
                         </AlertDialogHeader>
@@ -99,9 +87,9 @@ export const IndividualTaxPayerActions = ({ payer }: { payer: IndividualTaxPayer
                                 }}
                                 variant="destructive"
                                 className="rounded-lg min-w-[100px]"
-                                disabled={deletePayer.isPending || deleteUser.isPending}
+                                disabled={deletePayer.isPending}
                             >
-                                {deletePayer.isPending || deleteUser.isPending ? (
+                                {deletePayer.isPending ? (
                                     <div className="flex items-center gap-2">
                                         <Loader2 className="h-4 w-4 animate-spin" />
                                         <span>جاري الحذف...</span>
@@ -112,7 +100,7 @@ export const IndividualTaxPayerActions = ({ payer }: { payer: IndividualTaxPayer
                             </AlertDialogAction>
                             <AlertDialogCancel
                                 className="rounded-lg"
-                                disabled={deletePayer.isPending || deleteUser.isPending}
+                                disabled={deletePayer.isPending}
                             >
                                 إلغاء
                             </AlertDialogCancel>
