@@ -91,7 +91,14 @@ export const ExistingCharitableCompanyTaxPayerForm = ({ onSubmit, isLoading }: E
                         <label className="text-sm font-bold">اختر المستخدم *</label>
                         <Select onValueChange={(v) => setValue("userId", v)} value={watch("userId")} disabled={isLoadingUsers}>
                             <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-none">
-                                <SelectValue placeholder={isLoadingUsers ? "جاري تحميل المستخدمين..." : "اختر المستخدم من القائمة"} />
+                                {isLoadingUsers ? (
+                                    <div className="flex items-center gap-2">
+                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                        <span className="text-muted-foreground">جاري تحميل المستخدمين...</span>
+                                    </div>
+                                ) : (
+                                    <SelectValue placeholder="اختر المستخدم من القائمة" />
+                                )}
                             </SelectTrigger>
                             <SelectContent className="rounded-xl">
                                 {users?.data.filter((user) => user.role === "Tax_Payer").map((user) => (

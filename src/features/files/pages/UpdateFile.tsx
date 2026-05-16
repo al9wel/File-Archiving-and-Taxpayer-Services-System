@@ -1,7 +1,7 @@
 import DashboardHeader from "@/components/layout/DahsboardHeader"
-import { UserForm } from "../components/UserForm"
-import { useUser } from "../hooks/useUser"
-import { useUpdateUser } from "../hooks/useUpdateUser"
+import { FileForm } from "../components/FileForm"
+import { useFile } from "../hooks/useFile"
+import { useUpdateFile } from "../hooks/useUpdateFile"
 import { useNavigate, useParams } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { toast } from "sonner"
@@ -12,26 +12,26 @@ import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
 
 /**
- * Page component for editing an existing user.
- * Fetches the user data by ID, pre-fills the UserForm, and handles the update request.
+ * Page component for editing an existing file.
+ * Fetches the file data by ID, pre-fills the FileForm, and handles the update request.
  */
-const UpdateUser = () => {
+const UpdateFile = () => {
     const { id } = useParams()
     const navigate = useNavigate()
-    const { data: user, isPending: isFetching, isError } = useUser(id!)
-    const { mutate: updateUser, isPending } = useUpdateUser()
-    const canUpdate = usePermission(ACTIONS.UPDATE_USER)
+    const { data: file, isPending: isFetching, isError } = useFile(id!)
+    const { mutate: updateFile, isPending } = useUpdateFile()
+    const canUpdate = usePermission(ACTIONS.UPDATE_FILE)
 
     const handleSubmit = (formData: FormData) => {
-        updateUser({ id: id!, data: formData as any }, {
+        updateFile({ id: id!, data: formData }, {
             onSuccess: (res) => {
-                toast.success(res.message || "تم تحديث بيانات المستخدم بنجاح")
+                toast.success(res.message || "تم تحديث بيانات الملف بنجاح")
                 setTimeout(() => {
-                    navigate(ROUTES.DASHBOARD.USERS)
+                    navigate(ROUTES.DASHBOARD.FILES)
                 }, 1000)
             },
             onError: (error: any) => {
-                toast.error(error.message || "فشل تحديث بيانات المستخدم")
+                toast.error(error.message || "فشل تحديث بيانات الملف")
             }
         })
     }
@@ -44,7 +44,7 @@ const UpdateUser = () => {
         return (
             <div className="flex flex-col h-[400px] w-full items-center justify-center space-y-4">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="text-muted-foreground animate-pulse">جاري جلب بيانات المستخدم...</p>
+                <p className="text-muted-foreground animate-pulse">جاري جلب بيانات الملف...</p>
             </div>
         )
     }
@@ -55,15 +55,15 @@ const UpdateUser = () => {
         <>
             <div className="w-full px-3 pt-3 ">
                 <DashboardHeader
-                    title=" تعديل بيانات المستخدم "
-                    desc={`تعديل بيانات الموظف: ${user?.data?.firstName} ${user?.data?.lastName}`}
+                    title=" تعديل بيانات الملف "
+                    desc={`تعديل بيانات الملف برقم الحصر: ${file?.data?.inventoryNumber || ""}`}
                 />
             </div>
             <div className="container mx-auto px-3 animate-in fade-in duration-500">
-                <UserForm initialData={user?.data} onSubmit={handleSubmit} isLoading={isPending} />
+                <FileForm initialData={file?.data} onSubmit={handleSubmit} isLoading={isPending} />
             </div>
         </>
     )
 }
 
-export default UpdateUser
+export default UpdateFile

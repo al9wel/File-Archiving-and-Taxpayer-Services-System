@@ -12,13 +12,13 @@ const stats = [
 ];
 
 const BasicInfo = () => {
-    const { data: statsData, isLoading, isError } = useBasicInfoStats();
+    const { data: statsData, isPending, isError } = useBasicInfoStats();
     if (isError) {
         return <ErrorState />;
     }
     return (
         <>
-            {isLoading ? (
+            {isPending ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">
                     <Loader2 className="size-10 animate-spin text-primary" />
                     <p className="text-muted-foreground animate-pulse">جاري جلب الإحصائيات الأساسية...</p>

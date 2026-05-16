@@ -4,6 +4,9 @@ import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
 import Main from "@/features/main/pages/Main";
 import Settings from "@/features/settings/pages/Settings";
 import Files from "@/features/files/pages/Files";
+import CreateFile from "@/features/files/pages/CreateFile";
+import UpdateFile from "@/features/files/pages/UpdateFile";
+import ShowFile from "@/features/files/pages/ShowFile";
 import FileMovements from "@/features/file-movements/pages/FileMovements";
 import Requests from "@/features/requests/pages/Requests";
 import BasicInfoPage from "@/features/basic-info/pages/BasicInfoPage";
@@ -13,6 +16,7 @@ import ActivityTypesPage from "@/features/basic-info/pages/ActivityTypesPage";
 import PaymentTypesPage from "@/features/basic-info/pages/PaymentTypesPage";
 import RegionsPage from "@/features/basic-info/pages/RegionsPage";
 import DistrictsPage from "@/features/basic-info/pages/DistrictsPage";
+import FileStatusPage from "@/features/basic-info/pages/FileStatusPage";
 import Notifications from "@/features/notifications/pages/Notifications";
 import TaxPayersLayout from "@/features/tax-payers/components/TaxPayersLayout";
 import TaxTypesPage from "@/features/tax-payers/pages/tax-types/TaxTypesPage";
@@ -104,10 +108,13 @@ export const router = createBrowserRouter([
 
                     // ── Files (ADMIN, MANAGER, EMPLOYEE) ────────────────────
                     {
-                        path: "",
+                        path: ROUTES.DASHBOARD.FILES.split("/").pop(),
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.EMPLOYEE]} />,
                         children: [
-                            { path: ROUTES.DASHBOARD.FILES.split("/").pop(), element: <Files /> },
+                            { index: true, element: <Files /> },
+                            { path: ":id", element: <ShowFile /> },
+                            { path: "create", element: <CreateFile /> },
+                            { path: ":id/edit", element: <UpdateFile /> }
                         ]
                     },
 
@@ -173,6 +180,7 @@ export const router = createBrowserRouter([
                                     { path: ROUTES.DASHBOARD.BASIC_INFO.PAYMENT_TYPES.split("/").pop(), element: <PaymentTypesPage /> },
                                     { path: ROUTES.DASHBOARD.BASIC_INFO.REGIONS.split("/").pop(), element: <RegionsPage /> },
                                     { path: ROUTES.DASHBOARD.BASIC_INFO.DISTRICTS.split("/").pop(), element: <DistrictsPage /> },
+                                    { path: ROUTES.DASHBOARD.BASIC_INFO.FILE_STATUS.split("/").pop(), element: <FileStatusPage /> },
                                 ]
                             },
                         ]

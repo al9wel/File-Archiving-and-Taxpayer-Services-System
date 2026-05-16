@@ -1,4 +1,4 @@
-export interface AllTaxPayers {
+export interface TaxPayers {
     taxPayerId: string | number;
     taxPayerName: string;
     taxPayerFileType: string;

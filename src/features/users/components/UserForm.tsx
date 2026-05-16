@@ -49,7 +49,7 @@ interface UserFormProps {
 export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) => {
     const [imagePreview, setImagePreview] = useState<string | null>(null)
     const [idCardName, setIdCardName] = useState<string | null>(null)
-    const { data: departments, isLoading: isLoadingDepts } = useDepartments()
+    const { data: departments, isPending: isLoadingDepts } = useDepartments()
     const { user } = useAuth()
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<UserFormValues>({
@@ -126,6 +126,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
         { id: "Manager", label: "مدير", icon: UserCheck },
         { id: "Admin", label: "ادمن", icon: UserCog },
         { id: "Collectors_Manager", label: "مدير المأمورين", icon: UsersRound },
+        { id: "Tax_Payer", label: "مكلف", icon: UsersRound },
     ]
 
     return (
@@ -230,11 +231,19 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
                                 <div className="h-12 w-full">
                                     <Select
                                         onValueChange={(val) => setValue("departmentID", val)}
-                                        defaultValue={watch("departmentID")}
                                         value={watch("departmentID")}
+                                        key={watch("departmentID")}
+                                        disabled={isLoadingDepts}
                                     >
                                         <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
-                                            <SelectValue placeholder={isLoadingDepts ? "جاري التحميل..." : "إختر القسم"} />
+                                            {isLoadingDepts ? (
+                                                <div className="flex items-center gap-2">
+                                                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                                    <span className="text-muted-foreground">جاري التحميل...</span>
+                                                </div>
+                                            ) : (
+                                                <SelectValue placeholder="إختر القسم" />
+                                            )}
                                         </SelectTrigger>
                                         <SelectContent>
                                             {departments?.data?.map((dept) => (
@@ -262,12 +271,14 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
                                     الدور الوظيفي *
                                 </label>
                                 {(!initialData || user?.role === ROLES.ADMIN) ? (
-                                    <div className="grid grid-cols-2 lg:grid-cols-4 pb-2 gap-4">
-                                        {roles.map((role) => (
+                                    <div className="grid grid-cols-2 lg:grid-cols-6 pb-2 gap-4">
+                                        {roles.map((role, index) => (
                                             <div
                                                 key={role.id}
                                                 onClick={() => setValue("role", role.id)}
                                                 className={`
+                                                ${index < 3 ? 'lg:col-span-2' : 'lg:col-span-3'}
+                                                ${index === 4 ? 'col-span-2 lg:col-span-3' : 'col-span-1'}
                                                 cursor-pointer p-2 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all
                                                 ${watch("role") === role.id
                                                         ? "border-primary bg-primary/5 text-primary shadow-sm"

@@ -8,7 +8,7 @@ import { Check, Loader2 } from "lucide-react";
 import type { Region } from "@/types/Region";
 
 const regionSchema = z.object({
-    name: z.string().min(2, "إسم المحافظة يجب أن يكون حرفين على الأقل"),
+    name: z.string().min(2, "إسم المنطقة يجب أن يكون حرفين على الأقل"),
 });
 
 type RegionFormValues = z.infer<typeof regionSchema>;
@@ -50,10 +50,10 @@ export const RegionForm = ({ initialData, onSubmit, onCancel, isLoading }: Regio
             <div className="space-y-2">
                 <label className="text-sm font-medium flex items-center gap-1">
                     <span className="text-red-600">*</span>
-                    إسم المحافظة
+                    إسم المنطقة
                 </label>
                 <Input
-                    placeholder="أدخل إسم المحافظة"
+                    placeholder="أدخل إسم المنطقة"
                     {...register("name")}
                     className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-1 focus-visible:ring-red-600"
                 />
@@ -73,7 +73,7 @@ export const RegionForm = ({ initialData, onSubmit, onCancel, isLoading }: Regio
                     ) : (
                         <Check className="size-5" />
                     )}
-                    <span>{initialData ? "تحديث البيانات" : "حفظ بيانات المحافظة"}</span>
+                    <span>{initialData ? "تحديث البيانات" : "حفظ بيانات المنطقة"}</span>
                 </Button>
                 <Button 
                     type="button" 

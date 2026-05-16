@@ -1,12 +1,13 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
-import { Building2, Activity, CreditCard, Navigation, Map, ChevronLeft, LayoutDashboard } from "lucide-react";
+import { Building2, Activity, CreditCard, Navigation, Map, ChevronLeft, LayoutDashboard, FileCheck } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
 
 const sidebarLinks = [
     { title: "معلومات أساسية", path: ROUTES.DASHBOARD.BASIC_INFO.ROOT, icon: LayoutDashboard },
     { title: "الأقسام", path: ROUTES.DASHBOARD.BASIC_INFO.DEPARTMENTS, icon: Building2 },
+    { title: "حالة الملف", path: ROUTES.DASHBOARD.BASIC_INFO.FILE_STATUS, icon: FileCheck },
     { title: "نوع النشاط", path: ROUTES.DASHBOARD.BASIC_INFO.ACTIVITY_TYPES, icon: Activity },
     { title: "نوع السداد", path: ROUTES.DASHBOARD.BASIC_INFO.PAYMENT_TYPES, icon: CreditCard },
     { title: "المناطق", path: ROUTES.DASHBOARD.BASIC_INFO.REGIONS, icon: Navigation },

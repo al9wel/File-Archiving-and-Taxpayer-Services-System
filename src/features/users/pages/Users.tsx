@@ -14,7 +14,7 @@ import ErrorState from "@/app/pages/ErrorState"
  * access to create, view, edit, and delete operations.
  */
 const Users = () => {
-    const { data, isLoading, isError } = useUsers()
+    const { data, isPending, isError } = useUsers()
     const canView = usePermission(ACTIONS.VIEW_USER)
 
     if (!canView) return <Unauthorized />
@@ -29,7 +29,7 @@ const Users = () => {
                 <DashboardHeader title=" المستخدمين " desc="إدارة جميع المستخدمين في النظام" />
             </div>
             <div className="container mx-auto px-3 animate-in fade-in duration-500">
-                {isLoading ? (
+                {isPending ? (
                     <div className="flex flex-col h-[300px] items-center justify-center space-y-4">
                         <Loader2 className="animate-spin text-primary" size={32} />
                         <p className="text-muted-foreground animate-pulse">جاري جلب المستخدمين...</p>
