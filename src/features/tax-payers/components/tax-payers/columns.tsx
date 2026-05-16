@@ -1,11 +1,11 @@
-import type { AllTaxPayers } from "@/types/AllTaxPayers"
+import type { TaxPayers } from "@/types/TaxPayers"
 import type { ColumnDef } from "@tanstack/react-table"
 import { IndividualTaxPayerActions } from "./individual/IndividualTaxPayerActions"
 import { CompanyTaxPayerActions } from "./company/CompanyTaxPayerActions"
 import { CharitableCompanyTaxPayerActions } from "./charitable-company/CharitableCompanyTaxPayerActions"
 
 import { Badge } from "@/components/ui/badge"
-export const columns: ColumnDef<AllTaxPayers>[] = [
+export const columns: ColumnDef<TaxPayers>[] = [
 
     {
         accessorKey: "userId",

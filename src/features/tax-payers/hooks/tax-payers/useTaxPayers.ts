@@ -4,6 +4,6 @@ import { taxPayersApi } from "../../api/taxPayersApi"
 export const useTaxPayers = () => {
     return useQuery({
         queryKey: ["tax-payers"],
-        queryFn: () => taxPayersApi.getAllTaxPayers(),
+        queryFn: () => taxPayersApi.getTaxPayers(),
     })
 }

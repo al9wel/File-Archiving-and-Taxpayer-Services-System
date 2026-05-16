@@ -8,7 +8,7 @@ import { ACTIONS } from "@/constants/permissions";
 import Unauthorized from "@/app/pages/Unauthorized";
 
 const DepartmentsPage = () => {
-    const { data: departments, isLoading, isError } = useDepartments();
+    const { data: departments, isPending, isError } = useDepartments();
     const canView = usePermission(ACTIONS.VIEW_BASIC_INFO);
 
     if (!canView) return <Unauthorized />;
@@ -25,7 +25,7 @@ const DepartmentsPage = () => {
             </div>
 
             {/* Content Table */}
-            {isLoading ? (
+            {isPending ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">
                     <Loader2 className="size-10 animate-spin text-primary" />
                     <p className="text-muted-foreground animate-pulse">جاري جلب الأقسام...</p>

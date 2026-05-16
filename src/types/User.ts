@@ -12,6 +12,12 @@ export interface User {
     mustChangePassword?: boolean;
     departmentID?: number | string; // Foreign key to the department
     departmentName?: string; // Display name of the department (read-only from backend)
+    department?: {
+        id: number | string,
+        name: string,
+    },
+    password?: string;
+    createdBy?: number | string | null,
 }
 
 

@@ -94,7 +94,14 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
                         onValueChange={(val) => setValue("taxPayerId", val, { shouldValidate: true })}
                     >
                         <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
-                            <SelectValue placeholder={isDataLoading ? "جاري التحميل..." : "اختر المكلف"} />
+                            {isLoadingTaxPayers ? (
+                                <div className="flex items-center gap-2">
+                                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                    <span className="text-muted-foreground">جاري التحميل...</span>
+                                </div>
+                            ) : (
+                                <SelectValue placeholder="اختر المكلف" />
+                            )}
                         </SelectTrigger>
                         <SelectContent>
                             {taxPayers?.data.map((payer) => (
@@ -116,7 +123,14 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
                         onValueChange={(val) => setValue("taxTypeId", val, { shouldValidate: true })}
                     >
                         <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
-                            <SelectValue placeholder={isDataLoading ? "جاري التحميل..." : "اختر نوع الضريبة"} />
+                            {isLoadingTaxTypes ? (
+                                <div className="flex items-center gap-2">
+                                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                    <span className="text-muted-foreground">جاري التحميل...</span>
+                                </div>
+                            ) : (
+                                <SelectValue placeholder="اختر نوع الضريبة" />
+                            )}
                         </SelectTrigger>
                         <SelectContent>
                             {(taxTypes?.data || []).map((type: any) => (

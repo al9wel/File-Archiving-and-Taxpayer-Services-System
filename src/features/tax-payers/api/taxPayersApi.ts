@@ -1,8 +1,8 @@
 import { fetchClient } from '@/lib/fetchClient'
-import type { AllTaxPayers } from '@/types/AllTaxPayers';
+import type { TaxPayers } from '@/types/TaxPayers';
 
 export const taxPayersApi = {
-    getAllTaxPayers: (): Promise<{ data: AllTaxPayers[]; message: string }> => {
+    getTaxPayers: (): Promise<{ data: TaxPayers[]; message: string }> => {
         return fetchClient('/get-tax-payers-with-special-info', {
             method: 'GET',
         })

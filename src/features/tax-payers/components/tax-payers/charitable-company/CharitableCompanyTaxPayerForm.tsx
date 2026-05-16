@@ -43,7 +43,7 @@ interface CharitableCompanyTaxPayerFormProps {
 }
 
 export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading }: CharitableCompanyTaxPayerFormProps) => {
-    const { data: departments, } = useDepartments()
+    const { data: departments, isPending: isLoadingDepts } = useDepartments()
 
     const [imagePreview, setImagePreview] = useState<string | null>(null)
     const [idCardName, setIdCardName] = useState<string | null>(null)
@@ -180,9 +180,16 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-bold">القسم الضريبي *</label>
-                        <Select onValueChange={(v) => setValue("departmentID", v)} value={watch("departmentID")} key={watch("departmentID")}>
+                        <Select onValueChange={(v) => setValue("departmentID", v)} value={watch("departmentID")} key={watch("departmentID")} disabled={isLoadingDepts}>
                             <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-none">
-                                <SelectValue placeholder="إختر القسم" />
+                                {isLoadingDepts ? (
+                                    <div className="flex items-center gap-2">
+                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                        <span className="text-muted-foreground">جاري التحميل...</span>
+                                    </div>
+                                ) : (
+                                    <SelectValue placeholder="إختر القسم" />
+                                )}
                             </SelectTrigger>
                             <SelectContent className="rounded-xl">
                                 {departments?.data?.map((d) => <SelectItem key={d.id} value={d.id.toString()}>{d.name}</SelectItem>)}

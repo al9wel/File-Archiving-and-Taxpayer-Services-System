@@ -8,7 +8,7 @@ import { ACTIONS } from "@/constants/permissions";
 import Unauthorized from "@/app/pages/Unauthorized";
 
 const RegionsPage = () => {
-    const { data: regions, isLoading, isError } = useRegions();
+    const { data: regions, isPending, isError } = useRegions();
     const canView = usePermission(ACTIONS.VIEW_BASIC_INFO);
 
     if (!canView) return <Unauthorized />;
@@ -25,7 +25,7 @@ const RegionsPage = () => {
             </div>
 
             {/* Content Table */}
-            {isLoading ? (
+            {isPending ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">
                     <Loader2 className="size-10 animate-spin text-primary" />
                     <p className="text-muted-foreground animate-pulse">جاري جلب المناطق...</p>

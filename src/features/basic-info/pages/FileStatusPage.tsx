@@ -1,14 +1,14 @@
 import { Loader2 } from "lucide-react";
 import ErrorState from "@/app/pages/ErrorState";
-import { usePaymentTypes } from "../hooks/payment-types/usePaymentTypes";
-import { PaymentTypesTable } from "../components/payment-types/PaymentTypesTable";
-import { CreatePaymentTypeDialog } from "../components/payment-types/CreatePaymentTypeDialog";
+import { useFileStatuses } from "../hooks/file-status/useFileStatuses";
+import { FileStatusTable } from "../components/file-status/FileStatusTable";
+import { CreateFileStatusDialog } from "../components/file-status/CreateFileStatusDialog";
 import { usePermission } from "@/hooks/usePermission";
 import { ACTIONS } from "@/constants/permissions";
 import Unauthorized from "@/app/pages/Unauthorized";
 
-const PaymentTypesPage = () => {
-    const { data: paymentTypes, isPending, isError } = usePaymentTypes();
+const FileStatusPage = () => {
+    const { data: fileStatuses, isPending, isError } = useFileStatuses();
     const canView = usePermission(ACTIONS.VIEW_BASIC_INFO);
 
     if (!canView) return <Unauthorized />;
@@ -21,20 +21,20 @@ const PaymentTypesPage = () => {
         <div className="space-y-6 text-right animate-in fade-in duration-500">
             {/* Header Actions */}
             <div className="flex justify-end">
-                <CreatePaymentTypeDialog />
+                <CreateFileStatusDialog />
             </div>
 
             {/* Content Table */}
             {isPending ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">
                     <Loader2 className="size-10 animate-spin text-primary" />
-                    <p className="text-muted-foreground animate-pulse">جاري جلب أنواع السداد...</p>
+                    <p className="text-muted-foreground animate-pulse">جاري جلب حالات الملفات...</p>
                 </div>
             ) : (
-                <PaymentTypesTable paymentTypes={paymentTypes?.data || []} />
+                <FileStatusTable fileStatuses={fileStatuses?.data || []} />
             )}
         </div>
     );
 };
 
-export default PaymentTypesPage;
+export default FileStatusPage;

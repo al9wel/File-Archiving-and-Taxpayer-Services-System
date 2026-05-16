@@ -16,14 +16,14 @@ import ErrorState from "@/app/pages/ErrorState"
 const ShowUser = () => {
     const { id } = useParams()
     const navigate = useNavigate()
-    const { data: user, isLoading, isError } = useUser(id!)
+    const { data: user, isPending, isError } = useUser(id!)
     const canUpdate = usePermission(ACTIONS.UPDATE_USER)
 
     if (isError) {
         return <ErrorState />
     }
 
-    if (isLoading) {
+    if (isPending) {
         return (
             <div className="flex flex-col h-[400px] w-full items-center justify-center space-y-4">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />

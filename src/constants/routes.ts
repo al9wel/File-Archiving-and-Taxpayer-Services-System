@@ -10,6 +10,9 @@ export const ROUTES = {
     ROOT: "/dashboard",
     MAIN: "/dashboard/main",
     FILES: "/dashboard/files",
+    FILES_CREATE: "/dashboard/files/create",
+    FILES_EDIT: "/dashboard/files/:id/edit",
+    FILES_SHOW: "/dashboard/files/:id",
     FILE_MOVEMENTS: "/dashboard/file-movements",
     REQUESTS: "/dashboard/requests",
     BASIC_INFO: {
@@ -19,6 +22,7 @@ export const ROUTES = {
       PAYMENT_TYPES: "/dashboard/basic-info/payment-types",
       REGIONS: "/dashboard/basic-info/regions",
       DISTRICTS: "/dashboard/basic-info/districts",
+      FILE_STATUS: "/dashboard/basic-info/file-status",
     },
     NOTIFICATIONS: "/dashboard/notifications",
     TAXPAYERS: {

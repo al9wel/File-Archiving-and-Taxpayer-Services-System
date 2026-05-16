@@ -30,8 +30,8 @@ interface TaxCollectorFormProps {
 
 export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxCollectorFormProps) => {
     const [idCardName, setIdCardName] = useState<string | null>(null);
-    const { data: jobTypes } = useEmploymentTypes();
-    const { data: departments } = useDepartments();
+    const { data: jobTypes, isPending: isLoadingJobTypes } = useEmploymentTypes();
+    const { data: departments, isPending: isLoadingDepts } = useDepartments();
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<TaxCollectorFormValues>({
         resolver: zodResolver(taxCollectorSchema),
@@ -155,9 +155,17 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                         <Select
                             onValueChange={(val) => setValue("jobTypeId", val)}
                             value={watch("jobTypeId")}
+                            disabled={isLoadingJobTypes}
                         >
                             <SelectTrigger className="text-right w-full h-full rounded-xl bg-muted/30 border border-muted-foreground/10 focus:ring-1 focus:ring-red-600">
-                                <SelectValue placeholder="اختر نوع التوظيف" />
+                                {isLoadingJobTypes ? (
+                                    <div className="flex items-center gap-2">
+                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                        <span className="text-muted-foreground">جاري التحميل...</span>
+                                    </div>
+                                ) : (
+                                    <SelectValue placeholder="اختر نوع التوظيف" />
+                                )}
                             </SelectTrigger>
                             <SelectContent dir="rtl">
                                 {jobTypes?.data?.map((type) => (
@@ -183,9 +191,17 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                         <Select
                             onValueChange={(val) => setValue("deptID", val)}
                             value={watch("deptID")}
+                            disabled={isLoadingDepts}
                         >
                             <SelectTrigger className="text-right w-full h-full rounded-xl bg-muted/30 border border-muted-foreground/10 focus:ring-1 focus:ring-red-600">
-                                <SelectValue placeholder="اختر القسم" />
+                                {isLoadingDepts ? (
+                                    <div className="flex items-center gap-2">
+                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                        <span className="text-muted-foreground">جاري التحميل...</span>
+                                    </div>
+                                ) : (
+                                    <SelectValue placeholder="اختر القسم" />
+                                )}
                             </SelectTrigger>
                             <SelectContent dir="rtl">
                                 {departments?.data?.map((dept) => (
