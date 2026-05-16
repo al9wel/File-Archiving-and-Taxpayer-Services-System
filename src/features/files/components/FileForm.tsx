@@ -15,7 +15,6 @@ import {
     Check,
     Loader2,
 } from "lucide-react"
-import { Card } from "@/components/ui/card"
 import type { File } from "@/types/File"
 
 import { useDepartments } from "@/features/basic-info/hooks/departments/useDepartments"
