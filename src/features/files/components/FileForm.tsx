@@ -96,9 +96,20 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
 
     const handleFormSubmit = (values: FileFormValues) => {
         const formData = new FormData()
-        Object.entries(values).forEach(([key, value]) => {
+        if (initialData) {
+            if (initialData.inventoryNumber !== values.inventoryNumber) {
+                formData.append("inventoryNumber", values.inventoryNumber)
+            }
+        }
+        else {
+            formData.append("inventoryNumber", values.inventoryNumber)
+        }
+        const commonFields = ["taxNumber", "docsCount", "taxPayerId", "departmentId", "fileStatusId", "activityTypeId", "paymentTypeId", "regionId", "districtId", "activityStartDate", "note"]
+
+        commonFields.forEach(fieldName => {
+            const value = values[fieldName as keyof FileFormValues]
             if (value !== undefined && value !== null && value !== "") {
-                formData.append(key, value)
+                formData.append(fieldName, value as string)
             }
         })
         onSubmit(formData)
