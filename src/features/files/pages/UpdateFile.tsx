@@ -27,7 +27,7 @@ const UpdateFile = () => {
             onSuccess: (res) => {
                 toast.success(res.message || "تم تحديث بيانات الملف بنجاح")
                 setTimeout(() => {
-                    navigate(ROUTES.DASHBOARD.FILES)
+                    navigate(ROUTES.DASHBOARD.FILES_SHOW.replace(":id", id!))
                 }, 1000)
             },
             onError: (error: any) => {
