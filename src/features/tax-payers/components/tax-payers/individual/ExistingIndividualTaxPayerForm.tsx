@@ -4,16 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import { Upload, Check, Loader2 } from "lucide-react"
 import { Card } from "@/components/ui/card"
-import { useUsers } from "@/features/users/hooks/useUsers"
+import { UserSearchSelect } from "@/features/users/components/UserSearchSelect"
 
 const additionalInfoSchema = z.object({
     userId: z.string().min(1, "يرجى اختيار المستخدم"),
@@ -34,7 +27,7 @@ interface ExistingIndividualTaxPayerFormProps {
 }
 
 export const ExistingIndividualTaxPayerForm = ({ onSubmit, isLoading }: ExistingIndividualTaxPayerFormProps) => {
-    const { data: users, isPending: isLoadingUsers } = useUsers()
+
 
     const [commRecordName, setCommRecordName] = useState<string | null>(null)
     const [licenseName, setLicenseName] = useState<string | null>(null)
@@ -86,28 +79,10 @@ export const ExistingIndividualTaxPayerForm = ({ onSubmit, isLoading }: Existing
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-2 md:col-span-2">
                         <label className="text-sm font-bold">اختر المستخدم *</label>
-                        <Select onValueChange={(v) => setValue("userId", v)} value={watch("userId")} disabled={isLoadingUsers}>
-                            <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-none">
-                                {isLoadingUsers ? (
-                                    <div className="flex items-center gap-2">
-                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                        <span className="text-muted-foreground">جاري تحميل المستخدمين...</span>
-                                    </div>
-                                ) : (
-                                    <SelectValue placeholder="اختر المستخدم من القائمة" />
-                                )}
-                            </SelectTrigger>
-                            <SelectContent className="rounded-xl">
-                                {users?.data.filter((user) => user.role === "Tax_Payer").map((user) => (
-                                    <SelectItem key={user.id} value={user.id.toString()}>
-                                        <div className="flex items-center gap-2">
-                                            <span className="font-bold">{user.firstName} {user.lastName}</span>
-                                            <span className="text-xs text-muted-foreground bg-muted/50 px-2 py-0.5 rounded-lg">{user.role}</span>
-                                        </div>
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                        <UserSearchSelect
+                            value={watch("userId") ? Number(watch("userId")) : undefined}
+                            onSelect={(id) => setValue("userId", id.toString(), { shouldValidate: true })}
+                        />
                         {errors.userId && <p className="text-xs text-destructive">{errors.userId.message}</p>}
                     </div>
 

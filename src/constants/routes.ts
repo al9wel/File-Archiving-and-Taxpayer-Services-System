@@ -14,7 +14,14 @@ export const ROUTES = {
     FILES_EDIT: "/dashboard/files/:id/edit",
     FILES_SHOW: "/dashboard/files/:id",
     FILE_MOVEMENTS: "/dashboard/file-movements",
-    REQUESTS: "/dashboard/requests",
+    REQUESTS: {
+      ROOT: "/dashboard/requests",
+      PENDING: "/dashboard/requests/pending",
+      CONFIRMED: "/dashboard/requests/confirmed",
+      ARCHIVED: "/dashboard/requests/archived",
+      REJECTED: "/dashboard/requests/rejected",
+      SHOW: "/dashboard/requests/:id",
+    },
     BASIC_INFO: {
       ROOT: "/dashboard/basic-info",
       DEPARTMENTS: "/dashboard/basic-info/departments",

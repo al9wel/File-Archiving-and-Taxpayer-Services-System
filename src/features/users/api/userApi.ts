@@ -22,8 +22,8 @@ export const userApi = {
     /**
      * Fetches the list of all active users.
      */
-    getUsers: (): Promise<{ data: User[]; message: string }> => {
-        return fetchClient('/app_users', {
+    getUsers: (searchQuery = ""): Promise<{ data: User[]; message: string }> => {
+        return fetchClient(`/app_users?search=${searchQuery}`, {
             method: 'GET',
         })
     },

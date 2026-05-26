@@ -8,7 +8,12 @@ import CreateFile from "@/features/files/pages/CreateFile";
 import UpdateFile from "@/features/files/pages/UpdateFile";
 import ShowFile from "@/features/files/pages/ShowFile";
 import FileMovements from "@/features/file-movements/pages/FileMovements";
-import Requests from "@/features/requests/pages/Requests";
+import RequestsLayout from "@/features/requests/components/RequestsLayout";
+import PendingRequestsPage from "@/features/requests/pages/PendingRequestsPage";
+import ConfirmedRequestsPage from "@/features/requests/pages/ConfirmedRequestsPage";
+import ArchivedRequestsPage from "@/features/requests/pages/ArchivedRequestsPage";
+import RejectedRequestsPage from "@/features/requests/pages/RejectedRequestsPage";
+import RequestDetailsPage from "@/features/requests/pages/RequestDetailsPage";
 import BasicInfoPage from "@/features/basic-info/pages/BasicInfoPage";
 import BasicInfoLayout from "@/features/basic-info/components/BasicInfoLayout";
 import DepartmentsPage from "@/features/basic-info/pages/DepartmentsPage";
@@ -132,7 +137,18 @@ export const router = createBrowserRouter([
                         path: "",
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
                         children: [
-                            { path: ROUTES.DASHBOARD.REQUESTS.split("/").pop(), element: <Requests /> },
+                            {
+                                path: ROUTES.DASHBOARD.REQUESTS.ROOT.split("/").pop(),
+                                element: <RequestsLayout />,
+                                children: [
+                                    { index: true, element: <Navigate to="pending" replace /> },
+                                    { path: "pending", element: <PendingRequestsPage /> },
+                                    { path: "confirmed", element: <ConfirmedRequestsPage /> },
+                                    { path: "archived", element: <ArchivedRequestsPage /> },
+                                    { path: "rejected", element: <RejectedRequestsPage /> },
+                                    { path: ":id", element: <RequestDetailsPage /> },
+                                ]
+                            },
                             {
                                 path: ROUTES.DASHBOARD.TAXPAYERS.ROOT.split("/").pop(),
                                 element: <TaxPayersLayout />,
