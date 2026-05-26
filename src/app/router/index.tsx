@@ -8,6 +8,9 @@ import CreateFile from "@/features/files/pages/CreateFile";
 import UpdateFile from "@/features/files/pages/UpdateFile";
 import ShowFile from "@/features/files/pages/ShowFile";
 import FileMovements from "@/features/file-movements/pages/FileMovements";
+import CreateFileMovement from "@/features/file-movements/pages/CreateFileMovement";
+import UpdateFileMovement from "@/features/file-movements/pages/UpdateFileMovement";
+import ShowFileMovement from "@/features/file-movements/pages/ShowFileMovement";
 import RequestsLayout from "@/features/requests/components/RequestsLayout";
 import PendingRequestsPage from "@/features/requests/pages/PendingRequestsPage";
 import ConfirmedRequestsPage from "@/features/requests/pages/ConfirmedRequestsPage";
@@ -125,10 +128,13 @@ export const router = createBrowserRouter([
 
                     // ── File Movements (ADMIN, MANAGER, COLLECTOR_MANAGER) ──
                     {
-                        path: "",
+                        path: ROUTES.DASHBOARD.FILE_MOVEMENTS.split("/").pop(),
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.COLLECTOR_MANAGER]} />,
                         children: [
-                            { path: ROUTES.DASHBOARD.FILE_MOVEMENTS.split("/").pop(), element: <FileMovements /> },
+                            { index: true, element: <FileMovements /> },
+                            { path: ":id", element: <ShowFileMovement /> },
+                            { path: "create", element: <CreateFileMovement /> },
+                            { path: ":id/edit", element: <UpdateFileMovement /> }
                         ]
                     },
 
