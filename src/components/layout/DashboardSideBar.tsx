@@ -81,7 +81,7 @@ export default function SideBar() {
                                 </NavLink>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <NavLink to={ROUTES.DASHBOARD.REQUESTS}>
+                                <NavLink to={ROUTES.DASHBOARD.REQUESTS.ROOT}>
                                     {({ isActive }) => (
                                         <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
                                             <ClipboardList className="-mr-0.5" style={{ width: "20px", height: "20px" }} />

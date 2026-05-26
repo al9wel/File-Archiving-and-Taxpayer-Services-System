@@ -18,7 +18,7 @@ import {
 import type { File } from "@/types/File"
 
 import { useDepartments } from "@/features/basic-info/hooks/departments/useDepartments"
-import { useTaxPayers } from "@/features/tax-payers/hooks/tax-payers/useTaxPayers"
+import { TaxPayerSearchSelect } from "@/features/tax-payers/components/tax-payers/TaxPayerSearchSelect"
 import { useFileStatuses } from "@/features/basic-info/hooks/file-status/useFileStatuses"
 import { useActivityTypes } from "@/features/basic-info/hooks/activity-types/useActivityTypes"
 import { usePaymentTypes } from "@/features/basic-info/hooks/payment-types/usePaymentTypes"
@@ -52,7 +52,7 @@ interface FileFormProps {
 
 export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) => {
     const { data: departments, isPending: isLoadingDepts } = useDepartments()
-    const { data: taxPayers, isPending: isLoadingTaxPayers } = useTaxPayers()
+
     const { data: fileStatuses, isPending: isLoadingFileStatuses } = useFileStatuses()
     const { data: activityTypes, isPending: isLoadingActivityTypes } = useActivityTypes()
     const { data: paymentTypes, isPending: isLoadingPaymentTypes } = usePaymentTypes()
@@ -179,25 +179,10 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
                             <label className="text-sm font-medium leading-none mb-2 block">
                                 المكلف *
                             </label>
-                            <Select onValueChange={(v) => setValue("taxPayerId", v)} value={watch("taxPayerId")} disabled={isLoadingTaxPayers}>
-                                <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
-                                    {isLoadingTaxPayers ? (
-                                        <div className="flex items-center gap-2">
-                                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                            <span className="text-muted-foreground">جاري التحميل...</span>
-                                        </div>
-                                    ) : (
-                                        <SelectValue placeholder="اختر المكلف" />
-                                    )}
-                                </SelectTrigger>
-                                <SelectContent className="rounded-xl">
-                                    {taxPayers?.data?.map((tp: any) => (
-                                        <SelectItem key={tp.taxPayerId} value={tp.taxPayerId.toString()}>
-                                            {tp.tradeName}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <TaxPayerSearchSelect
+                                value={watch("taxPayerId") ? Number(watch("taxPayerId")) : undefined}
+                                onSelect={(id) => setValue("taxPayerId", id.toString(), { shouldValidate: true })}
+                            />
                             {errors.taxPayerId && <p className="text-sm font-medium text-destructive mt-1">{errors.taxPayerId.message}</p>}
                         </div>
 
