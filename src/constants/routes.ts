@@ -14,6 +14,9 @@ export const ROUTES = {
     FILES_EDIT: "/dashboard/files/:id/edit",
     FILES_SHOW: "/dashboard/files/:id",
     FILE_MOVEMENTS: "/dashboard/file-movements",
+    FILE_MOVEMENTS_CREATE: "/dashboard/file-movements/create",
+    FILE_MOVEMENTS_EDIT: "/dashboard/file-movements/:id/edit",
+    FILE_MOVEMENTS_SHOW: "/dashboard/file-movements/:id",
     REQUESTS: {
       ROOT: "/dashboard/requests",
       PENDING: "/dashboard/requests/pending",
