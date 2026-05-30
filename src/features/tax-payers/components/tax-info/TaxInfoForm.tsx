@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Check, Loader2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTaxTypes } from "../../hooks/tax-type/useTaxTypes";
-import { useTaxPayers } from "../../hooks/tax-payers/useTaxPayers";
+import { TaxPayerSearchSelect } from "../tax-payers/TaxPayerSearchSelect";
 
 const taxInfoSchema = z.object({
     taxPayerId: z.string().min(1, "يجب اختيار المكلف"),
@@ -32,9 +32,8 @@ interface TaxInfoFormProps {
 
 export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxInfoFormProps) => {
     const { data: taxTypes, isPending: isLoadingTaxTypes } = useTaxTypes();
-    const { data: taxPayers, isPending: isLoadingTaxPayers } = useTaxPayers();
 
-    const isDataLoading = isLoadingTaxTypes || isLoadingTaxPayers;
+    const isDataLoading = isLoadingTaxTypes;
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<TaxInfoFormValues>({
         resolver: zodResolver(taxInfoSchema),
@@ -46,7 +45,6 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
         }
     });
 
-    const taxPayerId = watch("taxPayerId");
     const taxTypeId = watch("taxTypeId");
 
     useEffect(() => {
@@ -88,29 +86,11 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
                 {/* Tax Payer Select */}
                 <div className="space-y-2">
                     <label className="text-sm font-medium">المكلف <span className="text-red-600">*</span></label>
-                    <Select
+                    <TaxPayerSearchSelect
+                        value={watch("taxPayerId") ? Number(watch("taxPayerId")) : undefined}
+                        onSelect={(id) => setValue("taxPayerId", id.toString(), { shouldValidate: true })}
                         disabled={isLoading || isDataLoading}
-                        value={taxPayerId}
-                        onValueChange={(val) => setValue("taxPayerId", val, { shouldValidate: true })}
-                    >
-                        <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
-                            {isLoadingTaxPayers ? (
-                                <div className="flex items-center gap-2">
-                                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                    <span className="text-muted-foreground">جاري التحميل...</span>
-                                </div>
-                            ) : (
-                                <SelectValue placeholder="اختر المكلف" />
-                            )}
-                        </SelectTrigger>
-                        <SelectContent>
-                            {taxPayers?.data.map((payer) => (
-                                <SelectItem key={payer.taxPayerId} value={payer.taxPayerId.toString()}>
-                                    {payer.tradeName} - <span className="text-primary/50 mx-2">{payer.taxPayerFileType === "Individual" ? "فرد" : payer.taxPayerFileType === "Company" ? "شركة" : "شركة خيرية"}</span>
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    />
                     {errors.taxPayerId && <p className="text-xs text-red-600">{errors.taxPayerId.message}</p>}
                 </div>
 

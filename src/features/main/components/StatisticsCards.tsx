@@ -7,7 +7,7 @@ import {
 } from "lucide-react"
 
 import { Card, CardContent } from "@/components/ui/card"
-import type { DashboardStatistics } from "../types/dashboard"
+import type { DashboardStatistics } from "../../../types/Dashboard"
 
 type StatisticsCardsProps = {
   statistics?: DashboardStatistics

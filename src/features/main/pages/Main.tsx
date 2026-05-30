@@ -10,7 +10,7 @@ import DepartmentDistributionPieChart from "../charts/DepartmentDistributionPieC
 import FileMovementBarChart from "../charts/FileMovementBarChart"
 import FilesByTypePieChart from "../charts/FilesByTypePieChart"
 import SystemActivityChart from "../charts/SystemActivityChart"
-import { useDashboardStatistics } from "../hooks/main/useDashboardStatistics"
+import { useDashboardStatistics } from "../hooks/useDashboardStatistics"
 import Unauthorized from "@/app/pages/Unauthorized"
 import { usePermission } from "@/hooks/usePermission"
 import { ACTIONS } from "@/constants/permissions"

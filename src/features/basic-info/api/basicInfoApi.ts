@@ -1,9 +1,10 @@
 import { fetchClient } from "@/lib/fetchClient";
+import type { DashboardStatisticsResponse } from "@/types/Dashboard";
 
 export const basicInfoApi={
-    getBasicInfoStats:async()=>{
-        return fetchClient("/statistics",{
-            method:"GET",
-        });
-    }
+    getBasicInfoStats: (): Promise<DashboardStatisticsResponse> => {
+        return fetchClient("/statistics", {
+            method: "GET",
+        })
+    },
 }

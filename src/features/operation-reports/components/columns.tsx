@@ -13,10 +13,15 @@ const getName: Record<string, string> = {
     FileModel: "الملفات",
     FileMovementModel: "حركة الملفات",
     RequestModel: "الطلبات",
-    TaxpayerModel: "المكلفين",
+    TaxPayerModel: "المكلفين",
     TaxCollectorModel: "المأمورين",
     NotificationModel: "الإشعارات",
-    JobTypeModel: "نوع التوظيف"
+    JobTypeModel: "نوع التوظيف",
+    TaxInformationModel: "معلومات الضريبة",
+    TaxTypeModel: "أنواع الضريبة",
+    IndividualModel: "الأفراد",
+    CompanyModel: "الشركات",
+    CharitableCompanyModel: "الشركات الخيرية",
 }
 
 export const columns: ColumnDef<OperationReport>[] = [

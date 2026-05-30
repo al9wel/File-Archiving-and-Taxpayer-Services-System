@@ -14,9 +14,8 @@ import {
 import { Loader2, Save, FileSearch, UserSquare, Building2, CalendarDays, Archive, FolderOpen, AlertCircle } from "lucide-react"
 import type { FileMovement } from "@/types/FileMovments"
 import { useDepartments } from "@/features/basic-info/hooks/departments/useDepartments"
-import { useFiles } from "@/features/files/hooks/useFiles"
+import { FileSearchSelect } from "@/features/files/components/FileSearchSelect"
 import { useTaxCollectors } from "@/features/tax-collectors/hooks/tax-collectors/useTaxCollectors"
-import type { File } from "@/types/File"
 
 const fileMovementSchema = z.object({
     status: z.string().min(1, "يرجى اختيار حالة الملف"),
@@ -36,7 +35,6 @@ interface FileMovementFormProps {
 
 export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovementFormProps) => {
     const { data: departments, isPending: isLoadingDepts } = useDepartments()
-    const { data: files, isPending: isLoadingFiles } = useFiles()
     const { data: taxCollectors, isPending: isLoadingCollectors } = useTaxCollectors()
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<FileMovementFormValues>({
@@ -52,7 +50,7 @@ export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovem
 
     // Watch for initialData changes
     useEffect(() => {
-        if (initialData?.status) setValue("status", initialData.status as any)
+        if (initialData?.status) setValue("status", initialData.status)
         if (initialData?.date) setValue("date", initialData.date)
         if (initialData?.file?.id) setValue("fileId", initialData.file.id.toString())
         if (initialData?.taxCollector?.id) setValue("taxCollectorId", initialData.taxCollector.id.toString())
@@ -94,30 +92,10 @@ export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovem
                             الملف *
                         </label>
                         <div className="h-12 w-full">
-                            <Select
-                                onValueChange={(val) => setValue("fileId", val)}
-                                value={watch("fileId")}
-                                key={watch("fileId")}
-                                disabled={isLoadingFiles}
-                            >
-                                <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
-                                    {isLoadingFiles ? (
-                                        <div className="flex items-center gap-2">
-                                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                            <span className="text-muted-foreground">جاري التحميل...</span>
-                                        </div>
-                                    ) : (
-                                        <SelectValue placeholder="إختر الملف" />
-                                    )}
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {files?.data?.map((file: File["fileInfo"]) => (
-                                        <SelectItem key={file.id} value={file.id.toString()}>
-                                            ملف رقم: {file.taxNumber} - {file.taxPayer?.tradeName || "مكلف"}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <FileSearchSelect
+                                value={watch("fileId") ? Number(watch("fileId")) : undefined}
+                                onSelect={(id) => setValue("fileId", id.toString(), { shouldValidate: true })}
+                            />
                         </div>
                         {errors.fileId && <p className="text-sm font-medium text-destructive mt-1">{errors.fileId.message}</p>}
                     </div>
@@ -132,7 +110,7 @@ export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovem
                             {statuses.map((status) => (
                                 <div
                                     key={status.id}
-                                    onClick={() => setValue("status", status.id as any)}
+                                    onClick={() => setValue("status", status.id as string)}
                                     className={`
                                     cursor-pointer p-2 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all
                                     ${watch("status") === status.id
@@ -184,7 +162,7 @@ export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovem
                                     )}
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {taxCollectors?.data?.map((collector: any) => (
+                                    {taxCollectors?.data?.map((collector) => (
                                         <SelectItem key={collector.id} value={collector.id.toString()}>
                                             {collector.fullName}
                                         </SelectItem>
@@ -219,7 +197,7 @@ export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovem
                                     )}
                                 </SelectTrigger>
                                 <SelectContent>
-                                    {departments?.data?.map((dept: any) => (
+                                    {departments?.data?.map((dept) => (
                                         <SelectItem key={dept.id} value={dept.id.toString()}>
                                             {dept.name}
                                         </SelectItem>
