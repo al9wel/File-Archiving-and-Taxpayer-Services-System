@@ -1,89 +1,96 @@
-import { usePermission } from '@/hooks/usePermission';
-import { useAuth } from '@/hooks/useAuth';
-import { ACTIONS } from '@/constants/permissions';
-import { toast } from 'sonner';
+import { Archive, BarChart3, Clock3, LineChart } from "lucide-react"
+
+import ErrorState from "@/app/pages/ErrorState"
+import ChartPanel from "../components/ChartPanel"
+// import DashboardHeader from "../components/DashboardHeader"
+import DashboardLoading from "../components/DashboardLoading"
+import StatisticsCards from "../components/StatisticsCards"
+import DepartmentComparisonAreaChart from "../charts/DepartmentComparisonAreaChart"
+import DepartmentDistributionPieChart from "../charts/DepartmentDistributionPieChart"
+import FileMovementBarChart from "../charts/FileMovementBarChart"
+import FilesByTypePieChart from "../charts/FilesByTypePieChart"
+import SystemActivityChart from "../charts/SystemActivityChart"
+import { useDashboardStatistics } from "../hooks/main/useDashboardStatistics"
+import Unauthorized from "@/app/pages/Unauthorized"
+import { usePermission } from "@/hooks/usePermission"
+import { ACTIONS } from "@/constants/permissions"
+import DashboardHeader from "@/components/layout/DahsboardHeader"
 
 const Main = () => {
-    const { user } = useAuth();
-    const canDeleteFile = usePermission(ACTIONS.DELETE_FILE);
-    const canCreateFile = usePermission(ACTIONS.CREATE_FILE);
-    const canUpdateFile = usePermission(ACTIONS.UPDATE_FILE);
-    const canViewFile = usePermission(ACTIONS.VIEW_FILE);
+  const { data, isPending, isError } = useDashboardStatistics()
+  const canView = usePermission(ACTIONS.VIEW_DASHBOARD)
+  if (!canView) return <Unauthorized />
+  if (isError) {
+    return <ErrorState />
+  }
+  if (isPending) {
+    return <DashboardLoading />
+  }
 
-    const handleDelete = () => {
-        if (canDeleteFile) {
-            toast.success("تم حذف الملف بنجاح")
-        }
-        else {
-            toast.error("ليس لديك صلاحية حذف الملفات")
-        }
-    };
-    const handleView = () => {
-        if (canViewFile) {
-            toast.success("تم عرض الملف بنجاح")
-        }
-        else {
-            toast.error("ليس لديك صلاحية عرض الملفات")
-        }
-    };
-    const handleUpdate = () => {
-        if (canUpdateFile) {
-            toast.success("تم تعديل الملف بنجاح")
-        }
-        else {
-            toast.error("   ليس لديك صلاحية تعديل الملفات")
-        }
-    };
-    const handleCreate = () => {
-        if (canCreateFile) {
-            toast.success("تم إنشاء الملف بنجاح")
-        }
-        else {
-            toast.error("ليس لديك صلاحية إنشاء الملفات")
-        }
-    };
 
-    return (
-        <div className='w-full p-8 flex flex-col gap-6 justify-start items-start animate-in fade-in duration-500'>
-            <h1 className='text-3xl font-bold'>لوحة التحكم / Dashboard</h1>
+  return (
+    <>
+      <div className="w-full px-3 pt-3">
+        <DashboardHeader mb="mb-2" title=" الرئيسية " desc=" نظرة عامة عن الإحصائيات والأداء" />
+      </div>
+      <div className="container mx-auto flex w-full flex-col gap-5 px-3 py-3 animate-in fade-in duration-500">
+        <StatisticsCards statistics={data.data} />
 
-            <div className="bg-card p-6 rounded-lg shadow w-full max-w-2xl border">
-                <h2 className="text-xl font-semibold mb-4 text-card-foreground">User Information</h2>
-                <div className="flex flex-col gap-2 mb-6 text-muted-foreground">
-                    <p><strong>Name:</strong> {user?.firstName} {user?.lastName}</p>
-                    <p><strong>Role:</strong> <span className="text-primary font-bold">{user?.role || 'Guest'}</span></p>
-                </div>
+        <section className="grid grid-cols-1 gap-5 xl:grid-cols-[1.4fr_0.8fr]">
+          <ChartPanel
+            title="أنواع الملفات"
+            description="توزيع الملفات حسب نوع المكلف"
+            sectionLabel="الملفات"
+            icon={Clock3}
+            footer={`إجمالي الملفات: ${data?.data?.files_statistics?.total_files_count ?? 0}`}
+          >
+            <FilesByTypePieChart statistics={data?.data?.files_statistics} />
+          </ChartPanel>
 
-                <h2 className="text-xl font-semibold mb-4 text-card-foreground">Permissions Test</h2>
-                <div className="flex gap-4">
-                    <button
-                        className="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-md transition-colors"
-                        onClick={handleView}
-                    >
-                        عرض ملف
-                    </button>
-                    <button
-                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-colors"
-                        onClick={handleCreate}
-                    >
-                        إنشاء ملف
-                    </button>
-                    <button
-                        className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-md transition-colors"
-                        onClick={handleUpdate}
-                    >
-                        تعديل ملف
-                    </button>
-                    <button
-                        className={`bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition-colors`}
-                        onClick={handleDelete}
-                    >
-                        حذف ملف
-                    </button>
-                </div>
-            </div>
-        </div>
-    )
+          <ChartPanel
+            title="حركة الملفات الشهرية"
+            description="حالة حركة الملفات خلال آخر ستة أشهر"
+            sectionLabel="حركة الملفات"
+            icon={BarChart3}
+            footer={`إجمالي الحركة: ${data?.data?.file_movements_statistics?.file_movement_count}`}
+          >
+            <FileMovementBarChart data={data?.data?.file_movements_statistics?.last_6_months_statistics?.monthly_breakdown} />
+          </ChartPanel>
+        </section>
+
+        <section className="grid grid-cols-1 gap-5 xl:grid-cols-[0.8fr_1.25fr]">
+          <ChartPanel
+            title="حركة العمل داخل النظام"
+            description={`نشاط العمليات من ${data.data.weekly_activity_statistics?.week_start ?? "-"} إلى ${data.data.weekly_activity_statistics?.week_end ?? "-"}`}
+            sectionLabel="عمليات النظام"
+            icon={BarChart3}
+            footer={`إجمالي عمليات الأسبوع: ${data.data.weekly_activity_statistics?.week_total ?? 0}`}
+          >
+            <SystemActivityChart data={data.data.weekly_activity_statistics?.days} />
+          </ChartPanel>
+
+          <ChartPanel
+            title="توزيع الملفات بين الأقسام"
+            description="عدد الملفات المسجلة في كل قسم"
+            sectionLabel="الأقسام"
+            icon={Archive}
+            footer={`عدد الأقسام: ${data.data?.overview?.departments_count ?? 0}`}
+          >
+            <DepartmentDistributionPieChart departments={data.data?.departments_statistics} />
+          </ChartPanel>
+        </section>
+
+        <ChartPanel
+          title="مقارنة حركة الملفات بين الأقسام"
+          description="مقارنة حركة الملفات اليومية بين الأقسام المتصدرة"
+          sectionLabel="الملفات"
+          icon={LineChart}
+        >
+          <DepartmentComparisonAreaChart data={data.data.file_movements_statistics?.top_departments_statistics} />
+        </ChartPanel>
+      </div>
+    </>
+  )
 }
 
 export default Main
