@@ -8,14 +8,9 @@ import { Badge } from "@/components/ui/badge"
 export const columns: ColumnDef<TaxPayers>[] = [
 
     {
-        accessorKey: "userId",
-        accessorFn: (row) => row.userId,
-        header: "رقم المستخدم",
-    },
-    {
-        accessorKey: "taxPayerId",
+        id: "id",
         accessorFn: (row) => row.taxPayerId,
-        header: "رقم المكلف",
+        header: "الرقم",
     },
     {
         accessorKey: "fullName",
@@ -35,11 +30,6 @@ export const columns: ColumnDef<TaxPayers>[] = [
             const type = row.original.taxPayerFileType;
             return <Badge variant="outline" className="rounded-xl px-4 py-1">{type === "Individual" ? "فرد" : type === "Company" ? "شركة" : "شركة خيريه"}</Badge>
         }
-    },
-    {
-        id: "phone",
-        header: "رقم الهاتف",
-        accessorFn: (row) => row.phone,
     },
     {
         id: "actions",

@@ -45,7 +45,7 @@ const ShowFileMovement = () => {
         { label: "التاريخ", value: data?.date, icon: CalendarDays },
         { label: "رقم الملف (الرقم الضريبي)", value: data?.file?.taxNumber, icon: FileSearch },
         { label: "المكلف المرتبط", value: data?.file?.taxPayer?.tradeName, icon: User },
-        { label: "المحصل", value: data?.taxCollector?.fullName, icon: UserSquare },
+        { label: "المأمور", value: data?.taxCollector?.fullName, icon: UserSquare },
         { label: "القسم", value: data?.department?.name, icon: Building2 },
         { label: "مدخل الحركة", value: data?.creator ? `${data.creator.firstName} ${data.creator.lastName}` : null, icon: User },
     ]

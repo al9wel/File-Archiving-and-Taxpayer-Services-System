@@ -16,7 +16,6 @@ import ErrorState from "@/app/pages/ErrorState"
 const Users = () => {
     const { data, isPending, isError } = useUsers()
     const canView = usePermission(ACTIONS.VIEW_USER)
-
     if (!canView) return <Unauthorized />
 
     if (isError) {
