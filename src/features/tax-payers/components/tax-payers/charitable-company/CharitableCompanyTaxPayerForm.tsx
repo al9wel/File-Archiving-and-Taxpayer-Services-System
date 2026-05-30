@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, type UseFormSetValue, type UseFormWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Input } from "@/components/ui/input"
@@ -15,6 +15,8 @@ import { User, Upload, Check, Loader2 } from "lucide-react"
 import type { CharitableCompanyTaxPayer } from "@/types/CharitableCompanyTaxPayer"
 import { Card } from "@/components/ui/card"
 import { useDepartments } from "@/features/basic-info/hooks/departments/useDepartments"
+import { useAuth } from "@/hooks/useAuth"
+import { ROLES } from "@/constants/roles"
 
 const taxPayerSchema = z.object({
     firstName: z.string().min(2, "الاسم الأول يجب أن يكون حرفين على الأقل"),
@@ -41,9 +43,35 @@ interface CharitableCompanyTaxPayerFormProps {
     onSubmit: (formData: FormData) => void
     isLoading?: boolean
 }
+interface AdminDepartmentSelectProps {
+    setValue: UseFormSetValue<CharitableCompanyTaxPayerFormValues>,
+    watch: UseFormWatch<CharitableCompanyTaxPayerFormValues>,
+}
+const AdminDepartmentSelect = ({ setValue, watch, }: AdminDepartmentSelectProps) => {
+    const { data: departments, isPending: isLoadingDepts } = useDepartments()
+
+    return (
+        <Select onValueChange={(v) => setValue("departmentID", v)} value={watch("departmentID")} key={watch("departmentID")} disabled={isLoadingDepts}>
+            <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-none">
+                {isLoadingDepts ? (
+                    <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                        <span className="text-muted-foreground">جاري التحميل...</span>
+                    </div>
+                ) : (
+                    <SelectValue placeholder="إختر القسم" />
+                )}
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+                {departments?.data?.map((d) => <SelectItem key={d.id} value={d.id.toString()}>{d.name}</SelectItem>)}
+            </SelectContent>
+        </Select>
+    )
+}
 
 export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading }: CharitableCompanyTaxPayerFormProps) => {
-    const { data: departments, isPending: isLoadingDepts } = useDepartments()
+    const { user } = useAuth()
+    const isAdmin = user?.role === ROLES.ADMIN
 
     const [imagePreview, setImagePreview] = useState<string | null>(null)
     const [idCardName, setIdCardName] = useState<string | null>(null)
@@ -68,13 +96,17 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
     })
 
     useEffect(() => {
+        if (!isAdmin && user?.departmentID) {
+            setValue("departmentID", user.departmentID.toString())
+        }
+
         if (initialData) {
             reset({
                 firstName: initialData.userInfo?.firstName || "",
                 lastName: initialData.userInfo?.lastName || "",
                 phone: initialData.userInfo?.phone || "",
                 role: initialData.userInfo?.role || "Tax_Payer",
-                departmentID: initialData.userInfo?.department?.id.toString() || "1",
+                departmentID: isAdmin ? initialData.userInfo?.department?.id.toString() : user?.departmentID?.toString(),
                 fileType: "CharitableCompany",
                 tradeName: initialData.taxPayerInfo?.tradeName || "",
             });
@@ -88,7 +120,7 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
             if (initialData.taxPayerInfo?.propertyDocPict) setPropertyDocName(initialData.taxPayerInfo.propertyDocPict.split('/').pop() || "الملف الحالي");
             if (initialData.charitableCompanyInfo?.byLawsCopy) setByLawsName(initialData.charitableCompanyInfo.byLawsCopy.split('/').pop() || "الملف الحالي");
         }
-    }, [initialData, reset])
+    }, [initialData, isAdmin, reset, setValue, user?.departmentID])
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof CharitableCompanyTaxPayerFormValues, setter: (val: string | null) => void) => {
         const file = e.target.files?.[0]
@@ -180,21 +212,15 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
                     </div>
                     <div className="space-y-2">
                         <label className="text-sm font-bold">القسم الضريبي *</label>
-                        <Select onValueChange={(v) => setValue("departmentID", v)} value={watch("departmentID")} key={watch("departmentID")} disabled={isLoadingDepts}>
-                            <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-none">
-                                {isLoadingDepts ? (
-                                    <div className="flex items-center gap-2">
-                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                        <span className="text-muted-foreground">جاري التحميل...</span>
-                                    </div>
-                                ) : (
-                                    <SelectValue placeholder="إختر القسم" />
-                                )}
-                            </SelectTrigger>
-                            <SelectContent className="rounded-xl">
-                                {departments?.data?.map((d) => <SelectItem key={d.id} value={d.id.toString()}>{d.name}</SelectItem>)}
-                            </SelectContent>
-                        </Select>
+                        {isAdmin ? (
+                            <AdminDepartmentSelect setValue={setValue} watch={watch} />
+                        ) : (
+                            <Input
+                                value={user?.departmentName || ""}
+                                readOnly
+                                className="h-12 rounded-xl bg-muted/30 border-none cursor-default focus-visible:ring-0"
+                            />
+                        )}
                     </div>
                     <div className="space-y-2 md:col-span-2">
                         <label className="text-sm font-bold">الاسم التجاري (اختياري)</label>

@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, type UseFormSetValue, type UseFormWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Input } from "@/components/ui/input"
@@ -26,6 +26,8 @@ import { useRegions } from "@/features/basic-info/hooks/regions/useRegions"
 import { useDistricts } from "@/features/basic-info/hooks/districts/useDistricts"
 import type { FileStatus } from "@/types/FileStatus"
 import type { ActivityType, Department, District, PaymentType, Region } from "@/types"
+import { useAuth } from "@/hooks/useAuth"
+import { ROLES } from "@/constants/roles"
 
 const fileSchema = z.object({
     taxNumber: z.string().min(1, "رقم المكلف الضريبي مطلوب"),
@@ -49,9 +51,43 @@ interface FileFormProps {
     onSubmit: (data: FormData) => void
     isLoading?: boolean
 }
+interface AdminDepartmentSelectProps {
+    setValue: UseFormSetValue<FileFormValues>,
+    watch: UseFormWatch<FileFormValues>,
+    error?: string,
+}
+const AdminDepartmentSelect = ({ setValue, watch, error, }: AdminDepartmentSelectProps) => {
+    const { data: departments, isPending: isLoadingDepts } = useDepartments()
+
+    return (
+        <>
+            <Select onValueChange={(v) => setValue("departmentId", v)} value={watch("departmentId")} disabled={isLoadingDepts}>
+                <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
+                    {isLoadingDepts ? (
+                        <div className="flex items-center gap-2">
+                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                            <span className="text-muted-foreground">جاري التحميل...</span>
+                        </div>
+                    ) : (
+                        <SelectValue placeholder="اختر القسم" />
+                    )}
+                </SelectTrigger>
+                <SelectContent className="rounded-xl">
+                    {departments?.data?.map((dept: Department) => (
+                        <SelectItem key={dept.id} value={dept.id.toString()}>
+                            {dept.name}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+            {error && <p className="text-sm font-medium text-destructive mt-1">{error}</p>}
+        </>
+    )
+}
 
 export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) => {
-    const { data: departments, isPending: isLoadingDepts } = useDepartments()
+    const { user } = useAuth()
+    const isAdmin = user?.role === ROLES.ADMIN
 
     const { data: fileStatuses, isPending: isLoadingFileStatuses } = useFileStatuses()
     const { data: activityTypes, isPending: isLoadingActivityTypes } = useActivityTypes()
@@ -78,12 +114,16 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
     })
 
     useEffect(() => {
+        if (!isAdmin && user?.departmentID) {
+            setValue("departmentId", user.departmentID.toString())
+        }
+
         if (initialData) {
             setValue("taxNumber", initialData.taxNumber?.toString() || "")
             setValue("inventoryNumber", initialData.inventoryNumber?.toString() || "")
             setValue("docsCount", initialData.docsCount?.toString() || "")
             setValue("taxPayerId", initialData.taxPayer?.id?.toString() || "")
-            setValue("departmentId", initialData.department?.id?.toString() || "")
+            if (isAdmin) setValue("departmentId", initialData.department?.id?.toString() || "")
             setValue("fileStatusId", initialData.fileStatus?.id?.toString() || "")
             setValue("activityTypeId", initialData.activityType?.id?.toString() || "")
             setValue("paymentTypeId", initialData.paymentType?.id?.toString() || "")
@@ -92,7 +132,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
             setValue("activityStartDate", initialData.activityStartDate || "")
             setValue("note", initialData.note || "")
         }
-    }, [initialData, setValue])
+    }, [initialData, isAdmin, setValue, user?.departmentID])
 
     const handleFormSubmit = (values: FileFormValues) => {
         const formData = new FormData()
@@ -142,26 +182,11 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
                             <label className="text-sm font-medium leading-none mb-2 block">
                                 القسم *
                             </label>
-                            <Select onValueChange={(v) => setValue("departmentId", v)} value={watch("departmentId")} disabled={isLoadingDepts}>
-                                <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
-                                    {isLoadingDepts ? (
-                                        <div className="flex items-center gap-2">
-                                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                            <span className="text-muted-foreground">جاري التحميل...</span>
-                                        </div>
-                                    ) : (
-                                        <SelectValue placeholder="اختر القسم" />
-                                    )}
-                                </SelectTrigger>
-                                <SelectContent className="rounded-xl">
-                                    {departments?.data?.map((dept: Department) => (
-                                        <SelectItem key={dept.id} value={dept.id.toString()}>
-                                            {dept.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                            {errors.departmentId && <p className="text-sm font-medium text-destructive mt-1">{errors.departmentId.message}</p>}
+                            {isAdmin ? (
+                                <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentId?.message} />
+                            ) : (
+                                <Input value={user?.departmentName || ""} readOnly className="h-12 bg-muted/30" />
+                            )}
                         </div>
 
                         <div>

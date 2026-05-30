@@ -9,7 +9,7 @@ import Unauthorized from "@/app/pages/Unauthorized";
 
 const DepartmentsPage = () => {
     const { data: departments, isPending, isError } = useDepartments();
-    const canView = usePermission(ACTIONS.VIEW_BASIC_INFO);
+    const canView = usePermission(ACTIONS.VIEW_DEPARTMENT);
 
     if (!canView) return <Unauthorized />;
 
