@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, type UseFormSetValue, type UseFormWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Input } from "@/components/ui/input"
@@ -16,6 +16,8 @@ import type { FileMovement } from "@/types/FileMovments"
 import { useDepartments } from "@/features/basic-info/hooks/departments/useDepartments"
 import { FileSearchSelect } from "@/features/files/components/FileSearchSelect"
 import { useTaxCollectors } from "@/features/tax-collectors/hooks/tax-collectors/useTaxCollectors"
+import { useAuth } from "@/hooks/useAuth"
+import { ROLES } from "@/constants/roles"
 
 const fileMovementSchema = z.object({
     status: z.string().min(1, "يرجى اختيار حالة الملف"),
@@ -32,9 +34,50 @@ interface FileMovementFormProps {
     onSubmit: (data: FormData) => void
     isLoading?: boolean
 }
+interface AdminDepartmentSelectProps {
+    setValue: UseFormSetValue<FileMovementFormValues>,
+    watch: UseFormWatch<FileMovementFormValues>,
+    error?: string,
+}
+const AdminDepartmentSelect = ({ setValue, watch, error, }: AdminDepartmentSelectProps) => {
+    const { data: departments, isPending: isLoadingDepts } = useDepartments()
+
+    return (
+        <>
+            <div className="h-12 w-full">
+                <Select
+                    onValueChange={(val) => setValue("departmentId", val)}
+                    value={watch("departmentId")}
+                    key={watch("departmentId")}
+                    disabled={isLoadingDepts}
+                >
+                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                        {isLoadingDepts ? (
+                            <div className="flex items-center gap-2">
+                                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                <span className="text-muted-foreground">جاري التحميل...</span>
+                            </div>
+                        ) : (
+                            <SelectValue placeholder="إختر القسم" />
+                        )}
+                    </SelectTrigger>
+                    <SelectContent>
+                        {departments?.data?.map((dept) => (
+                            <SelectItem key={dept.id} value={dept.id.toString()}>
+                                {dept.name}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
+            {error && <p className="text-sm font-medium text-destructive mt-1">{error}</p>}
+        </>
+    )
+}
 
 export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovementFormProps) => {
-    const { data: departments, isPending: isLoadingDepts } = useDepartments()
+    const { user } = useAuth()
+    const isAdmin = user?.role === ROLES.ADMIN
     const { data: taxCollectors, isPending: isLoadingCollectors } = useTaxCollectors()
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<FileMovementFormValues>({
@@ -50,12 +93,14 @@ export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovem
 
     // Watch for initialData changes
     useEffect(() => {
+        if (!isAdmin && user?.departmentID) setValue("departmentId", user.departmentID.toString())
+
         if (initialData?.status) setValue("status", initialData.status)
         if (initialData?.date) setValue("date", initialData.date)
         if (initialData?.file?.id) setValue("fileId", initialData.file.id.toString())
         if (initialData?.taxCollector?.id) setValue("taxCollectorId", initialData.taxCollector.id.toString())
-        if (initialData?.department?.id) setValue("departmentId", initialData.department.id.toString())
-    }, [initialData, setValue])
+        if (isAdmin && initialData?.department?.id) setValue("departmentId", initialData.department.id.toString())
+    }, [initialData, isAdmin, setValue, user?.departmentID])
 
     const handleFormSubmit = (values: FileMovementFormValues) => {
         const formData = new FormData()
@@ -179,33 +224,11 @@ export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovem
                             <Building2 size={16} className="text-muted-foreground" />
                             القسم *
                         </label>
-                        <div className="h-12 w-full">
-                            <Select
-                                onValueChange={(val) => setValue("departmentId", val)}
-                                value={watch("departmentId")}
-                                key={watch("departmentId")}
-                                disabled={isLoadingDepts}
-                            >
-                                <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
-                                    {isLoadingDepts ? (
-                                        <div className="flex items-center gap-2">
-                                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                            <span className="text-muted-foreground">جاري التحميل...</span>
-                                        </div>
-                                    ) : (
-                                        <SelectValue placeholder="إختر القسم" />
-                                    )}
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {departments?.data?.map((dept) => (
-                                        <SelectItem key={dept.id} value={dept.id.toString()}>
-                                            {dept.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        {errors.departmentId && <p className="text-sm font-medium text-destructive mt-1">{errors.departmentId.message}</p>}
+                        {isAdmin ? (
+                            <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentId?.message} />
+                        ) : (
+                            <Input value={user?.departmentName || ""} readOnly className="h-12 bg-muted/30" />
+                        )}
                     </div>
                 </div>
             </div>

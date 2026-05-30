@@ -28,8 +28,8 @@ export const DepartmentActions = ({ department }: DepartmentActionsProps) => {
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
 
-    const canUpdate = usePermission(ACTIONS.UPDATE_BASIC_INFO);
-    const canDelete = usePermission(ACTIONS.DELETE_BASIC_INFO);
+    const canUpdate = usePermission(ACTIONS.UPDATE_DEPARTMENT);
+    const canDelete = usePermission(ACTIONS.DELETE_DEPARTMENT);
 
     const { mutate: deleteDept, isPending: isDeleting } = useDeleteDepartment();
     const { mutate: updateDept, isPending: isUpdating } = useUpdateDepartment();
