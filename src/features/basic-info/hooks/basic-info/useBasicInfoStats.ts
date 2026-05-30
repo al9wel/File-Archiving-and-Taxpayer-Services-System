@@ -3,7 +3,7 @@ import { basicInfoApi } from "../../api/basicInfoApi";
 
 export const useBasicInfoStats = () => {
     return useQuery({
-        queryKey: ["basicInfoStats"],
+        queryKey: ["statistics"],
         queryFn: async () => basicInfoApi.getBasicInfoStats(),
     });
 }

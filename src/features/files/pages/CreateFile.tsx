@@ -22,10 +22,10 @@ const CreateFile = () => {
             onSuccess: (res) => {
                 toast.success(res.message || "تم إضافة الملف بنجاح")
                 setTimeout(() => {
-                    navigate(ROUTES.DASHBOARD.FILES_SHOW.replace(":id", res.data.id.toString()))
+                    navigate(ROUTES.DASHBOARD.FILES_SHOW.replace(":id", res.data.fileInfo.id.toString()))
                 }, 1000)
             },
-            onError: (error: any) => {
+            onError: (error) => {
                 toast.error(error.message || "فشل إضافة الملف")
             }
         })

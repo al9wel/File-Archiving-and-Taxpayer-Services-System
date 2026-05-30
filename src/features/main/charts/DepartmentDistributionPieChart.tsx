@@ -7,7 +7,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import DashboardEmptyState from "../components/DashboardEmptyState"
-import type { DepartmentStatistics } from "../types/dashboard"
+import type { DepartmentStatistics } from "../../../types/Dashboard"
 
 type DepartmentDistributionPieChartProps = {
   departments?: DepartmentStatistics[]

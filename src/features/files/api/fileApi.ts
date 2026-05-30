@@ -19,8 +19,8 @@ export const fileApi = {
     /**
      * Fetches the list of all files.
      */
-    getFiles: (): Promise<{ data: File['fileInfo'][]; message: string }> => {
-        return fetchClient('/files', {
+    getFiles: (searchQuery = ""): Promise<{ data: File['fileInfo'][]; message: string }> => {
+        return fetchClient(`/files?search=${searchQuery}`, {
             method: 'GET',
         })
     },

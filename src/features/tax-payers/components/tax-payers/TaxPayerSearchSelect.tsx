@@ -43,8 +43,15 @@ export function TaxPayerSearchSelect({
   const data = queryData?.data;
 
   const selectedTaxPayer = data?.find(
-    (item: any) => item.taxPayerId === value
+    (item) => item.taxPayerId === value
   );
+
+  const getFileTypeLabel = (fileType?: string) => {
+    if (fileType === "Individual") return "فرد"
+    if (fileType === "Company") return "شركة"
+    if (fileType === "CharitableCompany") return "خيرية"
+    return "غير محدد"
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -57,7 +64,7 @@ export function TaxPayerSearchSelect({
           className="w-full justify-between h-12 rounded-xl bg-muted/30 border-muted-foreground/10"
         >
           {selectedTaxPayer
-            ? selectedTaxPayer.tradeName
+            ? `${selectedTaxPayer.tradeName} - ${getFileTypeLabel(selectedTaxPayer.taxPayerFileType)}`
             : "اختر المكلف..."}
 
           <ChevronsUpDown className="opacity-50" />
@@ -109,7 +116,12 @@ export function TaxPayerSearchSelect({
                   />
 
                   <div className="flex flex-col flex-1 mr-2 text-right">
-                    <span>{taxPayer.tradeName}</span>
+                    <span className="flex items-center gap-2">
+                      <span>{taxPayer.tradeName}</span>
+                      <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs font-bold text-red-600 dark:bg-red-950/40 dark:text-red-300">
+                        {getFileTypeLabel(taxPayer.taxPayerFileType)}
+                      </span>
+                    </span>
                     <span className="text-xs text-muted-foreground">
                       {taxPayer.taxNumber || "-"}
                     </span>

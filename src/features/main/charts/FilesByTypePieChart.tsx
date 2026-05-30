@@ -7,7 +7,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import DashboardEmptyState from "../components/DashboardEmptyState"
-import type { FilesStatistics } from "../types/dashboard"
+import type { FilesStatistics } from "../../../types/Dashboard"
 
 type FilesByTypePieChartProps = {
   statistics?: FilesStatistics

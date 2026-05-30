@@ -7,7 +7,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import DashboardEmptyState from "../components/DashboardEmptyState"
-import type { MonthlyFileMovement } from "../types/dashboard"
+import type { MonthlyFileMovement } from "../../../types/Dashboard"
 
 type FileMovementBarChartProps = {
   data?: MonthlyFileMovement[]

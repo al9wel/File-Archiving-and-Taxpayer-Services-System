@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
 
@@ -10,18 +9,15 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-import { cn } from "@/lib/utils";
-
 import { useDebounce } from "@/hooks/useDebounce";
-
-import { useSearchUsers } from "../hooks/useSearchUsers";
+import { cn } from "@/lib/utils";
+import { useSearchFiles } from "../hooks/useSearchFiles";
+import type { File } from "@/types/File";
 
 type Props = {
   value?: number;
@@ -29,25 +25,21 @@ type Props = {
   disabled?: boolean;
 };
 
-export function UserSearchSelect({
-  value,
-  onSelect,
-  disabled
-}: Props) {
+export function FileSearchSelect({ value, onSelect, disabled }: Props) {
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState("");
   const debouncedSearch = useDebounce(search, 500);
 
-  const { data: queryData, isPending, isError } = useSearchUsers(debouncedSearch);
+  const { data: queryData, isPending, isError } = useSearchFiles(debouncedSearch);
 
   const data = queryData?.data;
 
-  const selectedUser = data?.find(
-    (item) => item.id === value
+  const selectedFile = data?.find(
+    (item: File["fileInfo"]) => Number(item.id) === value
   );
 
-  const getUserLabel = (user: any) => {
-    return `${user.firstName} ${user.lastName} - #${user.id}`
+  const getFileLabel = (file: File["fileInfo"]) => {
+    return `ملف رقم: ${file.taxNumber} - ${file.taxPayer?.tradeName || "مكلف"}`
   }
 
   return (
@@ -60,10 +52,7 @@ export function UserSearchSelect({
           disabled={disabled}
           className="w-full justify-between h-12 rounded-xl bg-muted/30 border-muted-foreground/10"
         >
-          {selectedUser
-            ? getUserLabel(selectedUser)
-            : "اختر المستخدم..."}
-
+          {selectedFile ? getFileLabel(selectedFile) : "اختر الملف..."}
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -71,7 +60,7 @@ export function UserSearchSelect({
       <PopoverContent className="w-[400px] p-0" align="end" dir="rtl">
         <Command shouldFilter={false} dir="rtl">
           <CommandInput
-            placeholder="البحث عن مستخدم..."
+            placeholder="البحث عن ملف..."
             value={search}
             onValueChange={setSearch}
           />
@@ -85,7 +74,7 @@ export function UserSearchSelect({
 
             {isError && (
               <p className="p-4 text-sm text-red-500">
-                فشل تحميل المستخدمين
+                فشل تحميل الملفات
               </p>
             )}
 
@@ -95,12 +84,12 @@ export function UserSearchSelect({
 
             {!isPending &&
               !isError &&
-              data?.filter((user: any) => user.role === "Tax_Payer").map((user: any) => (
+              data?.map((file: File["fileInfo"]) => (
                 <CommandItem
-                  key={user.id}
-                  value={getUserLabel(user)}
+                  key={file.id}
+                  value={`${getFileLabel(file)} - #${file.id}`}
                   onSelect={() => {
-                    onSelect(user.id);
+                    onSelect(Number(file.id));
                     setOpen(false);
                   }}
                   className="cursor-pointer"
@@ -108,14 +97,14 @@ export function UserSearchSelect({
                   <Check
                     className={cn(
                       "mr-2 size-4",
-                      value === user.id ? "opacity-100" : "opacity-0"
+                      value === Number(file.id) ? "opacity-100" : "opacity-0"
                     )}
                   />
 
                   <div className="flex flex-col flex-1 mr-2 text-right">
-                    <span>{getUserLabel(user)}</span>
+                    <span>{getFileLabel(file)}</span>
                     <span className="text-xs text-muted-foreground">
-                      {user.username || "-"}
+                      رقم الحصر: {file.inventoryNumber || "-"}
                     </span>
                   </div>
                 </CommandItem>

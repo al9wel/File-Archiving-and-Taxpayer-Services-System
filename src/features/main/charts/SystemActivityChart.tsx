@@ -7,7 +7,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import DashboardEmptyState from "../components/DashboardEmptyState"
-import type { WeeklyActivityDay } from "../types/dashboard"
+import type { WeeklyActivityDay } from "../../../types/Dashboard"
 
 type SystemActivityChartProps = {
   data?: WeeklyActivityDay[]

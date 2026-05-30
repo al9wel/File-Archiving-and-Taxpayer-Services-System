@@ -119,59 +119,10 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-8" dir="rtl">
             <div className="space-y-8">
                 {/* Section 1: Basic Info */}
-                <div className="bg-card p-6 rounded-2xl border shadow-sm space-y-6">
+                <div className="bg-card p-6 pb-2 rounded-2xl border shadow-sm space-y-6">
                     <div className="flex items-center gap-3 mb-4">
                         <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold">1</span>
                         <h2 className="text-xl font-bold">البيانات الأساسية للملف</h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="text-sm font-medium leading-none mb-2 block">
-                                رقم المكلف الضريبي *
-                            </label>
-                            <Input placeholder="رقم المكلف الضريبي" {...register("taxNumber")} className="h-12 bg-muted/30" />
-                            {errors.taxNumber && <p className="text-sm font-medium text-destructive mt-1">{errors.taxNumber.message}</p>}
-                        </div>
-
-                        <div>
-                            <label className="text-sm font-medium leading-none mb-2 block">
-                                رقم الحصر *
-                            </label>
-                            <Input placeholder="رقم الحصر" {...register("inventoryNumber")} className="h-12 bg-muted/30" />
-                            {errors.inventoryNumber && <p className="text-sm font-medium text-destructive mt-1">{errors.inventoryNumber.message}</p>}
-                        </div>
-
-                        <div>
-                            <label className="text-sm font-medium leading-none mb-2 block">
-                                عدد المستندات *
-                            </label>
-                            <Input type="number" placeholder="عدد المستندات" {...register("docsCount")} className="h-12 bg-muted/30" />
-                            {errors.docsCount && <p className="text-sm font-medium text-destructive mt-1">{errors.docsCount.message}</p>}
-                        </div>
-
-                        <div>
-                            <label className="text-sm font-medium leading-none mb-2 block">
-                                تاريخ بداية النشاط *
-                            </label>
-                            <Input type="date" {...register("activityStartDate")} className="h-12 bg-muted/30 text-right" dir="ltr" />
-                            {errors.activityStartDate && <p className="text-sm font-medium text-destructive mt-1">{errors.activityStartDate.message}</p>}
-                        </div>
-
-                        <div className="md:col-span-2">
-                            <label className="text-sm font-medium leading-none mb-2 block">
-                                ملاحظات
-                            </label>
-                            <Input placeholder="أدخل أي ملاحظات إضافية" {...register("note")} className="h-12 bg-muted/30" />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Section 2: Related Data */}
-                <div className="bg-card p-6 pb-2 rounded-2xl border shadow-sm space-y-6">
-                    <div className="flex items-center gap-3 mb-4">
-                        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold">2</span>
-                        <h2 className="text-xl font-bold">البيانات المرتبطة والإضافية</h2>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6">
@@ -182,6 +133,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
                             <TaxPayerSearchSelect
                                 value={watch("taxPayerId") ? Number(watch("taxPayerId")) : undefined}
                                 onSelect={(id) => setValue("taxPayerId", id.toString(), { shouldValidate: true })}
+                                disabled={isLoading}
                             />
                             {errors.taxPayerId && <p className="text-sm font-medium text-destructive mt-1">{errors.taxPayerId.message}</p>}
                         </div>
@@ -340,6 +292,56 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
                                 </SelectContent>
                             </Select>
                             {errors.districtId && <p className="text-sm font-medium text-destructive mt-1">{errors.districtId.message}</p>}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Section 2: Related Data */}
+
+                <div className="bg-card p-6 rounded-2xl border shadow-sm space-y-6">
+                    <div className="flex items-center gap-3 mb-4">
+                        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold">2</span>
+                        <h2 className="text-xl font-bold">تفاصيل الملف</h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label className="text-sm font-medium leading-none mb-2 block">
+                                رقم المكلف الضريبي *
+                            </label>
+                            <Input placeholder="رقم المكلف الضريبي" {...register("taxNumber")} className="h-12 bg-muted/30" />
+                            {errors.taxNumber && <p className="text-sm font-medium text-destructive mt-1">{errors.taxNumber.message}</p>}
+                        </div>
+
+                        <div>
+                            <label className="text-sm font-medium leading-none mb-2 block">
+                                رقم الحصر *
+                            </label>
+                            <Input placeholder="رقم الحصر" {...register("inventoryNumber")} className="h-12 bg-muted/30" />
+                            {errors.inventoryNumber && <p className="text-sm font-medium text-destructive mt-1">{errors.inventoryNumber.message}</p>}
+                        </div>
+
+                        <div>
+                            <label className="text-sm font-medium leading-none mb-2 block">
+                                عدد المستندات *
+                            </label>
+                            <Input type="number" placeholder="عدد المستندات" {...register("docsCount")} className="h-12 bg-muted/30" />
+                            {errors.docsCount && <p className="text-sm font-medium text-destructive mt-1">{errors.docsCount.message}</p>}
+                        </div>
+
+                        <div>
+                            <label className="text-sm font-medium leading-none mb-2 block">
+                                تاريخ بداية النشاط *
+                            </label>
+                            <Input type="date" {...register("activityStartDate")} className="h-12 bg-muted/30 text-right" dir="ltr" />
+                            {errors.activityStartDate && <p className="text-sm font-medium text-destructive mt-1">{errors.activityStartDate.message}</p>}
+                        </div>
+
+                        <div className="md:col-span-2">
+                            <label className="text-sm font-medium leading-none mb-2 block">
+                                ملاحظات
+                            </label>
+                            <Input placeholder="أدخل أي ملاحظات إضافية" {...register("note")} className="h-12 bg-muted/30" />
                         </div>
                     </div>
                 </div>
