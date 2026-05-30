@@ -22,6 +22,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft } from "lucide-react"
+import type { OperationReport } from "@/types/OperationReport"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -33,9 +34,23 @@ export function DataTable<TData, TValue>({
     data,
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+    const [operationSearch, setOperationSearch] = React.useState("")
+    const [userNameSearch, setUserNameSearch] = React.useState("")
+
+    const filteredData = React.useMemo(() => {
+        return (data as OperationReport[]).filter((report) => {
+            const operation = report.action?.toLowerCase() || ""
+            const userName = `${report.user?.name || ""} ${report.user?.first_name || ""} ${report.user?.last_name || ""}`.toLowerCase()
+
+            return (
+                operation.includes(operationSearch.toLowerCase()) &&
+                userName.includes(userNameSearch.toLowerCase())
+            )
+        }) as TData[]
+    }, [data, operationSearch, userNameSearch])
 
     const table = useReactTable({
-        data,
+        data: filteredData,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -53,18 +68,32 @@ export function DataTable<TData, TValue>({
 
     return (
         <div className="space-y-4" dir="rtl">
-            {/* Table Header: Search */}
-            <div className="flex items-center justify-between gap-4 py-1">
-                <div className="flex-1 relative w-full max-w-md">
-                    <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                        placeholder="البحث عن طريق اسم العملية..."
-                        value={(table.getColumn("action")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) =>
-                            table.getColumn("action")?.setFilterValue(event.target.value)
-                        }
-                        className="h-12 pr-11 bg-muted/80 dark:bg-muted/20 border-2 border-muted-foreground/20 rounded-2xl focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all shadow-sm placeholder:text-muted-foreground/70"
-                    />
+            <div className="bg-card p-4 rounded-2xl border border-border shadow-sm">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-muted-foreground">البحث باسم العملية</label>
+                        <div className="relative">
+                            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                placeholder="اسم العملية"
+                                value={operationSearch}
+                                onChange={(event) => setOperationSearch(event.target.value)}
+                                className="h-11 pr-10 rounded-xl bg-muted/30 border-muted-foreground/10"
+                            />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-muted-foreground">البحث باسم المستخدم</label>
+                        <div className="relative">
+                            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                placeholder="اسم المستخدم"
+                                value={userNameSearch}
+                                onChange={(event) => setUserNameSearch(event.target.value)}
+                                className="h-11 pr-10 rounded-xl bg-muted/30 border-muted-foreground/10"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
 

@@ -9,18 +9,20 @@ export const columns: ColumnDef<FileMovement>[] = [
         header: "الرقم",
     },
     {
+        id: "tradeName",
+        accessorFn: (row) => row.file?.taxPayer.tradeName || "",
+        header: "الاسم التجاري",
+        cell: ({ row }) => <span>{row.original.file?.taxPayer.tradeName || "-"}</span>
+    },
+    {
         accessorKey: "file.id",
         header: "رقم الملف",
         cell: ({ row }) => <span>{row.original.file?.id || "-"}</span>
     },
     {
-        accessorKey: "file.taxPayer.tradeName",
-        header: "الاسم التجاري ",
-        cell: ({ row }) => <span>{row.original.file?.taxPayer.tradeName || "-"}</span>
-    },
-    {
         accessorKey: "status",
-        header: "الحالة",
+        header: "حالة الملف",
+        filterFn: "equalsString",
         cell: ({ row }) => {
             const status = row.original.status;
             const badgeClasses =
@@ -38,18 +40,15 @@ export const columns: ColumnDef<FileMovement>[] = [
         }
     },
     {
-        accessorKey: "date",
-        header: "التاريخ",
-    },
-    {
-        accessorKey: "taxCollector.fullName",
-        header: "المحصل",
+        id: "taxCollector",
+        accessorFn: (row) => row.taxCollector?.id?.toString() || "",
+        header: "المأمور",
+        filterFn: "equalsString",
         cell: ({ row }) => <span>{row.original.taxCollector?.fullName || "-"}</span>
     },
     {
-        accessorKey: "department.name",
-        header: "القسم",
-        cell: ({ row }) => <span>{row.original.department?.name || "-"}</span>
+        accessorKey: "date",
+        header: "التاريخ",
     },
     {
         id: "actions",

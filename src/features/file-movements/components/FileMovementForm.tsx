@@ -23,7 +23,7 @@ const fileMovementSchema = z.object({
     status: z.string().min(1, "يرجى اختيار حالة الملف"),
     date: z.string().min(1, "يرجى إدخال التاريخ"),
     fileId: z.string().min(1, "يرجى اختيار الملف"),
-    taxCollectorId: z.string().min(1, "يرجى اختيار المحصل"),
+    taxCollectorId: z.string().min(1, "يرجى اختيار المأمور"),
     departmentId: z.string().min(1, "يرجى اختيار القسم"),
 })
 
@@ -187,7 +187,7 @@ export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovem
                     <div>
                         <label className="text-sm font-medium leading-none mb-2 block flex items-center gap-2">
                             <UserSquare size={16} className="text-muted-foreground" />
-                            المحصل *
+                            المأمور *
                         </label>
                         <div className="h-12 w-full">
                             <Select
@@ -203,7 +203,7 @@ export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovem
                                             <span className="text-muted-foreground">جاري التحميل...</span>
                                         </div>
                                     ) : (
-                                        <SelectValue placeholder="إختر المحصل" />
+                                        <SelectValue placeholder="إختر المأمور" />
                                     )}
                                 </SelectTrigger>
                                 <SelectContent>

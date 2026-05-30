@@ -6,11 +6,16 @@ import { usePermission } from "@/hooks/usePermission"
 import { ACTIONS } from "@/constants/permissions"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useMemo, useState } from "react"
 
 const TaxPayersPage = () => {
     const { data, isLoading, isError } = useTaxPayers()
     const canView = usePermission(ACTIONS.VIEW_TAX_PAYER)
+    const [fileTypeFilter, setFileTypeFilter] = useState("")
+    const filteredTaxPayers = useMemo(
+        () => data?.data.filter((p) => !fileTypeFilter || p.taxPayerFileType === fileTypeFilter) || [],
+        [data?.data, fileTypeFilter]
+    )
 
     if (!canView) return <Unauthorized />
 
@@ -25,26 +30,12 @@ const TaxPayersPage = () => {
                     <p className="text-muted-foreground animate-pulse">جاري جلب المكلفين...</p>
                 </div>
             ) : (
-                <Tabs defaultValue="all" className="w-full">
-                    <TabsList className="grid w-full grid-cols-4 mx-auto mb-8">
-                        <TabsTrigger value="all">الكل</TabsTrigger>
-                        <TabsTrigger value="individual">فرد</TabsTrigger>
-                        <TabsTrigger value="company">شركه</TabsTrigger>
-                        <TabsTrigger value="charitable-company">شركة خيريه</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="all" className="animate-in slide-in-from-right-5 duration-300">
-                        <TaxPayersTable columns={columns} data={data?.data || []} />
-                    </TabsContent>
-                    <TabsContent value="individual" className="animate-in slide-in-from-right-5 duration-300">
-                        <TaxPayersTable columns={columns} data={data?.data.filter((p) => p.taxPayerFileType === "Individual") || []} />
-                    </TabsContent>
-                    <TabsContent value="company" className="animate-in slide-in-from-right-5 duration-300">
-                        <TaxPayersTable columns={columns} data={data?.data.filter((p) => p.taxPayerFileType === "Company") || []} />
-                    </TabsContent>
-                    <TabsContent value="charitable-company" className="animate-in slide-in-from-right-5 duration-300">
-                        <TaxPayersTable columns={columns} data={data?.data.filter((p) => p.taxPayerFileType === "CharitableCompany") || []} />
-                    </TabsContent>
-                </Tabs>
+                <TaxPayersTable
+                    columns={columns}
+                    data={filteredTaxPayers}
+                    fileTypeFilter={fileTypeFilter}
+                    onFileTypeFilterChange={setFileTypeFilter}
+                />
             )}
         </div>
     )

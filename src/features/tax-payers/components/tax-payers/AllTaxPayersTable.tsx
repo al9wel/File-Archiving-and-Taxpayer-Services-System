@@ -30,11 +30,15 @@ import { ACTIONS } from "@/constants/permissions"
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    fileTypeFilter?: string
+    onFileTypeFilterChange?: (value: string) => void
 }
 
 export function TaxPayersTable<TData, TValue>({
     columns,
     data,
+    fileTypeFilter = "",
+    onFileTypeFilterChange,
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const canCreate = usePermission(ACTIONS.CREATE_TAX_PAYER);
@@ -57,27 +61,64 @@ export function TaxPayersTable<TData, TValue>({
     })
     return (
         <div className="space-y-4" dir="rtl">
-            {/* Table Header: Search + Add Button */}
-            <div className="flex items-center justify-between gap-4 py-1">
-                <div className="flex-1 relative w-full max-w-md">
-                    <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                        placeholder="البحث عن طريق الاسم..."
-                        value={(table.getColumn("fullName")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) =>
-                            table.getColumn("fullName")?.setFilterValue(event.target.value)
-                        }
-                        className="h-12 pr-11 bg-muted/80 dark:bg-muted/20 border-2 border-muted-foreground/20 rounded-2xl focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all shadow-sm placeholder:text-muted-foreground/70"
-                    />
+            <div className="bg-card p-4 rounded-2xl border border-border shadow-sm">
+                <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_320px_auto] gap-2 items-end">
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-muted-foreground">البحث بالاسم</label>
+                        <div className="relative">
+                            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                placeholder="الاسم"
+                                value={(table.getColumn("fullName")?.getFilterValue() as string) ?? ""}
+                                onChange={(event) => table.getColumn("fullName")?.setFilterValue(event.target.value)}
+                                className="h-11 pr-10 rounded-xl bg-muted/30 border-muted-foreground/10"
+                            />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-muted-foreground">البحث بالاسم التجاري</label>
+                        <div className="relative">
+                            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                placeholder="الاسم التجاري"
+                                value={(table.getColumn("tradeName")?.getFilterValue() as string) ?? ""}
+                                onChange={(event) => table.getColumn("tradeName")?.setFilterValue(event.target.value)}
+                                className="h-11 pr-10 rounded-xl bg-muted/30 border-muted-foreground/10"
+                            />
+                        </div>
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-muted-foreground">نوع الملف</label>
+                        <div className="grid grid-cols-4 rounded-xl bg-muted/30 p-1 h-11">
+                            {[
+                                { value: "", label: "الكل" },
+                                { value: "Individual", label: "فرد" },
+                                { value: "Company", label: "شركة" },
+                                { value: "CharitableCompany", label: "خيرية" },
+                            ].map((option) => (
+                                <button
+                                    key={option.label}
+                                    type="button"
+                                    onClick={() => onFileTypeFilterChange?.(option.value)}
+                                    className={`rounded-lg px-2 text-xs font-bold transition-colors cursor-pointer ${fileTypeFilter === option.value
+                                        ? "bg-primary text-primary-foreground shadow-sm"
+                                        : "text-muted-foreground hover:text-foreground"
+                                        }`}
+                                >
+                                    {option.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    {canCreate && (
+                        <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.CREATE}>
+                            <Button className="w-full h-11 px-5 rounded-xl bg-primary hover:bg-primary-hover text-white shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-95">
+                                <Plus className="h-5 w-5" />
+                                <span className="font-bold">إضافة مكلف جديد</span>
+                            </Button>
+                        </NavLink>
+                    )}
                 </div>
-                {canCreate && (
-                    <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.CREATE}>
-                        <Button className="w-full sm:w-auto h-12 px-6 rounded-2xl bg-primary hover:bg-primary-hover text-white shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-95">
-                            <Plus className="h-5 w-5" />
-                            <span className="font-bold hidden sm:inline">إضافة مكلف جديد</span>
-                        </Button>
-                    </NavLink>
-                )}
             </div>
 
             {/* Table Area Section */}
