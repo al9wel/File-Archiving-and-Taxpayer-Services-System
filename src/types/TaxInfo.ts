@@ -6,6 +6,7 @@ export interface TaxInfo {
         taxPayerId: string | number;
         taxAmount: string | number,
         lastPayment: string | number,
+        attachment: string,
         taxType: {
             id: string | number;
             name: string;

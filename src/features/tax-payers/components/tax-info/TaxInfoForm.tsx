@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Check, Loader2 } from "lucide-react";
+import { Check, FileText, Loader2, Upload } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTaxTypes } from "../../hooks/tax-type/useTaxTypes";
 import { TaxPayerSearchSelect } from "../tax-payers/TaxPayerSearchSelect";
@@ -14,6 +14,7 @@ const taxInfoSchema = z.object({
     taxTypeId: z.string().min(1, "يجب اختيار نوع الضريبة"),
     taxAmount: z.string().min(1, "يجب إدخال مبلغ الضريبة"),
     lastPayment: z.string().min(1, "يجب إدخال آخر دفعة"),
+    attachment: z.any().optional(),
 });
 
 type TaxInfoFormValues = z.infer<typeof taxInfoSchema>;
@@ -24,6 +25,7 @@ interface TaxInfoFormProps {
         taxTypeId?: string | number;
         taxAmount?: string | number;
         lastPayment?: string | number;
+        attachment?: string;
     } | null;
     onSubmit: (data: FormData) => void;
     onCancel: () => void;
@@ -32,6 +34,7 @@ interface TaxInfoFormProps {
 
 export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxInfoFormProps) => {
     const { data: taxTypes, isPending: isLoadingTaxTypes } = useTaxTypes();
+    const [attachmentName, setAttachmentName] = useState<string | null>(null);
 
     const isDataLoading = isLoadingTaxTypes;
 
@@ -42,6 +45,7 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
             taxTypeId: initialData?.taxTypeId?.toString() || "",
             taxAmount: initialData?.taxAmount?.toString() || "",
             lastPayment: initialData?.lastPayment?.toString() || "",
+            attachment: undefined,
         }
     });
 
@@ -53,8 +57,17 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
             setValue("taxTypeId", initialData.taxTypeId?.toString() || "");
             setValue("taxAmount", initialData.taxAmount?.toString() || "");
             setValue("lastPayment", initialData.lastPayment?.toString() || "");
+            setAttachmentName(initialData.attachment?.split("/").pop() || null);
         }
     }, [initialData, setValue]);
+
+    const handleAttachmentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setValue("attachment", file, { shouldValidate: true });
+            setAttachmentName(file.name);
+        }
+    };
 
     const handleFormSubmit = (values: TaxInfoFormValues) => {
         const formData = new FormData();
@@ -63,14 +76,13 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
         fields.forEach(fieldName => {
             const value = values[fieldName];
             if (value !== undefined && value !== null && value !== "") {
-                formData.append(fieldName, String(value));
+                formData.append(fieldName, value instanceof File ? value : String(value));
             }
         });
 
         onSubmit(formData);
     };
 
-    // If initial critical data is loading, show a full form loader to prevent "hanging"
     if (isDataLoading && !initialData) {
         return (
             <div className="flex flex-col items-center justify-center py-12 space-y-4">
@@ -83,7 +95,6 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 pt-2" dir="rtl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Tax Payer Select */}
                 <div className="space-y-2">
                     <label className="text-sm font-medium">المكلف <span className="text-red-600">*</span></label>
                     <TaxPayerSearchSelect
@@ -94,7 +105,6 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
                     {errors.taxPayerId && <p className="text-xs text-red-600">{errors.taxPayerId.message}</p>}
                 </div>
 
-                {/* Tax Type Select */}
                 <div className="space-y-2">
                     <label className="text-sm font-medium">نوع الضريبة <span className="text-red-600">*</span></label>
                     <Select
@@ -123,7 +133,6 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
                     {errors.taxTypeId && <p className="text-xs text-red-600">{errors.taxTypeId.message}</p>}
                 </div>
 
-                {/* Tax Amount */}
                 <div className="space-y-2">
                     <label className="text-sm font-medium">مبلغ الضريبة <span className="text-red-600">*</span></label>
                     <Input
@@ -136,7 +145,6 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
                     {errors.taxAmount && <p className="text-xs text-red-600">{errors.taxAmount.message}</p>}
                 </div>
 
-                {/* Last Payment */}
                 <div className="space-y-2">
                     <label className="text-sm font-medium">آخر دفعة <span className="text-red-600">*</span></label>
                     <Input
@@ -147,6 +155,28 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
                         className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10"
                     />
                     {errors.lastPayment && <p className="text-xs text-red-600">{errors.lastPayment.message}</p>}
+                </div>
+
+                <div className="space-y-3 md:col-span-2">
+                    <label className="text-sm font-bold block text-right">ملحقات البيانات الضريبية</label>
+                    <div className="relative border-2 border-dashed border-muted-foreground/20 rounded-xl p-4 flex flex-col items-center justify-center group hover:border-primary/50 transition-colors cursor-pointer text-center bg-muted/5 h-[100px]">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
+                            {attachmentName ? <Check size={16} /> : <Upload size={16} />}
+                        </div>
+                        <div className="flex items-center gap-1 max-w-full px-2">
+                            {attachmentName && <FileText size={14} className="shrink-0 text-muted-foreground" />}
+                            <span className="text-[10px] text-muted-foreground truncate max-w-full">
+                                {attachmentName || "انقر لرفع ملف أو صورة"}
+                            </span>
+                        </div>
+                        <input
+                            type="file"
+                            accept=".pdf,image/*"
+                            className="absolute inset-0 opacity-0 cursor-pointer"
+                            disabled={isLoading || isDataLoading}
+                            onChange={handleAttachmentChange}
+                        />
+                    </div>
                 </div>
             </div>
 

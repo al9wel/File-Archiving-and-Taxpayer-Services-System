@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useForm, type UseFormSetValue, type UseFormWatch } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Input } from "@/components/ui/input"
@@ -17,7 +17,7 @@ import {
 } from "lucide-react"
 import type { File } from "@/types/File"
 
-import { useDepartments } from "@/features/basic-info/hooks/departments/useDepartments"
+import { AdminDepartmentSelect } from "@/features/basic-info/components/departments/AdminDepartmentSelect"
 import { TaxPayerSearchSelect } from "@/features/tax-payers/components/tax-payers/TaxPayerSearchSelect"
 import { useFileStatuses } from "@/features/basic-info/hooks/file-status/useFileStatuses"
 import { useActivityTypes } from "@/features/basic-info/hooks/activity-types/useActivityTypes"
@@ -51,40 +51,6 @@ interface FileFormProps {
     onSubmit: (data: FormData) => void
     isLoading?: boolean
 }
-interface AdminDepartmentSelectProps {
-    setValue: UseFormSetValue<FileFormValues>,
-    watch: UseFormWatch<FileFormValues>,
-    error?: string,
-}
-const AdminDepartmentSelect = ({ setValue, watch, error, }: AdminDepartmentSelectProps) => {
-    const { data: departments, isPending: isLoadingDepts } = useDepartments()
-
-    return (
-        <>
-            <Select onValueChange={(v) => setValue("departmentId", v)} value={watch("departmentId")} disabled={isLoadingDepts}>
-                <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
-                    {isLoadingDepts ? (
-                        <div className="flex items-center gap-2">
-                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                            <span className="text-muted-foreground">جاري التحميل...</span>
-                        </div>
-                    ) : (
-                        <SelectValue placeholder="اختر القسم" />
-                    )}
-                </SelectTrigger>
-                <SelectContent className="rounded-xl">
-                    {departments?.data?.map((dept: Department) => (
-                        <SelectItem key={dept.id} value={dept.id.toString()}>
-                            {dept.name}
-                        </SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
-            {error && <p className="text-sm font-medium text-destructive mt-1">{error}</p>}
-        </>
-    )
-}
-
 export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) => {
     const { user } = useAuth()
     const isAdmin = user?.role === ROLES.ADMIN
@@ -183,7 +149,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
                                 القسم *
                             </label>
                             {isAdmin ? (
-                                <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentId?.message} />
+                                <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentId?.message} fieldName="departmentId" />
                             ) : (
                                 <Input value={user?.departmentName || ""} readOnly className="h-12 bg-muted/30" />
                             )}
