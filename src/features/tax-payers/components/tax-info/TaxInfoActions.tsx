@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2, Eye, AlertTriangle, Loader2, ArrowLeft } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ExternalLink, Eye, Loader2, Pencil, Trash2 } from "lucide-react";
 import type { TaxInfo } from "@/types/TaxInfo";
 import { usePermission } from "@/hooks/usePermission";
 import { ACTIONS } from "@/constants/permissions";
@@ -15,11 +15,14 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 interface TaxInfoActionsProps {
     taxInfo: TaxInfo;
 }
+
+const fileNameFromUrl = (url?: string) => url?.split("/").pop() || "الملف الحالي";
+const isImageAttachment = (url?: string) => Boolean(url && /\.(png|jpe?g|webp|gif|bmp|svg)$/i.test(url));
 
 export const TaxInfoActions = ({ taxInfo }: TaxInfoActionsProps) => {
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -32,6 +35,10 @@ export const TaxInfoActions = ({ taxInfo }: TaxInfoActionsProps) => {
 
     const { mutate: deleteInfo, isPending: isDeleting } = useDeleteTaxInfo();
     const { mutate: updateInfo, isPending: isUpdating } = useUpdateTaxInfo();
+
+    const attachment = taxInfo.taxInfo.attachment;
+    const attachmentName = fileNameFromUrl(attachment);
+    const hasAttachment = Boolean(attachment);
 
     const handleDelete = () => {
         deleteInfo(taxInfo.taxInfo.id, {
@@ -60,12 +67,6 @@ export const TaxInfoActions = ({ taxInfo }: TaxInfoActionsProps) => {
         );
     };
 
-    const labels: Record<string, string> = {
-        "Individual": "فرد",
-        "Company": "شركة",
-        "CharitableCompany": "شركة خيرية"
-    };
-
     const infoItems = [
         { label: "رقم البيانات الضريبية", value: taxInfo.taxInfo.id },
         { label: "رقم المكلف", value: taxInfo.taxInfo.taxPayerId },
@@ -77,7 +78,6 @@ export const TaxInfoActions = ({ taxInfo }: TaxInfoActionsProps) => {
 
     return (
         <div className="flex items-center justify-center gap-2">
-            {/* View Action */}
             {canView && (
                 <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
                     <DialogTrigger asChild>
@@ -85,45 +85,55 @@ export const TaxInfoActions = ({ taxInfo }: TaxInfoActionsProps) => {
                             <Eye className="size-4" />
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[650px] rounded-3xl p-0 overflow-hidden border-none bg-gray-50 dark:bg-[#0b0f1a] shadow-2xl" dir="rtl">
-                        <div className="overflow-y-auto max-h-[90vh] p-8 text-right">
-                            {/* Title - Primary colored accent */}
-                            <div className="mb-8 border-r-4 border-primary pr-4">
-                                <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">تفاصيل البيانات الضريبية</h2>
-                                <p className="text-primary font-medium text-sm">
-                                    {"مكلف " + labels[taxInfo.taxInfo.taxPayer?.fileType || ""] || "—"}
-                                </p>
-                            </div>
+                    <DialogContent className="sm:max-w-[550px] rounded-2xl p-6" dir="rtl">
+                        <DialogHeader>
+                            <DialogTitle className="text-xl font-bold text-right">تفاصيل البيانات الضريبية</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4 text-right">
+                            {infoItems.map((item, index) => (
+                                <div key={index} className="flex items-center justify-between border-b pb-3">
+                                    <span className="text-sm text-muted-foreground font-medium">{item.label}</span>
+                                    <span className={`font-medium ${item.color || ""}`}>
+                                        {item.value || "غير متوفر"}
+                                    </span>
+                                </div>
+                            ))}
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                                {infoItems.map((item, index) => (
-                                    <Card key={index} className="rounded-2xl border border-gray-200/60 dark:border-white/5 shadow-sm bg-white dark:bg-[#111827] overflow-hidden hover:shadow-md transition-shadow">
-                                        <CardContent className="p-5 space-y-1">
-                                            <p className="text-sm text-muted-foreground font-medium">{item.label}</p>
-                                            <p className={`text-lg font-bold truncate ${item.color || ""}`}>
-                                                {item.value || "غير متوفر"}
-                                            </p>
-                                        </CardContent>
-                                    </Card>
-                                ))}
+                            <div className="border-b pb-3">
+                                <span className="text-sm text-muted-foreground font-medium">ملحقات البيانات الضريبية</span>
+                                <div className="mt-2">
+                                    {hasAttachment ? (
+                                        <div className="space-y-3">
+                                            <p className="font-bold">{attachmentName}</p>
+                                            {isImageAttachment(attachment) && (
+                                                <img src={attachment} alt="Tax attachment" className="max-h-40 rounded-lg object-contain" />
+                                            )}
+                                            <Button asChild variant="outline" className="rounded-xl gap-2">
+                                                <Link to={attachment} target="_blank" rel="noreferrer" className="text-red-500 hover:text-red-600">
+                                                    <ExternalLink className="h-4 w-4" />
+                                                    عرض المرفق
+                                                </Link>
+                                            </Button>
+                                        </div>
+                                    ) : (
+                                        <p className="font-bold">غير متوفر</p>
+                                    )}
+                                </div>
                             </div>
-                            
-                            <div className="flex justify-end pt-2">
-                                <Button 
-                                    variant="secondary"
-                                    onClick={() => setIsViewDialogOpen(false)} 
-                                    className="rounded-xl hover:bg-accent cursor-pointer h-12 px-8 flex items-center gap-2 font-bold shadow-sm"
-                                >
-                                    <ArrowLeft className="h-4 w-4" />
-                                    رجوع
-                                </Button>
-                            </div>
+                        </div>
+                        <div className="flex justify-end pt-4">
+                            <Button
+                                variant="secondary"
+                                onClick={() => setIsViewDialogOpen(false)}
+                                className="rounded-xl"
+                            >
+                                <ArrowLeft className="h-4 w-4 ml-2" />
+                                رجوع
+                            </Button>
                         </div>
                     </DialogContent>
                 </Dialog>
             )}
-
-            {/* Edit Action */}
             {canUpdate && (
                 <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                     <DialogTrigger asChild>
@@ -141,6 +151,7 @@ export const TaxInfoActions = ({ taxInfo }: TaxInfoActionsProps) => {
                                 taxTypeId: taxInfo.taxInfo.taxTypeId,
                                 taxAmount: taxInfo.taxInfo.taxAmount,
                                 lastPayment: taxInfo.taxInfo.lastPayment,
+                                attachment: taxInfo.taxInfo.attachment,
                             }}
                             onSubmit={handleUpdate}
                             onCancel={() => setIsEditDialogOpen(false)}
@@ -149,8 +160,6 @@ export const TaxInfoActions = ({ taxInfo }: TaxInfoActionsProps) => {
                     </DialogContent>
                 </Dialog>
             )}
-
-            {/* Delete Action */}
             {canDelete && (
                 <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
                     <DialogTrigger asChild>

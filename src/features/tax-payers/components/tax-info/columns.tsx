@@ -1,7 +1,7 @@
-import type { TaxInfo } from "@/types/TaxInfo"
-import type { ColumnDef } from "@tanstack/react-table"
-import { TaxInfoActions } from "./TaxInfoActions"
-import { Badge } from "@/components/ui/badge"
+import type { TaxInfo } from "@/types/TaxInfo";
+import type { ColumnDef } from "@tanstack/react-table";
+import { TaxInfoActions } from "./TaxInfoActions";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<TaxInfo>[] = [
     {
@@ -30,13 +30,13 @@ export const columns: ColumnDef<TaxInfo>[] = [
                 "Company": "شركة",
                 "CharitableCompany": "شركة خيرية"
             };
-            return <Badge variant="outline" className="rounded-xl px-4 py-1">{labels[type || ""] || type || "—"}</Badge>
+            return <Badge variant="outline" className="rounded-xl px-4 py-1">{labels[type || ""] || type || "—"}</Badge>;
         }
     },
     {
         accessorKey: "taxTypeName",
         accessorFn: (row) => row.taxInfo.taxType.name || "—",
-        header: "نو ع الضريبة",
+        header: "نوع الضريبة",
     },
     {
         accessorKey: "taxAmount",
@@ -49,8 +49,18 @@ export const columns: ColumnDef<TaxInfo>[] = [
         header: "آخر دفعة",
     },
     {
+        accessorKey: "attachment",
+        accessorFn: (row) => row.taxInfo.attachment,
+        header: "الملحقات",
+        cell: ({ row }) => (
+            <Badge variant={row.original.taxInfo.attachment ? "default" : "outline"} className="rounded-xl px-4 py-1">
+                {row.original.taxInfo.attachment ? "مرفق" : "لا يوجد"}
+            </Badge>
+        )
+    },
+    {
         id: "actions",
         header: "العمليات",
         cell: ({ row }) => <TaxInfoActions taxInfo={row.original} />
     }
-]
+];

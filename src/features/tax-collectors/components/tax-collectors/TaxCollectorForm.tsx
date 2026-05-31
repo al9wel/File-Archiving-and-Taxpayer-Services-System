@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useForm, type UseFormSetValue, type UseFormWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Loader2, Upload } from "lucide-react";
 import type { TaxCollector } from "@/types";
 import { useEmploymentTypes } from "../../hooks/employment-types/useEmploymentTypes";
-import { useDepartments } from "@/features/basic-info/hooks/departments/useDepartments";
+import { AdminDepartmentSelect } from "@/features/basic-info/components/departments/AdminDepartmentSelect";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,46 +29,6 @@ interface TaxCollectorFormProps {
     onCancel: () => void;
     isLoading?: boolean;
 }
-interface AdminDepartmentSelectProps {
-    setValue: UseFormSetValue<TaxCollectorFormValues>;
-    watch: UseFormWatch<TaxCollectorFormValues>;
-    error?: string;
-}
-const AdminDepartmentSelect = ({ setValue, watch, error, }: AdminDepartmentSelectProps) => {
-    const { data: departments, isPending: isLoadingDepts } = useDepartments();
-
-    return (
-        <>
-            <div className="h-12 w-full">
-                <Select
-                    onValueChange={(val) => setValue("deptID", val)}
-                    value={watch("deptID")}
-                    disabled={isLoadingDepts}
-                >
-                    <SelectTrigger className="text-right w-full h-full rounded-xl bg-muted/30 border border-muted-foreground/10 focus:ring-1 focus:ring-red-600">
-                        {isLoadingDepts ? (
-                            <div className="flex items-center gap-2">
-                                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                <span className="text-muted-foreground">جاري التحميل...</span>
-                            </div>
-                        ) : (
-                            <SelectValue placeholder="اختر القسم" />
-                        )}
-                    </SelectTrigger>
-                    <SelectContent dir="rtl">
-                        {departments?.data?.map((dept) => (
-                            <SelectItem key={dept.id} value={dept.id.toString()}>
-                                {dept.name}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-            </div>
-            {error && <p className="text-sm text-red-600 text-right">{error}</p>}
-        </>
-    );
-};
-
 export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxCollectorFormProps) => {
     const [idCardName, setIdCardName] = useState<string | null>(null);
     const { data: jobTypes, isPending: isLoadingJobTypes } = useEmploymentTypes();
@@ -234,7 +194,7 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                         القسم
                     </label>
                     {isAdmin ? (
-                        <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.deptID?.message} />
+                        <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.deptID?.message} fieldName="deptID" />
                     ) : (
                         <Input
                             value={user?.departmentName || ""}

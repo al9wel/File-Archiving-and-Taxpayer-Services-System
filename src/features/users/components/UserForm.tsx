@@ -1,29 +1,22 @@
 import { useEffect, useState } from "react"
-import { useForm, type UseFormSetValue, type UseFormWatch } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 import {
     User,
     UserPlus,
     Upload,
     Check,
     UserCheck,
-    UserCog,
+    // UserCog,
     Loader2,
     UsersRound,
 } from "lucide-react"
 import type { User as UserType } from "@/types/User"
 import { Card } from "@/components/ui/card"
-import { useDepartments } from "@/features/basic-info/hooks/departments/useDepartments"
+import { AdminDepartmentSelect } from "@/features/basic-info/components/departments/AdminDepartmentSelect"
 import { useAuth } from "@/hooks/useAuth"
 import { ROLES } from "@/constants/roles"
 
@@ -45,47 +38,6 @@ interface UserFormProps {
     onSubmit: (data: FormData) => void
     isLoading?: boolean
 }
-interface AdminDepartmentSelectProps {
-    setValue: UseFormSetValue<UserFormValues>,
-    watch: UseFormWatch<UserFormValues>,
-    error?: string,
-}
-const AdminDepartmentSelect = ({ setValue, watch, error, }: AdminDepartmentSelectProps) => {
-    const { data: departments, isPending: isLoadingDepts } = useDepartments()
-
-    return (
-        <>
-            <div className="h-12 w-full">
-                <Select
-                    onValueChange={(val) => setValue("departmentID", val)}
-                    value={watch("departmentID")}
-                    key={watch("departmentID")}
-                    disabled={isLoadingDepts}
-                >
-                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
-                        {isLoadingDepts ? (
-                            <div className="flex items-center gap-2">
-                                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                <span className="text-muted-foreground">جاري التحميل...</span>
-                            </div>
-                        ) : (
-                            <SelectValue placeholder="إختر القسم" />
-                        )}
-                    </SelectTrigger>
-                    <SelectContent>
-                        {departments?.data?.map((dept) => (
-                            <SelectItem key={dept.id} value={dept.id.toString()}>
-                                {dept.name}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-            </div>
-            {error && <p className="text-sm font-medium text-destructive mt-1">{error}</p>}
-        </>
-    )
-}
-
 export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) => {
     const [imagePreview, setImagePreview] = useState<string | null>(null)
     const [idCardName, setIdCardName] = useState<string | null>(null)
@@ -168,7 +120,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
     const roles = [
         { id: "Employee", label: "موظف", icon: User },
         { id: "Manager", label: "مدير", icon: UserCheck },
-        { id: "Admin", label: "ادمن", icon: UserCog },
+        // { id: "Admin", label: "ادمن", icon: UserCog },
         { id: "Collectors_Manager", label: "مدير المأمورين", icon: UsersRound },
         { id: "Tax_Payer", label: "مكلف", icon: UsersRound },
     ]
@@ -273,7 +225,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
                                     القسم *
                                 </label>
                                 {isAdmin ? (
-                                    <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentID?.message} />
+                                    <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentID?.message} fieldName="departmentID" />
                                 ) : (
                                     <Input value={user?.departmentName || ""} readOnly className="h-12 bg-muted/30" />
                                 )}
