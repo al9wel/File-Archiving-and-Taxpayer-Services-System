@@ -27,7 +27,7 @@ export const CreateAttachmentDialog = () => {
                 toast.success(res.message || "تم إضافة المرفق بنجاح");
                 setOpen(false);
             },
-            onError: (error: any) => {
+            onError: (error) => {
                 toast.error(error.message || "حدث خطأ أثناء إضافة المرفق");
             }
         });
@@ -38,12 +38,12 @@ export const CreateAttachmentDialog = () => {
             <DialogTrigger asChild>
                 <Button className="h-12 px-6 rounded-2xl bg-primary hover:bg-primary-hover text-white shadow-lg flex items-center gap-2 transition-all active:scale-95">
                     <Plus className="h-5 w-5" />
-                    <span className="font-bold">إضافة مرفق</span>
+                    <span className="font-bold">إضافة ملحق</span>
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[550px] rounded-2xl p-6" dir="rtl">
                 <DialogHeader>
-                    <DialogTitle className="text-xl font-bold text-right">إضافة مرفق جديد</DialogTitle>
+                    <DialogTitle className="text-xl font-bold text-right">إضافة ملحق جديد</DialogTitle>
                 </DialogHeader>
                 <AttachmentForm
                     onSubmit={handleSubmit}

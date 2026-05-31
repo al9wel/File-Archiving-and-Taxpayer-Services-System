@@ -44,7 +44,7 @@ export const AttachmentActions = ({ attachment }: AttachmentActionsProps) => {
                 toast.success("تم حذف المرفق بنجاح");
                 setIsDeleteDialogOpen(false);
             },
-            onError: (error: any) => {
+            onError: (error) => {
                 toast.error(error.message || "حدث خطأ أثناء حذف المرفق");
             }
         });
@@ -58,7 +58,7 @@ export const AttachmentActions = ({ attachment }: AttachmentActionsProps) => {
                     toast.success(res.message || "تم تحديث المرفق بنجاح");
                     setIsEditDialogOpen(false);
                 },
-                onError: (error: any) => {
+                onError: (error) => {
                     toast.error(error.message || "حدث خطأ أثناء تحديث المرفق");
                 }
             }
@@ -66,10 +66,10 @@ export const AttachmentActions = ({ attachment }: AttachmentActionsProps) => {
     };
 
     const infoItems = [
-        { label: "رقم المرفق", value: attachment.id },
-        { label: "العنوان", value: attachment.title },
+        { label: "رقم الملحق", value: attachment.id },
+        { label: "عنوان الملحق", value: attachment.title },
         { label: "رقم الملف", value: attachment.file?.taxNumber || "—" },
-        { label: "اسم المكلف", value: attachment.file?.taxPayer?.tradeName || "—" },
+        { label: "الاسم التجاري", value: attachment.file?.taxPayer?.tradeName || "—" },
     ];
 
     return (
@@ -83,7 +83,7 @@ export const AttachmentActions = ({ attachment }: AttachmentActionsProps) => {
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[550px] rounded-2xl p-6" dir="rtl">
                         <DialogHeader>
-                            <DialogTitle className="text-xl font-bold text-right">تفاصيل المرفق</DialogTitle>
+                            <DialogTitle className="text-xl font-bold text-right">تفاصيل الملحق</DialogTitle>
                         </DialogHeader>
                         <div className="space-y-4 text-right">
                             {infoItems.map((item, index) => (
@@ -94,7 +94,7 @@ export const AttachmentActions = ({ attachment }: AttachmentActionsProps) => {
                             ))}
 
                             <div className="border-b pb-3">
-                                <span className="text-sm text-muted-foreground font-medium">ملف المرفق</span>
+                                <span className="text-sm text-muted-foreground font-medium">الملف المرفق</span>
                                 <div className="mt-2">
                                     {hasAttachment ? (
                                         <div className="space-y-3">
@@ -137,7 +137,7 @@ export const AttachmentActions = ({ attachment }: AttachmentActionsProps) => {
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[550px] rounded-2xl p-6" dir="rtl">
                         <DialogHeader>
-                            <DialogTitle className="text-xl font-bold text-right">تعديل المرفق</DialogTitle>
+                            <DialogTitle className="text-xl font-bold text-right">تعديل الملحق</DialogTitle>
                         </DialogHeader>
                         <AttachmentForm
                             initialData={{
@@ -165,12 +165,12 @@ export const AttachmentActions = ({ attachment }: AttachmentActionsProps) => {
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10 text-destructive">
                                     <AlertTriangle className="h-6 w-6" />
                                 </div>
-                                <DialogTitle className="text-right">حذف المرفق</DialogTitle>
+                                <DialogTitle className="text-right">حذف الملحق</DialogTitle>
                             </div>
                         </DialogHeader>
                         <div className="space-y-4 text-right pt-4">
                             <p className="text-sm text-muted-foreground">
-                                هل أنت متأكد من حذف المرفق <span className="font-bold text-foreground">{attachment.title}</span>؟
+                                هل أنت متأكد من حذف الملحق <span className="font-bold text-foreground">{attachment.title}</span>؟
                                 <br />لا يمكن التراجع عن هذا الإجراء.
                             </p>
                         </div>

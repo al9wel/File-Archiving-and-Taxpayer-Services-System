@@ -75,7 +75,7 @@ export const AttachmentForm = ({ initialData, onSubmit, onCancel, isLoading }: A
                     <label className="text-sm font-medium">العنوان <span className="text-red-600">*</span></label>
                     <Input
                         disabled={isLoading}
-                        placeholder="أدخل عنوان المرفق"
+                        placeholder="أدخل عنوان الملحق"
                         {...register("title")}
                         className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10"
                     />
@@ -93,7 +93,7 @@ export const AttachmentForm = ({ initialData, onSubmit, onCancel, isLoading }: A
                 </div>
 
                 <div className="space-y-3 md:col-span-2">
-                    <label className="text-sm font-bold block text-right">ملف المرفق</label>
+                    <label className="text-sm font-bold block text-right">الملف المرفق</label>
                     <div className="relative border-2 border-dashed border-muted-foreground/20 rounded-xl p-4 flex flex-col items-center justify-center group hover:border-primary/50 transition-colors cursor-pointer text-center bg-muted/5 h-[100px]">
                         <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
                             {attachmentName ? <Check size={16} /> : <Upload size={16} />}

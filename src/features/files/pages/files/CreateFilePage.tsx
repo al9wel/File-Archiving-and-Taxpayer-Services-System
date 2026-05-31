@@ -1,4 +1,3 @@
-import DashboardHeader from "@/components/layout/DahsboardHeader"
 import { FileForm } from "../../components/files/FileForm"
 import { useCreateFile } from "../../hooks/files/useCreateFile"
 import { useNavigate } from "react-router-dom"
@@ -35,12 +34,12 @@ const CreateFilePage = () => {
 
     return (
         <>
-            <div className="w-full px-3 pt-3">
+            {/* <div className="w-full px-3 pt-3">
                 <DashboardHeader
                     title=" إضافة ملف "
                     desc="أدخل البيانات الأساسية للملف الجديد."
                 />
-            </div>
+            </div> */}
             <div className="container mx-auto px-4 py-8 animate-in fade-in duration-500">
                 <FileForm onSubmit={handleSubmit} isLoading={isPending} />
             </div>

@@ -1,7 +1,11 @@
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Pencil, Eye, Trash2 } from "lucide-react";
-import type { File } from "@/types/File";
+import { useState } from "react"
+import type { File } from "@/types/File"
+import { useDeleteFile } from "../../hooks/files/useDeleteFile"
+import { NavLink } from "react-router-dom"
+import { Button } from "@/components/ui/button"
+import { Eye, Pencil, Trash2, Loader2, AlertTriangle } from "lucide-react"
+import { ROUTES } from "@/constants/routes"
+import { toast } from "sonner"
 import {
     AlertDialog,
     AlertDialogAction,
@@ -13,29 +17,24 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { toast } from "sonner"
-import { useDeleteFile } from "../../hooks/files/useDeleteFile"
-import { usePermission } from "@/hooks/usePermission";
-import { ACTIONS } from "@/constants/permissions";
-import { ROUTES } from "@/constants/routes";
+import { ACTIONS } from "@/constants/permissions"
+import { usePermission } from "@/hooks/usePermission"
 
-interface ActionsProps {
-    file: File['fileInfo'];
-}
-
-const Actions = ({ file }: ActionsProps) => {
+export const Actions = ({ file }: { file: File['fileInfo'] }) => {
+    const [isOpen, setIsOpen] = useState(false)
+    const deleteFile = useDeleteFile()
     const canUpdate = usePermission(ACTIONS.UPDATE_FILE);
     const canDelete = usePermission(ACTIONS.DELETE_FILE);
     const canView = usePermission(ACTIONS.VIEW_FILE);
-    const { mutate: deleteFile, isPending } = useDeleteFile();
 
     const handleDelete = () => {
-        deleteFile(file.id, {
-            onSuccess: (res: any) => {
-                toast.success(res.message || "تم حذف الملف بنجاح");
+        deleteFile.mutate(file.id, {
+            onSuccess: () => {
+                toast.success("تم حذف الملف بنجاح")
+                setIsOpen(false)
             },
-            onError: (error: any) => {
-                toast.error(error.message || "حدث خطأ أثناء حذف الملف");
+            onError: (error) => {
+                toast.error(error.message || "حدث خطأ أثناء حذف الملف")
             }
         })
     }
@@ -43,44 +42,72 @@ const Actions = ({ file }: ActionsProps) => {
     return (
         <div className="flex items-center justify-center gap-2">
             {canView && (
-                <Link to={`${ROUTES.DASHBOARD.FILES.ROOT}/${file.id}`}>
-                    <Button variant="ghost" size="icon" className="size-8 text-primary hover:bg-primary/10 rounded-lg transition-colors">
-                        <Eye className="size-4" />
+                <NavLink to={ROUTES.DASHBOARD.FILES_SHOW.replace(":id", file.id.toString())}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-primary">
+                        <Eye className="h-4 w-4" />
                     </Button>
-                </Link>
+                </NavLink>
             )}
             {canUpdate && (
-                <Link to={`${ROUTES.DASHBOARD.FILES.ROOT}/${file.id}/edit`}>
-                    <Button variant="ghost" size="icon" className="size-8 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                        <Pencil className="size-4" />
+                <NavLink to={ROUTES.DASHBOARD.FILES_EDIT.replace(":id", file.id.toString())}>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600">
+                        <Pencil className="h-4 w-4" />
                     </Button>
-                </Link>
+                </NavLink>
             )}
             {canDelete && (
-                <AlertDialog>
+                <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
                     <AlertDialogTrigger asChild>
-                        <Button variant="ghost" size="icon" className="size-8 text-destructive hover:bg-red-50 rounded-lg transition-colors">
-                            <Trash2 className="size-4" />
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-destructive"
+                        >
+                            <Trash2 className="h-4 w-4" />
                         </Button>
                     </AlertDialogTrigger>
-                    <AlertDialogContent dir="rtl" className="rounded-2xl">
+                    <AlertDialogContent size="sm" dir="rtl">
                         <AlertDialogHeader>
-                            <AlertDialogTitle className="text-right">حذف الملف</AlertDialogTitle>
-                            <AlertDialogDescription className="text-right">
-                                هل أنت متأكد من حذف ملف {file.taxPayer?.tradeName}؟ هذا الإجراء لا يمكن التراجع عنه.
+                            <div className="flex items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                                    <AlertTriangle className="h-6 w-6" />
+                                </div>
+                                <AlertDialogTitle className="text-right">حذف الملف</AlertDialogTitle>
+                            </div>
+                            <AlertDialogDescription className="text-right pt-2 space-y-1">
+                                <span className="block">هل أنت متأكد من حذف الملف الخاص بالمكلف <span className="font-bold text-foreground">{file.taxPayer?.tradeName || file.taxNumber}</span>؟</span>
+                                <span className="block text-muted-foreground text-xs pt-1">لا يمكن التراجع عن هذا الإجراء وسيتم إزالة الملف من النظام.</span>
                             </AlertDialogDescription>
                         </AlertDialogHeader>
-                        <AlertDialogFooter className="sm:justify-start gap-2">
-                            <AlertDialogCancel className="rounded-xl">إلغاء</AlertDialogCancel>
-                            <AlertDialogAction onClick={handleDelete} disabled={isPending} className="rounded-xl bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                                {isPending ? "جاري الحذف..." : "تأكيد الحذف"}
+                        <AlertDialogFooter className="flex-row-reverse gap-3">
+                            <AlertDialogAction
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    handleDelete()
+                                }}
+                                variant="destructive"
+                                className="rounded-lg min-w-[100px]"
+                                disabled={deleteFile.isPending}
+                            >
+                                {deleteFile.isPending ? (
+                                    <div className="flex items-center gap-2">
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                        <span>جاري الحذف...</span>
+                                    </div>
+                                ) : (
+                                    "تأكيد الحذف"
+                                )}
                             </AlertDialogAction>
+                            <AlertDialogCancel
+                                className="rounded-lg"
+                                disabled={deleteFile.isPending}
+                            >
+                                إلغاء
+                            </AlertDialogCancel>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
             )}
         </div>
-    );
-};
-
-export default Actions;
+    )
+}

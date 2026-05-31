@@ -10,6 +10,11 @@ export const districtsApi = {
             method: 'GET',
         });
     },
+    getDistrictsByRegion: (regionId: string | number): Promise<{ data: District[]; message: string }> => {
+        return fetchClient(`/districts/region/${regionId}`, {
+            method: 'GET',
+        });
+    },
 
     getDistrict: (id: string | number): Promise<{ data: District; message: string }> => {
         return fetchClient(`/districts/${id}`, {

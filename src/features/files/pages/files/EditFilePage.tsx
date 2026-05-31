@@ -1,4 +1,3 @@
-import DashboardHeader from "@/components/layout/DahsboardHeader"
 import { FileForm } from "../../components/files/FileForm"
 import { useFile } from "../../hooks/files/useFile"
 import { useUpdateFile } from "../../hooks/files/useUpdateFile"
@@ -30,7 +29,7 @@ const EditFilePage = () => {
                     navigate(ROUTES.DASHBOARD.FILES_SHOW.replace(":id", id!))
                 }, 1000)
             },
-            onError: (error: any) => {
+            onError: (error) => {
                 toast.error(error.message || "فشل تحديث بيانات الملف")
             }
         })
@@ -53,12 +52,12 @@ const EditFilePage = () => {
 
     return (
         <>
-            <div className="w-full px-3 pt-3 ">
+            {/* <div className="w-full px-3 pt-3 ">
                 <DashboardHeader
                     title=" تعديل بيانات الملف "
                     desc={`تعديل بيانات الملف برقم الحصر: ${file?.data?.inventoryNumber || ""}`}
                 />
-            </div>
+            </div> */}
             <div className="container mx-auto px-3 animate-in fade-in duration-500">
                 <FileForm initialData={file?.data} onSubmit={handleSubmit} isLoading={isPending} />
             </div>

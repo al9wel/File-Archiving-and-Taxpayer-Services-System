@@ -14,7 +14,7 @@ import {
 import { Loader2, Save, FileSearch, UserSquare, Building2, CalendarDays, Archive, FolderOpen, AlertCircle } from "lucide-react"
 import type { FileMovement } from "@/types/FileMovments"
 import { AdminDepartmentSelect } from "@/features/basic-info/components/departments/AdminDepartmentSelect"
-import { FileSearchSelect } from "@/features/files/components/FileSearchSelect"
+import { FileSearchSelect } from "@/features/files/components/files/FileSearchSelect"
 import { useTaxCollectors } from "@/features/tax-collectors/hooks/tax-collectors/useTaxCollectors"
 import { useAuth } from "@/hooks/useAuth"
 import { ROLES } from "@/constants/roles"

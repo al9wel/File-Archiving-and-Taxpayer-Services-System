@@ -124,8 +124,7 @@ export const router = createBrowserRouter([
                             {
                                 element: <FilesLayout />,
                                 children: [
-                                    { index: true, element: <Navigate to={ROUTES.DASHBOARD.FILES.ROOT.split("/").pop()!} replace /> },
-                                    { path: ROUTES.DASHBOARD.FILES.ROOT.split("/").pop(), element: <FilesPage /> },
+                                    { index: true, element: <FilesPage /> },
                                     { path: ":id", element: <ViewFilePage /> },
                                     { path: "create", element: <CreateFilePage /> },
                                     { path: ":id/edit", element: <EditFilePage /> },

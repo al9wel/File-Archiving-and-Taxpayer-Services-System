@@ -1,44 +1,62 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import type { File } from "@/types/File";
-import Actions from "./Actions";
+import type { File } from "@/types/File"
+import type { ColumnDef } from "@tanstack/react-table"
+import { Actions } from "./Actions"
+import { Badge } from "@/components/ui/badge"
 
 export const columns: ColumnDef<File['fileInfo']>[] = [
     {
         accessorKey: "id",
-        header: "رقم الملف",
+        header: "الرقم",
     },
     {
-        accessorKey: "taxPayer.tradeName",
-        header: "الإسم التجاري",
-        accessorFn: (row) => row.taxPayer?.tradeName || "—",
+        id: "tradeName",
+        accessorFn: (row) => row.taxPayer?.tradeName || "",
+        header: "الاسم التجاري",
+        cell: ({ row }) => <span>{row.original.taxPayer?.tradeName || "-"}</span>
     },
     {
-        accessorKey: "activityType.name",
+        id: "activityType",
+        accessorFn: (row) => row.activityType?.id?.toString() || "",
         header: "نوع النشاط",
-        accessorFn: (row) => row.activityType?.name || "—",
+        filterFn: "equalsString",
+        cell: ({ row }) => <span>{row.original.activityType?.name || "-"}</span>
     },
     {
-        accessorKey: "fileStatus.name",
+        accessorKey: "fileStatus.statusName",
         header: "حالة الملف",
-        accessorFn: (row) => row.fileStatus?.name || "—",
+        cell: ({ row }) => {
+            const status = row.original.fileStatus?.statusName;
+            return <Badge className="rounded-xl px-4 py-1 h-7 min-w-fit w-auto text-xs whitespace-nowrap justify-center leading-none">{status || "-"}</Badge>
+        }
     },
     {
-        accessorKey: "taxPayer.fileType",
-        header: "نوع المكلف",
+        id: "fileType",
+        accessorFn: (row) => row.taxPayer?.fileType || "",
+        header: "نوع الملف",
+        filterFn: "equalsString",
+        cell: ({ row }) => {
+            const type = row.original.taxPayer?.fileType
+            const label = type === "Individual" ? "فرد" : type === "Company" ? "شركة" : type === "CharitableCompany" ? "خيرية" : "-"
+            return <Badge variant="outline" className="rounded-xl px-4 py-1">{label}</Badge>
+        }
     },
     {
-        accessorKey: "region.name",
+        id: "region",
+        accessorFn: (row) => row.region?.id?.toString() || "",
         header: "المنطقة",
-        accessorFn: (row) => row.region?.name || "—",
+        filterFn: "equalsString",
+        cell: ({ row }) => <span>{row.original.region?.name || "-"}</span>
     },
     {
-        accessorKey: "district.name",
-        header: "المديرية",
-        accessorFn: (row) => row.district?.name || "—",
+        id: "district",
+        accessorFn: (row) => row.district?.id?.toString() || "",
+        header: "الحي",
+        filterFn: "equalsString",
+        cell: ({ row }) => <span>{row.original.district?.name || "-"}</span>
     },
     {
         id: "actions",
-        header: "الإجراءات",
-        cell: ({ row }) => <Actions file={row.original} />,
-    },
-];
+        header: "العمليات",
+        cell: ({ row }) => <Actions file={row.original} />
+    }
+]

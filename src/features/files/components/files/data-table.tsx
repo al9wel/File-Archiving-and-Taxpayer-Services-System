@@ -1,4 +1,3 @@
-"use client"
 
 import * as React from "react"
 import {
@@ -22,10 +21,15 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Search, ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft, Plus } from "lucide-react"
-import { Link } from "react-router-dom"
-import { usePermission } from "@/hooks/usePermission";
-import { ACTIONS } from "@/constants/permissions";
-import { ROUTES } from "@/constants/routes";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { NavLink } from "react-router-dom"
+import { ROUTES } from "@/constants/routes"
+import { usePermission } from "@/hooks/usePermission"
+import { ACTIONS } from "@/constants/permissions"
+import { useActivityTypes } from "@/features/basic-info/hooks/activity-types/useActivityTypes"
+import { useRegions } from "@/features/basic-info/hooks/regions/useRegions"
+// import { useDistricts } from "@/features/basic-info/hooks/districts/useDistricts"
+import { useDistrictsByRegion } from "@/features/basic-info/hooks/districts/useDistrictsByRegion"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -36,11 +40,12 @@ export function DataTable<TData, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {
-    const [columnFilters, setColumnFilters] =
-        React.useState<ColumnFiltersState>([])
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const canCreate = usePermission(ACTIONS.CREATE_FILE);
-    const [searchBy, setSearchBy] = React.useState("tradeName");
-
+    const [regionId, setRegionId] = React.useState<string | number | null>(0)
+    const { data: activityTypes } = useActivityTypes()
+    const { data: regions } = useRegions()
+    const { data: districts } = useDistrictsByRegion(regionId!)
     const table = useReactTable({
         data,
         columns,
@@ -59,30 +64,107 @@ export function DataTable<TData, TValue>({
     })
 
     return (
-        <div className="space-y-4" dir="rtl">
-            {/* Table Header: Search + Add Button */}
-            <div className="flex items-center justify-between gap-4 py-1">
-                <div className="flex-1 relative w-full max-w-md">
-                    <Search className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                        placeholder="البحث عن طريق الإسم التجاري..."
-                        value={(table.getColumn(searchBy)?.getFilterValue() as string) ?? ""}
-                        onChange={(event) =>
-                            table.getColumn(searchBy)?.setFilterValue(event.target.value)
-                        }
-                        className="h-12 pr-11 bg-muted/80 dark:bg-muted/20 border-2 border-muted-foreground/20 rounded-2xl focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all shadow-sm placeholder:text-muted-foreground/70"
-                    />
-                </div>
-                {canCreate && (
-                    <Link to={`${ROUTES.DASHBOARD.FILES.ROOT}/create`}>
-                        <Button className="h-12 px-6 rounded-2xl bg-primary hover:bg-primary-hover text-white shadow-lg flex items-center gap-2 transition-all active:scale-95">
-                            <Plus className="h-5 w-5" />
-                            <span className="font-bold">إضافة ملف</span>
-                        </Button>
-                    </Link>
-                )}
-            </div>
+        <div className="space-y-2" dir="rtl">
+            {/* Filters */}
+            <div className="bg-card p-4 rounded-2xl border border-border shadow-sm">
+                <div className="grid grid-cols-1 xl:grid-cols-[2fr_2fr_auto_auto] gap-2 items-end">
+                    {/* Search Input */}
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-muted-foreground">البحث بالاسم التجاري</label>
+                        <div className="relative">
+                            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                placeholder="الاسم التجاري"
+                                value={(table.getColumn("tradeName")?.getFilterValue() as string) ?? ""}
+                                onChange={(event) => table.getColumn("tradeName")?.setFilterValue(event.target.value)}
+                                className="h-11 pr-10 rounded-xl bg-muted/30 border-muted-foreground/10"
+                            />
+                        </div>
+                    </div>
 
+                    {/* Three Selects */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                        <div className="space-y-2">
+                            <label className="text-xs font-bold text-muted-foreground">نوع النشاط</label>
+                            <Select value={(table.getColumn("activityType")?.getFilterValue() as string) || "all"} onValueChange={(value) => table.getColumn("activityType")?.setFilterValue(value === "all" ? "" : value)}>
+                                <SelectTrigger style={{ height: "2.75rem" }} className="h-11 w-full rounded-xl bg-muted/30 border-muted-foreground/10">
+                                    <SelectValue placeholder="الكل" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">الكل</SelectItem>
+                                    {activityTypes?.data?.map((type) => <SelectItem key={type.id} value={type.id.toString()}>{type.name}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-bold text-muted-foreground">المنطقة</label>
+                            <Select value={(table.getColumn("region")?.getFilterValue() as string) || "all"}
+                                onValueChange={(value) => {
+                                    setRegionId(value === "all" ? null : parseInt(value));
+                                    table.getColumn("region")?.setFilterValue(value === "all" ? "" : value)
+                                }}>
+                                <SelectTrigger style={{ height: "2.75rem" }} className="h-11 w-full rounded-xl bg-muted/30 border-muted-foreground/10">
+                                    <SelectValue placeholder="الكل" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">الكل</SelectItem>
+                                    {regions?.data?.map((region) => <SelectItem key={region.id} value={region.id.toString()}>{region.name}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-bold text-muted-foreground">الحي</label>
+                            <Select value={(table.getColumn("district")?.getFilterValue() as string) || "all"} onValueChange={(value) => table.getColumn("district")?.setFilterValue(value === "all" ? "" : value)}>
+                                <SelectTrigger style={{ height: "2.75rem" }} className="h-11 w-full rounded-xl bg-muted/30 border-muted-foreground/10">
+                                    <SelectValue placeholder="الكل" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">الكل</SelectItem>
+                                    {districts?.data?.map((district) => <SelectItem key={district.id} value={district.id.toString()}>{district.name}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+
+                    {/* File Type Filter */}
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-muted-foreground">نوع الملف</label>
+                        <div className="grid grid-cols-4 rounded-xl bg-muted/30 p-1 h-11">
+                            {[
+                                { value: "", label: "الكل" },
+                                { value: "Individual", label: "فرد" },
+                                { value: "Company", label: "شركة" },
+                                { value: "CharitableCompany", label: "خيرية" },
+                            ].map((option) => (
+                                <button
+                                    key={option.label}
+                                    type="button"
+                                    onClick={() => table.getColumn("fileType")?.setFilterValue(option.value)}
+                                    className={`rounded-lg px-2 text-xs font-bold transition-colors cursor-pointer ${((table.getColumn("fileType")?.getFilterValue() as string) ?? "") === option.value
+                                        ? "bg-primary text-primary-foreground shadow-sm"
+                                        : "text-muted-foreground hover:text-foreground"
+                                        }`}
+                                >
+                                    {option.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Add Button */}
+                    {canCreate && (
+                        <div className="space-y-2">
+                            <label className="text-xs font-bold text-muted-foreground opacity-0">إضافة</label>
+                            <NavLink to={ROUTES.DASHBOARD.FILES_CREATE}>
+                                <Button className="h-11 px-4 w-full xl:w-fit rounded-xl bg-primary hover:bg-primary-hover text-white shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-1 transition-all active:scale-95 whitespace-nowrap">
+                                    <Plus className="h-4 w-4" />
+                                    <span className="font-bold text-sm">إضافة</span>
+                                </Button>
+                            </NavLink>
+                        </div>
+                    )}
+                </div>
+            </div>
             {/* Table Area Section */}
             <div className="overflow-hidden rounded-2xl border shadow-sm bg-card">
                 <Table>

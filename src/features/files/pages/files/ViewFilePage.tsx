@@ -1,4 +1,3 @@
-import DashboardHeader from "@/components/layout/DahsboardHeader"
 import { useFile } from "../../hooks/files/useFile"
 import { useParams, useNavigate } from "react-router-dom"
 import { Loader2, ArrowLeft, Pencil, FileText, Hash, Building2, MapPin, Calendar, Clock, Receipt, BarChart } from "lucide-react"
@@ -48,12 +47,12 @@ const ViewFilePage = () => {
 
     return (
         <>
-            <div className="w-full px-3 pt-3">
+            {/* <div className="w-full px-3 pt-3">
                 <DashboardHeader
                     title=" تفاصيل الملف "
                     desc={`عرض بيانات الملف الخاص بالمكلف: ${file?.data?.taxPayer?.tradeName || file?.data?.taxNumber}`}
                 />
-            </div>
+            </div> */}
 
             <div className="container mx-auto px-3 animate-in fade-in duration-500 space-y-6" dir="rtl">
                 <div className="flex justify-end gap-3">
@@ -85,7 +84,7 @@ const ViewFilePage = () => {
                                 </div>
                                 <div className="space-y-1 overflow-hidden">
                                     <p className="text-sm text-muted-foreground">{item.label}</p>
-                                    <p className="text-lg font-bold truncate">
+                                    <p className="text-[16px] font-bold  ">
                                         {item.value || "غير متوفر"}
                                     </p>
                                 </div>

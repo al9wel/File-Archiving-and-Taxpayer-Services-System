@@ -5,41 +5,41 @@ import { AttachmentActions } from "./AttachmentActions";
 export const columns: ColumnDef<Attachment>[] = [
     {
         accessorKey: "id",
-        header: "رقم المرفق",
+        header: "الرقم",
     },
     {
         accessorKey: "title",
-        header: "العنوان",
+        header: "عنوان المرفق",
     },
-    {
-        accessorKey: "file.taxNumber",
-        header: "رقم الملف",
-        accessorFn: (row) => row.file?.taxNumber || "—",
-    },
+    // {
+    //     accessorKey: "file.taxNumber",
+    //     header: "رقم الملف",
+    //     accessorFn: (row) => row.file?.taxNumber || "—",
+    // },
     {
         accessorKey: "file.taxPayer.tradeName",
-        header: "اسم المكلف",
+        header: "الاسم التجاري",
         accessorFn: (row) => row.file?.taxPayer?.tradeName || "—",
     },
-    {
-        accessorKey: "attachmentFile",
-        header: "الملف",
-        cell: ({ row }) => {
-            const fileUrl = row.original.attachmentFile;
-            if (!fileUrl) return "—";
-            const fileName = fileUrl.split("/").pop() || "عرض الملف";
-            return (
-                <a
-                    href={fileUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-primary underline underline-offset-2 hover:text-primary-hover transition-colors"
-                >
-                    {fileName}
-                </a>
-            );
-        },
-    },
+    // {
+    //     accessorKey: "attachmentFile",
+    //     header: "الملف",
+    //     cell: ({ row }) => {
+    //         const fileUrl = row.original.attachmentFile;
+    //         if (!fileUrl) return "—";
+    //         const fileName = fileUrl.split("/").pop() || "عرض الملف";
+    //         return (
+    //             <a
+    //                 href={fileUrl}
+    //                 target="_blank"
+    //                 rel="noreferrer"
+    //                 className="text-primary underline underline-offset-2 hover:text-primary-hover transition-colors"
+    //             >
+    //                 {fileName}
+    //             </a>
+    //         );
+    //     },
+    // },
     {
         id: "actions",
         header: "الإجراءات",

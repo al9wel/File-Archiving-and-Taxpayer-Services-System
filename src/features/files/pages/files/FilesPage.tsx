@@ -1,4 +1,3 @@
-import DashboardHeader from "@/components/layout/DahsboardHeader"
 import { DataTable } from "../../components/files/data-table"
 import { columns } from "../../components/files/columns"
 import { useFiles } from "../../hooks/files/useFiles"
@@ -24,9 +23,9 @@ const FilesPage = () => {
     }
     return (
         <>
-            <div className="w-full px-3 pt-3">
+            {/* <div className="w-full px-3 pt-3">
                 <DashboardHeader title=" الملفات " desc="إدارة جميع ملفات المكلفين في النظام" />
-            </div>
+            </div> */}
             <div className="container mx-auto px-3 animate-in fade-in duration-500">
                 {isPending ? (
                     <div className="flex flex-col h-[300px] items-center justify-center space-y-4">

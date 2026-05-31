@@ -1,20 +1,27 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
 import { FileText, Paperclip, ChevronLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
 
 const FilesLayout = () => {
+    const { pathname } = useLocation();
+
+    const isFilesActive = pathname.startsWith(ROUTES.DASHBOARD.FILES.ROOT) &&
+        !pathname.startsWith(ROUTES.DASHBOARD.FILES.ATTACHMENTS);
+
+    const isAttachmentsActive = pathname.startsWith(ROUTES.DASHBOARD.FILES.ATTACHMENTS);
+
     const mainLinks = [
-        { title: "الملفات", path: ROUTES.DASHBOARD.FILES.ROOT, icon: FileText },
-        { title: "الملحقات", path: ROUTES.DASHBOARD.FILES.ATTACHMENTS, icon: Paperclip },
+        { title: "الملفات", path: ROUTES.DASHBOARD.FILES.ROOT, icon: FileText, isActive: isFilesActive },
+        { title: "الملحقات", path: ROUTES.DASHBOARD.FILES.ATTACHMENTS, icon: Paperclip, isActive: isAttachmentsActive },
     ];
 
     return (
         <>
             <div className="w-full px-3 pt-3">
                 <DashboardHeader
-                    title="إدارة الملفات"
+                    title=" ادارة الملفات  "
                     desc="إدارة الملفات والملحقات"
                 />
             </div>
@@ -28,24 +35,18 @@ const FilesLayout = () => {
                                 <NavLink
                                     key={link.path}
                                     to={link.path}
-                                    className={({ isActive }) =>
-                                        `flex items-center justify-between px-4 py-3 rounded-2xl transition-all ${isActive
-                                            ? "bg-[#911111]/5 text-[#911111] font-bold"
-                                            : "hover:bg-gray-50 text-muted-foreground"
-                                        }`
-                                    }
+                                    className={`flex items-center justify-between px-4 py-3 rounded-2xl transition-all ${link.isActive
+                                        ? "bg-[#911111]/5 text-[#911111] font-bold"
+                                        : "hover:bg-gray-50 text-muted-foreground"
+                                        }`}
                                 >
-                                    {({ isActive }) => (
-                                        <>
-                                            <div className="flex items-center gap-3">
-                                                <div className={`p-2 rounded-xl ${isActive ? "bg-white shadow-sm" : "bg-muted/30"}`}>
-                                                    <link.icon className="size-5" />
-                                                </div>
-                                                <span className="text-[15px]">{link.title}</span>
-                                            </div>
-                                            {isActive && <ChevronLeft className="size-4" />}
-                                        </>
-                                    )}
+                                    <div className="flex items-center gap-3">
+                                        <div className={`p-2 rounded-xl ${link.isActive ? "bg-white shadow-sm" : "bg-muted/30"}`}>
+                                            <link.icon className="size-5" />
+                                        </div>
+                                        <span className="text-[15px]">{link.title}</span>
+                                    </div>
+                                    {link.isActive && <ChevronLeft className="size-4" />}
                                 </NavLink>
                             ))}
                         </div>
