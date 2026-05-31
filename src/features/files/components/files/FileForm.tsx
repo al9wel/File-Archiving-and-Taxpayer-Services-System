@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -23,11 +23,12 @@ import { useFileStatuses } from "@/features/basic-info/hooks/file-status/useFile
 import { useActivityTypes } from "@/features/basic-info/hooks/activity-types/useActivityTypes"
 import { usePaymentTypes } from "@/features/basic-info/hooks/payment-types/usePaymentTypes"
 import { useRegions } from "@/features/basic-info/hooks/regions/useRegions"
-import { useDistricts } from "@/features/basic-info/hooks/districts/useDistricts"
+// import { useDistricts } from "@/features/basic-info/hooks/districts/useDistricts"
 import type { FileStatus } from "@/types/FileStatus"
-import type { ActivityType, Department, District, PaymentType, Region } from "@/types"
+import type { ActivityType, District, PaymentType, Region } from "@/types"
 import { useAuth } from "@/hooks/useAuth"
 import { ROLES } from "@/constants/roles"
+import { useDistrictsByRegion } from "@/features/basic-info/hooks/districts/useDistrictsByRegion"
 
 const fileSchema = z.object({
     taxNumber: z.string().min(1, "رقم المكلف الضريبي مطلوب"),
@@ -58,8 +59,10 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
     const { data: fileStatuses, isPending: isLoadingFileStatuses } = useFileStatuses()
     const { data: activityTypes, isPending: isLoadingActivityTypes } = useActivityTypes()
     const { data: paymentTypes, isPending: isLoadingPaymentTypes } = usePaymentTypes()
+    const [regionId, setRegionId] = useState<string | number | null>(0)
     const { data: regions, isPending: isLoadingRegions } = useRegions()
-    const { data: districts, isPending: isLoadingDistricts } = useDistricts()
+    const { data: districts, isPending: isLoadingDistricts } = useDistrictsByRegion(regionId!)
+    // const { data: districts, isPending: isLoadingDistricts } = useDistricts()
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<FileFormValues>({
         resolver: zodResolver(fileSchema),
@@ -97,6 +100,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
             setValue("districtId", initialData.district?.id?.toString() || "")
             setValue("activityStartDate", initialData.activityStartDate || "")
             setValue("note", initialData.note || "")
+            setRegionId(initialData.region?.id || null)
         }
     }, [initialData, isAdmin, setValue, user?.departmentID])
 
@@ -237,7 +241,12 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
                             <label className="text-sm font-medium leading-none mb-2 block">
                                 المنطقة *
                             </label>
-                            <Select onValueChange={(v) => setValue("regionId", v)} value={watch("regionId")} disabled={isLoadingRegions}>
+                            <Select
+                                onValueChange={(v) => {
+                                    setValue("regionId", v)
+                                    setRegionId(v)
+                                }}
+                                value={watch("regionId")} disabled={isLoadingRegions}>
                                 <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
                                     {isLoadingRegions ? (
                                         <div className="flex items-center gap-2">

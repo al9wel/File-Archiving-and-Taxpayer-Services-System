@@ -1,6 +1,6 @@
 import { useState } from "react"
 import type { File } from "@/types/File"
-import { useDeleteFile } from "../hooks/useDeleteFile"
+import { useDeleteFile } from "../../hooks/files/useDeleteFile"
 import { NavLink } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Eye, Pencil, Trash2, Loader2, AlertTriangle } from "lucide-react"
@@ -33,7 +33,7 @@ export const Actions = ({ file }: { file: File['fileInfo'] }) => {
                 toast.success("تم حذف الملف بنجاح")
                 setIsOpen(false)
             },
-            onError: (error: any) => {
+            onError: (error) => {
                 toast.error(error.message || "حدث خطأ أثناء حذف الملف")
             }
         })

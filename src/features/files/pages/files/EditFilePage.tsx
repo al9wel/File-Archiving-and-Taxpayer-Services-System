@@ -1,7 +1,6 @@
-import DashboardHeader from "@/components/layout/DahsboardHeader"
-import { FileForm } from "../components/FileForm"
-import { useFile } from "../hooks/useFile"
-import { useUpdateFile } from "../hooks/useUpdateFile"
+import { FileForm } from "../../components/files/FileForm"
+import { useFile } from "../../hooks/files/useFile"
+import { useUpdateFile } from "../../hooks/files/useUpdateFile"
 import { useNavigate, useParams } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { toast } from "sonner"
@@ -15,7 +14,7 @@ import ErrorState from "@/app/pages/ErrorState"
  * Page component for editing an existing file.
  * Fetches the file data by ID, pre-fills the FileForm, and handles the update request.
  */
-const UpdateFile = () => {
+const EditFilePage = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const { data: file, isPending: isFetching, isError } = useFile(id!)
@@ -30,7 +29,7 @@ const UpdateFile = () => {
                     navigate(ROUTES.DASHBOARD.FILES_SHOW.replace(":id", id!))
                 }, 1000)
             },
-            onError: (error: any) => {
+            onError: (error) => {
                 toast.error(error.message || "فشل تحديث بيانات الملف")
             }
         })
@@ -53,12 +52,12 @@ const UpdateFile = () => {
 
     return (
         <>
-            <div className="w-full px-3 pt-3 ">
+            {/* <div className="w-full px-3 pt-3 ">
                 <DashboardHeader
                     title=" تعديل بيانات الملف "
                     desc={`تعديل بيانات الملف برقم الحصر: ${file?.data?.inventoryNumber || ""}`}
                 />
-            </div>
+            </div> */}
             <div className="container mx-auto px-3 animate-in fade-in duration-500">
                 <FileForm initialData={file?.data} onSubmit={handleSubmit} isLoading={isPending} />
             </div>
@@ -66,4 +65,4 @@ const UpdateFile = () => {
     )
 }
 
-export default UpdateFile
+export default EditFilePage

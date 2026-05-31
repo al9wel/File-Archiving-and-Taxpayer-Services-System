@@ -1,16 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { fileApi } from "../api/fileApi"
+import { fileApi } from "../../api/fileApi"
 
 export const useCreateFile = () => {
     const queryClient = useQueryClient()
-
     return useMutation({
-        mutationFn: async (data: FormData) => fileApi.createFile(data),
-
+        mutationFn: (data: FormData) => fileApi.createFile(data),
         onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["files"],
-            })
+            queryClient.invalidateQueries({ queryKey: ["files"] })
         },
     })
 }

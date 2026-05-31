@@ -3,10 +3,12 @@ import Auth from "@/features/auth/pages/Auth";
 import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
 import Main from "@/features/main/pages/Main";
 import Settings from "@/features/settings/pages/Settings";
-import Files from "@/features/files/pages/Files";
-import CreateFile from "@/features/files/pages/CreateFile";
-import UpdateFile from "@/features/files/pages/UpdateFile";
-import ShowFile from "@/features/files/pages/ShowFile";
+import FilesLayout from "@/features/files/layouts/FilesLayout";
+import FilesPage from "@/features/files/pages/files/FilesPage";
+import CreateFilePage from "@/features/files/pages/files/CreateFilePage";
+import EditFilePage from "@/features/files/pages/files/EditFilePage";
+import ViewFilePage from "@/features/files/pages/files/ViewFilePage";
+import AttachmentsPage from "@/features/files/pages/attachment/AttachmentsPage";
 import FileMovements from "@/features/file-movements/pages/FileMovements";
 import CreateFileMovement from "@/features/file-movements/pages/CreateFileMovement";
 import UpdateFileMovement from "@/features/file-movements/pages/UpdateFileMovement";
@@ -26,7 +28,7 @@ import RegionsPage from "@/features/basic-info/pages/RegionsPage";
 import DistrictsPage from "@/features/basic-info/pages/DistrictsPage";
 import FileStatusPage from "@/features/basic-info/pages/FileStatusPage";
 import Notifications from "@/features/notifications/pages/Notifications";
-import TaxPayersLayout from "@/features/tax-payers/components/TaxPayersLayout";
+import TaxPayersLayout from "@/features/tax-payers/components/layouts/TaxPayersLayout";
 import TaxTypesPage from "@/features/tax-payers/pages/tax-types/TaxTypesPage";
 import TaxInfoPage from "@/features/tax-payers/pages/tax-info/TaxInfoPage";
 import TaxCollectorsLayout from "@/features/tax-collectors/components/TaxCollectorsLayout";
@@ -116,13 +118,19 @@ export const router = createBrowserRouter([
 
                     // ── Files (ADMIN, MANAGER, EMPLOYEE) ────────────────────
                     {
-                        path: ROUTES.DASHBOARD.FILES.split("/").pop(),
+                        path: ROUTES.DASHBOARD.FILES.ROOT.split("/").pop(),
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.EMPLOYEE]} />,
                         children: [
-                            { index: true, element: <Files /> },
-                            { path: ":id", element: <ShowFile /> },
-                            { path: "create", element: <CreateFile /> },
-                            { path: ":id/edit", element: <UpdateFile /> }
+                            {
+                                element: <FilesLayout />,
+                                children: [
+                                    { index: true, element: <FilesPage /> },
+                                    { path: ":id", element: <ViewFilePage /> },
+                                    { path: "create", element: <CreateFilePage /> },
+                                    { path: ":id/edit", element: <EditFilePage /> },
+                                    { path: ROUTES.DASHBOARD.FILES.ATTACHMENTS.split("/").pop(), element: <AttachmentsPage /> },
+                                ]
+                            },
                         ]
                     },
 

@@ -1,5 +1,4 @@
-import DashboardHeader from "@/components/layout/DahsboardHeader"
-import { useFile } from "../hooks/useFile"
+import { useFile } from "../../hooks/files/useFile"
 import { useParams, useNavigate } from "react-router-dom"
 import { Loader2, ArrowLeft, Pencil, FileText, Hash, Building2, MapPin, Calendar, Clock, Receipt, BarChart } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -12,7 +11,7 @@ import ErrorState from "@/app/pages/ErrorState"
 /**
  * Page component to display detailed information about a specific file.
  */
-const ShowFile = () => {
+const ViewFilePage = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const { data: file, isPending, isError } = useFile(id!)
@@ -48,12 +47,12 @@ const ShowFile = () => {
 
     return (
         <>
-            <div className="w-full px-3 pt-3">
+            {/* <div className="w-full px-3 pt-3">
                 <DashboardHeader
                     title=" تفاصيل الملف "
                     desc={`عرض بيانات الملف الخاص بالمكلف: ${file?.data?.taxPayer?.tradeName || file?.data?.taxNumber}`}
                 />
-            </div>
+            </div> */}
 
             <div className="container mx-auto px-3 animate-in fade-in duration-500 space-y-6" dir="rtl">
                 <div className="flex justify-end gap-3">
@@ -85,7 +84,7 @@ const ShowFile = () => {
                                 </div>
                                 <div className="space-y-1 overflow-hidden">
                                     <p className="text-sm text-muted-foreground">{item.label}</p>
-                                    <p className="text-lg font-bold truncate">
+                                    <p className="text-[16px] font-bold  ">
                                         {item.value || "غير متوفر"}
                                     </p>
                                 </div>
@@ -98,4 +97,4 @@ const ShowFile = () => {
     )
 }
 
-export default ShowFile
+export default ViewFilePage

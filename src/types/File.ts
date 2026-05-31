@@ -18,7 +18,7 @@ export interface File {
         activityStartDate: string,
         docsCount: number | string,
         note: string | null,
-        fullAddress: string | null,
+        fullAddress?: string | null,
         taxPayer: {
             id: number | string,
             userId: number | string,
@@ -28,7 +28,8 @@ export interface File {
             tradePict: string,
             insuranceCard: string,
             propertyDocPict: string,
-            fileType: "Individual" | "Company" | "CharitableCompany"
+            fileType: "Individual" | "Company" | "CharitableCompany",
+            source?: string|null
         },
         department: Department,
         fileStatus: FileStatus,
