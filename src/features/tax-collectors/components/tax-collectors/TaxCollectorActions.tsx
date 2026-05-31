@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2, AlertTriangle, Loader2, Eye } from "lucide-react";
+import { Pencil, Trash2, AlertTriangle, Loader2, Eye, ExternalLink, ArrowLeft } from "lucide-react";
 import type { TaxCollector } from "@/types";
 import { usePermission } from "@/hooks/usePermission";
 import { ACTIONS } from "@/constants/permissions";
@@ -8,7 +8,6 @@ import { toast } from "sonner";
 import { useDeleteTaxCollector } from "../../hooks/tax-collectors/useDeleteTaxCollector";
 import { useUpdateTaxCollector } from "../../hooks/tax-collectors/useUpdateTaxCollector";
 import { TaxCollectorForm } from "./TaxCollectorForm";
-import { TaxCollectorDetailsDialog } from "./TaxCollectorDetailsDialog";
 import {
     Dialog,
     DialogContent,
@@ -28,6 +27,7 @@ export const TaxCollectorActions = ({ taxCollector }: TaxCollectorActionsProps) 
 
     const canUpdate = usePermission(ACTIONS.UPDATE_TAX_COLLECTOR);
     const canDelete = usePermission(ACTIONS.DELETE_TAX_COLLECTOR);
+    const canView = usePermission(ACTIONS.VIEW_TAX_COLLECTOR);
 
     const { mutate: deleteCollector, isPending: isDeleting } = useDeleteTaxCollector();
     const { mutate: updateCollector, isPending: isUpdating } = useUpdateTaxCollector();
@@ -58,11 +58,17 @@ export const TaxCollectorActions = ({ taxCollector }: TaxCollectorActionsProps) 
             }
         );
     };
-
+    const infoItems = [
+        { label: "رقم المأمور", value: taxCollector.id },
+        { label: "الاسم الكامل", value: taxCollector.fullName },
+        { label: "رقم الهاتف", value: taxCollector.phone },
+        { label: "نوع التوظيف", value: taxCollector.jobType?.name },
+        { label: "القسم", value: taxCollector.department?.name },
+    ];
     return (
         <div className="flex items-center justify-center gap-2">
             {/* View Details Button */}
-            <Button
+            {/* <Button
                 variant="outline"
                 size="icon"
                 onClick={() => setIsDetailsDialogOpen(true)}
@@ -70,13 +76,70 @@ export const TaxCollectorActions = ({ taxCollector }: TaxCollectorActionsProps) 
                 title="عرض التفاصيل"
             >
                 <Eye className="size-4" />
-            </Button>
+            </Button> */}
 
-            <TaxCollectorDetailsDialog
+            {/* <TaxCollectorDetailsDialog
                 taxCollector={taxCollector}
                 open={isDetailsDialogOpen}
                 onOpenChange={setIsDetailsDialogOpen}
-            />
+            /> */}
+            {/* details Dialog */}
+            {canView && (
+                <Dialog open={isDetailsDialogOpen} onOpenChange={setIsDetailsDialogOpen}>
+                    <DialogTrigger asChild>
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            className="size-9 rounded-xl hover:bg-blue-50 hover:text-blue-600 border-none shadow-sm dark:bg-blue-900/10 dark:hover:bg-blue-900/20"
+                            title="عرض التفاصيل"
+                        >
+                            <Eye className="size-4" />
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[550px] rounded-2xl p-6" dir="rtl">
+                        <DialogHeader>
+                            <DialogTitle className="text-xl font-bold text-right">تفاصيل المأمور</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4 text-right">
+                            {infoItems.map((item, index) => (
+                                <div key={index} className="flex items-center justify-between border-b pb-3">
+                                    <span className="text-sm text-muted-foreground font-medium">{item.label}</span>
+                                    <span className="font-medium">{item.value || "غير متوفر"}</span>
+                                </div>
+                            ))}
+
+                            <div className="border-b pb-3">
+                                <span className="text-sm text-muted-foreground font-medium">نسخة بطاقة الهوية</span>
+                                <div className="mt-2">
+                                    {taxCollector.idCard ? (
+                                        <div className="space-y-3">
+                                            <p className="font-bold">الملف الرقمي</p>
+                                            <Button asChild variant="outline" className="rounded-xl gap-2">
+                                                <a href={taxCollector.idCard} target="_blank" rel="noreferrer" className="text-red-500 hover:text-red-600">
+                                                    <ExternalLink className="h-4 w-4" />
+                                                    عرض الملف
+                                                </a>
+                                            </Button>
+                                        </div>
+                                    ) : (
+                                        <p className="font-bold">غير متوفر</p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex justify-end pt-4">
+                            <Button
+                                variant="secondary"
+                                onClick={() => setIsDetailsDialogOpen(false)}
+                                className="rounded-xl"
+                            >
+                                <ArrowLeft className="h-4 w-4 ml-2" />
+                                رجوع
+                            </Button>
+                        </div>
+                    </DialogContent>
+                </Dialog>
+            )}
 
             {/* Edit Dialog */}
             {canUpdate && (

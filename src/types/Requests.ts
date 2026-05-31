@@ -31,5 +31,6 @@ export interface Request {
         department: Department;
         role: string;
         mustChangePassword: boolean;
-    }
+    },
+    taxPayerId?: string | number | null;
 }

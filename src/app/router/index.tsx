@@ -13,14 +13,14 @@ import FileMovements from "@/features/file-movements/pages/FileMovements";
 import CreateFileMovement from "@/features/file-movements/pages/CreateFileMovement";
 import UpdateFileMovement from "@/features/file-movements/pages/UpdateFileMovement";
 import ShowFileMovement from "@/features/file-movements/pages/ShowFileMovement";
-import RequestsLayout from "@/features/requests/components/RequestsLayout";
+import RequestsLayout from "@/features/requests/layouts/RequestsLayout";
 import PendingRequestsPage from "@/features/requests/pages/PendingRequestsPage";
 import ConfirmedRequestsPage from "@/features/requests/pages/ConfirmedRequestsPage";
 import ArchivedRequestsPage from "@/features/requests/pages/ArchivedRequestsPage";
 import RejectedRequestsPage from "@/features/requests/pages/RejectedRequestsPage";
 import RequestDetailsPage from "@/features/requests/pages/RequestDetailsPage";
 import BasicInfoPage from "@/features/basic-info/pages/BasicInfoPage";
-import BasicInfoLayout from "@/features/basic-info/components/BasicInfoLayout";
+import BasicInfoLayout from "@/features/basic-info/layouts/BasicInfoLayout";
 import DepartmentsPage from "@/features/basic-info/pages/DepartmentsPage";
 import ActivityTypesPage from "@/features/basic-info/pages/ActivityTypesPage";
 import PaymentTypesPage from "@/features/basic-info/pages/PaymentTypesPage";
@@ -28,10 +28,10 @@ import RegionsPage from "@/features/basic-info/pages/RegionsPage";
 import DistrictsPage from "@/features/basic-info/pages/DistrictsPage";
 import FileStatusPage from "@/features/basic-info/pages/FileStatusPage";
 import Notifications from "@/features/notifications/pages/Notifications";
-import TaxPayersLayout from "@/features/tax-payers/components/layouts/TaxPayersLayout";
+import TaxPayersLayout from "@/features/tax-payers/layouts/TaxPayersLayout";
 import TaxTypesPage from "@/features/tax-payers/pages/tax-types/TaxTypesPage";
 import TaxInfoPage from "@/features/tax-payers/pages/tax-info/TaxInfoPage";
-import TaxCollectorsLayout from "@/features/tax-collectors/components/TaxCollectorsLayout";
+import TaxCollectorsLayout from "@/features/tax-collectors/layouts/TaxCollectorsLayout";
 import TaxCollectorsPage from "@/features/tax-collectors/pages/TaxCollectorsPage";
 import EmploymentTypesPage from "@/features/tax-collectors/pages/EmploymentTypesPage";
 import Users from "@/features/users/pages/Users";
@@ -157,10 +157,13 @@ export const router = createBrowserRouter([
                                 children: [
                                     { index: true, element: <Navigate to="pending" replace /> },
                                     { path: "pending", element: <PendingRequestsPage /> },
+                                    { path: "pending/:requestId", element: <RequestDetailsPage /> },
                                     { path: "confirmed", element: <ConfirmedRequestsPage /> },
+                                    { path: "confirmed/:requestId", element: <RequestDetailsPage /> },
                                     { path: "archived", element: <ArchivedRequestsPage /> },
+                                    { path: "archived/:requestId", element: <RequestDetailsPage /> },
                                     { path: "rejected", element: <RejectedRequestsPage /> },
-                                    { path: ":id", element: <RequestDetailsPage /> },
+                                    { path: "rejected/:requestId", element: <RequestDetailsPage /> },
                                 ]
                             },
                             {

@@ -24,10 +24,10 @@ const statusConfig = {
 };
 
 const RequestDetailsPage = () => {
-    const { id } = useParams();
+    const { requestId } = useParams();
     const navigate = useNavigate();
 
-    const { data: requestRes, isPending, isError } = useRequestDetails(id!);
+    const { data: requestRes, isPending, isError } = useRequestDetails(requestId!);
     const canView = usePermission(ACTIONS.VIEW_REQUEST);
 
     if (!canView) return <Unauthorized />;
@@ -173,7 +173,7 @@ const RequestDetailsPage = () => {
 
                 {/* Contextual Action Buttons Container */}
                 <div className="col-span-1 md:col-span-2 lg:col-span-3 pt-6">
-                    <RequestActions status={status} requestId={RequestInfo.id} />
+                    <RequestActions status={status} requestId={RequestInfo.id} taxPayerId={request.taxPayerId} />
                 </div>
             </div>
         </div>

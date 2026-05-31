@@ -25,7 +25,7 @@ const FileMovements = () => {
     return (
         <>
             <div className="w-full px-3 pt-3">
-                <DashboardHeader title="حركات الملفات" desc="إدارة وتتبع حركات الملفات في النظام" />
+                <DashboardHeader title=" حركة الملفات " desc="إدارة وتتبع حركات الملفات في النظام" />
             </div>
             <div className="container mx-auto px-3 animate-in fade-in duration-500">
                 {isPending ? (

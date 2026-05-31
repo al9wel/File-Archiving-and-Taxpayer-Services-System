@@ -1,6 +1,6 @@
 import { FileForm } from "../../components/files/FileForm"
 import { useCreateFile } from "../../hooks/files/useCreateFile"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { toast } from "sonner"
 import { usePermission } from "@/hooks/usePermission"
@@ -13,9 +13,14 @@ import Unauthorized from "@/app/pages/Unauthorized"
  */
 const CreateFilePage = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const { mutate: createFile, isPending } = useCreateFile()
     const canCreate = usePermission(ACTIONS.CREATE_FILE)
 
+    const state = location.state as { requestId?: number; taxPayerId?: string | number } | null
+    const requestId = state?.requestId ?? null
+    const taxPayerId = state?.taxPayerId ?? null
+    console.log("CreateFilePage received state:", taxPayerId)
     const handleSubmit = (formData: FormData) => {
         createFile(formData, {
             onSuccess: (res) => {
@@ -41,7 +46,7 @@ const CreateFilePage = () => {
                 />
             </div> */}
             <div className="container mx-auto px-4 py-8 animate-in fade-in duration-500">
-                <FileForm onSubmit={handleSubmit} isLoading={isPending} />
+                <FileForm onSubmit={handleSubmit} isLoading={isPending} initialTaxPayerId={taxPayerId} requestId={requestId} />
             </div>
         </>
     )

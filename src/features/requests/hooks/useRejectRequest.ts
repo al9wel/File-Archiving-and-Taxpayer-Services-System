@@ -6,14 +6,15 @@ export const useRejectRequest = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (requestId: string | number) => requestsApi.rejectRequest(requestId),
+        mutationFn: async ({ requestId, note }: { requestId: string | number; note: string }) =>
+            requestsApi.rejectRequest(requestId, note),
         onSuccess: (res) => {
             queryClient.invalidateQueries({
                 queryKey: ["requests"],
             });
             toast.success(res.message || "تم رفض الطلب بنجاح");
         },
-        onError: (error: any) => {
+        onError: (error) => {
             toast.error(error.message || "حدث خطأ أثناء رفض الطلب");
         }
     });
