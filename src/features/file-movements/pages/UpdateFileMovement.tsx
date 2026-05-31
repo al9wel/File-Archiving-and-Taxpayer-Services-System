@@ -15,7 +15,7 @@ const UpdateFileMovement = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const canUpdate = usePermission(ACTIONS.UPDATE_FILE_MOVEMENT)
-    
+
     const { data: fileMovement, isPending: isLoadingData, isError } = useFileMovement(id as string)
     const updateMutation = useUpdateFileMovement()
 
@@ -32,7 +32,7 @@ const UpdateFileMovement = () => {
                     navigate(ROUTES.DASHBOARD.FILE_MOVEMENTS)
                 }, 1000)
             },
-            onError: (error: any) => {
+            onError: (error) => {
                 toast.error(error?.message || "فشل في تحديث حركة الملف")
             }
         })
@@ -40,11 +40,11 @@ const UpdateFileMovement = () => {
 
     return (
         <div className="p-3">
-            <DashboardHeader 
-                title="تعديل بيانات الحركة" 
+            <DashboardHeader
+                title=" تحديث حركة ملف "
                 desc="قم بتحديث بيانات تفاصيل الحركة المختارة"
             />
-            
+
             <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 {isLoadingData ? (
                     <div className="flex flex-col h-[400px] items-center justify-center space-y-4">
@@ -52,7 +52,7 @@ const UpdateFileMovement = () => {
                         <p className="text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
                     </div>
                 ) : fileMovement?.data ? (
-                    <FileMovementForm 
+                    <FileMovementForm
                         initialData={fileMovement.data}
                         onSubmit={handleSubmit}
                         isLoading={updateMutation.isPending}

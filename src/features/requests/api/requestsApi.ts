@@ -44,9 +44,10 @@ export const requestsApi = {
         });
     },
 
-    rejectRequest: (requestId: string | number): Promise<{ message: string }> => {
+    rejectRequest: (requestId: string | number, note: string | number): Promise<{ message: string }> => {
         const formData = new FormData();
         formData.append("requestId", String(requestId));
+        formData.append("note", String(note));
         return fetchClient('/reject-request', {
             method: 'PUT',
             body: formData,

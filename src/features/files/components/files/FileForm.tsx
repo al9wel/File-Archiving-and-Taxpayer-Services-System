@@ -43,6 +43,7 @@ const fileSchema = z.object({
     districtId: z.string().min(1, "يرجى اختيار الحي"),
     activityStartDate: z.string().min(1, "تاريخ بداية النشاط مطلوب"),
     note: z.string().optional(),
+    requestId: z.string().optional(),
 })
 
 type FileFormValues = z.infer<typeof fileSchema>
@@ -51,8 +52,10 @@ interface FileFormProps {
     initialData?: File['fileInfo'] | null
     onSubmit: (data: FormData) => void
     isLoading?: boolean
+    initialTaxPayerId?: string | number | null
+    requestId?: number | null
 }
-export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) => {
+export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, requestId }: FileFormProps) => {
     const { user } = useAuth()
     const isAdmin = user?.role === ROLES.ADMIN
 
@@ -70,7 +73,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
             taxNumber: initialData?.taxNumber?.toString() || "",
             inventoryNumber: initialData?.inventoryNumber?.toString() || "",
             docsCount: initialData?.docsCount?.toString() || "",
-            taxPayerId: initialData?.taxPayer?.id?.toString() || "",
+            taxPayerId: initialData?.taxPayer?.id?.toString() || (initialTaxPayerId ? initialTaxPayerId.toString() : ""),
             departmentId: initialData?.department?.id?.toString() || "",
             fileStatusId: initialData?.fileStatus?.id?.toString() || "",
             activityTypeId: initialData?.activityType?.id?.toString() || "",
@@ -79,12 +82,18 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
             districtId: initialData?.district?.id?.toString() || "",
             activityStartDate: initialData?.activityStartDate || "",
             note: initialData?.note || "",
+            requestId: requestId ? requestId.toString() : "",
         }
     })
 
     useEffect(() => {
         if (!isAdmin && user?.departmentID) {
             setValue("departmentId", user.departmentID.toString())
+        }
+
+        // Pre-fill taxpayer from request flow
+        if (initialTaxPayerId && !initialData) {
+            setValue("taxPayerId", initialTaxPayerId.toString(), { shouldValidate: true })
         }
 
         if (initialData) {
@@ -114,7 +123,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
         else {
             formData.append("inventoryNumber", values.inventoryNumber)
         }
-        const commonFields = ["taxNumber", "docsCount", "taxPayerId", "departmentId", "fileStatusId", "activityTypeId", "paymentTypeId", "regionId", "districtId", "activityStartDate", "note"]
+        const commonFields = ["taxNumber", "docsCount", "taxPayerId", "departmentId", "fileStatusId", "activityTypeId", "paymentTypeId", "regionId", "districtId", "activityStartDate", "note", "requestId"]
 
         commonFields.forEach(fieldName => {
             const value = values[fieldName as keyof FileFormValues]
@@ -143,7 +152,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading }: FileFormProps) =>
                             <TaxPayerSearchSelect
                                 value={watch("taxPayerId") ? Number(watch("taxPayerId")) : undefined}
                                 onSelect={(id) => setValue("taxPayerId", id.toString(), { shouldValidate: true })}
-                                disabled={isLoading}
+                                disabled={isLoading || Boolean(requestId)}
                             />
                             {errors.taxPayerId && <p className="text-sm font-medium text-destructive mt-1">{errors.taxPayerId.message}</p>}
                         </div>

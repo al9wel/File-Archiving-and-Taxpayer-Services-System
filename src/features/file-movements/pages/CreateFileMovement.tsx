@@ -23,7 +23,7 @@ const CreateFileMovement = () => {
                     navigate(ROUTES.DASHBOARD.FILE_MOVEMENTS)
                 }, 1000)
             },
-            onError: (error: any) => {
+            onError: (error) => {
                 toast.error(error?.message || "فشل في إضافة حركة الملف")
             }
         })
@@ -32,7 +32,7 @@ const CreateFileMovement = () => {
     return (
         <div className="p-3">
             <DashboardHeader
-                title="إضافة حركة ملف جديدة"
+                title=" اضافة حركة ملف جديدة "
                 desc="قم بإدخال بيانات وتفاصيل الحركة الجديدة لإضافتها إلى النظام"
             />
             <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">

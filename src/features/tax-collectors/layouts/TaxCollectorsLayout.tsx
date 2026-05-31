@@ -3,8 +3,8 @@ import { ROUTES } from "@/constants/routes";
 import { Users, Briefcase, ChevronLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
-import { CreateTaxCollectorDialog } from "./tax-collectors/CreateTaxCollectorDialog";
-import { CreateEmploymentTypeDialog } from "./employment-types/CreateEmploymentTypeDialog";
+import { CreateTaxCollectorDialog } from "../components/tax-collectors/CreateTaxCollectorDialog";
+import { CreateEmploymentTypeDialog } from "../components/employment-types/CreateEmploymentTypeDialog";
 
 const sidebarLinks = [
     { title: "المأمورين", path: ROUTES.DASHBOARD.TAX_COLLECTORS.COLLECTORS, icon: Users },

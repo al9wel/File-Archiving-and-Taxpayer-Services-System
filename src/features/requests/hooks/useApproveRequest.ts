@@ -13,7 +13,7 @@ export const useApproveRequest = () => {
             });
             toast.success(res.message || "تم قبول الطلب بنجاح");
         },
-        onError: (error: any) => {
+        onError: (error) => {
             toast.error(error.message || "حدث خطأ أثناء قبول الطلب");
         }
     });

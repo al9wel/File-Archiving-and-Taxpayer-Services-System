@@ -33,7 +33,7 @@ const Main = () => {
       <div className="w-full px-3 pt-3">
         <DashboardHeader mb="mb-2" title=" الرئيسية " desc=" نظرة عامة عن الإحصائيات والأداء" />
       </div>
-      <div className="container mx-auto flex w-full flex-col gap-5 px-3 py-3 animate-in fade-in duration-500">
+      <div className=" mx-auto flex w-full flex-col gap-5 px-3 py-3 animate-in fade-in duration-500">
         <StatisticsCards statistics={data.data} />
 
         <section className="grid grid-cols-1 gap-5 xl:grid-cols-[1.4fr_0.8fr]">

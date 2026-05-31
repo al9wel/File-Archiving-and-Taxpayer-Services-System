@@ -3,7 +3,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User, Phone, FileSpreadsheet, Calendar, ChevronLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ROUTES } from "@/constants/routes";
 
 interface RequestCardProps {
     request: Request;
@@ -32,14 +31,14 @@ const RequestCard = ({ request }: RequestCardProps) => {
     const displayDate = "2026-05-25";
 
     return (
-        <Link to={ROUTES.DASHBOARD.REQUESTS.SHOW.replace(":id", RequestInfo.id.toString())} className="block group">
+        <Link to={`/dashboard/requests/${status.toLowerCase()}/${RequestInfo.id}`} className="block group">
             <Card className="rounded-2xl border border-border bg-card text-card-foreground shadow-sm hover:shadow-md hover:border-primary/20 dark:hover:border-primary/30 hover:-translate-y-1 transition-all duration-300 overflow-hidden relative">
 
                 {/* Decorative border bar based on status */}
                 <div className={`absolute top-0 right-0 left-0 h-1.5 ${status === "Pending" ? "bg-amber-400" :
-                        status === "Confirmed" ? "bg-emerald-500" :
-                            status === "Archived" ? "bg-slate-400" :
-                                "bg-rose-500"
+                    status === "Confirmed" ? "bg-emerald-500" :
+                        status === "Archived" ? "bg-slate-400" :
+                            "bg-rose-500"
                     }`} />
 
                 <CardContent className="p-6 pt-7 text-right flex flex-col h-full justify-between">

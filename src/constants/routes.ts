@@ -27,6 +27,10 @@ export const ROUTES = {
       ARCHIVED: "/dashboard/requests/archived",
       REJECTED: "/dashboard/requests/rejected",
       SHOW: "/dashboard/requests/:id",
+      SHOW_PENDING: "/dashboard/requests/pending/:requestId",
+      SHOW_CONFIRMED: "/dashboard/requests/confirmed/:requestId",
+      SHOW_ARCHIVED: "/dashboard/requests/archived/:requestId",
+      SHOW_REJECTED: "/dashboard/requests/rejected/:requestId",
     },
     BASIC_INFO: {
       ROOT: "/dashboard/basic-info",
