@@ -29,7 +29,7 @@ import PaymentTypesPage from "@/features/basic-info/pages/PaymentTypesPage";
 import RegionsPage from "@/features/basic-info/pages/RegionsPage";
 import DistrictsPage from "@/features/basic-info/pages/DistrictsPage";
 import FileStatusPage from "@/features/basic-info/pages/FileStatusPage";
-import Notifications from "@/features/notifications/pages/Notifications";
+
 import TaxPayersLayout from "@/features/tax-payers/layouts/TaxPayersLayout";
 import TaxTypesPage from "@/features/tax-payers/pages/tax-types/TaxTypesPage";
 import TaxInfoPage from "@/features/tax-payers/pages/tax-info/TaxInfoPage";
@@ -63,6 +63,11 @@ import ViewCharitableCompanyTaxPayerPage from "@/features/tax-payers/pages/tax-p
 
 import TaxPayersPage from "@/features/tax-payers/pages/tax-payers/TaxPayersPage";
 import CreateTaxPayerPage from "@/features/tax-payers/pages/tax-payers/CreateTaxPayerPage";
+
+import NotificationsPage from "@/features/notifications/pages/Notifications";
+import CreateNotificationPage from "@/features/notifications/pages/CreateNotification";
+import UpdateNotificationPage from "@/features/notifications/pages/UpdateNotification";
+import ShowNotificationPage from "@/features/notifications/pages/ShowNotification";
 
 // dont use it just read it to understand the structure of tax payers routes
 // const taxPayersFeaturesRoutes = [
@@ -265,7 +270,15 @@ export const router = createBrowserRouter([
                         children: [
                             { path: ROUTES.DASHBOARD.SETTINGS.split("/").pop(), element: <Settings /> },
                             { path: ROUTES.DASHBOARD.OPERATION_REPORTS.split("/").pop(), element: <OperationReports /> },
-                            { path: ROUTES.DASHBOARD.NOTIFICATIONS.split("/").pop(), element: <Notifications /> },
+                            {
+                                path: ROUTES.DASHBOARD.NOTIFICATIONS.split("/").pop(),
+                                children: [
+                                    { index: true, element: <NotificationsPage /> },
+                                    { path: "create", element: <CreateNotificationPage /> },
+                                    { path: ":id/edit", element: <UpdateNotificationPage /> },
+                                    { path: ":id", element: <ShowNotificationPage /> },
+                                ]
+                            },
                         ]
                     },
                 ]
