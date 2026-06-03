@@ -44,6 +44,9 @@ export const ROUTES = {
       FILE_STATUS: "/dashboard/basic-info/file-status",
     },
     NOTIFICATIONS: "/dashboard/notifications",
+    NOTIFICATIONS_CREATE: "/dashboard/notifications/create",
+    NOTIFICATIONS_EDIT: "/dashboard/notifications/:id/edit",
+    NOTIFICATIONS_SHOW: "/dashboard/notifications/:id",
     TAXPAYERS: {
       ROOT: "/dashboard/tax-payers",
       PAYERS: {

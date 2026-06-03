@@ -52,6 +52,12 @@ export const ACTIONS = {
   // Reports
   VIEW_REPORT: "VIEW_REPORT",
 
+  // Notifications
+  CREATE_NOTIFICATION: "CREATE_NOTIFICATION",
+  UPDATE_NOTIFICATION: "UPDATE_NOTIFICATION",
+  DELETE_NOTIFICATION: "DELETE_NOTIFICATION",
+  VIEW_NOTIFICATION: "VIEW_NOTIFICATION",
+
   // Dashboard
   VIEW_DASHBOARD: "VIEW_DASHBOARD",
 } as const;
@@ -109,6 +115,12 @@ export const PERMISSIONS: Record<string, readonly string[]> = {
 
   // ── Reports ───────────────────────────────────────────────────────────────
   [ACTIONS.VIEW_REPORT]: [ROLES.ADMIN],
+
+  // ── Notifications ─────────────────────────────────────────────────────────
+  [ACTIONS.CREATE_NOTIFICATION]: [ROLES.ADMIN],
+  [ACTIONS.UPDATE_NOTIFICATION]: [ROLES.ADMIN],
+  [ACTIONS.DELETE_NOTIFICATION]: [ROLES.ADMIN],
+  [ACTIONS.VIEW_NOTIFICATION]: [ROLES.ADMIN],
 
   // ── Dashboard ─────────────────────────────────────────────────────────────
   [ACTIONS.VIEW_DASHBOARD]: [ROLES.ADMIN, ROLES.MANAGER, ROLES.EMPLOYEE, ROLES.COLLECTOR_MANAGER],
