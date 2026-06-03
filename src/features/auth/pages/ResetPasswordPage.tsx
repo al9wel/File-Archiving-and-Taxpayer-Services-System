@@ -1,7 +1,9 @@
 import { useState } from "react"
 import { useResetPassword } from "../hooks/useResetPassword"
+import { useResetForgotPassword } from "../hooks/useResetForgotPassword"
 import { useAuth } from "@/hooks/useAuth"
-import { Navigate } from "react-router-dom"
+import { useForgotPasswordStore } from "../store/useForgotPasswordStore"
+import { Navigate, useNavigate } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { Button } from "@/components/ui/button"
 import { Loader2, Lock, Eye, EyeOff } from "lucide-react"
@@ -9,20 +11,31 @@ import { toast } from "sonner"
 
 export default function ResetPasswordPage() {
     const { user, needsPasswordReset } = useAuth()
-    const { mutate: resetPassword, isPending, isError, error } = useResetPassword()
+    const { isVerified, userId, code, clear: clearForgotStore } = useForgotPasswordStore()
+    const navigate = useNavigate()
+
+    const { mutate: resetPasswordFirstLogin, isPending: isPendingFirstLogin, isError: isErrorFirstLogin, error: errorFirstLogin } = useResetPassword()
+    const { mutate: resetForgotPassword, isPending: isPendingForgot, isError: isErrorForgot, error: errorForgot } = useResetForgotPassword()
 
     const [showPassword, setShowPassword] = useState(false)
     const [formError, setFormError] = useState("")
 
-    // Special redirection: if user is already fully authenticated (has user object), 
-    // or if they don't have a token/flag at all, redirect accordingly.
-    if (user) {
+    // Mode determination
+    const isForgotPasswordMode = isVerified;
+    const isFirstLoginMode = needsPasswordReset;
+
+    // Special redirection
+    if (!isForgotPasswordMode && user) {
         return <Navigate to={ROUTES.DASHBOARD.MAIN} replace />
     }
 
-    if (!needsPasswordReset) {
+    if (!isFirstLoginMode && !isForgotPasswordMode) {
         return <Navigate to={ROUTES.PUBLIC.AUTH} replace />
     }
+
+    const isPending = isPendingFirstLogin || isPendingForgot;
+    const isError = isErrorFirstLogin || isErrorForgot;
+    const error = errorFirstLogin || errorForgot;
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -42,11 +55,25 @@ export default function ResetPasswordPage() {
             return
         }
 
-        resetPassword({ new_password, new_password_confirmation }, {
-            onSuccess: (res) => {
-                toast.success(res.message || 'تم تغيير كلمة المرور بنجاح');
-            },
-        })
+        if (isForgotPasswordMode && userId) {
+            resetForgotPassword({
+                userId,
+                code: code?.toString() || '',
+                newPassword: new_password,
+                newPassword_confirmation: new_password_confirmation
+            }, {
+                onSuccess: () => {
+                    clearForgotStore();
+                    navigate(ROUTES.PUBLIC.AUTH, { replace: true });
+                }
+            })
+        } else if (isFirstLoginMode) {
+            resetPasswordFirstLogin({ new_password, new_password_confirmation }, {
+                onSuccess: (res) => {
+                    toast.success(res.message || 'تم تغيير كلمة المرور بنجاح');
+                },
+            })
+        }
     }
 
     return (

@@ -147,9 +147,9 @@ const Auth = () => {
                                 <input type="checkbox" id="remember" className="w-4 h-4 accent-primary rounded" />
                                 <span className="text-muted-foreground">تذكرني</span>
                             </label>
-                            <button type="button" className="text-primary hover:underline text-sm font-medium">
+                            <NavLink to={ROUTES.PUBLIC.FORGOT_PASSWORD} className="text-primary hover:underline text-sm font-medium">
                                 نسيت كلمة المرور؟
-                            </button>
+                            </NavLink>
                         </div>
 
                         {/* Dashboard Button */}

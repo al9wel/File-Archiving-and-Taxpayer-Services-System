@@ -1,6 +1,8 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import Auth from "@/features/auth/pages/Auth";
 import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
+import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
+import VerifyOtpPage from "@/features/auth/pages/VerifyOtpPage";
 import Main from "@/features/main/pages/Main";
 import Settings from "@/features/settings/pages/Settings";
 import FilesLayout from "@/features/files/layouts/FilesLayout";
@@ -96,6 +98,14 @@ export const router = createBrowserRouter([
             {
                 path: ROUTES.PUBLIC.AUTH.split("/").pop(),
                 element: <Auth />,
+            },
+            {
+                path: ROUTES.PUBLIC.FORGOT_PASSWORD.split("/").pop(),
+                element: <ForgotPasswordPage />,
+            },
+            {
+                path: ROUTES.PUBLIC.VERIFY_OTP.split("/").pop(),
+                element: <VerifyOtpPage />,
             },
             {
                 path: ROUTES.PUBLIC.RESET_PASSWORD.split("/").pop(),
