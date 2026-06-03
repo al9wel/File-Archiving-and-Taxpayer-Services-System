@@ -76,7 +76,9 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
 
         fields.forEach(field => {
             const value = values[field as keyof TaxCollectorFormValues];
-            if (value !== undefined && value !== null && value !== "") {
+            const isUnchangedPhone = field === "phone" && initialData && value === initialData.phone;
+            
+            if (value !== undefined && value !== null && value !== "" && !isUnchangedPhone) {
                 formData.append(field, value instanceof File ? value : String(value));
             }
         });
@@ -85,7 +87,7 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
     };
 
     return (
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 pt-4 overflow-y-auto max-h-[70vh] px-1" dir="rtl">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6 pt-4 overflow-y-auto max-h-[70vh] px-1 styled-scrollbar" dir="rtl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Full Name */}
                 <div className="space-y-2 col-span-2">
@@ -163,7 +165,7 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                             value={watch("jobTypeId")}
                             disabled={isLoadingJobTypes}
                         >
-                            <SelectTrigger className="text-right w-full h-full rounded-xl bg-muted/30 border border-muted-foreground/10 focus:ring-1 focus:ring-red-600">
+                            <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
                                 {isLoadingJobTypes ? (
                                     <div className="flex items-center gap-2">
                                         <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />

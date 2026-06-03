@@ -172,25 +172,27 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                             <label className="text-sm font-medium leading-none mb-2 block">
                                 حالة الملف *
                             </label>
-                            <Select onValueChange={(v) => setValue("fileStatusId", v)} value={watch("fileStatusId")} disabled={isLoadingFileStatuses}>
-                                <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
-                                    {isLoadingFileStatuses ? (
-                                        <div className="flex items-center gap-2">
-                                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                            <span className="text-muted-foreground">جاري التحميل...</span>
-                                        </div>
-                                    ) : (
-                                        <SelectValue placeholder="اختر حالة الملف" />
-                                    )}
-                                </SelectTrigger>
-                                <SelectContent className="rounded-xl">
-                                    {fileStatuses?.data?.map((status: FileStatus) => (
-                                        <SelectItem key={status.id} value={status.id.toString()}>
-                                            {status.statusName}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <div className="h-12 w-full">
+                                <Select onValueChange={(v) => setValue("fileStatusId", v)} value={watch("fileStatusId")} disabled={isLoadingFileStatuses}>
+                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                                        {isLoadingFileStatuses ? (
+                                            <div className="flex items-center gap-2">
+                                                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                                <span className="text-muted-foreground">جاري التحميل...</span>
+                                            </div>
+                                        ) : (
+                                            <SelectValue placeholder="اختر حالة الملف" />
+                                        )}
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {fileStatuses?.data?.map((status: FileStatus) => (
+                                            <SelectItem key={status.id} value={status.id.toString()}>
+                                                {status.statusName}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
                             {errors.fileStatusId && <p className="text-sm font-medium text-destructive mt-1">{errors.fileStatusId.message}</p>}
                         </div>
 
@@ -198,25 +200,27 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                             <label className="text-sm font-medium leading-none mb-2 block">
                                 نوع النشاط *
                             </label>
-                            <Select onValueChange={(v) => setValue("activityTypeId", v)} value={watch("activityTypeId")} disabled={isLoadingActivityTypes}>
-                                <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
-                                    {isLoadingActivityTypes ? (
-                                        <div className="flex items-center gap-2">
-                                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                            <span className="text-muted-foreground">جاري التحميل...</span>
-                                        </div>
-                                    ) : (
-                                        <SelectValue placeholder="اختر نوع النشاط" />
-                                    )}
-                                </SelectTrigger>
-                                <SelectContent className="rounded-xl">
-                                    {activityTypes?.data?.map((act: ActivityType) => (
-                                        <SelectItem key={act.id} value={act.id.toString()}>
-                                            {act.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <div className="h-12 w-full">
+                                <Select onValueChange={(v) => setValue("activityTypeId", v)} value={watch("activityTypeId")} disabled={isLoadingActivityTypes}>
+                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                                        {isLoadingActivityTypes ? (
+                                            <div className="flex items-center gap-2">
+                                                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                                <span className="text-muted-foreground">جاري التحميل...</span>
+                                            </div>
+                                        ) : (
+                                            <SelectValue placeholder="اختر نوع النشاط" />
+                                        )}
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {activityTypes?.data?.map((act: ActivityType) => (
+                                            <SelectItem key={act.id} value={act.id.toString()}>
+                                                {act.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
                             {errors.activityTypeId && <p className="text-sm font-medium text-destructive mt-1">{errors.activityTypeId.message}</p>}
                         </div>
 
@@ -224,25 +228,27 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                             <label className="text-sm font-medium leading-none mb-2 block">
                                 نوع الدفع *
                             </label>
-                            <Select onValueChange={(v) => setValue("paymentTypeId", v)} value={watch("paymentTypeId")} disabled={isLoadingPaymentTypes}>
-                                <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
-                                    {isLoadingPaymentTypes ? (
-                                        <div className="flex items-center gap-2">
-                                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                            <span className="text-muted-foreground">جاري التحميل...</span>
-                                        </div>
-                                    ) : (
-                                        <SelectValue placeholder="اختر نوع الدفع" />
-                                    )}
-                                </SelectTrigger>
-                                <SelectContent className="rounded-xl">
-                                    {paymentTypes?.data?.map((pay: PaymentType) => (
-                                        <SelectItem key={pay.id} value={pay.id.toString()}>
-                                            {pay.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <div className="h-12 w-full">
+                                <Select onValueChange={(v) => setValue("paymentTypeId", v)} value={watch("paymentTypeId")} disabled={isLoadingPaymentTypes}>
+                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                                        {isLoadingPaymentTypes ? (
+                                            <div className="flex items-center gap-2">
+                                                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                                <span className="text-muted-foreground">جاري التحميل...</span>
+                                            </div>
+                                        ) : (
+                                            <SelectValue placeholder="اختر نوع الدفع" />
+                                        )}
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {paymentTypes?.data?.map((pay: PaymentType) => (
+                                            <SelectItem key={pay.id} value={pay.id.toString()}>
+                                                {pay.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
                             {errors.paymentTypeId && <p className="text-sm font-medium text-destructive mt-1">{errors.paymentTypeId.message}</p>}
                         </div>
 
@@ -250,30 +256,32 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                             <label className="text-sm font-medium leading-none mb-2 block">
                                 المنطقة *
                             </label>
-                            <Select
-                                onValueChange={(v) => {
-                                    setValue("regionId", v)
-                                    setRegionId(v)
-                                }}
-                                value={watch("regionId")} disabled={isLoadingRegions}>
-                                <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
-                                    {isLoadingRegions ? (
-                                        <div className="flex items-center gap-2">
-                                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                            <span className="text-muted-foreground">جاري التحميل...</span>
-                                        </div>
-                                    ) : (
-                                        <SelectValue placeholder="اختر المنطقة" />
-                                    )}
-                                </SelectTrigger>
-                                <SelectContent className="rounded-xl">
-                                    {regions?.data?.map((region: Region) => (
-                                        <SelectItem key={region.id} value={region.id.toString()}>
-                                            {region.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <div className="h-12 w-full">
+                                <Select
+                                    onValueChange={(v) => {
+                                        setValue("regionId", v)
+                                        setRegionId(v)
+                                    }}
+                                    value={watch("regionId")} disabled={isLoadingRegions}>
+                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                                        {isLoadingRegions ? (
+                                            <div className="flex items-center gap-2">
+                                                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                                <span className="text-muted-foreground">جاري التحميل...</span>
+                                            </div>
+                                        ) : (
+                                            <SelectValue placeholder="اختر المنطقة" />
+                                        )}
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {regions?.data?.map((region: Region) => (
+                                            <SelectItem key={region.id} value={region.id.toString()}>
+                                                {region.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
                             {errors.regionId && <p className="text-sm font-medium text-destructive mt-1">{errors.regionId.message}</p>}
                         </div>
 
@@ -281,25 +289,27 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                             <label className="text-sm font-medium leading-none mb-2 block">
                                 الحي *
                             </label>
-                            <Select onValueChange={(v) => setValue("districtId", v)} value={watch("districtId")} disabled={isLoadingDistricts}>
-                                <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
-                                    {isLoadingDistricts ? (
-                                        <div className="flex items-center gap-2">
-                                            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                            <span className="text-muted-foreground">جاري التحميل...</span>
-                                        </div>
-                                    ) : (
-                                        <SelectValue placeholder="اختر الحي" />
-                                    )}
-                                </SelectTrigger>
-                                <SelectContent className="rounded-xl">
-                                    {districts?.data?.map((district: District) => (
-                                        <SelectItem key={district.id} value={district.id.toString()}>
-                                            {district.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <div className="h-12 w-full">
+                                <Select onValueChange={(v) => setValue("districtId", v)} value={watch("districtId")} disabled={isLoadingDistricts}>
+                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                                        {isLoadingDistricts ? (
+                                            <div className="flex items-center gap-2">
+                                                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                                <span className="text-muted-foreground">جاري التحميل...</span>
+                                            </div>
+                                        ) : (
+                                            <SelectValue placeholder="اختر الحي" />
+                                        )}
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {districts?.data?.map((district: District) => (
+                                            <SelectItem key={district.id} value={district.id.toString()}>
+                                                {district.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
                             {errors.districtId && <p className="text-sm font-medium text-destructive mt-1">{errors.districtId.message}</p>}
                         </div>
                     </div>

@@ -107,29 +107,31 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
 
                 <div className="space-y-2">
                     <label className="text-sm font-medium">نوع الضريبة <span className="text-red-600">*</span></label>
-                    <Select
-                        disabled={isLoading || isDataLoading}
-                        value={taxTypeId}
-                        onValueChange={(val) => setValue("taxTypeId", val, { shouldValidate: true })}
-                    >
-                        <SelectTrigger className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10">
-                            {isLoadingTaxTypes ? (
-                                <div className="flex items-center gap-2">
-                                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                    <span className="text-muted-foreground">جاري التحميل...</span>
-                                </div>
-                            ) : (
-                                <SelectValue placeholder="اختر نوع الضريبة" />
-                            )}
-                        </SelectTrigger>
-                        <SelectContent>
-                            {(taxTypes?.data || []).map((type: any) => (
-                                <SelectItem key={type.id} value={type.id.toString()}>
-                                    {type.name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    <div className="h-12 w-full">
+                        <Select
+                            disabled={isLoading || isDataLoading}
+                            value={taxTypeId}
+                            onValueChange={(val) => setValue("taxTypeId", val, { shouldValidate: true })}
+                        >
+                            <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                                {isLoadingTaxTypes ? (
+                                    <div className="flex items-center gap-2">
+                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                        <span className="text-muted-foreground">جاري التحميل...</span>
+                                    </div>
+                                ) : (
+                                    <SelectValue placeholder="اختر نوع الضريبة" />
+                                )}
+                            </SelectTrigger>
+                            <SelectContent>
+                                {(taxTypes?.data || []).map((type: any) => (
+                                    <SelectItem key={type.id} value={type.id.toString()}>
+                                        {type.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                     {errors.taxTypeId && <p className="text-xs text-red-600">{errors.taxTypeId.message}</p>}
                 </div>
 
