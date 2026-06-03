@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
 import { toast } from 'sonner';
+import { getUserId } from '@/lib/authStorage';
 
 export const useResetPassword = () => {
   const { setUser, setNeedsPasswordReset } = useAuth();
@@ -21,7 +22,7 @@ export const useResetPassword = () => {
       // Now fetch user to get full profile
       // The user session is already active via token
       try {
-        const userId = localStorage.getItem('user_id');
+        const userId = getUserId();
         if (userId) {
           const userResponse = await authApi.getUser(userId);
           setUser(userResponse.data);

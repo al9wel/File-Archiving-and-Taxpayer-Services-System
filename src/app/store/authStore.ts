@@ -1,6 +1,13 @@
 import { create } from 'zustand';
 
 import type { User } from '@/types/User';
+import {
+  getMustChangePassword,
+  removeAccessToken,
+  removeMustChangePassword,
+  removeUserId,
+  saveMustChangePassword,
+} from '@/lib/authStorage';
 
 interface AuthState {
   user: User | null;
@@ -14,17 +21,17 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
-  needsPasswordReset: localStorage.getItem('must_change_password') === 'true',
+  needsPasswordReset: getMustChangePassword() === 'true',
   setUser: (user) => set({ user, isAuthenticated: !!user }),
   setNeedsPasswordReset: (val) => {
-    if (val) localStorage.setItem('must_change_password', 'true');
-    else localStorage.removeItem('must_change_password');
+    if (val) saveMustChangePassword();
+    else removeMustChangePassword();
     set({ needsPasswordReset: val });
   },
   logout: () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user_id');
-    localStorage.removeItem('must_change_password');
+    removeAccessToken();
+    removeUserId();
+    removeMustChangePassword();
     set({ user: null, isAuthenticated: false, needsPasswordReset: false });
   },
 }));

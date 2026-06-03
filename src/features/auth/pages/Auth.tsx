@@ -5,9 +5,11 @@ import { FileArchive, Eye, EyeOff, ArrowRight, LayoutDashboard, Loader2 } from "
 import { useState } from "react"
 import TaxLogo from "@/assets/images/TaxLogo.png"
 import { useLogin } from "@/features/auth/hooks/useLogin"
+import { useRememberMe } from "@/hooks/useRememberMe"
 
 const Auth = () => {
     const [showPassword, setShowPassword] = useState(false)
+    const { isRememberMeChecked, changeRememberMe } = useRememberMe()
     const { mutate: login, isPending, isError, error } = useLogin()
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -97,7 +99,7 @@ const Auth = () => {
 
                         {isError && (
                             <div className="p-3 rounded-xl bg-red-100 text-red-600 border border-red-200 text-sm">
-                                {(error as any)?.message || "حدث خطأ أثناء تسجيل الدخول. يرجى التحقق من بياناتك."}
+                                {error?.message || "حدث خطأ أثناء تسجيل الدخول. يرجى التحقق من بياناتك."}
                             </div>
                         )}
 
@@ -144,7 +146,13 @@ const Auth = () => {
                         {/* Remember me + Forgot */}
                         <div className="flex items-center justify-between text-sm">
                             <label className="flex items-center gap-2 cursor-pointer">
-                                <input type="checkbox" id="remember" className="w-4 h-4 accent-primary rounded" />
+                                <input
+                                    type="checkbox"
+                                    id="remember"
+                                    checked={isRememberMeChecked}
+                                    onChange={(e) => changeRememberMe(e.target.checked)}
+                                    className="w-4 h-4 accent-primary rounded"
+                                />
                                 <span className="text-muted-foreground">تذكرني</span>
                             </label>
                             <NavLink to={ROUTES.PUBLIC.FORGOT_PASSWORD} className="text-primary hover:underline text-sm font-medium">
