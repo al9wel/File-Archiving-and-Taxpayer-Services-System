@@ -113,7 +113,9 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
 
         fields.forEach(fieldName => {
             const value = values[fieldName as keyof CharitableCompanyTaxPayerFormValues]
-            if (value !== undefined && value !== null && value !== "") {
+            const isUnchangedPhone = fieldName === "phone" && initialData && value === initialData.userInfo?.phone;
+            
+            if (value !== undefined && value !== null && value !== "" && !isUnchangedPhone) {
                 formData.append(fieldName, value instanceof File ? value : String(value))
             }
         })

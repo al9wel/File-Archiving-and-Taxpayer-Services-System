@@ -1,13 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
 import { authApi } from '../api/authApi';
 import type { LoginParams } from '@/types';
-import { useAuthStore } from '@/app/store/authStore';
+// import { useAuthStore } from '@/app/store/authStore';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
+import { useAuth } from '@/hooks/useAuth';
 
 export const useLogin = () => {
-  const setUser = useAuthStore((state) => state.setUser);
-  const setNeedsPasswordReset = useAuthStore((state) => state.setNeedsPasswordReset);
+  // const setUser = useAuthStore((state) => state.setUser);
+  // const setNeedsPasswordReset = useAuthStore((state) => state.setNeedsPasswordReset);
+  const { setUser, setNeedsPasswordReset } = useAuth()
   const navigate = useNavigate();
 
   return useMutation({
@@ -26,7 +28,7 @@ export const useLogin = () => {
 
       // 3. Normal login flow
       setNeedsPasswordReset(false);
-      
+
       // Save user ID for future user fetching on refresh
       if (response.data.user?.id) {
         localStorage.setItem('user_id', response.data.user.id.toString());

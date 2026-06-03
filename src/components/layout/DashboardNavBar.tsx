@@ -3,9 +3,11 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Moon, Sun } from "lucide-react"
+import { useAuth } from "@/hooks/useAuth"
 
 export default function DashboardNavBar() {
     const { theme, setTheme } = useTheme()
+    const { user } = useAuth()
     const toggleTheme = () => {
         if (theme === "light") {
             setTheme("dark")
@@ -20,7 +22,7 @@ export default function DashboardNavBar() {
                     <SidebarTrigger className=" cursor-pointer text-foreground/90" />
                     <Separator orientation="vertical" className="mx-2 h-12" />
                     <div>
-                        <h1 className="font-bold">مرحباً حمزة 👋</h1>
+                        <h1 className="font-bold">مرحباً {user?.firstName} 👋</h1>
                         <h1>
                             نتمنى لك يوماً سعيداً
                         </h1>

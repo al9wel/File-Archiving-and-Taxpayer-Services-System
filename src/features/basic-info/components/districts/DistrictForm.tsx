@@ -63,30 +63,32 @@ export const DistrictForm = ({ initialData, onSubmit, onCancel, isLoading }: Dis
                         <span className="text-red-600">*</span>
                         المنطقة
                     </label>
-                    <Select
-                        disabled={isLoadingRegions}
-                        onValueChange={(val) => setValue("regionID", val)}
-                        value={watch("regionID")}
-                        key={watch("regionID")}
-                    >
-                        <SelectTrigger className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus:ring-1 focus:ring-red-600" dir="rtl">
-                            {isLoadingRegions ? (
-                                <div className="flex items-center gap-2">
-                                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                    <span className="text-muted-foreground">جاري التحميل...</span>
-                                </div>
-                            ) : (
-                                <SelectValue placeholder="اختر المنطقة" />
-                            )}
-                        </SelectTrigger>
-                        <SelectContent dir="rtl">
-                            {regions.map((region) => (
-                                <SelectItem key={region.id} value={region.id.toString()}>
-                                    {region.name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
+                    <div className="h-12 w-full">
+                        <Select
+                            disabled={isLoadingRegions}
+                            onValueChange={(val) => setValue("regionID", val)}
+                            value={watch("regionID")}
+                            key={watch("regionID")}
+                        >
+                            <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                                {isLoadingRegions ? (
+                                    <div className="flex items-center gap-2">
+                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                                        <span className="text-muted-foreground">جاري التحميل...</span>
+                                    </div>
+                                ) : (
+                                    <SelectValue placeholder="اختر المنطقة" />
+                                )}
+                            </SelectTrigger>
+                            <SelectContent dir="rtl">
+                                {regions.map((region) => (
+                                    <SelectItem key={region.id} value={region.id.toString()}>
+                                        {region.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                     {errors.regionID && (
                         <p className="text-sm text-red-600 text-right">{errors.regionID.message}</p>
                     )}
