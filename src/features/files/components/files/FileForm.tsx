@@ -87,8 +87,8 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
     })
 
     useEffect(() => {
-        if (!isAdmin && user?.departmentID) {
-            setValue("departmentId", user.departmentID.toString())
+        if (!isAdmin && user?.department?.id) {
+            setValue("departmentId", user.department.id.toString())
         }
 
         // Pre-fill taxpayer from request flow
@@ -111,7 +111,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
             setValue("note", initialData.note || "")
             setRegionId(initialData.region?.id || null)
         }
-    }, [initialData, isAdmin, setValue, user?.departmentID])
+    }, [initialData, isAdmin, setValue, user?.department?.id, initialTaxPayerId])
 
     const handleFormSubmit = (values: FileFormValues) => {
         const formData = new FormData()
@@ -164,7 +164,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                             {isAdmin ? (
                                 <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentId?.message} fieldName="departmentId" />
                             ) : (
-                                <Input value={user?.departmentName || ""} readOnly className="h-12 bg-muted/30" />
+                                <Input value={user?.department?.name || ""} readOnly className="h-12 bg-muted/30" />
                             )}
                         </div>
 

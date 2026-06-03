@@ -52,14 +52,14 @@ export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovem
 
     // Watch for initialData changes
     useEffect(() => {
-        if (!isAdmin && user?.departmentID) setValue("departmentId", user.departmentID.toString())
+        if (!isAdmin && user?.department?.id) setValue("departmentId", user.department.id.toString())
 
         if (initialData?.status) setValue("status", initialData.status)
         if (initialData?.date) setValue("date", initialData.date)
         if (initialData?.file?.id) setValue("fileId", initialData.file.id.toString())
         if (initialData?.taxCollector?.id) setValue("taxCollectorId", initialData.taxCollector.id.toString())
         if (isAdmin && initialData?.department?.id) setValue("departmentId", initialData.department.id.toString())
-    }, [initialData, isAdmin, setValue, user?.departmentID])
+    }, [initialData, isAdmin, setValue, user?.department?.id])
 
     const handleFormSubmit = (values: FileMovementFormValues) => {
         const formData = new FormData()
@@ -186,7 +186,7 @@ export const FileMovementForm = ({ initialData, onSubmit, isLoading }: FileMovem
                         {isAdmin ? (
                             <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentId?.message} fieldName="departmentId" />
                         ) : (
-                            <Input value={user?.departmentName || ""} readOnly className="h-12 bg-muted/30" />
+                            <Input value={user?.department?.name || ""} readOnly className="h-12 bg-muted/30" />
                         )}
                     </div>
                 </div>

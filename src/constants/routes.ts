@@ -78,6 +78,7 @@ export const ROUTES = {
     USERS_EDIT: "/dashboard/users/:id/edit",
     USERS_SHOW: "/dashboard/users/:id",
     OPERATION_REPORTS: "/dashboard/operation-reports",
+    TRASH_BIN: "/dashboard/trash-bin",
     SETTINGS: "/dashboard/settings",
   },
 } as const;

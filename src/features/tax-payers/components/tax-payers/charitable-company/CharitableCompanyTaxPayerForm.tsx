@@ -63,8 +63,8 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
     })
 
     useEffect(() => {
-        if (!isAdmin && user?.departmentID) {
-            setValue("departmentID", user.departmentID.toString())
+        if (!isAdmin && user?.department?.id) {
+            setValue("departmentID", user.department.id.toString())
         }
 
         if (initialData) {
@@ -73,7 +73,7 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
                 lastName: initialData.userInfo?.lastName || "",
                 phone: initialData.userInfo?.phone || "",
                 role: initialData.userInfo?.role || "Tax_Payer",
-                departmentID: isAdmin ? initialData.userInfo?.department?.id.toString() : user?.departmentID?.toString(),
+                departmentID: isAdmin ? initialData.userInfo?.department?.id.toString() : user?.department?.id?.toString(),
                 fileType: "CharitableCompany",
                 tradeName: initialData.taxPayerInfo?.tradeName || "",
             });
@@ -87,7 +87,7 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
             if (initialData.taxPayerInfo?.propertyDocPict) setPropertyDocName(initialData.taxPayerInfo.propertyDocPict.split('/').pop() || "الملف الحالي");
             if (initialData.charitableCompanyInfo?.byLawsCopy) setByLawsName(initialData.charitableCompanyInfo.byLawsCopy.split('/').pop() || "الملف الحالي");
         }
-    }, [initialData, isAdmin, reset, setValue, user?.departmentID])
+    }, [initialData, isAdmin, reset, setValue, user?.department?.id])
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof CharitableCompanyTaxPayerFormValues, setter: (val: string | null) => void) => {
         const file = e.target.files?.[0]
@@ -185,7 +185,7 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
                             <AdminDepartmentSelect setValue={setValue} watch={watch} fieldName="departmentID" />
                         ) : (
                             <Input
-                                value={user?.departmentName || ""}
+                                value={user?.department?.name || ""}
                                 readOnly
                                 className="h-12 rounded-xl bg-muted/30 border-none cursor-default focus-visible:ring-0"
                             />

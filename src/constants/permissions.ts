@@ -52,6 +52,11 @@ export const ACTIONS = {
   // Reports
   VIEW_REPORT: "VIEW_REPORT",
 
+  // Trash Bin
+  VIEW_TRASH_BIN: "VIEW_TRASH_BIN",
+  RESTORE_TRASH_BIN: "RESTORE_TRASH_BIN",
+  DELETE_TRASH_BIN: "DELETE_TRASH_BIN",
+
   // Notifications
   CREATE_NOTIFICATION: "CREATE_NOTIFICATION",
   UPDATE_NOTIFICATION: "UPDATE_NOTIFICATION",
@@ -115,6 +120,11 @@ export const PERMISSIONS: Record<string, readonly string[]> = {
 
   // ── Reports ───────────────────────────────────────────────────────────────
   [ACTIONS.VIEW_REPORT]: [ROLES.ADMIN],
+
+  // Trash Bin
+  [ACTIONS.VIEW_TRASH_BIN]: [ROLES.ADMIN],
+  [ACTIONS.RESTORE_TRASH_BIN]: [ROLES.ADMIN],
+  [ACTIONS.DELETE_TRASH_BIN]: [ROLES.ADMIN],
 
   // ── Notifications ─────────────────────────────────────────────────────────
   [ACTIONS.CREATE_NOTIFICATION]: [ROLES.ADMIN],

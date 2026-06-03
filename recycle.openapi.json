@@ -7,9 +7,9 @@
   },
   "tags": [],
   "paths": {
-    "/notification": {
-      "post": {
-        "summary": "Create_Notification",
+    "/recycle-pin": {
+      "get": {
+        "summary": "Get_All_RecyclePins",
         "deprecated": false,
         "description": "",
         "tags": [],
@@ -25,35 +25,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "notificationType": {
-                    "example": "Special",
-                    "type": "string"
-                  },
-                  "title": {
-                    "example": "الإقرار الضريبي",
-                    "type": "string"
-                  },
-                  "description": {
-                    "example": "وصف الإشعار",
-                    "type": "string"
-                  },
-                  "receiverPhone": {
-                    "example": "774477777",
-                    "type": "string"
-                  }
-                }
-              },
-              "examples": {}
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "",
@@ -73,9 +44,11 @@
             "bearer": []
           }
         ]
-      },
-      "get": {
-        "summary": "Get_All_Notifications",
+      }
+    },
+    "/recycle-pin/3/restore": {
+      "post": {
+        "summary": "Restore_Recrod_From_RecyclePin",
         "deprecated": false,
         "description": "",
         "tags": [],
@@ -101,7 +74,8 @@
                   "properties": {}
                 }
               }
-            }
+            },
+            "headers": {}
           }
         },
         "security": [
@@ -111,9 +85,9 @@
         ]
       }
     },
-    "/notification/2": {
+    "/recycle-pin/2": {
       "get": {
-        "summary": "Get_Notification_By_Id",
+        "summary": "Get_RecyclePin_By_Id",
         "deprecated": false,
         "description": "",
         "tags": [],
@@ -150,7 +124,7 @@
         ]
       },
       "delete": {
-        "summary": "Delete_Notification",
+        "summary": "Delete_RecyclePin",
         "deprecated": false,
         "description": "",
         "tags": [],
@@ -166,69 +140,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {}
-              },
-              "examples": {}
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {}
-                }
-              }
-            },
-            "headers": {}
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/notification/5": {
-      "put": {
-        "summary": "Update_Notification",
-        "deprecated": false,
-        "description": "",
-        "tags": [],
-        "parameters": [
-          {
-            "name": "Accept",
-            "in": "header",
-            "description": "",
-            "required": false,
-            "example": "application/json",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {}
-              },
-              "examples": {}
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "",
