@@ -22,7 +22,8 @@ import {
     UserCog,
     FileBarChart,
     Info,
-    Bell
+    Bell,
+    Trash2
 } from "lucide-react"
 import TaxLogo from "@/assets/images/TaxLogo.png"
 import TaxLogoDark from "@/assets/images/TaxLogoDark.png"
@@ -152,6 +153,16 @@ export default function SideBar() {
                                         <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
                                             <FileBarChart className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
                                             <h1> تقرير العمليات </h1>
+                                        </SidebarMenuButton>
+                                    )}
+                                </NavLink>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                                <NavLink to={ROUTES.DASHBOARD.TRASH_BIN}>
+                                    {({ isActive }) => (
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
+                                            <Trash2 className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                            <h1> سلة المهملات </h1>
                                         </SidebarMenuButton>
                                     )}
                                 </NavLink>

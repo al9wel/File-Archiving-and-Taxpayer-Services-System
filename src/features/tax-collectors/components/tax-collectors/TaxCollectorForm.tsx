@@ -46,8 +46,8 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
     });
 
     useEffect(() => {
-        if (!isAdmin && user?.departmentID) {
-            setValue("deptID", user.departmentID.toString());
+        if (!isAdmin && user?.department?.id) {
+            setValue("deptID", user.department.id.toString());
         }
 
         if (initialData) {
@@ -60,7 +60,7 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                 setIdCardName(typeof initialData.idCard === 'string' ? initialData.idCard.split('/').pop() || "الملف الحالي" : "تم رفع ملف");
             }
         }
-    }, [initialData, isAdmin, setValue, user?.departmentID]);
+    }, [initialData, isAdmin, setValue, user?.department?.id]);
 
     const handleIdCardChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -199,7 +199,7 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                         <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.deptID?.message} fieldName="deptID" />
                     ) : (
                         <Input
-                            value={user?.departmentName || ""}
+                            value={user?.department?.name || ""}
                             readOnly
                             className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-0"
                         />

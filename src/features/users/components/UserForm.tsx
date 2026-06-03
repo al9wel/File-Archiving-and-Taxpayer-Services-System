@@ -58,8 +58,8 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
 
     // Watch for initialData changes
     useEffect(() => {
-        if (!isAdmin && user?.departmentID) {
-            setValue("departmentID", user.departmentID.toString())
+        if (!isAdmin && user?.department?.id) {
+            setValue("departmentID", user.department.id.toString())
         }
 
         if (initialData?.image) {
@@ -77,7 +77,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
         if (initialData?.userName) {
             setValue("userName", initialData.userName)
         }
-    }, [initialData, isAdmin, setValue, user?.departmentID])
+    }, [initialData, isAdmin, setValue, user?.department?.id])
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -106,7 +106,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
         commonFields.forEach(fieldName => {
             const value = values[fieldName as keyof UserFormValues]
             const isUnchangedPhone = fieldName === "phone" && initialData && value === initialData.phone;
-            
+
             if (value !== undefined && value !== null && value !== "" && !isUnchangedPhone) {
                 formData.append(fieldName, value as string | Blob)
             }
@@ -229,7 +229,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
                                 {isAdmin ? (
                                     <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentID?.message} fieldName="departmentID" />
                                 ) : (
-                                    <Input value={user?.departmentName || ""} readOnly className="h-12 bg-muted/30" />
+                                    <Input value={user?.department?.name || ""} readOnly className="h-12 bg-muted/30" />
                                 )}
                             </div>
                             {initialData && (
@@ -246,33 +246,29 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
                                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-4 block">
                                     الدور الوظيفي *
                                 </label>
-                                {(!initialData || user?.role === ROLES.ADMIN) ? (
-                                    <div className="grid grid-cols-2 lg:grid-cols-6 pb-2 gap-4">
-                                        {roles.map((role, index) => (
-                                            <div
-                                                key={role.id}
-                                                onClick={() => setValue("role", role.id)}
-                                                className={`
+
+                                <div className="grid grid-cols-2 lg:grid-cols-6 pb-2 gap-4">
+                                    {roles.map((role, index) => (
+                                        <div
+                                            key={role.id}
+                                            onClick={() => setValue("role", role.id)}
+                                            className={`
                                                 ${index < 3 ? 'lg:col-span-2' : 'lg:col-span-3'}
                                                 ${index === 4 ? 'col-span-2 lg:col-span-3' : 'col-span-1'}
                                                 cursor-pointer p-2 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all
                                                 ${watch("role") === role.id
-                                                        ? "border-primary bg-primary/5 text-primary shadow-sm"
-                                                        : "border-muted bg-background hover:bg-muted/30"}
+                                                    ? "border-primary bg-primary/5 text-primary shadow-sm"
+                                                    : "border-muted bg-background hover:bg-muted/30"}
                                             `}
-                                            >
-                                                <div className={`p-2 rounded-lg ${watch("role") === role.id ? "bg-primary/30" : "bg-muted"}`}>
-                                                    <role.icon className="size-4 xl:size-5.5" />
-                                                </div>
-                                                <span className="text-xs font-semibold">{role.label}</span>
+                                        >
+                                            <div className={`p-2 rounded-lg ${watch("role") === role.id ? "bg-primary/30" : "bg-muted"}`}>
+                                                <role.icon className="size-4 xl:size-5.5" />
                                             </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div className="w-full text-center pb-2">
-                                        <p className="text-xl text-red-400/80">الادمن فقط يمكنه تعديل الدور الوظيفي</p>
-                                    </div>
-                                )}
+                                            <span className="text-xs font-semibold">{role.label}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
                                 {errors.role && <p className="text-sm font-medium text-destructive mt-1">{errors.role.message}</p>}
                             </div>
                         </div>

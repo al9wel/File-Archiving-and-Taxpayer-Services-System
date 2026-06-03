@@ -7,9 +7,9 @@
   },
   "tags": [],
   "paths": {
-    "/request": {
-      "post": {
-        "summary": "Request_ResetPassword",
+    "/recycle-pin": {
+      "get": {
+        "summary": "Get_All_RecyclePins",
         "deprecated": false,
         "description": "",
         "tags": [],
@@ -25,23 +25,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "userName": {
-                    "example": "770770770",
-                    "type": "string"
-                  }
-                }
-              },
-              "examples": {}
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "",
@@ -56,12 +39,16 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
-    "/verify": {
+    "/recycle-pin/3/restore": {
       "post": {
-        "summary": "Verify_ResetPassword_Code",
+        "summary": "Restore_Recrod_From_RecyclePin",
         "deprecated": false,
         "description": "",
         "tags": [],
@@ -77,27 +64,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "userId": {
-                    "example": "2",
-                    "type": "string"
-                  },
-                  "code": {
-                    "example": "8458",
-                    "type": "string"
-                  }
-                }
-              },
-              "examples": {}
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "",
@@ -112,12 +78,16 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
-    "/reset": {
-      "post": {
-        "summary": "ResetPassword",
+    "/recycle-pin/2": {
+      "get": {
+        "summary": "Get_RecyclePin_By_Id",
         "deprecated": false,
         "description": "",
         "tags": [],
@@ -133,35 +103,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "userId": {
-                    "example": "2",
-                    "type": "string"
-                  },
-                  "code": {
-                    "example": "8458",
-                    "type": "string"
-                  },
-                  "newPassword": {
-                    "example": "ha123456",
-                    "type": "string"
-                  },
-                  "newPassword_confirmation": {
-                    "example": "ha123456",
-                    "type": "string"
-                  }
-                }
-              },
-              "examples": {}
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "",
@@ -176,12 +117,14 @@
             "headers": {}
           }
         },
-        "security": []
-      }
-    },
-    "/resend": {
-      "post": {
-        "summary": "Resend_Code",
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete_RecyclePin",
         "deprecated": false,
         "description": "",
         "tags": [],
@@ -197,23 +140,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "userName": {
-                    "example": "770770770",
-                    "type": "string"
-                  }
-                }
-              },
-              "examples": {}
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "",
@@ -228,14 +154,23 @@
             "headers": {}
           }
         },
-        "security": []
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     }
   },
   "components": {
     "schemas": {},
     "responses": {},
-    "securitySchemes": {}
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
   },
   "servers": [],
   "security": []
