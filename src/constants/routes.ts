@@ -3,6 +3,8 @@ export const ROUTES = {
     HOME: "/",
     ABOUT: "/about",
     AUTH: "/auth",
+    FORGOT_PASSWORD: "/forgot-password",
+    VERIFY_OTP: "/verify-otp",
     RESET_PASSWORD: "/reset-password",
     UNAUTHORIZED: "/unauthorized",
   },
