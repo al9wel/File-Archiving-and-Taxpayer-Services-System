@@ -3,6 +3,7 @@ import { authApi } from '../api/authApi';
 import { useAuthStore } from '@/app/store/authStore';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
+import { removeAccessToken, removeMustChangePassword, removeUserId } from '@/lib/authStorage';
 
 export const useLogout = () => {
   const logoutState = useAuthStore((state) => state.logout);
@@ -12,8 +13,9 @@ export const useLogout = () => {
     mutationFn: async () => authApi.logout(),
     onSuccess: () => {
       // Clean up storage
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('user_id');
+      removeAccessToken();
+      removeUserId();
+      removeMustChangePassword();
 
       // Clean up Zustand store
       logoutState();
@@ -23,8 +25,9 @@ export const useLogout = () => {
     },
     onError: () => {
       // Even if API fails, we should clear everything locally
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('user_id');
+      removeAccessToken();
+      removeUserId();
+      removeMustChangePassword();
       logoutState();
       navigate(ROUTES.PUBLIC.AUTH);
     }

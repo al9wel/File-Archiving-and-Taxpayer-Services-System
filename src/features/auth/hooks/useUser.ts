@@ -2,11 +2,12 @@ import { useQuery } from "@tanstack/react-query"
 import { authApi } from "../api/authApi"
 import { useAuth } from "@/hooks/useAuth"
 import { useEffect } from "react"
+import { getAccessToken, getUserId } from "@/lib/authStorage"
 
 export const useUser = () => {
     const { user, setUser, logout } = useAuth();
-    const token = localStorage.getItem("access_token")
-    const userId = localStorage.getItem("user_id")
+    const token = getAccessToken()
+    const userId = getUserId()
 
     const query = useQuery({
         queryKey: ["auth-me", userId],

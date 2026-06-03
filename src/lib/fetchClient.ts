@@ -1,10 +1,11 @@
 // src/lib/fetchClient.ts
 
+import { getAccessToken } from "./authStorage";
 
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
 export const fetchClient = async (endpoint: string, options: RequestInit = {}) => {
-  const token = localStorage.getItem('access_token');
+  const token = getAccessToken();
 
   const headers = new Headers(options.headers);
   headers.set('Accept', 'application/json');

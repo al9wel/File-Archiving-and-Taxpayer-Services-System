@@ -1,10 +1,11 @@
 import { useAuth } from '@/hooks/useAuth';
 import { ROUTES } from '@/constants/routes';
 import { Navigate, Outlet } from 'react-router-dom';
+import { getAccessToken } from '@/lib/authStorage';
 
 export function ProtectedRoute({ allowedRoles }: { allowedRoles: string[] }) {
   const { user, needsPasswordReset } = useAuth();
-  const token = localStorage.getItem('access_token');
+  const token = getAccessToken();
 
   // 1. Not logged in at all
   if (!token) return <Navigate to={ROUTES.PUBLIC.AUTH} />;
