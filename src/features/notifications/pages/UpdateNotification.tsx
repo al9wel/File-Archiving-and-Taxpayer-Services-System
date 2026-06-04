@@ -54,11 +54,11 @@ const UpdateNotification = () => {
         <>
             <div className="w-full px-3 pt-3">
                 <DashboardHeader
-                    title="تعديل الإشعار"
+                    title=" تعديل الاشعار "
                     desc={`تعديل بيانات الإشعار: ${notification?.data?.title}`}
                 />
             </div>
-            <div className="container mx-auto px-3 py-6 animate-in fade-in duration-500 space-y-4">
+            <div className=" mx-auto px-3 py-6 animate-in fade-in duration-500 space-y-4">
                 <div className="flex justify-end" dir="rtl">
                     <Button
                         variant="secondary"

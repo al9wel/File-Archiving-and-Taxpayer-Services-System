@@ -19,7 +19,7 @@ const TaxPayersLayout = () => {
                     desc="إدارة المكلفين وأنواع الضرائب والبيانات الضريبية"
                 />
             </div>
-            <div className="container mx-auto px-3 mt-4" dir="rtl">
+            <div className=" mx-auto px-3 mt-4" dir="rtl">
                 <div className="flex flex-col xl:flex-row gap-6">
                     {/* Internal Sidebar */}
                     <Card className="w-full xl:w-[300px] h-fit p-3 border shadow-sm rounded-3xl overflow-hidden bg-white dark:bg-[#0b0f1a]">

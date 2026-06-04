@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
+import { Check, ChevronsUpDown, Loader2, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -22,16 +22,29 @@ import type { File } from "@/types/File";
 type Props = {
     value?: number;
     onSelect: (id: number) => void;
+    mode?: "select" | "search";
+    placeholder?: string;
+    searchPlaceholder?: string;
+    className?: string;
+    popoverClassName?: string;
     disabled?: boolean;
 };
 
-export function FileSearchSelect({ value, onSelect, disabled }: Props) {
+export function FileSearchSelect({
+    value,
+    onSelect,
+    mode = "select",
+    placeholder,
+    searchPlaceholder = "البحث عن ملف...",
+    className,
+    popoverClassName,
+    disabled
+}: Props) {
     const [open, setOpen] = React.useState(false);
     const [search, setSearch] = React.useState("");
     const debouncedSearch = useDebounce(search, 500);
 
     const { data: queryData, isPending, isError } = useSearchFiles(debouncedSearch);
-
     const data = queryData?.data;
 
     const selectedFile = data?.find(
@@ -39,8 +52,11 @@ export function FileSearchSelect({ value, onSelect, disabled }: Props) {
     );
 
     const getFileLabel = (file: File["fileInfo"]) => {
-        return `ملف رقم: ${file.taxNumber} - ${file.taxPayer?.tradeName || "مكلف"}`
-    }
+        return `ملف رقم: ${file.taxNumber} - ${file.taxPayer?.tradeName || "مكلف"}`;
+    };
+
+    const isSearchMode = mode === "search";
+    const triggerPlaceholder = placeholder || (isSearchMode ? "البحث عن ملف..." : "اختر الملف...");
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -50,17 +66,34 @@ export function FileSearchSelect({ value, onSelect, disabled }: Props) {
                     variant="outline"
                     role="combobox"
                     disabled={disabled}
-                    className="w-full justify-between h-12 rounded-xl bg-muted/30 border-muted-foreground/10"
+                    className={cn(
+                        "w-full h-12 border-muted-foreground/10",
+                        isSearchMode
+                            ? "justify-start gap-2 rounded-3xl bg-muted p-3 text-xs font-normal text-muted-foreground dark:border-input dark:bg-[#393f4d]/50"
+                            : "justify-between rounded-xl bg-muted/30",
+                        className
+                    )}
                 >
-                    {selectedFile ? getFileLabel(selectedFile) : "اختر الملف..."}
-                    <ChevronsUpDown className="opacity-50" />
+                    {isSearchMode && <Search className="size-4 shrink-0 opacity-70" />}
+                    <span className="truncate text-right">
+                        {selectedFile ? getFileLabel(selectedFile) : triggerPlaceholder}
+                    </span>
+                    {!isSearchMode && <ChevronsUpDown className="opacity-50" />}
                 </Button>
             </PopoverTrigger>
 
-            <PopoverContent className="w-[400px] p-0" align="end" dir="rtl">
+            <PopoverContent
+                className={cn(
+                    "w-[400px] p-0",
+                    isSearchMode && "w-[var(--radix-popover-trigger-width)] min-w-[320px]",
+                    popoverClassName
+                )}
+                align="end"
+                dir="rtl"
+            >
                 <Command shouldFilter={false} dir="rtl">
                     <CommandInput
-                        placeholder="البحث عن ملف..."
+                        placeholder={searchPlaceholder}
                         value={search}
                         onValueChange={setSearch}
                     />
@@ -91,6 +124,7 @@ export function FileSearchSelect({ value, onSelect, disabled }: Props) {
                                     onSelect={() => {
                                         onSelect(Number(file.id));
                                         setOpen(false);
+                                        setSearch("");
                                     }}
                                     className="cursor-pointer"
                                 >

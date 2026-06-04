@@ -23,7 +23,7 @@ const BasicInfoLayout = () => {
                     desc="إدارة الأقسام والعناوين ونوع النشاط"
                 />
             </div>
-            <div className="container mx-auto px-3" dir="rtl">
+            <div className=" mx-auto px-3" dir="rtl">
                 {/* Internal Sidebar (Right side in RTL) */}
                 <div className="flex flex-col lg:flex-row gap-6">
                     <Card className="w-full lg:w-[300px] h-fit p-4">

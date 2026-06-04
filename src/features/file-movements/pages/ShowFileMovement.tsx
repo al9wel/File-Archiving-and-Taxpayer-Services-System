@@ -35,8 +35,8 @@ const ShowFileMovement = () => {
 
     const displayStatus = data?.status === "InsideArchive" ? "داخل الأرشيف" :
         data?.status === "OutsideArchive" ? "خارج الأرشيف" :
-        data?.status === "Missing" ? "مفقود" :
-        data?.status;
+            data?.status === "Missing" ? "مفقود" :
+                data?.status;
 
     // Configuration for the information grid items
     const infoItems = [
@@ -59,7 +59,7 @@ const ShowFileMovement = () => {
                 />
             </div>
 
-            <div className="container mx-auto px-3 animate-in fade-in duration-500 space-y-6" dir="rtl">
+            <div className=" mx-auto px-3 animate-in fade-in duration-500 space-y-6" dir="rtl">
                 <div className="flex justify-end gap-3">
                     <Button
                         variant="secondary"
@@ -96,7 +96,7 @@ const ShowFileMovement = () => {
                             </div>
                         </CardContent>
                     </Card>
-                    
+
                     {/* Details Section */}
                     <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
                         {infoItems.map((item, index) => (

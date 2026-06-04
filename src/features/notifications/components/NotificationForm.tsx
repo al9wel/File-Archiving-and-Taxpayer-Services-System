@@ -4,8 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Loader2, Bell, Users, ShieldAlert, Globe, Save, X } from "lucide-react"
+import { Loader2, Bell, Users, ShieldAlert, Globe, BellIcon } from "lucide-react"
 import type { Notification } from "@/types/Notification"
+import { UserSearchSelect } from "@/features/users/components/UserSearchSelect"
 
 const notificationSchema = z.object({
     title: z.string().min(2, "عنوان الإشعار يجب أن يكون حرفين على الأقل"),
@@ -38,7 +39,7 @@ const types = [
     { id: "Special", label: "خاص", icon: Bell, className: "data-[selected=true]:border-rose-300 data-[selected=true]:bg-rose-50 data-[selected=true]:text-rose-700 dark:data-[selected=true]:bg-rose-900/20" },
 ]
 
-export const NotificationForm = ({ initialData, onSubmit, onCancel, isLoading }: NotificationFormProps) => {
+export const NotificationForm = ({ initialData, onSubmit, isLoading }: NotificationFormProps) => {
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<NotificationFormValues>({
         resolver: zodResolver(notificationSchema),
         defaultValues: {
@@ -153,15 +154,10 @@ export const NotificationForm = ({ initialData, onSubmit, onCancel, isLoading }:
                                     <label className="text-sm font-bold text-foreground mb-2 block">
                                         رقم هاتف المستلم *
                                     </label>
-                                    <Input
-                                        placeholder="+96777xxxxxxx"
-                                        {...register("receiverPhone", {
-                                            onChange: (e) => {
-                                                e.target.value = e.target.value.replace(/[^0-9+]/g, "")
-                                            }
-                                        })}
-                                        className="h-11 rounded-xl bg-background border-border font-mono"
-                                        dir="ltr"
+                                    <UserSearchSelect
+                                        value={watch("receiverPhone")}
+                                        returnValue="phone"
+                                        onSelect={(phone) => setValue("receiverPhone", String(phone), { shouldValidate: true })}
                                         disabled={isLoading}
                                     />
                                     {errors.receiverPhone && <p className="text-sm font-medium text-destructive mt-1">{errors.receiverPhone.message}</p>}
@@ -172,23 +168,11 @@ export const NotificationForm = ({ initialData, onSubmit, onCancel, isLoading }:
                 </div>
             </div>
 
-            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3">
-                {onCancel && (
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={onCancel}
-                        disabled={isLoading}
-                        className="h-12 rounded-xl px-8 font-bold cursor-pointer"
-                    >
-                        <X className="ml-2 h-5 w-5" />
-                        إلغاء
-                    </Button>
-                )}
-                <Button
+            <div className="grid grid-cols-3  xl:grid-cols-4 gap-2 xl:gap-8 mb-8">
+                {/* <Button
                     type="submit"
                     disabled={isLoading}
-                    className="h-12 rounded-xl px-10 bg-primary hover:bg-primary-hover shadow-sm transition-all active:scale-95 text-primary-foreground font-black cursor-pointer"
+                    className="col-span-2 xl:col-span-3 h-12 lg:h-14 text-sm md:text-lg hover:bg-primary-hover cursor-pointer font-bold rounded-xl shadow-lg shadow-primary/20"
                 >
                     {isLoading ? (
                         <>
@@ -197,11 +181,40 @@ export const NotificationForm = ({ initialData, onSubmit, onCancel, isLoading }:
                         </>
                     ) : (
                         <>
-                            <Save className="ml-2 h-5 w-5" />
+                            <Save className="ml-2 h-8 w-8" />
                             حفظ البيانات
                         </>
                     )}
+                </Button> */}
+                <Button
+                    type="submit"
+                    size="lg"
+                    className="col-span-2 xl:col-span-3 h-12 lg:h-14 text-sm md:text-lg hover:bg-primary-hover cursor-pointer font-bold rounded-xl shadow-lg shadow-primary/20"
+                    disabled={isLoading}
+                >
+                    <div className="flex items-center justify-center gap-2">
+                        {isLoading ? (
+                            <Loader2 className="h-5 w-5 animate-spin" />
+                        ) : (
+                            <BellIcon className="h-5 w-5" />
+                        )}
+                        <span>
+                            {isLoading ? "جاري الحفظ..." : (initialData ? "تحديث بيانات الإشعار" : "ارسال الإشعار الجديد")}
+                        </span>
+                    </div>
                 </Button>
+
+                <Button
+                    type="button"
+                    variant="secondary"
+                    size="lg"
+                    disabled={isLoading}
+                    className="h-12 lg:h-14 text-sm md:text-lg px-8 hover:bg-accent cursor-pointer font-medium rounded-xl"
+                    onClick={() => window.history.back()}
+                >
+                    إلغاء
+                </Button>
+
             </div>
         </form>
     )

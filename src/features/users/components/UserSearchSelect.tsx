@@ -22,16 +22,19 @@ import { cn } from "@/lib/utils";
 import { useDebounce } from "@/hooks/useDebounce";
 
 import { useSearchUsers } from "../hooks/useSearchUsers";
+import type { User } from "@/types/User";
 
 type Props = {
-  value?: number;
-  onSelect: (id: number) => void;
+  value?: number | string;
+  onSelect: (value: number | string) => void;
+  returnValue?: "id" | "phone";
   disabled?: boolean;
 };
 
 export function UserSearchSelect({
   value,
   onSelect,
+  returnValue = "id",
   disabled
 }: Props) {
   const [open, setOpen] = React.useState(false);
@@ -42,12 +45,16 @@ export function UserSearchSelect({
 
   const data = queryData?.data;
 
+  const getReturnedValue = (user: User) => {
+    return returnValue === "phone" ? (user.phone || "") : user.id;
+  }
+
   const selectedUser = data?.find(
-    (item) => item.id === value
+    (item: User) => getReturnedValue(item) === value
   );
 
-  const getUserLabel = (user: any) => {
-    return `${user.firstName} ${user.lastName} - #${user.id}`
+  const getUserLabel = (user: User) => {
+    return ` ${getReturnedValue(user)}  -  ${user.firstName} ${user.lastName} `
   }
 
   return (
@@ -95,12 +102,12 @@ export function UserSearchSelect({
 
             {!isPending &&
               !isError &&
-              data?.filter((user: any) => user.role === "Tax_Payer").map((user: any) => (
+              data?.filter((user: User) => user.role === "Tax_Payer").map((user: User) => (
                 <CommandItem
                   key={user.id}
                   value={getUserLabel(user)}
                   onSelect={() => {
-                    onSelect(user.id);
+                    onSelect(getReturnedValue(user));
                     setOpen(false);
                   }}
                   className="cursor-pointer"
@@ -108,14 +115,14 @@ export function UserSearchSelect({
                   <Check
                     className={cn(
                       "mr-2 size-4",
-                      value === user.id ? "opacity-100" : "opacity-0"
+                      value === getReturnedValue(user) ? "opacity-100" : "opacity-0"
                     )}
                   />
 
                   <div className="flex flex-col flex-1 mr-2 text-right">
                     <span>{getUserLabel(user)}</span>
                     <span className="text-xs text-muted-foreground">
-                      {user.username || "-"}
+                      {user.userName || "-"}
                     </span>
                   </div>
                 </CommandItem>

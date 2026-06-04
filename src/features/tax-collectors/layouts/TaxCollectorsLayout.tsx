@@ -34,7 +34,7 @@ const TaxCollectorsLayout = () => {
                 />
             </div>
 
-            <div className="container mx-auto px-3" dir="rtl">
+            <div className=" mx-auto px-3" dir="rtl">
                 {/* Actions Row - Above both sidebar and content */}
                 <div className="hidden lg:flex justify-end mb-6">
                     {renderAction()}

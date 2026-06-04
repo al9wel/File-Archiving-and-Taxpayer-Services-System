@@ -45,7 +45,7 @@ const UpdateFileMovement = () => {
                 desc="قم بتحديث بيانات تفاصيل الحركة المختارة"
             />
 
-            <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="mx-auto px-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 {isLoadingData ? (
                     <div className="flex flex-col h-[400px] items-center justify-center space-y-4">
                         <Loader2 className="animate-spin text-primary" size={40} />

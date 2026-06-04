@@ -22,7 +22,7 @@ const RequestsLayout = () => {
                     desc="إدارة ومراجعة طلبات المكلفين الواردة من تطبيق الهاتف المحمول"
                 />
             </div>
-            <div className="container mx-auto px-3 pb-10" dir="rtl">
+            <div className=" mx-auto px-3 pb-10" dir="rtl">
                 {/* Internal Sidebar (Right side in RTL) */}
                 <div className="flex flex-col lg:flex-row gap-6">
                     <Card className="w-full lg:w-[300px] h-fit p-4 shrink-0">
