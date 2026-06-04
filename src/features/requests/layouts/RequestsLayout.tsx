@@ -24,8 +24,8 @@ const RequestsLayout = () => {
             </div>
             <div className=" mx-auto px-3 pb-10" dir="rtl">
                 {/* Internal Sidebar (Right side in RTL) */}
-                <div className="flex flex-col lg:flex-row gap-6">
-                    <Card className="w-full lg:w-[300px] h-fit p-4 shrink-0">
+                <div className="flex flex-col lg:flex-row gap-3">
+                    <Card className="w-full lg:w-[240px] h-fit p-4 shrink-0">
                         <div className="flex flex-col gap-2">
                             {sidebarLinks.map((link) => {
                                 const isActive = pathname.startsWith(link.path);
