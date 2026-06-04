@@ -326,7 +326,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="text-sm font-medium leading-none mb-2 block">
-                                رقم المكلف الضريبي *
+                                رقم الملف الضريبي *
                             </label>
                             <Input placeholder="رقم المكلف الضريبي" {...register("taxNumber")} className="h-12 bg-muted/30" />
                             {errors.taxNumber && <p className="text-sm font-medium text-destructive mt-1">{errors.taxNumber.message}</p>}

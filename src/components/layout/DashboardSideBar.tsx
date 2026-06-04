@@ -54,8 +54,8 @@ export default function SideBar() {
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.MAIN}>
                                     {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" text-[17px] font-medium cursor-pointer">
-                                            <Home className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                        <SidebarMenuButton isActive={isActive} className=" text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <Home className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> الرئيسية </h1>
                                         </SidebarMenuButton>
                                     )}
@@ -64,8 +64,8 @@ export default function SideBar() {
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.FILES.ROOT}>
                                     {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
-                                            <FileArchive className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <FileArchive className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> الملفات </h1>
                                         </SidebarMenuButton>
                                     )}
@@ -74,8 +74,8 @@ export default function SideBar() {
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.FILE_MOVEMENTS}>
                                     {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
-                                            <ArrowUpRightFromSquare className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <ArrowUpRightFromSquare className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> حركة الملفات </h1>
                                         </SidebarMenuButton>
                                     )}
@@ -84,8 +84,8 @@ export default function SideBar() {
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.REQUESTS.ROOT}>
                                     {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
-                                            <ClipboardList className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <ClipboardList className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> الطلبات </h1>
                                         </SidebarMenuButton>
                                     )}
@@ -94,8 +94,8 @@ export default function SideBar() {
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.BASIC_INFO.ROOT}>
                                     {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
-                                            <Info className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <Info className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> معلومات أساسية </h1>
                                         </SidebarMenuButton>
                                     )}
@@ -104,8 +104,8 @@ export default function SideBar() {
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.NOTIFICATIONS}>
                                     {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
-                                            <Bell className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <Bell className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> الإشعارات </h1>
                                         </SidebarMenuButton>
                                     )}
@@ -114,8 +114,8 @@ export default function SideBar() {
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.ROOT}>
                                     {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
-                                            <Users className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <Users className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> المكلفين </h1>
                                         </SidebarMenuButton>
                                     )}
@@ -124,8 +124,8 @@ export default function SideBar() {
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.TAX_COLLECTORS.ROOT}>
                                     {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
-                                            <UserCheck className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <UserCheck className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> المأمورين </h1>
                                         </SidebarMenuButton>
                                     )}
@@ -134,8 +134,8 @@ export default function SideBar() {
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.USERS}>
                                     {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
-                                            <UserCog className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <UserCog className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> المستخدمين </h1>
                                         </SidebarMenuButton>
                                     )}
@@ -150,8 +150,8 @@ export default function SideBar() {
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.OPERATION_REPORTS}>
                                     {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
-                                            <FileBarChart className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <FileBarChart className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> تقرير العمليات </h1>
                                         </SidebarMenuButton>
                                     )}
@@ -160,8 +160,8 @@ export default function SideBar() {
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.TRASH_BIN}>
                                     {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
-                                            <Trash2 className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <Trash2 className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> سلة المهملات </h1>
                                         </SidebarMenuButton>
                                     )}
@@ -170,8 +170,8 @@ export default function SideBar() {
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.SETTINGS}>
                                     {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[17px] font-medium cursor-pointer">
-                                            <Settings className="-mr-0.5" style={{ width: "20px", height: "20px" }} />
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <Settings className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> الإعدادات </h1>
                                         </SidebarMenuButton>
                                     )}
@@ -181,7 +181,7 @@ export default function SideBar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
-            <SidebarFooter className={`${open ? "p-2" : "p-1"} transition-all duration-300`}>
+            <SidebarFooter className={`${open ? "p-0" : "p-1"} transition-all duration-300`}>
                 <SidebarMenu >
                     <SidebarMenuItem >
                         <Card>

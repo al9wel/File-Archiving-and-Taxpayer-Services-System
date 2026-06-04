@@ -27,7 +27,7 @@ const Users = () => {
             <div className="w-full px-3 pt-3">
                 <DashboardHeader title=" المستخدمين " desc="إدارة جميع المستخدمين في النظام" />
             </div>
-            <div className="container mx-auto px-3 animate-in fade-in duration-500">
+            <div className=" mx-auto px-3 animate-in fade-in duration-500">
                 {isPending ? (
                     <div className="flex flex-col h-[300px] items-center justify-center space-y-4">
                         <Loader2 className="animate-spin text-primary" size={32} />

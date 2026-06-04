@@ -31,7 +31,7 @@ const ViewFilePage = () => {
     }
 
     const infoItems = [
-        { label: "رقم المكلف الضريبي", value: file?.data?.taxNumber, icon: Hash },
+        { label: "رقم الملف الضريبي", value: file?.data?.taxNumber, icon: Hash },
         { label: "رقم الحصر", value: file?.data?.inventoryNumber, icon: Hash },
         { label: "عدد المستندات", value: file?.data?.docsCount, icon: FileText },
         { label: "المكلف", value: file?.data?.taxPayer?.tradeName, icon: Building2 },

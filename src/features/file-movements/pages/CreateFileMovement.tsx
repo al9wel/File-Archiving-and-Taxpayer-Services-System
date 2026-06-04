@@ -35,7 +35,7 @@ const CreateFileMovement = () => {
                 title=" اضافة حركة ملف جديدة "
                 desc="قم بإدخال بيانات وتفاصيل الحركة الجديدة لإضافتها إلى النظام"
             />
-            <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="mx-auto px-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <FileMovementForm
                     onSubmit={handleSubmit}
                     isLoading={createMutation.isPending}

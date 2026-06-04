@@ -52,7 +52,7 @@ const ShowUser = () => {
                 />
             </div>
 
-            <div className="container mx-auto px-3 animate-in fade-in duration-500 space-y-6" dir="rtl">
+            <div className=" mx-auto px-3 animate-in fade-in duration-500 space-y-6" dir="rtl">
                 <div className="flex justify-end gap-3">
                     <Button
                         variant="secondary"

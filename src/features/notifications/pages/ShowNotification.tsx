@@ -73,12 +73,12 @@ const ShowNotification = () => {
         <>
             <div className="w-full px-3 pt-3">
                 <DashboardHeader
-                    title="تفاصيل الإشعار"
+                    title=" تفاصيل الاشعار "
                     desc={`عرض بيانات الإشعار: ${data?.title}`}
                 />
             </div>
 
-            <div className="container mx-auto px-3 py-6 animate-in fade-in duration-500 space-y-5" dir="rtl">
+            <div className=" mx-auto px-3 py-6 animate-in fade-in duration-500 space-y-5" dir="rtl">
                 <div className="flex flex-col sm:flex-row justify-end gap-3">
                     <Button
                         variant="secondary"

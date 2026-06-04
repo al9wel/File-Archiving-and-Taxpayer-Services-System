@@ -37,11 +37,11 @@ const CreateNotification = () => {
         <>
             <div className="w-full px-3 pt-3">
                 <DashboardHeader
-                    title="إضافة إشعار"
+                    title=" اضافه اشعار "
                     desc="أدخل بيانات الإشعار الجديد لإرساله للمستلمين."
                 />
             </div>
-            <div className="container mx-auto px-3 py-6 animate-in fade-in duration-500 space-y-4">
+            <div className=" mx-auto px-3 py-6 animate-in fade-in duration-500 space-y-4">
                 <div className="flex justify-end" dir="rtl">
                     <Button
                         type="button"

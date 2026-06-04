@@ -27,7 +27,7 @@ const FileMovements = () => {
             <div className="w-full px-3 pt-3">
                 <DashboardHeader title=" حركة الملفات " desc="إدارة وتتبع حركات الملفات في النظام" />
             </div>
-            <div className="container mx-auto px-3 animate-in fade-in duration-500">
+            <div className=" mx-auto px-3 animate-in fade-in duration-500">
                 {isPending ? (
                     <div className="flex flex-col h-[300px] items-center justify-center space-y-4">
                         <Loader2 className="animate-spin text-primary" size={32} />

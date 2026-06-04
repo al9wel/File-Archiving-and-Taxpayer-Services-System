@@ -247,14 +247,13 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
                                     الدور الوظيفي *
                                 </label>
 
-                                <div className="grid grid-cols-2 lg:grid-cols-6 pb-2 gap-4">
-                                    {roles.map((role, index) => (
+                                <div className="grid grid-cols-1 lg:grid-cols-4 pb-2 gap-4">
+                                    {roles.map((role) => (
                                         <div
                                             key={role.id}
                                             onClick={() => setValue("role", role.id)}
                                             className={`
-                                                ${index < 3 ? 'lg:col-span-2' : 'lg:col-span-3'}
-                                                ${index === 4 ? 'col-span-2 lg:col-span-3' : 'col-span-1'}
+                                                
                                                 cursor-pointer p-2 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all
                                                 ${watch("role") === role.id
                                                     ? "border-primary bg-primary/5 text-primary shadow-sm"
