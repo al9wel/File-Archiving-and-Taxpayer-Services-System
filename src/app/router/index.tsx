@@ -68,6 +68,8 @@ import CreateNotificationPage from "@/features/notifications/pages/CreateNotific
 import UpdateNotificationPage from "@/features/notifications/pages/UpdateNotification";
 import ShowNotificationPage from "@/features/notifications/pages/ShowNotification";
 import TrashBinPage from "@/features/trash-bin/pages/TrashBinPage";
+import ConversationsPage from "@/features/customer-service/pages/ConversationsPage";
+import ConversationDetailsPage from "@/features/customer-service/pages/ConversationDetailsPage";
 
 // dont use it just read it to understand the structure of tax payers routes
 // const taxPayersFeaturesRoutes = [
@@ -278,6 +280,13 @@ export const router = createBrowserRouter([
                                     { path: "create", element: <CreateNotificationPage /> },
                                     { path: ":id/edit", element: <UpdateNotificationPage /> },
                                     { path: ":id", element: <ShowNotificationPage /> },
+                                ]
+                            },
+                            {
+                                path: ROUTES.DASHBOARD.CUSTOMER_SERVICE.ROOT.split("/").pop(),
+                                children: [
+                                    { index: true, element: <ConversationsPage /> },
+                                    { path: ":conversationId", element: <ConversationDetailsPage /> },
                                 ]
                             },
                         ]

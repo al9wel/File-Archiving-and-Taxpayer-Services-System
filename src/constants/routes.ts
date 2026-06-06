@@ -47,6 +47,10 @@ export const ROUTES = {
     NOTIFICATIONS_CREATE: "/dashboard/notifications/create",
     NOTIFICATIONS_EDIT: "/dashboard/notifications/:id/edit",
     NOTIFICATIONS_SHOW: "/dashboard/notifications/:id",
+    CUSTOMER_SERVICE: {
+      ROOT: "/dashboard/customer-service",
+      SHOW: "/dashboard/customer-service/:conversationId",
+    },
     TAXPAYERS: {
       ROOT: "/dashboard/tax-payers",
       PAYERS: {
