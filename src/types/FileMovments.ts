@@ -13,6 +13,17 @@ export interface FileMovement {
     department: Department;
     creator: User;
 }
+export type FileMovementStatistics = {
+    total_movements: number | string;
+    inside_archive_count: number | string;
+    outside_archive_count: number | string;
+    missing_count: number | string;
+}
+export type FileMovmentStore = {
+    fileMovements: FileMovement[];
+    statistics: FileMovementStatistics;
+}
+
 
 // هذا التايب يمثل الرد عند جلب كل حركات الملفات (حيث تكون مصفوفة الحركات داخل أوبجكت filesMovements)
 export interface FileMovementsResponse {

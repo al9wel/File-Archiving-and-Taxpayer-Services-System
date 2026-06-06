@@ -5,6 +5,8 @@ import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
 import { CreateTaxCollectorDialog } from "../components/tax-collectors/CreateTaxCollectorDialog";
 import { CreateEmploymentTypeDialog } from "../components/employment-types/CreateEmploymentTypeDialog";
+import { TaxCollectorStatisticsCards } from "../components/TaxCollectorStatisticsCards";
+
 
 const sidebarLinks = [
     { title: "المأمورين", path: ROUTES.DASHBOARD.TAX_COLLECTORS.COLLECTORS, icon: Users },
@@ -35,10 +37,10 @@ const TaxCollectorsLayout = () => {
             </div>
 
             <div className=" mx-auto px-3" dir="rtl">
-                {/* Actions Row - Above both sidebar and content */}
-                <div className="hidden lg:flex justify-end mb-6">
-                    {renderAction()}
-                </div>
+                {/* Statistics Cards */}
+                <TaxCollectorStatisticsCards />
+
+
 
                 {/* Internal Sidebar (Right side in RTL) */}
                 <div className="flex flex-col lg:flex-row gap-3">

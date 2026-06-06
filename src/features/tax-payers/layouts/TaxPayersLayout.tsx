@@ -3,6 +3,7 @@ import { ROUTES } from "@/constants/routes";
 import { Users, FileText, Settings2, ChevronLeft, } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
+import { TaxPayerStatisticsCards } from "../components/TaxPayerStatisticsCards";
 
 const TaxPayersLayout = () => {
     const mainLinks = [
@@ -20,6 +21,9 @@ const TaxPayersLayout = () => {
                 />
             </div>
             <div className=" mx-auto px-3 mt-4" dir="rtl">
+                {/* show the cards here */}
+                <TaxPayerStatisticsCards />
+
                 <div className="flex flex-col xl:flex-row gap-3">
                     {/* Internal Sidebar */}
                     <Card className="w-full xl:w-[240px] h-fit p-3 border shadow-sm rounded-3xl overflow-hidden bg-white dark:bg-[#0b0f1a]">

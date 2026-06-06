@@ -5,6 +5,7 @@ import { TaxCollectorsTable } from "../components/tax-collectors/TaxCollectorsTa
 import { usePermission } from "@/hooks/usePermission";
 import { ACTIONS } from "@/constants/permissions";
 import Unauthorized from "@/app/pages/Unauthorized";
+import { CreateTaxCollectorDialog } from "../components/tax-collectors/CreateTaxCollectorDialog";
 
 const TaxCollectorsPage = () => {
     const { data: taxCollectors, isLoading, isError } = useTaxCollectors();
@@ -18,8 +19,10 @@ const TaxCollectorsPage = () => {
 
     return (
         <div className="space-y-6 text-right animate-in fade-in duration-500">
-            {/* Content Table */}
-
+            {/* Header Actions */}
+            <div className="flex justify-end">
+                <CreateTaxCollectorDialog />
+            </div>
             {/* Content Table */}
             {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">
@@ -30,6 +33,7 @@ const TaxCollectorsPage = () => {
                 <TaxCollectorsTable taxCollectors={taxCollectors?.data || []} />
             )}
         </div>
+
     );
 };
 

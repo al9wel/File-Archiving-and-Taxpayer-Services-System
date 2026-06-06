@@ -6,6 +6,7 @@ import { usePermission } from "@/hooks/usePermission"
 import { ACTIONS } from "@/constants/permissions"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
+import { NotificationStatisticsCards } from "../components/NotificationStatisticsCards"
 
 /**
  * Main Notifications Management page.
@@ -33,7 +34,10 @@ const NotificationsPage = () => {
                         <p className="text-muted-foreground animate-pulse">جاري جلب الإشعارات...</p>
                     </div>
                 ) : (
-                    <NotificationsList notifications={data?.data || []} />
+                    <>
+                        <NotificationStatisticsCards />
+                        <NotificationsList notifications={data?.data || []} />
+                    </>
                 )}
             </div>
         </>

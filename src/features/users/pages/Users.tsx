@@ -7,6 +7,8 @@ import { usePermission } from "@/hooks/usePermission"
 import { ACTIONS } from "@/constants/permissions"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
+import { UserStatisticsCards } from "../components/UserStatisticsCards"
+import type { UserStatistics } from "@/types/User"
 
 /**
  * Main User Management page.
@@ -21,6 +23,8 @@ const Users = () => {
     if (isError) {
         return <ErrorState />
     }
+    const users = data?.data?.users || []
+    const statistics = data?.data?.statistics || []
     return (
         <>
 
@@ -34,7 +38,12 @@ const Users = () => {
                         <p className="text-muted-foreground animate-pulse">جاري جلب المستخدمين...</p>
                     </div>
                 ) : (
-                    <DataTable columns={columns} data={data?.data || []} />
+                    <>
+                        <div className="w-full">
+                            <UserStatisticsCards statistics={statistics as UserStatistics} />
+                        </div>
+                        <DataTable columns={columns} data={users} />
+                    </>
                 )}
             </div>
         </>

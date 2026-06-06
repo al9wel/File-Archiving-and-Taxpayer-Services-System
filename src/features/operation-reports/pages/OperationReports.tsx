@@ -7,6 +7,7 @@ import { usePermission } from "@/hooks/usePermission"
 import { ACTIONS } from "@/constants/permissions"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
+import { OperationReportStatisticsCards } from "../components/OperationReportStatisticsCards"
 
 /**
  * Operations Reports Page.
@@ -37,6 +38,7 @@ const OperationReports = () => {
                     </div>
                 ) : (
                     <>
+                        <OperationReportStatisticsCards />
                         <DataTable columns={columns} data={data?.data || []} />
                     </>
                 )}
