@@ -1,9 +1,4 @@
-import { useState } from "react";
-import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { useCreateDepartment } from "../../hooks/departments/useCreateDepartment";
-import { DepartmentForm } from "./DepartmentForm";
 import {
     Dialog,
     DialogContent,
@@ -11,48 +6,56 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import { usePermission } from "@/hooks/usePermission";
 import { ACTIONS } from "@/constants/permissions";
+import { usePermission } from "@/hooks/usePermission";
+import { Plus } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useCreateDepartment } from "../../hooks/departments/useCreateDepartment";
+import { DepartmentForm } from "./DepartmentForm";
 
 export const CreateDepartmentDialog = () => {
-    const [open, setOpen] = useState(false);
-    const canCreate = usePermission(ACTIONS.CREATE_DEPARTMENT);
-    const { mutate: createDept, isPending } = useCreateDepartment();
+  const [open, setOpen] = useState(false);
+  const canCreate = usePermission(ACTIONS.CREATE_DEPARTMENT);
+  const { mutate: createDept, isPending } = useCreateDepartment();
 
-    const handleSubmit = (formData: FormData) => {
-        createDept(formData, {
-            onSuccess: (res) => {
-                toast.success(res.message || "تم إضافة القسم بنجاح");
-                setOpen(false);
-            },
-            onError: (error) => {
-                toast.error(error.message || "حدث خطأ أثناء إضافة القسم");
-            }
-        });
-    };
+  const handleSubmit = (formData: FormData) => {
+    createDept(formData, {
+      onSuccess: (res) => {
+        toast.success(res.message || "تم إضافة القسم بنجاح");
+        setOpen(false);
+      },
+      onError: (error) => {
+        toast.error(error.message || "حدث خطأ أثناء إضافة القسم");
+      },
+    });
+  };
 
-    if (!canCreate) return null;
+  if (!canCreate) return null;
 
-    return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Button
-                    className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-xl px-6 h-12 flex items-center gap-2 shadow-lg shadow-destructive/20 transition-all hover:scale-105 active:scale-95"
-                >
-                    <Plus className="size-5" />
-                    <span>إضافة قسم جديد</span>
-                </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-[500px] rounded-2xl p-6" dir="rtl">
-                <DialogHeader className="text-right">
-                    <DialogTitle className="text-xl font-bold text-right">إضافة قسم جديد</DialogTitle>
-                </DialogHeader>
-                <DepartmentForm
-                    onSubmit={handleSubmit}
-                    onCancel={() => setOpen(false)}
-                    isLoading={isPending}
-                />
-            </DialogContent>
-        </Dialog>
-    );
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-destructive hover:bg-destructive/90 !text-white rounded-xl px-6 h-12 flex items-center gap-2 shadow-lg shadow-destructive/20 transition-all hover:scale-105 active:scale-95">
+          <Plus className="size-5" />
+          <span>إضافة قسم جديد</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent
+        className="max-w-[calc(100vw-2rem)] sm:max-w-[500px] rounded-2xl !bg-white p-6"
+        dir="rtl"
+      >
+        <DialogHeader className="text-right">
+          <DialogTitle className="text-xl font-bold text-right">
+            إضافة قسم جديد
+          </DialogTitle>
+        </DialogHeader>
+        <DepartmentForm
+          onSubmit={handleSubmit}
+          onCancel={() => setOpen(false)}
+          isLoading={isPending}
+        />
+      </DialogContent>
+    </Dialog>
+  );
 };

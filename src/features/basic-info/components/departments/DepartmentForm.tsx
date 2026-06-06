@@ -55,7 +55,7 @@ export const DepartmentForm = ({ initialData, onSubmit, onCancel, isLoading }: D
                 <Input
                     placeholder="أدخل إسم القسم"
                     {...register("name")}
-                    className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-1 focus-visible:ring-destructive"
+                    className="text-right h-12 rounded-xl !bg-white border border-border focus-visible:ring-1 focus-visible:ring-destructive"
                 />
                 {errors.name && (
                     <p className="text-sm text-destructive text-right">{errors.name.message}</p>
@@ -66,7 +66,7 @@ export const DepartmentForm = ({ initialData, onSubmit, onCancel, isLoading }: D
                 <Button 
                     type="submit" 
                     disabled={isLoading}
-                    className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-xl px-8 h-12 flex-1 flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
+                    className="bg-destructive hover:bg-destructive/90 !text-white rounded-xl px-8 h-12 flex-1 flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
                 >
                     {isLoading ? (
                         <Loader2 className="size-5 animate-spin" />

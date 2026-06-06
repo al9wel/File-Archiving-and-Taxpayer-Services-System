@@ -1,6 +1,5 @@
-
-import * as React from "react";
 import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
+import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -29,29 +28,27 @@ type Props = {
   disabled?: boolean;
 };
 
-export function TaxPayerSearchSelect({
-  value,
-  onSelect,
-  disabled
-}: Props) {
+export function TaxPayerSearchSelect({ value, onSelect, disabled }: Props) {
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState("");
   const debouncedSearch = useDebounce(search, 500);
 
-  const { data: queryData, isPending, isError } = useSearchTaxPayers(debouncedSearch);
+  const {
+    data: queryData,
+    isPending,
+    isError,
+  } = useSearchTaxPayers(debouncedSearch);
 
   const data = queryData?.data;
 
-  const selectedTaxPayer = data?.find(
-    (item) => item.taxPayerId === value
-  );
+  const selectedTaxPayer = data?.find((item) => item.taxPayerId === value);
 
   const getFileTypeLabel = (fileType?: string) => {
-    if (fileType === "Individual") return "فرد"
-    if (fileType === "Company") return "شركة"
-    if (fileType === "CharitableCompany") return "خيرية"
-    return "غير محدد"
-  }
+    if (fileType === "Individual") return "فرد";
+    if (fileType === "Company") return "شركة";
+    if (fileType === "CharitableCompany") return "خيرية";
+    return "غير محدد";
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -71,8 +68,8 @@ export function TaxPayerSearchSelect({
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[400px] p-0" align="end" dir="rtl">
-        <Command shouldFilter={false} dir="rtl">
+      <PopoverContent className="w-[400px] p-0 bg-white" align="end" dir="rtl">
+        <Command shouldFilter={false} dir="rtl" className="bg-white">
           <CommandInput
             placeholder="البحث عن مكلف..."
             value={search}
@@ -87,9 +84,7 @@ export function TaxPayerSearchSelect({
             )}
 
             {isError && (
-              <p className="p-4 text-sm text-red-500">
-                فشل تحميل المكلفين
-              </p>
+              <p className="p-4 text-sm text-red-500">فشل تحميل المكلفين</p>
             )}
 
             {!isPending && !isError && data?.length === 0 && (
@@ -111,7 +106,9 @@ export function TaxPayerSearchSelect({
                   <Check
                     className={cn(
                       "mr-2 size-4",
-                      value === taxPayer.taxPayerId ? "opacity-100" : "opacity-0"
+                      value === taxPayer.taxPayerId
+                        ? "opacity-100"
+                        : "opacity-0",
                     )}
                   />
 
