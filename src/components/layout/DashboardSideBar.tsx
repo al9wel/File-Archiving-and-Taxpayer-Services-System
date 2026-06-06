@@ -195,7 +195,7 @@ export default function SideBar() {
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
-            <SidebarFooter className={`${open ? "p-0" : "p-1"} transition-all duration-300`}>
+            <SidebarFooter className={`${open ? "p-1.5" : "p-1"} transition-all duration-300`}>
                 <SidebarMenu >
                     <SidebarMenuItem >
                         <Card>
@@ -203,7 +203,7 @@ export default function SideBar() {
                                 {user?.image ? (
                                     <img src={user.image} alt="User profile" className="w-8 h-8 rounded-full object-cover" />
                                 ) : (
-                                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground text-xs font-bold">
                                         {user?.firstName?.charAt(0) || 'U'}
                                     </div>
                                 )}

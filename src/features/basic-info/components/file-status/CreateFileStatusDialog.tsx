@@ -36,7 +36,7 @@ export const CreateFileStatusDialog = () => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="bg-[#911111] hover:bg-[#7a0e0e] text-white rounded-xl px-6 h-12 flex items-center gap-2 shadow-lg shadow-red-900/10 transition-all active:scale-95">
+                <Button className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-xl px-6 h-12 flex items-center gap-2 shadow-lg shadow-destructive/20 transition-all active:scale-95">
                     <Plus className="size-5" />
                     <span className="font-bold">إضافة حالة ملف</span>
                 </Button>

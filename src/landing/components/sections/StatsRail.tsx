@@ -5,17 +5,17 @@ import SectionLabel from "@/landing/components/shared/SectionLabel";
 
 const stats = [
     { icon: FileArchive, value: 2000, suffix: "+", label: "ملف", sub: "تمت أرشفتها", color: "var(--landing-accent)" },
-    { icon: Users, value: 1500, suffix: "+", label: "مكلف", sub: "مسجل في النظام", color: "#2e6b5e" },
-    { icon: FileText, value: 300, suffix: "+", label: "طلب", sub: "قيد المعالجة", color: "#b8862d" },
-    { icon: Briefcase, value: 50, suffix: "+", label: "موظف", sub: "يديرون المنصة", color: "#3a6b8a" },
+    { icon: Users, value: 1500, suffix: "+", label: "مكلف", sub: "مسجل في النظام", color: "var(--chart-4)" },
+    { icon: FileText, value: 300, suffix: "+", label: "طلب", sub: "قيد المعالجة", color: "var(--chart-5)" },
+    { icon: Briefcase, value: 50, suffix: "+", label: "موظف", sub: "يديرون المنصة", color: "var(--chart-3)" },
 ];
 
 export default function StatsRail() {
     return (
         <section className="relative py-32 overflow-hidden" style={{ backgroundColor: "var(--landing-bg)" }}>
             {/* Depth layers */}
-            <div className="absolute inset-0 bg-gradient-to-bl from-[#d4cdc3]/40 via-transparent to-[#b5aca1]/20" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-[#8a3a18]/3 blur-[180px]" />
+            <div className="absolute inset-0 bg-gradient-to-bl from-[var(--landing-bg-soft)]/40 via-transparent to-[var(--landing-bg-deep)]/20" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/3 blur-[180px]" />
             <div
                 className="absolute inset-0"
                 style={{

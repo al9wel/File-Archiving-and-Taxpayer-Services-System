@@ -38,7 +38,7 @@ export default function ClosingScene() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-[clamp(2.5rem,8vw,7rem)] text-black/80 tracking-tight mb-6"
+                    className="text-[clamp(2.5rem,8vw,7rem)] text-[var(--landing-text)]/80 tracking-tight mb-6"
                     style={{ lineHeight: "0.9" }}
                 >
                     {text}
@@ -68,7 +68,7 @@ export default function ClosingScene() {
                     <Magnetic strength={0.2}>
                         <NavLink
                             to="auth"
-                            className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-xl text-white font-semibold text-base overflow-hidden transition-all duration-500"
+                            className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-xl text-[var(--primary-foreground)] font-semibold text-base overflow-hidden transition-all duration-500"
                             style={{ backgroundColor: primaryColor }}
                         >
                             <span className="relative z-10">{CTA.ENTER_SYSTEM}</span>

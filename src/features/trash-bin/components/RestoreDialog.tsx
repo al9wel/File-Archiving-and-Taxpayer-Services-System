@@ -35,14 +35,14 @@ export const RestoreDialog = ({ item }: { item: RecycleBin }) => {
     return (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
             <AlertDialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8 text-emerald-600">
+                <Button variant="ghost" size="icon" className="h-8 w-8 text-chart-4">
                     <RotateCcw className="h-4 w-4" />
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent size="sm" dir="rtl">
                 <AlertDialogHeader>
                     <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-chart-4/10 text-chart-4">
                             <RotateCcw className="h-6 w-6" />
                         </div>
                         <AlertDialogTitle className="text-right">استرجاع العنصر</AlertDialogTitle>
@@ -57,7 +57,7 @@ export const RestoreDialog = ({ item }: { item: RecycleBin }) => {
                             event.preventDefault()
                             handleRestore()
                         }}
-                        className="rounded-lg min-w-[110px] bg-emerald-600 hover:bg-emerald-700 text-white"
+                        className="rounded-lg min-w-[110px] bg-chart-4 hover:bg-chart-4/80 text-white"
                         disabled={restoreTrashItem.isPending}
                     >
                         {restoreTrashItem.isPending ? (

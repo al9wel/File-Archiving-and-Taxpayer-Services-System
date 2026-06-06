@@ -74,7 +74,7 @@ export default function LandingNavbar() {
                     {isAuthenticated ? (
                         <NavLink
                             to={ROUTES.DASHBOARD.MAIN}
-                            className="hidden md:inline-flex bg-primary/90 items-center px-5 py-2 rounded-xl text-white text-sm font-medium transition-all duration-300 hover:shadow-md"
+                            className="hidden md:inline-flex bg-primary/90 items-center px-5 py-2 rounded-xl text-[var(--primary-foreground)] text-sm font-medium transition-all duration-300 hover:shadow-md"
                             style={{ backgroundColor: "var(--landing-accent)" }}
                         >
                             لوحة التحكم
@@ -82,7 +82,7 @@ export default function LandingNavbar() {
                     ) : (
                         <NavLink
                             to={ROUTES.PUBLIC.AUTH}
-                            className="hidden md:inline-flex items-center px-5 py-2 rounded-xl text-white text-sm font-medium transition-all duration-300 hover:shadow-md"
+                            className="hidden md:inline-flex items-center px-5 py-2 rounded-xl text-[var(--primary-foreground)] text-sm font-medium transition-all duration-300 hover:shadow-md"
                             style={{ backgroundColor: "var(--landing-accent)" }}
                         >
                             تسجيل الدخول
@@ -128,7 +128,7 @@ export default function LandingNavbar() {
                             <NavLink
                                 to={ROUTES.DASHBOARD.MAIN}
                                 onClick={() => setMobileOpen(false)}
-                                className="block w-full text-center px-4 py-2.5 rounded-xl text-white text-sm font-medium"
+                                className="block w-full text-center px-4 py-2.5 rounded-xl text-[var(--primary-foreground)] text-sm font-medium"
                                 style={{ backgroundColor: "var(--landing-accent)" }}
                             >
                                 لوحة التحكم
@@ -137,7 +137,7 @@ export default function LandingNavbar() {
                             <NavLink
                                 to={ROUTES.PUBLIC.AUTH}
                                 onClick={() => setMobileOpen(false)}
-                                className="block w-full text-center px-4 py-2.5 rounded-xl text-white text-sm font-medium"
+                                className="block w-full text-center px-4 py-2.5 rounded-xl text-[var(--primary-foreground)] text-sm font-medium"
                                 style={{ backgroundColor: "var(--landing-accent)" }}
                             >
                                 تسجيل الدخول

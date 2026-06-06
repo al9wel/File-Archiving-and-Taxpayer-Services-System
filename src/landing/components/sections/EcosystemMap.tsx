@@ -139,7 +139,7 @@ export default function EcosystemMap() {
 
     return (
         <ScrollChapter className="relative py-32 overflow-hidden" style={{ backgroundColor: "var(--landing-bg)" }}>
-            <div className="absolute inset-0 bg-gradient-to-b from-[#b5aca1]/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-b from-[var(--landing-bg-deep)]/20 to-transparent" />
             <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle, var(--landing-text) 1px, transparent 1px)`, backgroundSize: "40px 40px", opacity: 0.03 }} />
 
             <div className="relative max-w-7xl mx-auto px-6">
@@ -202,7 +202,7 @@ export default function EcosystemMap() {
                             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                         >
                             <div className="relative w-14 h-14 rounded-full flex items-center justify-center" style={{ backgroundColor: primaryColor }}>
-                                <span className="text-white text-xs font-bold tracking-wider">النواة</span>
+                                <span className="text-[var(--primary-foreground)] text-xs font-bold tracking-wider">النواة</span>
                             </div>
                             <motion.div
                                 className="absolute inset-0 rounded-full border-2"

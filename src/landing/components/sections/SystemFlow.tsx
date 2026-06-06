@@ -130,7 +130,7 @@ export default function SystemFlow() {
 
     return (
         <ScrollChapter className="relative py-32 overflow-hidden" style={{ backgroundColor: "var(--landing-bg)" }}>
-            <div className="absolute inset-0 bg-gradient-to-t from-[#b5aca1]/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--landing-bg-deep)]/30 to-transparent" />
 
             <div className="relative max-w-6xl mx-auto px-6">
                 <div className="mb-16">

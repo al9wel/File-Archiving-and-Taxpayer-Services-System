@@ -81,7 +81,7 @@ export default function TechStack() {
 
     return (
         <ScrollChapter className="relative py-32 overflow-hidden" style={{ backgroundColor: "var(--landing-bg)" }}>
-            <div className="absolute inset-0 bg-gradient-to-t from-[#b5aca1]/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--landing-bg-deep)]/30 to-transparent" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full blur-[120px]"
                 style={{ backgroundColor: `color-mix(in srgb, ${primaryColor} 3%, transparent 97%)` }} />
 

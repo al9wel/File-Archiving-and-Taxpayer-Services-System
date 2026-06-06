@@ -4,7 +4,6 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { getAccessToken } from '@/lib/authStorage';
 import { useUser } from '@/features/auth/hooks/useUser';
 import ErrorState from '../pages/ErrorState';
-import { Loader2 } from 'lucide-react';
 
 export function ProtectedRoute({ allowedRoles }: { allowedRoles: string[] }) {
   const { isLoading, isError } = useUser()
@@ -16,7 +15,8 @@ export function ProtectedRoute({ allowedRoles }: { allowedRoles: string[] }) {
   if (isLoading) {
     return (
       <div className="fixed inset-0 z-50 flex flex-col h-screen w-full items-center justify-center bg-background/50 backdrop-blur-sm animate-in fade-in duration-500 space-y-4">
-        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+        {/* <Loader2 className="h-10 w-10 animate-spin text-primary" /> */}
+        <div className="w-8 h-8 rounded-full border-2 animate-spin" style={{ borderColor: "var(--landing-accent)/30", borderTopColor: "var(--landing-accent)" }} />
         <p className="text-muted-foreground font-medium animate-pulse">جاري التحقق من المستخدم...</p>
       </div>
     )

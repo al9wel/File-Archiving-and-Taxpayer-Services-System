@@ -116,7 +116,7 @@ export function DataTable<TData, TValue>({
                     </div>
                     {canCreate && (
                         <NavLink to={ROUTES.DASHBOARD.FILE_MOVEMENTS_CREATE}>
-                            <Button className="w-full h-11 px-5 rounded-xl bg-primary hover:bg-primary-hover text-white shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-95">
+                            <Button className="w-full h-11 px-5 rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-95">
                                 <Plus className="h-5 w-5" />
                                 <span className="font-bold">إضافة حركة جديدة</span>
                             </Button>
@@ -133,7 +133,7 @@ export function DataTable<TData, TValue>({
                             <TableRow className="bg-primary/95 hover:bg-primary border-none" key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead className="text-white font-bold h-12 text-center" key={header.id}>
+                                        <TableHead className="text-primary-foreground font-bold h-12 text-center" key={header.id}>
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
@@ -198,7 +198,7 @@ export function DataTable<TData, TValue>({
                     </Button>
 
                     <div className="flex items-center gap-1 mx-2">
-                        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white font-bold text-sm">
+                        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-sm">
                             {table.getState().pagination.pageIndex + 1}
                         </span>
                     </div>

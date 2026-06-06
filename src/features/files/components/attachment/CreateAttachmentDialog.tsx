@@ -36,7 +36,7 @@ export const CreateAttachmentDialog = () => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="h-12 px-6 rounded-2xl bg-primary hover:bg-primary-hover text-white shadow-lg flex items-center gap-2 transition-all active:scale-95">
+                <Button className="h-12 px-6 rounded-2xl bg-primary hover:bg-primary-hover text-primary-foreground shadow-lg flex items-center gap-2 transition-all active:scale-95">
                     <Plus className="h-5 w-5" />
                     <span className="font-bold">إضافة ملحق</span>
                 </Button>

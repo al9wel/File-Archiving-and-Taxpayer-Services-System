@@ -69,44 +69,44 @@ export function FileSearchSelect({
                     className={cn(
                         "w-full h-12 border-muted-foreground/10",
                         isSearchMode
-                            ? "justify-start gap-2 rounded-3xl bg-muted p-3 text-xs font-normal text-muted-foreground dark:border-input dark:bg-[#393f4d]/50"
+                            ? "justify-start gap-2 rounded-3xl bg-muted p-3 text-xs font-normal text-muted-foreground dark:border-input dark:bg-muted/50"
                             : "justify-between rounded-xl bg-muted/30",
-                        className
-                    )}
-                >
-                    {isSearchMode && <Search className="size-4 shrink-0 opacity-70" />}
-                    <span className="truncate text-right">
-                        {selectedFile ? getFileLabel(selectedFile) : triggerPlaceholder}
-                    </span>
-                    {!isSearchMode && <ChevronsUpDown className="opacity-50" />}
-                </Button>
-            </PopoverTrigger>
+                         className
+                     )}
+                 >
+                     {isSearchMode && <Search className="size-4 shrink-0 opacity-70" />}
+                     <span className="truncate text-right">
+                         {selectedFile ? getFileLabel(selectedFile) : triggerPlaceholder}
+                     </span>
+                     {!isSearchMode && <ChevronsUpDown className="opacity-50" />}
+                 </Button>
+             </PopoverTrigger>
 
-            <PopoverContent
-                className={cn(
-                    "w-[400px] p-0",
-                    isSearchMode && "w-[var(--radix-popover-trigger-width)] min-w-[320px]",
-                    popoverClassName
-                )}
-                align="end"
-                dir="rtl"
-            >
-                <Command shouldFilter={false} dir="rtl">
-                    <CommandInput
-                        placeholder={searchPlaceholder}
-                        value={search}
-                        onValueChange={setSearch}
-                    />
+             <PopoverContent
+                 className={cn(
+                     "w-[400px] p-0",
+                     isSearchMode && "w-[var(--radix-popover-trigger-width)] min-w-[320px]",
+                     popoverClassName
+                 )}
+                 align="end"
+                 dir="rtl"
+             >
+                 <Command shouldFilter={false} dir="rtl">
+                     <CommandInput
+                         placeholder={searchPlaceholder}
+                         value={search}
+                         onValueChange={setSearch}
+                     />
 
-                    <CommandList>
-                        {isPending && (
-                            <div className="flex items-center justify-center py-6">
-                                <Loader2 className="size-5 animate-spin" />
-                            </div>
-                        )}
+                     <CommandList>
+                         {isPending && (
+                             <div className="flex items-center justify-center py-6">
+                                 <Loader2 className="size-5 animate-spin" />
+                             </div>
+                         )}
 
-                        {isError && (
-                            <p className="p-4 text-sm text-red-500">
+                         {isError && (
+                             <p className="p-4 text-sm text-destructive">
                                 فشل تحميل الملفات
                             </p>
                         )}

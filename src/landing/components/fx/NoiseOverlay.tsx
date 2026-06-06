@@ -9,7 +9,7 @@ export default function NoiseOverlay({
 }) {
     return (
         <div
-            className={`pointer-events-none fixed inset-0 z-[100] ${className}`}
+            className={`pointer-events-none fixed inset-0 z-[120] ${className}`}
             style={{
                 opacity,
                 backgroundImage: `url(${noiseImage})`,

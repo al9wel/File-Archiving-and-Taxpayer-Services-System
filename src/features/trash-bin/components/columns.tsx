@@ -45,8 +45,8 @@ export const columns: ColumnDef<RecycleBin>[] = [
             const roleLabel = role ? roleNames[role] || role : "غير متوفر"
             const roleColor =
                 role === "Admin" ? "text-primary" :
-                    role === "Manager" ? "text-emerald-600" :
-                        role === "Employee" ? "text-blue-600" :
+                    role === "Manager" ? "text-chart-4" :
+                        role === "Employee" ? "text-chart-3" :
                             "text-muted-foreground"
 
             return (
@@ -61,7 +61,7 @@ export const columns: ColumnDef<RecycleBin>[] = [
         accessorKey: "action",
         header: "نوع العملية",
         cell: ({ row }) => (
-            <Badge variant="outline" className="rounded-lg px-2 py-0.5 text-[11px] font-bold bg-red-100 text-red-700 border-red-200">
+            <Badge variant="outline" className="rounded-lg px-2 py-0.5 text-[11px] font-bold bg-destructive/10 text-destructive border-destructive/30">
                 {row.original.action || "حذف"}
             </Badge>
         ),

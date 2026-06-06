@@ -92,7 +92,7 @@ export function DataTable<TData, TValue>({
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow className="bg-primary/95 hover:bg-primary border-none" key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
-                                    <TableHead className="text-white font-bold h-12 text-center" key={header.id}>
+                                    <TableHead className="text-primary-foreground font-bold h-12 text-center" key={header.id}>
                                         {header.isPlaceholder
                                             ? null
                                             : flexRender(
@@ -155,7 +155,7 @@ export function DataTable<TData, TValue>({
                     </Button>
 
                     <div className="flex items-center gap-1 mx-2">
-                        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white font-bold text-sm">
+                        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-sm">
                             {table.getState().pagination.pageIndex + 1}
                         </span>
                     </div>

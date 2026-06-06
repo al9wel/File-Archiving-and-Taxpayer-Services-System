@@ -369,7 +369,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                     <Button
                         type="submit"
                         disabled={isLoading}
-                        className="bg-[#911111] hover:bg-[#7a0e0e] text-white rounded-xl px-8 h-12 flex-1 flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 font-bold"
+                        className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-xl px-8 h-12 flex-1 flex items-center justify-center gap-2 shadow-md transition-all active:scale-95 font-bold"
                     >
                         {isLoading ? (
                             <Loader2 className="size-5 animate-spin" />
@@ -382,7 +382,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                         type="button"
                         variant="outline"
                         onClick={() => window.history.back()}
-                        className="rounded-xl px-8 h-12 border-none bg-gray-100 dark:bg-muted text-muted-foreground hover:bg-gray-200 dark:hover:bg-muted/80 transition-colors font-bold"
+                        className="rounded-xl px-8 h-12 bg-muted text-muted-foreground hover:bg-muted/80 transition-colors font-bold"
                     >
                         إلغاء
                     </Button>

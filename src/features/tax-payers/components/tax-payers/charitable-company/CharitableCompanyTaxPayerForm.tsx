@@ -141,7 +141,7 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
                                 <div className="w-24 h-24 rounded-full bg-muted flex items-center justify-center overflow-hidden border-4 border-background shadow-md">
                                     {imagePreview ? <img src={imagePreview} className="w-full h-full object-cover" /> : <User size={40} className="text-muted-foreground" />}
                                 </div>
-                                <label className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-transform">
+                                <label className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center cursor-pointer shadow-lg hover:scale-110 transition-transform">
                                     <Upload size={14} /><input type="file" className="hidden" accept="image/*" onChange={(e) => handleFileChange(e, "image", setImagePreview)} />
                                 </label>
                             </div>

@@ -8,9 +8,9 @@ interface ActivityTypesTableProps {
 
 export const ActivityTypesTable = ({ activityTypes }: ActivityTypesTableProps) => {
     return (
-        <div className="rounded-2xl overflow-hidden border border-gray-100 dark:border-white/5 shadow-sm">
+        <div className="rounded-2xl overflow-hidden border-border shadow-sm">
             <Table>
-                <TableHeader className="bg-gray-100 dark:bg-[#101523]">
+                <TableHeader className="bg-muted">
                     <TableRow>
                         <TableHead className="text-center w-24 font-bold">رقم</TableHead>
                         <TableHead className="text-center font-bold">نوع النشاط</TableHead>
@@ -26,7 +26,7 @@ export const ActivityTypesTable = ({ activityTypes }: ActivityTypesTableProps) =
                         </TableRow>
                     ) : (
                         activityTypes.map((type) => (
-                            <TableRow key={type.id} className="bg-card dark:bg-sidebar hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
+                            <TableRow key={type.id} className="bg-card dark:bg-sidebar hover:bg-muted/50 transition-colors">
                                 <TableCell className="text-center font-medium">{type.id}</TableCell>
                                 <TableCell className="text-center">{type.name}</TableCell>
                                 <TableCell className="text-center">

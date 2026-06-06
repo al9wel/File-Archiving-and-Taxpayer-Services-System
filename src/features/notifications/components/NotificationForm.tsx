@@ -33,10 +33,10 @@ interface NotificationFormProps {
 }
 
 const types = [
-    { id: "General", label: "عام", icon: Globe, className: "data-[selected=true]:border-sky-300 data-[selected=true]:bg-sky-50 data-[selected=true]:text-sky-700 dark:data-[selected=true]:bg-sky-900/20" },
-    { id: "ForSystemUsers", label: "مستخدمي النظام", icon: ShieldAlert, className: "data-[selected=true]:border-violet-300 data-[selected=true]:bg-violet-50 data-[selected=true]:text-violet-700 dark:data-[selected=true]:bg-violet-900/20" },
-    { id: "ForTaxPayers", label: "المكلفين", icon: Users, className: "data-[selected=true]:border-emerald-300 data-[selected=true]:bg-emerald-50 data-[selected=true]:text-emerald-700 dark:data-[selected=true]:bg-emerald-900/20" },
-    { id: "Special", label: "خاص", icon: Bell, className: "data-[selected=true]:border-rose-300 data-[selected=true]:bg-rose-50 data-[selected=true]:text-rose-700 dark:data-[selected=true]:bg-rose-900/20" },
+    { id: "General", label: "عام", icon: Globe, className: "data-[selected=true]:border-chart-3/40 data-[selected=true]:bg-chart-3/10 data-[selected=true]:text-chart-3 dark:data-[selected=true]:bg-chart-3/20" },
+    { id: "ForSystemUsers", label: "مستخدمي النظام", icon: ShieldAlert, className: "data-[selected=true]:border-chart-6/40 data-[selected=true]:bg-chart-6/10 data-[selected=true]:text-chart-6 dark:data-[selected=true]:bg-chart-6/20" },
+    { id: "ForTaxPayers", label: "المكلفين", icon: Users, className: "data-[selected=true]:border-chart-4/40 data-[selected=true]:bg-chart-4/10 data-[selected=true]:text-chart-4 dark:data-[selected=true]:bg-chart-4/20" },
+    { id: "Special", label: "خاص", icon: Bell, className: "data-[selected=true]:border-chart-1/40 data-[selected=true]:bg-chart-1/10 data-[selected=true]:text-chart-1 dark:data-[selected=true]:bg-chart-1/20" },
 ]
 
 export const NotificationForm = ({ initialData, onSubmit, isLoading }: NotificationFormProps) => {

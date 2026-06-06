@@ -1,11 +1,8 @@
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { useEffect, memo } from "react";
-import { ChevronDown, ArrowLeft } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import ParticlesField from "@/landing/components/fx/ParticlesField";
-import Magnetic from "@/landing/components/fx/Magnetic";
 import { HERO_CONTENT } from "@/landing/content/hero";
-import { CTA } from "@/landing/content/shared";
-import { NavLink } from "react-router-dom";
 
 const primaryColor = "var(--color-primary)";
 
@@ -42,9 +39,9 @@ const FloatingDocs = memo(function FloatingDocs() {
                         }}
                     >
                         <div className="h-7 border-b flex items-center px-3 gap-1.5" style={{ borderColor: "var(--landing-line)", backgroundColor: "var(--landing-bg-deep)" }}>
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-400/50" />
-                            <span className="w-1.5 h-1.5 rounded-full bg-yellow-400/50" />
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-400/50" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-destructive/50" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-chart-5/50" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-chart-4/50" />
                         </div>
                         <div className="p-3 space-y-2.5">
                             <div className="h-1.5 w-3/4 rounded-full" style={{ backgroundColor: "var(--landing-line)" }} />
@@ -80,7 +77,7 @@ export default function HeroExperience() {
         <section className="relative min-h-screen overflow-hidden" style={{ backgroundColor: "var(--landing-bg)" }}>
             {/* Background depth layers */}
             <div className="absolute inset-0">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#d4cdc3]/60 via-[#c4bcb3] to-[#b5aca1]/40" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--landing-bg-soft)]/60 via-[var(--landing-bg)] to-[var(--landing-bg-deep)]/40" />
                 <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full blur-[120px]" style={{ backgroundColor: `color-mix(in srgb, ${primaryColor} 4%, transparent 96%)` }} />
                 <motion.div
                     className="absolute inset-0"

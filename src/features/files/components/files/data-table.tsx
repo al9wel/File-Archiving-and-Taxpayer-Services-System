@@ -156,7 +156,7 @@ export function DataTable<TData, TValue>({
                         <div className="space-y-2">
                             <label className="text-xs font-bold text-muted-foreground opacity-0">إضافة</label>
                             <NavLink to={ROUTES.DASHBOARD.FILES_CREATE}>
-                                <Button className="h-11 px-4 w-full xl:w-fit rounded-xl bg-primary hover:bg-primary-hover text-white shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-1 transition-all active:scale-95 whitespace-nowrap">
+                                <Button className="h-11 px-4 w-full xl:w-fit rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-1 transition-all active:scale-95 whitespace-nowrap">
                                     <Plus className="h-4 w-4" />
                                     <span className="font-bold text-sm">إضافة</span>
                                 </Button>
@@ -173,7 +173,7 @@ export function DataTable<TData, TValue>({
                             <TableRow className="bg-primary/95 hover:bg-primary border-none" key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead className="text-white font-bold h-12 text-center" key={header.id}>
+                                        <TableHead className="text-primary-foreground font-bold h-12 text-center" key={header.id}>
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
@@ -238,7 +238,7 @@ export function DataTable<TData, TValue>({
                     </Button>
 
                     <div className="flex items-center gap-1 mx-2">
-                        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-white font-bold text-sm">
+                        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-sm">
                             {table.getState().pagination.pageIndex + 1}
                         </span>
                     </div>

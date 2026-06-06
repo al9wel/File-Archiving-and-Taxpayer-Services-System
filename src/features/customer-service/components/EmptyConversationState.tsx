@@ -14,7 +14,7 @@ const EmptyConversationState = ({ title = "لا توجد رسائل بعد" }: E
                     <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
                         <MessageCircle size={30} />
                     </div>
-                    <Sparkles className="absolute left-3 top-4 text-amber-500" size={18} />
+                    <Sparkles className="absolute left-3 top-4 text-chart-5" size={18} />
                 </div>
                 <h3 className="text-lg font-black text-foreground">{title}</h3>
                 <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">

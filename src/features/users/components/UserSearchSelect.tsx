@@ -91,7 +91,7 @@ export function UserSearchSelect({
             )}
 
             {isError && (
-              <p className="p-4 text-sm text-red-500">
+              <p className="p-4 text-sm text-destructive">
                 فشل تحميل المستخدمين
               </p>
             )}

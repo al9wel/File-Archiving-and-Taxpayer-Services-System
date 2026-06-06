@@ -29,29 +29,29 @@ const Auth = () => {
             <div className="hidden lg:flex lg:w-1/2 bg-primary relative overflow-hidden flex-col justify-between p-10">
                 {/* Background blobs */}
                 <div className="absolute inset-0">
-                    <div className="absolute top-[-10%] right-[-10%] w-80 h-80 rounded-full bg-white/10 blur-3xl" />
-                    <div className="absolute bottom-[-5%] left-[-5%] w-60 h-60 rounded-full bg-white/10 blur-3xl" />
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-white/5 blur-3xl" />
+                    <div className="absolute top-[-10%] right-[-10%] w-80 h-80 rounded-full bg-primary-foreground/10 blur-3xl" />
+                    <div className="absolute bottom-[-5%] left-[-5%] w-60 h-60 rounded-full bg-primary-foreground/10 blur-3xl" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-primary-foreground/5 blur-3xl" />
                 </div>
 
                 {/* Logo */}
                 <div className="relative z-10">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-                            <FileArchive className="w-6 h-6 text-white" />
+                        <div className="w-10 h-10 rounded-xl bg-primary-foreground/20 flex items-center justify-center">
+                            <FileArchive className="w-6 h-6 text-primary-foreground" />
                         </div>
-                        <span className="text-white font-bold text-lg">نظام الأرشفة الضريبية</span>
+                        <span className="text-primary-foreground font-bold text-lg">نظام الأرشفة الضريبية</span>
                     </div>
                 </div>
 
                 {/* Center Content */}
                 <div className="relative z-10 space-y-6">
-                    <h2 className="text-4xl font-bold text-white leading-tight">
+                    <h2 className="text-4xl font-bold text-primary-foreground leading-tight">
                         مرحباً بك في<br />
                         نظام خدمات<br />
                         دافعي الضرائب
                     </h2>
-                    <p className="text-white/70 text-base leading-relaxed max-w-sm">
+                    <p className="text-primary-foreground/70 text-base leading-relaxed max-w-sm">
                         منصة حكومية رقمية متكاملة لأرشفة الملفات وإدارة الخدمات الضريبية باحترافية وأمان.
                     </p>
 
@@ -63,16 +63,16 @@ const Auth = () => {
                             { value: "٩٩٪", label: "نسبة الدقة" },
                             { value: "٢٤/٧", label: "دعم مستمر" },
                         ].map(({ value, label }) => (
-                            <div key={label} className="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
-                                <p className="text-2xl font-bold text-white">{value}</p>
-                                <p className="text-white/60 text-xs mt-0.5">{label}</p>
+                            <div key={label} className="bg-primary-foreground/10 rounded-xl p-4 backdrop-blur-sm">
+                                <p className="text-2xl font-bold text-primary-foreground">{value}</p>
+                                <p className="text-primary-foreground/60 text-xs mt-0.5">{label}</p>
                             </div>
                         ))}
                     </div>
                 </div>
 
                 {/* Footer */}
-                <div className="relative z-10 text-white/40 text-xs">
+                <div className="relative z-10 text-primary-foreground/40 text-xs">
                     © {new Date().getFullYear()} جميع الحقوق محفوظة
                 </div>
             </div>
@@ -98,7 +98,7 @@ const Auth = () => {
                     <form onSubmit={handleSubmit} className="space-y-5">
 
                         {isError && (
-                            <div className="p-3 rounded-xl bg-red-100 text-red-600 border border-red-200 text-sm">
+                            <div className="p-3 rounded-xl bg-destructive/10 text-destructive border border-destructive/30 text-sm">
                                 {error?.message || "حدث خطأ أثناء تسجيل الدخول. يرجى التحقق من بياناتك."}
                             </div>
                         )}

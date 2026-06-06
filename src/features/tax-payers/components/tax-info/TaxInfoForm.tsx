@@ -96,17 +96,17 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 pt-2" dir="rtl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">المكلف <span className="text-red-600">*</span></label>
+                    <label className="text-sm font-medium">المكلف <span className="text-destructive">*</span></label>
                     <TaxPayerSearchSelect
                         value={watch("taxPayerId") ? Number(watch("taxPayerId")) : undefined}
                         onSelect={(id) => setValue("taxPayerId", id.toString(), { shouldValidate: true })}
                         disabled={isLoading || isDataLoading}
                     />
-                    {errors.taxPayerId && <p className="text-xs text-red-600">{errors.taxPayerId.message}</p>}
+                    {errors.taxPayerId && <p className="text-xs text-destructive">{errors.taxPayerId.message}</p>}
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">نوع الضريبة <span className="text-red-600">*</span></label>
+                    <label className="text-sm font-medium">نوع الضريبة <span className="text-destructive">*</span></label>
                     <div className="h-12 w-full">
                         <Select
                             disabled={isLoading || isDataLoading}
@@ -132,11 +132,11 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
                             </SelectContent>
                         </Select>
                     </div>
-                    {errors.taxTypeId && <p className="text-xs text-red-600">{errors.taxTypeId.message}</p>}
+                    {errors.taxTypeId && <p className="text-xs text-destructive">{errors.taxTypeId.message}</p>}
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">مبلغ الضريبة <span className="text-red-600">*</span></label>
+                    <label className="text-sm font-medium">مبلغ الضريبة <span className="text-destructive">*</span></label>
                     <Input
                         disabled={isLoading || isDataLoading}
                         placeholder="0.00"
@@ -144,11 +144,11 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
                         {...register("taxAmount")}
                         className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10"
                     />
-                    {errors.taxAmount && <p className="text-xs text-red-600">{errors.taxAmount.message}</p>}
+                    {errors.taxAmount && <p className="text-xs text-destructive">{errors.taxAmount.message}</p>}
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">آخر دفعة <span className="text-red-600">*</span></label>
+                    <label className="text-sm font-medium">آخر دفعة <span className="text-destructive">*</span></label>
                     <Input
                         disabled={isLoading || isDataLoading}
                         placeholder="0.00"
@@ -156,7 +156,7 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
                         {...register("lastPayment")}
                         className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10"
                     />
-                    {errors.lastPayment && <p className="text-xs text-red-600">{errors.lastPayment.message}</p>}
+                    {errors.lastPayment && <p className="text-xs text-destructive">{errors.lastPayment.message}</p>}
                 </div>
 
                 <div className="space-y-3 md:col-span-2">
@@ -186,7 +186,7 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
                 <Button
                     type="submit"
                     disabled={isLoading || isDataLoading}
-                    className="bg-[#911111] hover:bg-[#7a0e0e] text-white rounded-xl h-12 flex-1 gap-2"
+                    className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-xl h-12 flex-1 gap-2"
                 >
                     {isLoading ? (
                         <Loader2 className="size-5 animate-spin" />

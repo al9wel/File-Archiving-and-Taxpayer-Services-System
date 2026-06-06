@@ -26,9 +26,9 @@ export const columns: ColumnDef<FileMovement>[] = [
         cell: ({ row }) => {
             const status = row.original.status;
             const badgeClasses =
-                status === "InsideArchive" ? "bg-emerald-800 hover:bg-emerald-900 text-white border-transparent" :
-                    status === "OutsideArchive" ? "bg-yellow-600 hover:bg-yellow-700 text-white border-transparent" :
-                        status === "Missing" ? "bg-destructive hover:bg-destructive/90 text-white border-transparent" :
+                status === "InsideArchive" ? "bg-chart-4/90 hover:bg-chart-4 text-white border-transparent" :
+                     status === "OutsideArchive" ? "bg-chart-5/90 hover:bg-chart-5 text-white border-transparent" :
+                         status === "Missing" ? "bg-destructive hover:bg-destructive/90 text-white border-transparent" :
                             "";
 
             const displayStatus = status === "InsideArchive" ? "داخل الأرشيف" :

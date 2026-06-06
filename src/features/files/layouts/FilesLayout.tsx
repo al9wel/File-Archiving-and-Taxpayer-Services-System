@@ -32,7 +32,7 @@ const FilesLayout = () => {
 
                 <div className="flex flex-col xl:flex-row gap-3">
                     {/* Internal Sidebar */}
-                    <Card className="w-full xl:w-[240px] h-fit p-3 border shadow-sm rounded-3xl overflow-hidden bg-white dark:bg-[#0b0f1a]">
+                    <Card className="w-full xl:w-[240px] h-fit p-3 border shadow-sm rounded-3xl overflow-hidden bg-card">
                         <div className="flex flex-col gap-1">
                             {/* Main Navigation Links */}
                             {mainLinks.map((link) => (
@@ -40,12 +40,12 @@ const FilesLayout = () => {
                                     key={link.path}
                                     to={link.path}
                                     className={`flex items-center justify-between px-4 py-3 rounded-2xl transition-all ${link.isActive
-                                        ? "bg-[#911111]/5 text-[#911111] font-bold"
-                                        : "hover:bg-gray-50 text-muted-foreground"
+                                        ? "bg-destructive/10 text-destructive font-bold"
+                                        : "hover:bg-muted/50 text-muted-foreground"
                                         }`}
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className={`p-2 rounded-xl ${link.isActive ? "bg-white shadow-sm" : "bg-muted/30"}`}>
+                                        <div className={`p-2 rounded-xl ${link.isActive ? "bg-card shadow-sm" : "bg-muted/30"}`}>
                                             <link.icon className="size-5" />
                                         </div>
                                         <span className="text-[15px]">{link.title}</span>
