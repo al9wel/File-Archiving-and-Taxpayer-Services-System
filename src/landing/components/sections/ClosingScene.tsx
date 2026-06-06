@@ -23,18 +23,23 @@ export default function ClosingScene() {
                 animate={{ y: [0, -30, 0], x: [0, 20, 0] }}
                 transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
             />
+            <motion.div
+                className="absolute w-[500px] h-[500px] rounded-full bottom-0 left-1/4"
+                style={{ background: `radial-gradient(circle at center, ${primaryColor}, transparent)`, filter: "blur(120px)", opacity: 0.04 }}
+                animate={{ y: [0, 20, 0], scale: [1, 1.15, 1] }}
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+            />
 
             <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(var(--landing-line) 1px, transparent 1px), linear-gradient(90deg, var(--landing-line) 1px, transparent 1px)`, backgroundSize: "80px 80px" }} />
 
             <div className="relative z-10 text-center max-w-5xl mx-auto px-6">
-                {/* Single motion wrapper around the Arabic block — no per-glyph/word animation */}
                 <motion.h2
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-[clamp(2.5rem,8vw,7rem)] font-serif tracking-tight mb-10"
-                    style={{ lineHeight: "0.9", color: "var(--landing-text)" }}
+                    className="text-[clamp(2.5rem,8vw,7rem)] text-black/80 tracking-tight mb-6"
+                    style={{ lineHeight: "0.9" }}
                 >
                     {text}
                 </motion.h2>
@@ -44,7 +49,7 @@ export default function ClosingScene() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="flex items-center justify-center gap-4 text-sm mb-12"
+                    className="flex items-center justify-center gap-3 text-sm mb-10"
                     style={{ color: "var(--landing-text-muted)/40" }}
                 >
                     <span>v1.0</span>
@@ -61,9 +66,24 @@ export default function ClosingScene() {
                     transition={{ duration: 0.6, delay: 0.4 }}
                 >
                     <Magnetic strength={0.2}>
-                        <NavLink to="auth" className="group inline-flex items-center gap-3 px-10 py-4 rounded-xl text-white font-semibold text-base transition-all duration-300 hover:shadow-lg" style={{ backgroundColor: primaryColor }}>
-                            <span>{CTA.ENTER_SYSTEM}</span>
-                            <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
+                        <NavLink
+                            to="auth"
+                            className="group relative inline-flex items-center gap-3 px-10 py-4 rounded-xl text-white font-semibold text-base overflow-hidden transition-all duration-500"
+                            style={{ backgroundColor: primaryColor }}
+                        >
+                            <span className="relative z-10">{CTA.ENTER_SYSTEM}</span>
+                            <ArrowLeft className="relative z-10 w-5 h-5 transition-all duration-300 group-hover:-translate-x-1" />
+                            <motion.div
+                                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                                style={{
+                                    background: `linear-gradient(135deg, ${primaryColor}, color-mix(in srgb, ${primaryColor} 70%, white 30%))`,
+                                }}
+                            />
+                            <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                                style={{
+                                    boxShadow: `0 0 30px color-mix(in srgb, ${primaryColor} 40%, transparent 60%)`,
+                                }}
+                            />
                         </NavLink>
                     </Magnetic>
                 </motion.div>

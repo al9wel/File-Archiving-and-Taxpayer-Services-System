@@ -28,7 +28,7 @@ export default function StatsRail() {
             <div className="relative max-w-5xl mx-auto px-6">
                 <div className="text-center mb-20">
                     <SectionLabel className="mb-4">أثر المنصة</SectionLabel>
-                    <h2 className="text-4xl sm:text-5xl font-serif text-[var(--landing-text)] leading-tight mb-4">
+                    <h2 className="text-4xl sm:text-5xl text-[var(--landing-text)] leading-tight mb-4">
                         الأرقام التي
                         <br />
                         <span className="text-[var(--landing-accent)] italic">تتحدث.</span>

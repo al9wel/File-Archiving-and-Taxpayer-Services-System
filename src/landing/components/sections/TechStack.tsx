@@ -88,7 +88,7 @@ export default function TechStack() {
             <div className="relative max-w-5xl mx-auto px-6">
                 <div className="mb-16">
                     <SectionLabel className="mb-4">{SECTION_LABELS.TECH_STACK}</SectionLabel>
-                    <h2 className="text-4xl sm:text-5xl font-serif text-[var(--landing-text)] leading-tight mb-4 max-w-2xl">
+                    <h2 className="text-4xl sm:text-5xl text-[var(--landing-text)] leading-tight mb-4 max-w-2xl">
                         بنية تحتية
                         <br />
                         <span className="italic" style={{ color: primaryColor }}>تواكب الدولة.</span>

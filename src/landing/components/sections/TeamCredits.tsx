@@ -24,7 +24,7 @@ export default function TeamCredits() {
             <div className="relative max-w-7xl mx-auto px-6">
                 <div className="text-center mb-20">
                     <SectionLabel className="mb-4">فريق التطوير</SectionLabel>
-                    <h2 className="text-4xl sm:text-5xl font-serif text-[var(--landing-text)] leading-tight mb-4">
+                    <h2 className="text-4xl sm:text-5xl text-[var(--landing-text)] leading-tight mb-4">
                         اليد التي بنت
                         <br />
                         <span className="text-[var(--landing-accent)] italic">المنصة.</span>
@@ -68,7 +68,7 @@ export default function TeamCredits() {
                                         </p>
                                     </div>
                                     <span
-                                        className="text-6xl sm:text-7xl font-serif font-bold select-none"
+                                        className="text-6xl sm:text-7xl font-bold select-none"
                                         style={{ color: member.accent, opacity: 0.04 }}
                                     >
                                         {String(i + 1).padStart(2, "0")}

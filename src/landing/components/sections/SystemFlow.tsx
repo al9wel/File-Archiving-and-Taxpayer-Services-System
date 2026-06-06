@@ -1,5 +1,6 @@
-import { motion } from "motion/react";
-import { useState, memo } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { useState, useEffect, useRef, memo } from "react";
+import { createPortal } from "react-dom";
 import { ArrowUpLeft } from "lucide-react";
 import ScrollChapter from "@/landing/components/fx/ScrollChapter";
 import SectionLabel from "@/landing/components/shared/SectionLabel";
@@ -54,7 +55,7 @@ const ModuleRow = memo(function ModuleRow({
 
                 {/* Oversized number */}
                 <span
-                    className="text-6xl sm:text-7xl font-serif font-bold select-none shrink-0 transition-colors duration-500"
+                    className="text-6xl sm:text-7xl font-bold select-none shrink-0 transition-colors duration-500"
                     style={{ color: isActive ? primaryColor : "var(--landing-line)", opacity: isActive ? 0.5 : 0.25 }}
                 >
                     {String(index + 1).padStart(2, "0")}
@@ -107,7 +108,25 @@ const ModuleRow = memo(function ModuleRow({
 });
 
 export default function SystemFlow() {
-    const [activeModule, setActiveModule] = useState<WorkflowModule | null>(null);
+    const [hoveredModule, setHoveredModule] = useState<WorkflowModule | null>(null);
+    const [pinnedModule, setPinnedModule] = useState<WorkflowModule | null>(null);
+    const popoverRef = useRef<HTMLDivElement>(null);
+
+    const isPinned = pinnedModule !== null;
+    const activeModule = pinnedModule || hoveredModule;
+    const hasHover = window.matchMedia("(hover: hover)").matches;
+
+    // Close pinned popover on outside click
+    useEffect(() => {
+        if (!pinnedModule) return;
+        const handlePointerDown = (e: PointerEvent) => {
+            if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) {
+                setPinnedModule(null);
+            }
+        };
+        document.addEventListener("pointerdown", handlePointerDown);
+        return () => document.removeEventListener("pointerdown", handlePointerDown);
+    }, [pinnedModule]);
 
     return (
         <ScrollChapter className="relative py-32 overflow-hidden" style={{ backgroundColor: "var(--landing-bg)" }}>
@@ -116,7 +135,7 @@ export default function SystemFlow() {
             <div className="relative max-w-6xl mx-auto px-6">
                 <div className="mb-16">
                     <SectionLabel className="mb-4">{SECTION_LABELS.WORKFLOW}</SectionLabel>
-                    <h2 className="text-4xl sm:text-5xl font-serif text-[var(--landing-text)] leading-tight mb-4 max-w-2xl">
+                    <h2 className="text-4xl sm:text-5xl text-[var(--landing-text)] leading-tight mb-4 max-w-2xl">
                         رحلة الملف من البداية
                         <br />
                         <span className="italic" style={{ color: primaryColor }}>حتى الأرشفة.</span>
@@ -135,28 +154,48 @@ export default function SystemFlow() {
                             index={i}
                             isActive={activeModule?.id === mod.id}
                             onHover={() => {
-                                if (window.matchMedia("(hover: hover)").matches) {
-                                    setActiveModule(mod);
+                                if (hasHover && !isPinned) {
+                                    setHoveredModule(mod);
                                 }
                             }}
                             onLeave={() => {
-                                if (window.matchMedia("(hover: hover)").matches) {
-                                    setActiveModule(null);
+                                if (hasHover && !isPinned) {
+                                    setHoveredModule(null);
                                 }
                             }}
                             onClick={() => {
-                                // Mobile / no-hover devices: tap toggles
-                                if (!window.matchMedia("(hover: hover)").matches) {
-                                    setActiveModule(activeModule?.id === mod.id ? null : mod);
-                                }
+                                setPinnedModule(pinnedModule?.id === mod.id ? null : mod);
+                                setHoveredModule(null);
                             }}
                         />
                     ))}
                 </div>
-
-                {/* Floating inline popover (no dialog, no scroll lock) */}
-                <WorkflowPopover module={activeModule} />
             </div>
+
+            {createPortal(
+                <AnimatePresence>
+                    {activeModule && (
+                        <motion.div
+                            key={activeModule.id + (isPinned ? '-pinned' : '-hover')}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className={`fixed inset-0 z-[100] flex items-center justify-center ${isPinned ? '' : 'pointer-events-none'}`}
+                            onClick={() => isPinned && setPinnedModule(null)}
+                        >
+                            <div
+                                ref={popoverRef}
+                                className="w-full max-w-2xl mx-6"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <WorkflowPopover module={activeModule} />
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>,
+                document.body
+            )}
         </ScrollChapter>
     );
 }

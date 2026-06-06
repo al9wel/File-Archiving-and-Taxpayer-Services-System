@@ -94,72 +94,73 @@ export default function HeroExperience() {
             <ParticlesField count={35} />
             <FloatingDocs />
 
-            {/* ASYMMETRIC 3-CORNER COMPOSITION */}
+            {/* CREATIVE CASCADE — two stacked right, one balanced left */}
             <div className="relative z-10 min-h-screen px-6 sm:px-10 md:px-16 lg:px-20 py-20 md:py-24">
-                {/* LINE 1 — top right */}
+                {/* LINE 1 — top right, anchor piece */}
                 <motion.h1
                     initial={{ opacity: 0, x: 30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute top-24 md:top-28 right-6 sm:right-10 md:right-16 lg:right-24 text-right font-bold tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
-                    style={{ lineHeight: "1.05", color: "var(--landing-text)" }}
+                    className="absolute top-[18%] right-6 sm:right-10 md:right-[6%] text-right font-bold tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-[var(--landing-text)]/80"
+                    style={{ lineHeight: "1.05" }}
                 >
                     {HERO_CONTENT.LINES[0]}
                 </motion.h1>
 
-                {/* LINE 2 — center (the accent line) */}
+                {/* LINE 2 — cascades below L1, starts at its visual end */}
                 <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center font-bold tracking-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl"
+                    className="absolute top-[34%] right-6 sm:right-10 md:right-[30%] text-right font-bold tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
                     style={{ lineHeight: "1.1", color: primaryColor }}
                 >
                     {HERO_CONTENT.LINES[1]}
                 </motion.h1>
 
-                {/* LINE 3 — bottom left */}
+
+
+                {/* Bottom right: subtitle + CTAs */}
+                <div className="absolute top-[54%] right-6 sm:right-10 md:right-[6%] w-full max-w-full text-right">
+                    {(() => {
+                        const [desc, mission] = HERO_CONTENT.SUBTITLE.includes(" — ")
+                            ? HERO_CONTENT.SUBTITLE.split(" — ")
+                            : [HERO_CONTENT.SUBTITLE, ""];
+                        return (
+                            <div
+
+                                className="mb-6 space-y-1.5"
+                            >
+                                <motion.p
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                                    className="text-sm mr-20 sm:text-base font-bold text-[var(--landing-text)]/70 leading-relaxed">
+                                    {desc}
+                                </motion.p>
+                                {mission && (
+                                    <motion.p
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.8, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                                        className="text-xs sm:text-sm text-[var(--landing-text-muted)]/70 leading-relaxed tracking-wide">
+                                        — {mission}
+                                    </motion.p>
+                                )}
+                            </div>
+                        );
+                    })()}
+                </div>
+                {/* LINE 3 — anchored left, between L1 and L2 visually */}
                 <motion.h1
                     initial={{ opacity: 0, x: -30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="absolute bottom-24 md:bottom-28 left-6 sm:left-10 md:left-16 lg:left-24 text-left font-bold tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
-                    style={{ lineHeight: "1.05", color: "var(--landing-text)" }}
+                    className="absolute top-[60%] left-6 sm:left-10 md:left-[40%] text-left font-bold tracking-tight text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[var(--landing-text)]/80"
+                    style={{ lineHeight: "1.05" }}
                 >
                     {HERO_CONTENT.LINES[2]}
                 </motion.h1>
-
-                {/* Center column: subtitle + CTAs + scroll hint */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 mt-32 md:mt-40 w-full max-w-md px-6 text-center">
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-sm sm:text-base text-[var(--landing-text-muted)] mb-6 leading-relaxed"
-                    >
-                        {HERO_CONTENT.SUBTITLE}
-                    </motion.p>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                        className="flex items-center justify-center gap-3 flex-wrap"
-                    >
-                        <Magnetic strength={0.15}>
-                            <NavLink to="auth" className="group relative inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-xs overflow-hidden transition-all duration-300 hover:shadow-lg" style={{ backgroundColor: primaryColor }}>
-                                <span className="relative z-10">{CTA.ENTER_SYSTEM}</span>
-                                <ArrowLeft className="relative z-10 w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-                                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </NavLink>
-                        </Magnetic>
-                        <Magnetic strength={0.15}>
-                            <NavLink to="about" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-medium transition-colors duration-300" style={{ border: "1px solid var(--landing-line)", color: "var(--landing-text-muted)" }}>
-                                {CTA.EXPLORE}
-                            </NavLink>
-                        </Magnetic>
-                    </motion.div>
-                </div>
             </div>
 
             {/* Scroll indicator */}

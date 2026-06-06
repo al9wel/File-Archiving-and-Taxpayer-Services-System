@@ -19,7 +19,7 @@ function SectionFallback() {
 
 const HomePage = () => {
     return (
-        <div className="relative" style={{ backgroundColor: "var(--landing-bg)", color: "var(--landing-text)" }} dir="rtl">
+        <div className="relative text-[var(--landing-text)]/80" style={{ backgroundColor: "var(--landing-bg)" }} dir="rtl">
             <NoiseOverlay opacity={0.1} />
 
             <Suspense fallback={<SectionFallback />}>
