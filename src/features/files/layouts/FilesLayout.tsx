@@ -3,6 +3,7 @@ import { ROUTES } from "@/constants/routes";
 import { FileText, Paperclip, ChevronLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
+import { FileStatisticsCards } from "../components/FileStatisticsCards";
 
 const FilesLayout = () => {
     const { pathname } = useLocation();
@@ -26,6 +27,9 @@ const FilesLayout = () => {
                 />
             </div>
             <div className=" mx-auto px-3 mt-4" dir="rtl">
+                {/* Statistics Cards */}
+                <FileStatisticsCards />
+
                 <div className="flex flex-col xl:flex-row gap-3">
                     {/* Internal Sidebar */}
                     <Card className="w-full xl:w-[240px] h-fit p-3 border shadow-sm rounded-3xl overflow-hidden bg-white dark:bg-[#0b0f1a]">

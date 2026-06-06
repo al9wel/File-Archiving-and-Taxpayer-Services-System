@@ -3,12 +3,13 @@ import { ROUTES } from "@/constants/routes";
 import { Clock, CheckCircle2, Archive, XCircle, ChevronLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
+import { Badge } from "@/components/ui/badge";
 
 const sidebarLinks = [
-    { title: "الطلبات المعلقة", path: ROUTES.DASHBOARD.REQUESTS.PENDING, icon: Clock },
-    { title: "الطلبات المؤكدة", path: ROUTES.DASHBOARD.REQUESTS.CONFIRMED, icon: CheckCircle2 },
-    { title: "الطلبات المرحلة", path: ROUTES.DASHBOARD.REQUESTS.ARCHIVED, icon: Archive },
-    { title: "الطلبات المرفوضة", path: ROUTES.DASHBOARD.REQUESTS.REJECTED, icon: XCircle },
+    { title: "الطلبات المعلقة", path: ROUTES.DASHBOARD.REQUESTS.PENDING, icon: Clock, count: 2 },
+    { title: "الطلبات المؤكدة", path: ROUTES.DASHBOARD.REQUESTS.CONFIRMED, icon: CheckCircle2, count: 3 },
+    { title: "الطلبات المرحلة", path: ROUTES.DASHBOARD.REQUESTS.ARCHIVED, icon: Archive, count: 2 },
+    { title: "الطلبات المرفوضة", path: ROUTES.DASHBOARD.REQUESTS.REJECTED, icon: XCircle, count: 4 },
 ];
 
 const RequestsLayout = () => {
@@ -44,7 +45,15 @@ const RequestsLayout = () => {
                                             </div>
                                             <span className="font-bold">{link.title}</span>
                                         </div>
-                                        {isActive && <ChevronLeft className="size-4" />}
+                                        <Badge
+                                            variant="secondary"
+                                            className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold border transition-colors ${isActive
+                                                    ? "bg-[#911111]/10 text-[#911111] border-[#911111]/20 dark:bg-[#fca5a5]/10 dark:text-[#fca5a5] dark:border-[#fca5a5]/20"
+                                                    : "bg-muted/50 text-muted-foreground border-transparent hover:bg-muted"
+                                                }`}
+                                        >
+                                            {link.count}
+                                        </Badge>
                                     </NavLink>
                                 );
                             })}

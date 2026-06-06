@@ -8,6 +8,9 @@ import { ACTIONS } from "@/constants/permissions"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
 
+import { FileMovementStatisticsCards } from "../components/FileMovementStatisticsCards"
+import type { FileMovementStatistics } from "@/types/FileMovments"
+
 /**
  * Main File Movements Management page.
  * Displays a list of all file movements in a searchable DataTable and provides
@@ -22,6 +25,10 @@ const FileMovements = () => {
     if (isError) {
         return <ErrorState />
     }
+
+    const fileMovements = data?.data?.fileMovements || data?.data?.filesMovements || []
+    const statistics = data?.data?.statistics
+
     return (
         <>
             <div className="w-full px-3 pt-3">
@@ -34,7 +41,12 @@ const FileMovements = () => {
                         <p className="text-muted-foreground animate-pulse">جاري جلب حركات الملفات...</p>
                     </div>
                 ) : (
-                    <DataTable columns={columns} data={data?.data?.filesMovements || []} />
+                    <>
+                        <div className="w-full">
+                            <FileMovementStatisticsCards statistics={statistics as FileMovementStatistics} />
+                        </div>
+                        <DataTable columns={columns} data={fileMovements} />
+                    </>
                 )}
             </div>
         </>

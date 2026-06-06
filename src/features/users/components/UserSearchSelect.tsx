@@ -43,7 +43,7 @@ export function UserSearchSelect({
 
   const { data: queryData, isPending, isError } = useSearchUsers(debouncedSearch);
 
-  const data = queryData?.data;
+  const data = queryData?.data?.users || [];
 
   const getReturnedValue = (user: User) => {
     return returnValue === "phone" ? (user.phone || "") : user.id;

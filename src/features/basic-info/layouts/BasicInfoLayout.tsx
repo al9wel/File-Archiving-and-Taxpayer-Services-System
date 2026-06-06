@@ -1,11 +1,12 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
-import { Building2, Activity, CreditCard, Navigation, Map, ChevronLeft, LayoutDashboard, FileCheck } from "lucide-react";
+import { Building2, Activity, CreditCard, Navigation, Map, ChevronLeft, FileCheck } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
 
+import { BasicInfoStatisticsCards } from "../components/BasicInfoStatisticsCards";
+
 const sidebarLinks = [
-    { title: "معلومات أساسية", path: ROUTES.DASHBOARD.BASIC_INFO.ROOT, icon: LayoutDashboard },
     { title: "الأقسام", path: ROUTES.DASHBOARD.BASIC_INFO.DEPARTMENTS, icon: Building2 },
     { title: "حالة الملف", path: ROUTES.DASHBOARD.BASIC_INFO.FILE_STATUS, icon: FileCheck },
     { title: "نوع النشاط", path: ROUTES.DASHBOARD.BASIC_INFO.ACTIVITY_TYPES, icon: Activity },
@@ -24,6 +25,9 @@ const BasicInfoLayout = () => {
                 />
             </div>
             <div className=" mx-auto px-3" dir="rtl">
+                {/* Statistics Cards */}
+                <BasicInfoStatisticsCards />
+
                 {/* Internal Sidebar (Right side in RTL) */}
                 <div className="flex flex-col lg:flex-row gap-3">
                     <Card className="w-full lg:w-[240px] h-fit p-4">
@@ -32,7 +36,6 @@ const BasicInfoLayout = () => {
                                 <NavLink
                                     key={link.path}
                                     to={link.path}
-                                    end={link.path === ROUTES.DASHBOARD.BASIC_INFO.ROOT}
                                     className={({ isActive }) =>
                                         `flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 ${isActive
                                             ? "bg-[#FDF2F2] text-[#911111] dark:bg-[#911111]/10 dark:text-[#fca5a5]"

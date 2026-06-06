@@ -21,7 +21,6 @@ import ConfirmedRequestsPage from "@/features/requests/pages/ConfirmedRequestsPa
 import ArchivedRequestsPage from "@/features/requests/pages/ArchivedRequestsPage";
 import RejectedRequestsPage from "@/features/requests/pages/RejectedRequestsPage";
 import RequestDetailsPage from "@/features/requests/pages/RequestDetailsPage";
-import BasicInfoPage from "@/features/basic-info/pages/BasicInfoPage";
 import BasicInfoLayout from "@/features/basic-info/layouts/BasicInfoLayout";
 import DepartmentsPage from "@/features/basic-info/pages/DepartmentsPage";
 import ActivityTypesPage from "@/features/basic-info/pages/ActivityTypesPage";
@@ -223,7 +222,7 @@ export const router = createBrowserRouter([
                                 path: ROUTES.DASHBOARD.BASIC_INFO.ROOT.split("/").pop(),
                                 element: <BasicInfoLayout />,
                                 children: [
-                                    { index: true, element: <BasicInfoPage /> },
+                                    { index: true, element: <Navigate to={ROUTES.DASHBOARD.BASIC_INFO.DEPARTMENTS.split("/").pop()!} replace /> },
                                     { path: ROUTES.DASHBOARD.BASIC_INFO.DEPARTMENTS.split("/").pop(), element: <DepartmentsPage /> },
                                     { path: ROUTES.DASHBOARD.BASIC_INFO.ACTIVITY_TYPES.split("/").pop(), element: <ActivityTypesPage /> },
                                     { path: ROUTES.DASHBOARD.BASIC_INFO.PAYMENT_TYPES.split("/").pop(), element: <PaymentTypesPage /> },

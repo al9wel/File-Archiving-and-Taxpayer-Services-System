@@ -1,5 +1,5 @@
 import { fetchClient } from '@/lib/fetchClient'
-import type { User } from '@/types/User'
+import type { User, UserStore } from '@/types/User'
 
 
 
@@ -22,7 +22,7 @@ export const userApi = {
     /**
      * Fetches the list of all active users.
      */
-    getUsers: (searchQuery = ""): Promise<{ data: User[]; message: string }> => {
+    getUsers: (searchQuery = ""): Promise<{ data: UserStore; message: string }> => {
         return fetchClient(`/app_users?search=${searchQuery}`, {
             method: 'GET',
         })

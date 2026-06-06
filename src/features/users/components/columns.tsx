@@ -22,11 +22,11 @@ export const columns: ColumnDef<User>[] = [
         cell: ({ row }) => {
             const role = row.original.role;
             const badgeClasses =
-                role === "Admin" ? "bg-primary hover:bg-primary/90 text-white" :
-                    role === "Manager" ? "bg-emerald-800 hover:bg-emerald-900 text-white border-transparent" :
-                        role === "Employee" ? "bg-blue-800 hover:bg-blue-900 text-white border-transparent" :
-                            role === "Collectors_Manager" ? "bg-purple-800 hover:bg-purple-900 text-white border-transparent" :
-                                role === "Tax_Payer" ? "bg-yellow-600 hover:bg-yellow-700 text-white border-transparent" :
+                role === "Admin" ? "bg-rose-100 text-rose-700 hover:bg-rose-200 border-rose-200" :
+                    role === "Manager" ? "bg-amber-100 text-amber-700 hover:bg-amber-200 border-amber-200" :
+                        role === "Employee" ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200 border-emerald-200" :
+                            role === "Collectors_Manager" ? "bg-cyan-100 text-cyan-700 hover:bg-cyan-200 border-cyan-200" :
+                                role === "Tax_Payer" ? "bg-violet-100 text-violet-700 hover:bg-violet-200 border-violet-200" :
                                     "";
 
             const displayRole = role === "Collectors_Manager" ? "مدير المأمورين" :

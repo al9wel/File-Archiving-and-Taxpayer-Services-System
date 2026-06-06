@@ -1,5 +1,5 @@
 import { fetchClient } from '@/lib/fetchClient'
-import type { FileMovement, FileMovementsResponse } from '@/types/FileMovments'
+import type { FileMovement, FileMovmentStore } from '@/types/FileMovments'
 
 /**
  * API services for File Movements Management (CRUD operations).
@@ -20,7 +20,7 @@ export const fileMovementsApi = {
     /**
      * Fetches the list of all file movements.
      */
-    getFileMovements: (): Promise<{ data: FileMovementsResponse; message: string }> => {
+    getFileMovements: (): Promise<{ data: FileMovmentStore; message: string }> => {
         return fetchClient(`/files-movements`, {
             method: 'GET',
         })

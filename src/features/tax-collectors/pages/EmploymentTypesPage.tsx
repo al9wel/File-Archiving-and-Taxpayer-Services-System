@@ -5,6 +5,7 @@ import { EmploymentTypesTable } from "../components/employment-types/EmploymentT
 import { usePermission } from "@/hooks/usePermission";
 import { ACTIONS } from "@/constants/permissions";
 import Unauthorized from "@/app/pages/Unauthorized";
+import { CreateEmploymentTypeDialog } from "../components/employment-types/CreateEmploymentTypeDialog";
 
 const EmploymentTypesPage = () => {
     const { data: employmentTypes, isLoading, isError } = useEmploymentTypes();
@@ -18,8 +19,10 @@ const EmploymentTypesPage = () => {
 
     return (
         <div className="space-y-6 text-right animate-in fade-in duration-500">
-            {/* Content Table */}
-
+            {/* Header Actions */}
+            <div className="flex justify-end">
+                <CreateEmploymentTypeDialog />
+            </div>
             {/* Content Table */}
             {isLoading ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">

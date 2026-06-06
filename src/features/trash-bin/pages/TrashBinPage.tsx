@@ -7,6 +7,7 @@ import { usePermission } from "@/hooks/usePermission"
 import { ACTIONS } from "@/constants/permissions"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
+import { TrashBinStatisticsCards } from "../components/TrashBinStatisticsCards"
 
 const TrashBinPage = () => {
     const { data, isLoading, isError } = useTrashBin()
@@ -34,7 +35,10 @@ const TrashBinPage = () => {
                         <p className="text-muted-foreground animate-pulse">جاري جلب عناصر سلة المهملات...</p>
                     </div>
                 ) : (
-                    <DataTable columns={columns} data={data?.data || []} />
+                    <>
+                        <TrashBinStatisticsCards />
+                        <DataTable columns={columns} data={data?.data || []} />
+                    </>
                 )}
             </div>
         </>

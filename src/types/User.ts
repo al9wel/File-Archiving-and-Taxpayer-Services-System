@@ -20,6 +20,20 @@ export interface User {
     createdBy?: number | string | null,
 }
 
+export type UserStatistics = {
+    total_users: number | string
+    admin_count: number | string
+    manager_count: number | string
+    employee_count: number | string
+    tax_payer_count: number | string
+    collectors_manager_count: number | string
+}
+
+export type UserStore = {
+    statistics?: UserStatistics
+    users: User[]
+}
+
 
 //Parameters for updating a user.
 export type UpdateUserParams = {
