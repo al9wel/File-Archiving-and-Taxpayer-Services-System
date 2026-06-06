@@ -1,0 +1,72 @@
+.landing-showcase {
+    scroll-behavior: smooth;
+    background:
+        radial-gradient(circle at 12% 18%, color-mix(in oklch, var(--primary) 14%, transparent), transparent 28rem),
+        radial-gradient(circle at 88% 8%, color-mix(in oklch, var(--chart-2) 15%, transparent), transparent 26rem),
+        linear-gradient(180deg, var(--background), color-mix(in oklch, var(--background) 88%, var(--muted)));
+}
+
+.landing-shell {
+    width: min(1180px, calc(100% - 2rem));
+    margin-inline: auto;
+}
+
+.landing-grid-overlay {
+    background-image:
+        linear-gradient(color-mix(in oklch, var(--foreground) 8%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in oklch, var(--foreground) 8%, transparent) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: linear-gradient(to bottom, black, transparent 72%);
+}
+
+.landing-glass {
+    border: 1px solid color-mix(in oklch, var(--border) 72%, transparent);
+    background: color-mix(in oklch, var(--card) 78%, transparent);
+    box-shadow: 0 20px 80px color-mix(in oklch, var(--foreground) 9%, transparent);
+    backdrop-filter: blur(20px);
+}
+
+.landing-noise::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.24;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, .35) 0 1px, transparent 1px),
+        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, .24) 0 1px, transparent 1px);
+    background-size: 36px 36px, 52px 52px;
+    mix-blend-mode: overlay;
+}
+
+.landing-orbit {
+    animation: landing-orbit 18s linear infinite;
+    transform-origin: center;
+}
+
+.landing-flow-dot {
+    animation: landing-flow 3.8s ease-in-out infinite;
+}
+
+@keyframes landing-orbit {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes landing-flow {
+    0% {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+    18%, 70% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(52px);
+    }
+}
