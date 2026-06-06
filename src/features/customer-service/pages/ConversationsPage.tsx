@@ -1,11 +1,10 @@
-import { Input } from "@/components/ui/input"
 import Unauthorized from "@/app/pages/Unauthorized"
 import { ACTIONS } from "@/constants/permissions"
 import { usePermission } from "@/hooks/usePermission"
 import type { CustomerServiceConversation } from "../types/CustomerService"
 import ConversationList from "../components/ConversationList"
-import { MessageSquareText, Search } from "lucide-react"
 import DashboardHeader from "@/components/layout/DahsboardHeader"
+import { CustomerServiceStatisticsCards } from "../components/CustomerServiceStatisticsCards"
 
 const conversations: CustomerServiceConversation[] = [
     {
@@ -95,24 +94,7 @@ const ConversationsPage = () => {
             <div className="w-full px-3 pt-3">
                 <DashboardHeader title=" خدمة العملاء " desc="إدارة محادثات العملاء" />
             </div>
-            <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-                <div className="flex flex-col gap-5 p-5 md:flex-row md:items-center md:justify-between md:p-6">
-                    <div className="flex items-center gap-4">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                            <MessageSquareText size={26} />
-                        </div>
-                        <div>
-                            <h1 className="text-2xl font-black tracking-normal text-foreground">خدمة العملاء</h1>
-                            <p className="mt-1 text-sm text-muted-foreground">متابعة وإدارة محادثات العملاء</p>
-                        </div>
-                    </div>
-                    <div className="relative w-full md:w-80">
-                        <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                        <Input className="h-10 rounded-xl bg-background pr-9" placeholder="البحث عن محادثة..." />
-                    </div>
-                </div>
-            </div>
-
+            <CustomerServiceStatisticsCards />
             <ConversationList conversations={conversations} />
         </div>
     )

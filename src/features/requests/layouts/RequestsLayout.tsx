@@ -3,13 +3,13 @@ import { ROUTES } from "@/constants/routes";
 import { Clock, CheckCircle2, Archive, XCircle, ChevronLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
-import { Badge } from "@/components/ui/badge";
+import { RequestStatisticsCards } from "../components/RequestStatisticsCards";
 
 const sidebarLinks = [
-    { title: "الطلبات المعلقة", path: ROUTES.DASHBOARD.REQUESTS.PENDING, icon: Clock, count: 2 },
-    { title: "الطلبات المؤكدة", path: ROUTES.DASHBOARD.REQUESTS.CONFIRMED, icon: CheckCircle2, count: 3 },
-    { title: "الطلبات المرحلة", path: ROUTES.DASHBOARD.REQUESTS.ARCHIVED, icon: Archive, count: 2 },
-    { title: "الطلبات المرفوضة", path: ROUTES.DASHBOARD.REQUESTS.REJECTED, icon: XCircle, count: 4 },
+    { title: "الطلبات المعلقة", path: ROUTES.DASHBOARD.REQUESTS.PENDING, icon: Clock, },
+    { title: "الطلبات المؤكدة", path: ROUTES.DASHBOARD.REQUESTS.CONFIRMED, icon: CheckCircle2, },
+    { title: "الطلبات المرحلة", path: ROUTES.DASHBOARD.REQUESTS.ARCHIVED, icon: Archive, },
+    { title: "الطلبات المرفوضة", path: ROUTES.DASHBOARD.REQUESTS.REJECTED, icon: XCircle, },
 ];
 
 const RequestsLayout = () => {
@@ -24,6 +24,9 @@ const RequestsLayout = () => {
                 />
             </div>
             <div className=" mx-auto px-3 pb-10" dir="rtl">
+                {/* Statistics Cards */}
+                <RequestStatisticsCards />
+
                 {/* Internal Sidebar (Right side in RTL) */}
                 <div className="flex flex-col lg:flex-row gap-3">
                     <Card className="w-full lg:w-[240px] h-fit p-4 shrink-0">
@@ -45,15 +48,7 @@ const RequestsLayout = () => {
                                             </div>
                                             <span className="font-bold">{link.title}</span>
                                         </div>
-                                        <Badge
-                                            variant="secondary"
-                                            className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold border transition-colors ${isActive
-                                                    ? "bg-[#911111]/10 text-[#911111] border-[#911111]/20 dark:bg-[#fca5a5]/10 dark:text-[#fca5a5] dark:border-[#fca5a5]/20"
-                                                    : "bg-muted/50 text-muted-foreground border-transparent hover:bg-muted"
-                                                }`}
-                                        >
-                                            {link.count}
-                                        </Badge>
+                                        {isActive && <ChevronLeft className="size-4" />}
                                     </NavLink>
                                 );
                             })}
