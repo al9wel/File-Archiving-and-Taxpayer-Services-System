@@ -1,6 +1,6 @@
-import { RouterProvider } from "react-router-dom"
-import AppProviders from "@/app/providers/AppProviders"
-import { router } from "@/app/router"
+import AppProviders from "@/app/providers/AppProviders";
+import { router } from "@/app/router";
+import { RouterProvider } from "react-router-dom";
 // import { useUser } from "@/features/auth/hooks/useUser"
 // import { Loader2 } from "lucide-react"
 // import ErrorState from "./pages/ErrorState"
@@ -14,14 +14,10 @@ const AppContent = () => {
 }
 
 const App = () => {
-    return (
-        <AppProviders>
-            <AppContent />
-        </AppProviders>
-    )
-}
-export default App
-
-
-
-
+  return (
+    <AppProviders>
+      <AppContent />
+    </AppProviders>
+  );
+};
+export default App;
