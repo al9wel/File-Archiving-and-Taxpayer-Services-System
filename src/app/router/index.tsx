@@ -41,7 +41,7 @@ import UpdateUser from "@/features/users/pages/UpdateUser";
 import ShowUser from "@/features/users/pages/ShowUser";
 import OperationReports from "@/features/operation-reports/pages/OperationReports";
 import { createBrowserRouter, Navigate } from "react-router-dom"
-import LandingLayout from "@/components/layout/LandingLayout";
+import LandingLayout from "@/landing/layouts/LandingLayout";
 import HomePage from "@/landing/pages/HomePage";
 import AboutPage from "@/landing/pages/AboutPage";
 import ProtectedRoute from "./ProtectedRoute";

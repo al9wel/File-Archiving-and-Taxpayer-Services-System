@@ -3,6 +3,10 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
 @import "@fontsource/almarai";
+/* @import "@fontsource-variable/jetbrains-mono"; */
+/* @import "@fontsource/instrument-serif"; */
+/* @import "@fontsource/ibm-plex-sans-arabic"; */
+/* @import "@src/assets/fonts/Ramis Arabic.css"; */
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -39,6 +43,17 @@
     --sidebar-border: oklch(0.927 0.004 301.421);
     --sidebar-ring: oklch(0.708 0 0);
     --radius: 0.625rem;
+
+    /* ── Landing Page — Light Theme ── */
+    --landing-bg: #c4bcb3;
+    --landing-bg-soft: #d4cdc3;
+    --landing-bg-deep: #b5aca1;
+    --landing-text: #1a1815;
+    --landing-text-muted: #5a5249;
+    --landing-accent: color-mix(in oklab, var(--primary) 90%, white 10%);
+    --landing-accent-glow: color-mix(in oklab, var(--primary) 30%, white 70%) / 0.35;
+    --landing-accent-2: color-mix(in oklab, var(--primary) 85%, white 15%);
+    --landing-line: rgba(26, 24, 21, 0.08);
 }
 
 .dark {
@@ -74,10 +89,22 @@
     --sidebar-border: oklch(0.278 0.031 266.098);
     --sidebar-ring: oklch(0.439 0 0);
     --radius: 0.625rem;
+
+    --landing-bg: #c4bcb3;
+    --landing-bg-soft: #d4cdc3;
+    --landing-bg-deep: #b5aca1;
+    --landing-text: #1a1815;
+    --landing-text-muted: #5a5249;
+    --landing-accent: color-mix(in oklab, var(--primary) 90%, white 10%);
+    --landing-accent-glow: color-mix(in oklab, var(--primary) 30%, white 70%) / 0.35;
+    --landing-accent-2: color-mix(in oklab, var(--primary) 85%, white 15%);
+    --landing-line: rgba(26, 24, 21, 0.08);
 }
 
 @theme inline {
     --font-sans: 'almarai', sans-serif;
+    /* --font-serif: 'instrument serif', serif; */
+    /* --font-mono: 'jetbrains mono variable', 'jetbrains mono', monospace; */
 
     --color-background: var(--background);
     --color-foreground: var(--foreground);
@@ -112,6 +139,15 @@
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
 
+    --color-landing-bg: var(--landing-bg);
+    --color-landing-bg-soft: var(--landing-bg-soft);
+    --color-landing-bg-deep: var(--landing-bg-deep);
+    --color-landing-text: var(--landing-text);
+    --color-landing-text-muted: var(--landing-text-muted);
+    --color-landing-accent: var(--landing-accent);
+    --color-landing-accent-glow: var(--landing-accent-glow);
+    --color-landing-accent-2: var(--landing-accent-2);
+    --color-landing-line: var(--landing-line);
 
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
@@ -125,20 +161,20 @@
     }
 
     body {
+        /* @apply bg-background text-foreground; */
         @apply font-sans bg-background text-foreground;
-        /* Firefox */
+        /* font-family: 'almarai', 'ibm plex sans arabic', sans-serif; */
         scrollbar-width: thin;
         scrollbar-color: var(--primary) transparent;
+        scrollbar-behavior: smooth;
     }
 
     html {
-        @apply font-sans;
-        /* Firefox */
         scrollbar-width: thin;
         scrollbar-color: var(--primary) transparent;
+        scrollbar-behavior: smooth;
     }
 
-    /* Global Webkit Scrollbar (Chrome, Edge, Brave, Safari, Opera) */
     ::-webkit-scrollbar {
         width: 8px;
         height: 8px;
@@ -166,38 +202,53 @@
     }
 }
 
-/* ============================================================
-   Scrollable containers — inherit the global scrollbar style
-   ============================================================ */
-@layer utilities {
-    /* Utility: hide scrollbar visually while keeping scroll functionality */
-    .no-scrollbar {
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE / Edge legacy */
-    }
-    .no-scrollbar::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
+/* Noise overlay keyframes */
+@keyframes noise-drift {
+    0% {
+        background-position: 0 0;
     }
 
-    /* Utility: explicitly show styled scrollbar (for opt-in containers) */
+    50% {
+        background-position: 2px 3px;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
+}
+
+@layer utilities {
+    .no-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
     .styled-scrollbar {
         scrollbar-width: thin;
         scrollbar-color: var(--primary) transparent;
     }
+
     .styled-scrollbar::-webkit-scrollbar {
         width: 8px;
         height: 8px;
     }
+
     .styled-scrollbar::-webkit-scrollbar-track {
         background: transparent;
         border-radius: 9999px;
     }
+
     .styled-scrollbar::-webkit-scrollbar-thumb {
         background-color: var(--primary);
         border-radius: 9999px;
         border: 2px solid transparent;
         background-clip: padding-box;
     }
+
     .styled-scrollbar::-webkit-scrollbar-thumb:hover {
         background-color: var(--primary-hover);
     }
