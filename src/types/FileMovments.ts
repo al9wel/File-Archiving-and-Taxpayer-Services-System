@@ -20,7 +20,7 @@ export type FileMovementStatistics = {
     missing_count: number | string;
 }
 export type FileMovmentStore = {
-    fileMovements: FileMovement[];
+    filesMovements: FileMovement[];
     statistics: FileMovementStatistics;
 }
 

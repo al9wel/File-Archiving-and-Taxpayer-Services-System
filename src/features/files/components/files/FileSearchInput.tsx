@@ -52,7 +52,7 @@ export const FileSearchInput = () => {
                     setIsOpen(true)
                 }}
                 onFocus={() => setIsOpen(true)}
-                className="border w-full dark:border-input rounded-3xl p-3 pr-4 pl-10 text-xs bg-muted dark:bg-[#393f4d]/50"
+                className="border w-full dark:border-input rounded-3xl p-3 pr-4 pl-10 text-xs bg-muted dark:bg-muted/50"
             />
 
             {isOpen && search.trim() !== "" && (

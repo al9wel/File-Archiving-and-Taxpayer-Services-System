@@ -8,13 +8,13 @@ interface TaxTypesTableProps {
 
 export const TaxTypesTable = ({ taxTypes }: TaxTypesTableProps) => {
     return (
-        <div className="rounded-2xl overflow-hidden border border-gray-100 dark:border-white/5 shadow-sm">
+        <div className="rounded-2xl overflow-hidden border-border shadow-sm">
             <Table>
-                <TableHeader className="bg-gray-100 dark:bg-[#101523]">
+                <TableHeader className="bg-muted">
                     <TableRow>
-                        <TableHead className="text-center w-24 font-bold text-black dark:text-white">رقم</TableHead>
-                        <TableHead className="text-center font-bold text-black dark:text-white">إسم نوع الضريبة</TableHead>
-                        <TableHead className="text-center w-32 font-bold text-black dark:text-white">إجراءات</TableHead>
+                         <TableHead className="text-center w-24 font-bold text-foreground">رقم</TableHead>
+                         <TableHead className="text-center font-bold text-foreground">إسم نوع الضريبة</TableHead>
+                         <TableHead className="text-center w-32 font-bold text-foreground">إجراءات</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -26,7 +26,7 @@ export const TaxTypesTable = ({ taxTypes }: TaxTypesTableProps) => {
                         </TableRow>
                     ) : (
                         taxTypes.map((type) => (
-                            <TableRow key={type.id} className="bg-card hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors border-b">
+                            <TableRow key={type.id} className="bg-card hover:bg-muted/50 transition-colors border-b">
                                 <TableCell className="text-center font-medium">{type.id}</TableCell>
                                 <TableCell className="text-center">{type.name}</TableCell>
                                 <TableCell className="text-center">

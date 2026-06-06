@@ -8,29 +8,29 @@ export function TaxCollectorStatisticsCards() {
             title: "إجمالي المأمورين",
             value: 412,
             icon: Users,
-            color: "text-blue-600/40 dark:text-blue-400",
-            bgColor: "bg-blue-100 dark:bg-blue-900/20",
+            color: "text-chart-3",
+            bgColor: "bg-chart-3/10 dark:bg-chart-3/20",
         },
         {
             title: "أنواع التوظيف",
             value: 4,
             icon: Briefcase,
-            color: "text-amber-600/40 dark:text-amber-400",
-            bgColor: "bg-amber-100 dark:bg-amber-900/20",
+            color: "text-chart-5",
+            bgColor: "bg-chart-5/10 dark:bg-chart-5/20",
         },
         {
             title: "على رأس العمل",
             value: 380,
             icon: UserCheck,
-            color: "text-emerald-600/40 dark:text-emerald-400",
-            bgColor: "bg-emerald-100 dark:bg-emerald-900/20",
+            color: "text-chart-4",
+            bgColor: "bg-chart-4/10 dark:bg-chart-4/20",
         },
         {
             title: "موقوف",
             value: 32,
             icon: UserMinus,
-            color: "text-rose-600/40 dark:text-rose-400",
-            bgColor: "bg-rose-100 dark:bg-rose-900/20",
+            color: "text-chart-1",
+            bgColor: "bg-chart-1/10 dark:bg-chart-1/20",
         },
     ];
 
@@ -54,7 +54,7 @@ export function TaxCollectorStatisticsCards() {
                                     {stat.title}
                                 </span>
                             </div>
-                            <Badge variant="outline" className="text-black/60 font-bold">
+                            <Badge variant="outline" className="text-muted-foreground font-bold">
                                 {stat.value || 0}
                             </Badge>
                         </div>

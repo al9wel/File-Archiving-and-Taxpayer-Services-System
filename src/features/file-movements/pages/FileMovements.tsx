@@ -25,8 +25,7 @@ const FileMovements = () => {
     if (isError) {
         return <ErrorState />
     }
-
-    const fileMovements = data?.data?.fileMovements || []
+    const fileMovements = data?.data?.filesMovements || []
     const statistics = data?.data?.statistics
 
     return (

@@ -8,9 +8,9 @@ interface FileStatusTableProps {
 
 export const FileStatusTable = ({ fileStatuses }: FileStatusTableProps) => {
     return (
-        <div className="rounded-2xl overflow-hidden border border-gray-100 dark:border-white/5 shadow-sm">
+        <div className="rounded-2xl overflow-hidden border-border shadow-sm">
             <Table>
-                <TableHeader className="bg-gray-100 dark:bg-[#101523]">
+                <TableHeader className="bg-muted">
                     <TableRow>
                         <TableHead className="text-center w-24 font-bold">رقم</TableHead>
                         <TableHead className="text-center font-bold">إسم الحالة</TableHead>
@@ -27,7 +27,7 @@ export const FileStatusTable = ({ fileStatuses }: FileStatusTableProps) => {
                         </TableRow>
                     ) : (
                         fileStatuses.map((status) => (
-                            <TableRow key={status.id} className="bg-card dark:bg-sidebar hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
+                            <TableRow key={status.id} className="bg-card dark:bg-sidebar hover:bg-muted/50 transition-colors">
                                 <TableCell className="text-center font-medium">{status.id}</TableCell>
                                 <TableCell className="text-center font-bold">{status.statusName}</TableCell>
                                 <TableCell className="text-center text-muted-foreground max-w-xs truncate">

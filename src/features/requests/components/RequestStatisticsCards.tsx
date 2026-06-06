@@ -8,29 +8,29 @@ export function RequestStatisticsCards() {
             title: "الطلبات المعلقة",
             value: 2,
             icon: Clock,
-            color: "text-amber-600/40 dark:text-amber-400",
-            bgColor: "bg-amber-100 dark:bg-amber-900/20",
+            color: "text-chart-5",
+            bgColor: "bg-chart-5/10 dark:bg-chart-5/20",
         },
         {
             title: "الطلبات المؤكدة",
             value: 3,
             icon: CheckCircle2,
-            color: "text-emerald-600/40 dark:text-emerald-400",
-            bgColor: "bg-emerald-100 dark:bg-emerald-900/20",
+            color: "text-chart-4",
+            bgColor: "bg-chart-4/10 dark:bg-chart-4/20",
         },
         {
             title: "الطلبات المرحلة",
             value: 2,
             icon: Archive,
-            color: "text-slate-600/40 dark:text-slate-400",
-            bgColor: "bg-slate-100 dark:bg-slate-900/20",
+            color: "text-muted-foreground",
+            bgColor: "bg-muted dark:bg-muted/20",
         },
         {
             title: "الطلبات المرفوضة",
             value: 4,
             icon: XCircle,
-            color: "text-rose-600/40 dark:text-rose-400",
-            bgColor: "bg-rose-100 dark:bg-rose-900/20",
+            color: "text-chart-1",
+            bgColor: "bg-chart-1/10 dark:bg-chart-1/20",
         },
     ];
 
@@ -54,7 +54,7 @@ export function RequestStatisticsCards() {
                                     {stat.title}
                                 </span>
                             </div>
-                            <Badge variant="outline" className="text-black/60 font-bold">
+                            <Badge variant="outline" className="text-muted-foreground font-bold">
                                 {stat.value || 0}
                             </Badge>
                         </div>

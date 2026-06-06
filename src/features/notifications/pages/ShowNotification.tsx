@@ -14,26 +14,26 @@ const notificationTypeConfig = {
     General: {
         label: "عام",
         icon: Globe,
-        barClass: "bg-sky-500",
-        badgeClass: "bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-900/20 dark:text-sky-300 dark:border-sky-800",
+        barClass: "bg-chart-3",
+        badgeClass: "bg-chart-3/10 text-chart-3 border-chart-3/30 dark:bg-chart-3/20 dark:text-chart-3/80 dark:border-chart-3/40",
     },
     ForSystemUsers: {
         label: "مستخدمي النظام",
         icon: ShieldAlert,
-        barClass: "bg-violet-500",
-        badgeClass: "bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-900/20 dark:text-violet-300 dark:border-violet-800",
+        barClass: "bg-chart-6",
+        badgeClass: "bg-chart-6/10 text-chart-6 border-chart-6/30 dark:bg-chart-6/20 dark:text-chart-6/80 dark:border-chart-6/40",
     },
     ForTaxPayers: {
         label: "المكلفين",
         icon: Users,
-        barClass: "bg-emerald-500",
-        badgeClass: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-300 dark:border-emerald-800",
+        barClass: "bg-chart-4",
+        badgeClass: "bg-chart-4/10 text-chart-4 border-chart-4/30 dark:bg-chart-4/20 dark:text-chart-4/80 dark:border-chart-4/40",
     },
     Special: {
         label: "خاص",
         icon: Bell,
-        barClass: "bg-rose-500",
-        badgeClass: "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-900/20 dark:text-rose-300 dark:border-rose-800",
+        barClass: "bg-chart-1",
+        badgeClass: "bg-chart-1/10 text-chart-1 border-chart-1/30 dark:bg-chart-1/20 dark:text-chart-1/80 dark:border-chart-1/40",
     },
 }
 

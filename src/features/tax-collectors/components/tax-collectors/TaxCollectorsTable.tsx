@@ -8,9 +8,9 @@ interface TaxCollectorsTableProps {
 
 export const TaxCollectorsTable = ({ taxCollectors }: TaxCollectorsTableProps) => {
     return (
-        <div className="rounded-2xl overflow-x-auto border border-gray-100 dark:border-white/5 shadow-sm bg-card">
+        <div className="rounded-2xl overflow-x-auto border-border shadow-sm bg-card">
             <Table>
-                <TableHeader className="bg-gray-100 dark:bg-[#101523]">
+                <TableHeader className="bg-muted">
                     <TableRow>
                         <TableHead className="text-center font-bold">الإسم بالكامل</TableHead>
                         <TableHead className="text-center font-bold">رقم الهاتف</TableHead>
@@ -28,7 +28,7 @@ export const TaxCollectorsTable = ({ taxCollectors }: TaxCollectorsTableProps) =
                         </TableRow>
                     ) : (
                         taxCollectors.map((collector) => (
-                            <TableRow key={collector.id} className="bg-card dark:bg-sidebar hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
+                            <TableRow key={collector.id} className="bg-card dark:bg-sidebar hover:bg-muted/50 transition-colors">
                                 <TableCell className="text-center">{collector.fullName}</TableCell>
                                 <TableCell className="text-center font-mono">{collector.phone}</TableCell>
                                 <TableCell className="text-center">{collector.jobType?.name}</TableCell>

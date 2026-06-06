@@ -72,24 +72,24 @@ export const AttachmentForm = ({ initialData, onSubmit, onCancel, isLoading }: A
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 pt-2" dir="rtl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">العنوان <span className="text-red-600">*</span></label>
+                    <label className="text-sm font-medium">العنوان <span className="text-destructive">*</span></label>
                     <Input
                         disabled={isLoading}
                         placeholder="أدخل عنوان الملحق"
                         {...register("title")}
                         className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10"
                     />
-                    {errors.title && <p className="text-xs text-red-600">{errors.title.message}</p>}
+                    {errors.title && <p className="text-xs text-destructive">{errors.title.message}</p>}
                 </div>
 
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">الملف <span className="text-red-600">*</span></label>
+                    <label className="text-sm font-medium">الملف <span className="text-destructive">*</span></label>
                     <FileSearchSelect
                         value={watch("fileId") ? Number(watch("fileId")) : undefined}
                         onSelect={(id) => setValue("fileId", id.toString(), { shouldValidate: true })}
                         disabled={isLoading}
                     />
-                    {errors.fileId && <p className="text-xs text-red-600">{errors.fileId.message}</p>}
+                    {errors.fileId && <p className="text-xs text-destructive">{errors.fileId.message}</p>}
                 </div>
 
                 <div className="space-y-3 md:col-span-2">
@@ -118,7 +118,7 @@ export const AttachmentForm = ({ initialData, onSubmit, onCancel, isLoading }: A
                 <Button
                     type="submit"
                     disabled={isLoading}
-                    className="bg-[#911111] hover:bg-[#7a0e0e] text-white rounded-xl h-12 flex-1 gap-2"
+                    className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-xl h-12 flex-1 gap-2"
                 >
                     {isLoading ? (
                         <Loader2 className="size-5 animate-spin" />

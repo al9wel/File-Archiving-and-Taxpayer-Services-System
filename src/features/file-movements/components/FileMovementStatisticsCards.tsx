@@ -15,33 +15,33 @@ export function FileMovementStatisticsCards({ statistics }: FileMovementStatisti
             title: "إجمالي الحركات",
             value: statistics.total_movements,
             icon: RefreshCcw,
-            color: "text-blue-600/40 dark:text-blue-400",
-            bgColor: "bg-blue-100/40 dark:bg-blue-900/20",
-            borderColor: "border-blue-200/40 dark:border-blue-800",
+            color: "text-chart-3",
+            bgColor: "bg-chart-3/[0.06] dark:bg-chart-3/20",
+            borderColor: "border-chart-3/20 dark:border-chart-3/40",
         },
         {
             title: "داخل الأرشيف",
             value: statistics.inside_archive_count,
             icon: Archive,
-            color: "text-emerald-600/40 dark:text-emerald-400",
-            bgColor: "bg-emerald-100/40 dark:bg-emerald-900/20",
-            borderColor: "border-emerald-200/40 dark:border-emerald-800",
+            color: "text-chart-4",
+            bgColor: "bg-chart-4/[0.06] dark:bg-chart-4/20",
+            borderColor: "border-chart-4/20 dark:border-chart-4/40",
         },
         {
             title: "خارج الأرشيف",
             value: statistics.outside_archive_count,
             icon: Send,
-            color: "text-amber-600/40 dark:text-amber-400",
-            bgColor: "bg-amber-100/40 dark:bg-amber-900/20",
-            borderColor: "border-amber-200/40 dark:border-amber-800",
+            color: "text-chart-5",
+            bgColor: "bg-chart-5/[0.06] dark:bg-chart-5/20",
+            borderColor: "border-chart-5/20 dark:border-chart-5/40",
         },
         {
             title: "مفقود",
             value: statistics.missing_count,
             icon: AlertTriangle,
-            color: "text-rose-600/40 dark:text-rose-400",
-            bgColor: "bg-rose-100/40 dark:bg-rose-900/20",
-            borderColor: "border-rose-200/40 dark:border-rose-800",
+            color: "text-chart-1",
+            bgColor: "bg-chart-1/[0.06] dark:bg-chart-1/20",
+            borderColor: "border-chart-1/20 dark:border-chart-1/40",
         },
     ];
 
@@ -65,7 +65,7 @@ export function FileMovementStatisticsCards({ statistics }: FileMovementStatisti
                                     {stat.title}
                                 </span>
                             </div>
-                            <Badge variant="outline" className="text-black/60 font-bold">
+                            <Badge variant="outline" className="text-muted-foreground font-bold">
                                 {stat.value || 0}
                             </Badge>
                         </div>

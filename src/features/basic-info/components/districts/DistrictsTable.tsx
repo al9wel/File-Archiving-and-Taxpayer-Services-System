@@ -17,9 +17,9 @@ export const DistrictsTable = ({ districts }: DistrictsTableProps) => {
     };
 
     return (
-        <div className="rounded-2xl overflow-hidden border border-gray-100 dark:border-white/5 shadow-sm">
+        <div className="rounded-2xl overflow-hidden border-border shadow-sm">
             <Table>
-                <TableHeader className="bg-gray-100 dark:bg-[#101523]">
+                <TableHeader className="bg-muted">
                     <TableRow>
                         <TableHead className="text-center w-24 font-bold">رقم</TableHead>
                         <TableHead className="text-center font-bold">إسم الحي</TableHead>
@@ -36,11 +36,11 @@ export const DistrictsTable = ({ districts }: DistrictsTableProps) => {
                         </TableRow>
                     ) : (
                         districts.map((district) => (
-                            <TableRow key={district.id} className="bg-card dark:bg-sidebar hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors">
+                            <TableRow key={district.id} className="bg-card dark:bg-sidebar hover:bg-muted/50 transition-colors">
                                 <TableCell className="text-center font-medium">{district.id}</TableCell>
                                 <TableCell className="text-center">{district.name}</TableCell>
                                 <TableCell className="text-center">
-                                    <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 text-xs font-medium border border-blue-100 dark:border-blue-900/30">
+                                    <span className="px-3 py-1 rounded-full bg-chart-3/10 text-chart-3 dark:bg-chart-3/20 dark:text-chart-3/80 text-xs font-medium border border-chart-3/20 dark:border-chart-3/30">
                                         {getRegionName(district.regionID || district.region_id || district.region?.id)}
                                     </span>
                                 </TableCell>

@@ -52,8 +52,8 @@ const TaxCollectorsLayout = () => {
                                     to={link.path}
                                     className={({ isActive }) =>
                                         `flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 ${isActive
-                                            ? "bg-[#FDF2F2] text-[#911111] dark:bg-[#911111]/10 dark:text-[#fca5a5]"
-                                            : "hover:bg-gray-50 dark:hover:bg-white/5 text-muted-foreground"
+                                            ? "bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive/80"
+                                            : "hover:bg-muted/50 text-muted-foreground"
                                         }`
                                     }
                                 >
@@ -62,8 +62,8 @@ const TaxCollectorsLayout = () => {
                                         return (
                                             <>
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`p-2 rounded-lg ${isActive ? "bg-white dark:bg-transparent shadow-sm" : ""}`}>
-                                                        <Icon className={`size-5 ${isActive ? "text-[#911111] dark:text-[#fca5a5]" : "text-muted-foreground"}`} />
+                                                    <div className={`p-2 rounded-lg ${isActive ? "bg-card dark:bg-transparent shadow-sm" : ""}`}>
+                                                        <Icon className={`size-5 ${isActive ? "text-destructive dark:text-destructive/80" : "text-muted-foreground"}`} />
                                                     </div>
                                                     <span className="font-bold">{link.title}</span>
                                                 </div>

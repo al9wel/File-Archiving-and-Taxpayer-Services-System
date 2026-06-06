@@ -92,33 +92,33 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                 {/* Full Name */}
                 <div className="space-y-2 col-span-2">
                     <label className="text-sm font-medium flex items-center gap-1">
-                        <span className="text-red-600">*</span>
-                        الإسم بالكامل
+<span className="text-destructive">*</span>
+                         الإسم بالكامل
                     </label>
                     <Input
                         placeholder="أدخل الإسم بالكامل"
                         {...register("fullName")}
-                        className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-1 focus-visible:ring-red-600"
+                        className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-1 focus-visible:ring-destructive"
                     />
                     {errors.fullName && (
-                        <p className="text-sm text-red-600 text-right">{errors.fullName.message}</p>
+                        <p className="text-sm text-destructive text-right">{errors.fullName.message}</p>
                     )}
                 </div>
 
                 {/* Phone */}
                 <div className="space-y-2">
                     <label className="text-sm font-medium flex items-center gap-1">
-                        <span className="text-red-600">*</span>
-                        رقم الهاتف
+<span className="text-destructive">*</span>
+                         رقم الهاتف
                     </label>
                     <Input
                         placeholder="أدخل رقم الهاتف"
                         {...register("phone")}
-                        className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-1 focus-visible:ring-red-600"
+                        className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-1 focus-visible:ring-destructive"
                         dir="ltr"
                     />
                     {errors.phone && (
-                        <p className="text-sm text-red-600 text-right">{errors.phone.message}</p>
+                        <p className="text-sm text-destructive text-right">{errors.phone.message}</p>
                     )}
                 </div>
 
@@ -128,13 +128,13 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                         نسخة رقمية من الهوية
                     </label>
                     <Card className="p-0 rounded-xl border shadow-sm bg-muted/10 overflow-hidden">
-                        <div className="relative border-2 border-dashed border-muted-foreground/10 rounded-xl p-3 flex flex-col items-center justify-center group hover:border-red-600/50 transition-colors cursor-pointer text-center bg-transparent">
-                            <div className="w-8 h-8 rounded-full bg-red-600/10 text-red-600 flex items-center justify-center mb-1 transition-transform group-hover:scale-110">
+                        <div className="relative border-2 border-dashed border-muted-foreground/10 rounded-xl p-3 flex flex-col items-center justify-center group hover:border-destructive/50 transition-colors cursor-pointer text-center bg-transparent">
+                            <div className="w-8 h-8 rounded-full bg-destructive/10 text-destructive flex items-center justify-center mb-1 transition-transform group-hover:scale-110">
                                 {idCardName ? <Check size={16} /> : <Upload size={16} />}
                             </div>
                             {idCardName ? (
                                 <div className="flex flex-col items-center gap-0">
-                                    <span className="text-[10px] font-medium text-red-600 truncate max-w-[120px]">{idCardName}</span>
+                                    <span className="text-[10px] font-medium text-destructive truncate max-w-[120px]">{idCardName}</span>
                                     <span className="text-[8px] text-muted-foreground">تم الرفع بنجاح</span>
                                 </div>
                             ) : (
@@ -156,8 +156,8 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                 {/* Job Type */}
                 <div className="space-y-2">
                     <label className="text-sm font-medium flex items-center gap-1">
-                        <span className="text-red-600">*</span>
-                        نوع التوظيف
+<span className="text-destructive">*</span>
+                         نوع التوظيف
                     </label>
                     <div className="h-12 w-full">
                         <Select
@@ -185,15 +185,15 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                         </Select>
                     </div>
                     {errors.jobTypeId && (
-                        <p className="text-sm text-red-600 text-right">{errors.jobTypeId.message}</p>
+                        <p className="text-sm text-destructive text-right">{errors.jobTypeId.message}</p>
                     )}
                 </div>
 
                 {/* Department */}
                 <div className="space-y-2">
                     <label className="text-sm font-medium flex items-center gap-1">
-                        <span className="text-red-600">*</span>
-                        القسم
+<span className="text-destructive">*</span>
+                         القسم
                     </label>
                     {isAdmin ? (
                         <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.deptID?.message} fieldName="deptID" />
@@ -211,7 +211,7 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                 <Button
                     type="submit"
                     disabled={isLoading}
-                    className="bg-[#911111] hover:bg-[#7a0e0e] text-white rounded-xl px-8 h-12 flex-1 flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
+                    className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-xl px-8 h-12 flex-1 flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
                 >
                     {isLoading ? (
                         <Loader2 className="size-5 animate-spin" />
@@ -224,7 +224,7 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                     type="button"
                     onClick={onCancel}
                     variant="outline"
-                    className="rounded-xl px-8 h-12 border-none bg-gray-100 dark:bg-muted text-muted-foreground hover:bg-gray-200 dark:hover:bg-muted/80 transition-colors"
+                    className="rounded-xl px-8 h-12 bg-muted text-muted-foreground hover:bg-muted/80 transition-colors"
                 >
                     إلغاء
                 </Button>
