@@ -1,5 +1,5 @@
 import { fetchClient } from '@/lib/fetchClient'
-import type { Notification } from '@/types/Notification'
+import type { NotifiacationStore, Notification } from '@/types/Notification'
 
 export const notificationsApi = {
     createNotification: (data: FormData): Promise<{ data: any; message: string }> => {
@@ -9,7 +9,7 @@ export const notificationsApi = {
         })
     },
 
-    getNotifications: (): Promise<{ data: Notification[]; message: string }> => {
+    getNotifications: (): Promise<{ data: NotifiacationStore; message: string }> => {
         return fetchClient(`/notification`, {
             method: 'GET',
         })

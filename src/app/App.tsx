@@ -4,16 +4,14 @@ import { RouterProvider } from "react-router-dom";
 // import { useUser } from "@/features/auth/hooks/useUser"
 // import { Loader2 } from "lucide-react"
 // import ErrorState from "./pages/ErrorState"
+// import NoiseOverlay from "@/landing/components/fx/NoiseOverlay"
 
 const AppContent = () => {
-  // isLoading is true while fetching the initial session, false otherwise.
-  return (
-    <div className="realtive">
-      {/* <NoiseOverlay opacity={0.09} /> */}
-      <RouterProvider router={router} />
-    </div>
-  );
-};
+    // isLoading is true while fetching the initial session, false otherwise.
+    return (
+        <RouterProvider router={router} />
+    )
+}
 
 const App = () => {
   return (

@@ -2,9 +2,12 @@ import DashboardHeader from "@/components/layout/DahsboardHeader"
 import { DataTable } from "../components/data-table"
 import { columns } from "../components/columns"
 import { useFileMovements } from "../hooks/useFileMovements"
-import { Loader2 } from "lucide-react"
+import { useFileMovementsReport } from "../hooks/useFileMovementsReport"
+import { Loader2, FileText } from "lucide-react"
 import { usePermission } from "@/hooks/usePermission"
 import { ACTIONS } from "@/constants/permissions"
+import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
 
@@ -18,7 +21,9 @@ import type { FileMovementStatistics } from "@/types/FileMovments"
  */
 const FileMovements = () => {
     const { data, isPending, isError } = useFileMovements()
+    const { refetch: getMovementsReports, isFetching: isMovementsReportsLoading } = useFileMovementsReport()
     const canView = usePermission(ACTIONS.VIEW_FILE_MOVEMENT)
+    const canViewReport = usePermission(ACTIONS.VIEW_REPORT)
 
     if (!canView) return <Unauthorized />
 
@@ -27,6 +32,15 @@ const FileMovements = () => {
     }
     const fileMovements = data?.data?.filesMovements || []
     const statistics = data?.data?.statistics
+
+    const handleMovementsReport = async () => {
+        const result = await getMovementsReports()
+        if (result.data?.data?.report_url) {
+            window.open(result.data.data.report_url, '_blank', 'noopener,noreferrer')
+        } else {
+            toast.error("تعذر الحصول على التقرير")
+        }
+    }
 
     return (
         <>
@@ -44,6 +58,21 @@ const FileMovements = () => {
                         <div className="w-full">
                             <FileMovementStatisticsCards statistics={statistics as FileMovementStatistics} />
                         </div>
+                        {canViewReport && (
+                            <div className="flex justify-end mb-3">
+                                <Button
+                                    onClick={handleMovementsReport}
+                                    disabled={isMovementsReportsLoading}
+                                >
+                                    {isMovementsReportsLoading ? (
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                    ) : (
+                                        <FileText className="h-4 w-4" />
+                                    )}
+                                    <span className="mr-2">تقرير الحركات</span>
+                                </Button>
+                            </div>
+                        )}
                         <DataTable columns={columns} data={fileMovements} />
                     </>
                 )}

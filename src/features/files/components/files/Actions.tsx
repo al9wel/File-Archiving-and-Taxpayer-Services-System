@@ -1,9 +1,10 @@
 import { useState } from "react"
 import type { File } from "@/types/File"
 import { useDeleteFile } from "../../hooks/files/useDeleteFile"
+import { useFileReport } from "../../hooks/files/useFileReport"
 import { NavLink } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { Eye, Pencil, Trash2, Loader2, AlertTriangle } from "lucide-react"
+import { Eye, FileText, Pencil, Trash2, Loader2, AlertTriangle } from "lucide-react"
 import { ROUTES } from "@/constants/routes"
 import { toast } from "sonner"
 import {
@@ -23,9 +24,11 @@ import { usePermission } from "@/hooks/usePermission"
 export const Actions = ({ file }: { file: File['fileInfo'] }) => {
     const [isOpen, setIsOpen] = useState(false)
     const deleteFile = useDeleteFile()
+    const { refetch: getFileReport, isFetching: isFileReportLoading } = useFileReport(file.id)
     const canUpdate = usePermission(ACTIONS.UPDATE_FILE);
     const canDelete = usePermission(ACTIONS.DELETE_FILE);
     const canView = usePermission(ACTIONS.VIEW_FILE);
+    const canViewReport = usePermission(ACTIONS.VIEW_REPORT);
 
     const handleDelete = () => {
         deleteFile.mutate(file.id, {
@@ -39,8 +42,33 @@ export const Actions = ({ file }: { file: File['fileInfo'] }) => {
         })
     }
 
+    const handleFileReport = async () => {
+        const result = await getFileReport()
+        if (result.data?.data?.report_url) {
+            window.open(result.data.data.report_url, '_blank', 'noopener,noreferrer')
+        } else {
+            toast.error("تعذر الحصول على تقرير الملف")
+        }
+    }
+
     return (
         <div className="flex items-center justify-center gap-2">
+            {canViewReport && (
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-emerald-600"
+                    onClick={handleFileReport}
+                    disabled={isFileReportLoading}
+                    title="تقرير الملف"
+                >
+                    {isFileReportLoading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                        <FileText className="h-4 w-4" />
+                    )}
+                </Button>
+            )}
             {canView && (
                 <NavLink to={ROUTES.DASHBOARD.FILES_SHOW.replace(":id", file.id.toString())}>
                     <Button variant="ghost" size="icon" className="h-8 w-8 text-primary">
