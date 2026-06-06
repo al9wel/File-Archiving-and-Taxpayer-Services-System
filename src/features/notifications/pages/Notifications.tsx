@@ -15,6 +15,7 @@ import { NotificationStatisticsCards } from "../components/NotificationStatistic
 const NotificationsPage = () => {
     const { data, isPending, isError } = useNotifications()
     const canView = usePermission(ACTIONS.VIEW_NOTIFICATION)
+    console.log("Notifications data:", data)
 
     if (!canView) return <Unauthorized />
 
@@ -36,7 +37,7 @@ const NotificationsPage = () => {
                 ) : (
                     <>
                         <NotificationStatisticsCards />
-                        <NotificationsList notifications={data?.data || []} />
+                        <NotificationsList notifications={data?.data.notifications || []} />
                     </>
                 )}
             </div>
