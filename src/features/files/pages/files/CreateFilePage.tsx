@@ -1,6 +1,6 @@
 import { FileForm } from "../../components/files/FileForm"
 import { useCreateFile } from "../../hooks/files/useCreateFile"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { toast } from "sonner"
 import { usePermission } from "@/hooks/usePermission"
@@ -13,14 +13,13 @@ import Unauthorized from "@/app/pages/Unauthorized"
  */
 const CreateFilePage = () => {
     const navigate = useNavigate()
-    const location = useLocation()
+    const [searchParams] = useSearchParams()
     const { mutate: createFile, isPending } = useCreateFile()
     const canCreate = usePermission(ACTIONS.CREATE_FILE)
 
-    const state = location.state as { requestId?: number; taxPayerId?: string | number } | null
-    const requestId = state?.requestId ?? null
-    const taxPayerId = state?.taxPayerId ?? null
-    console.log("CreateFilePage received state:", taxPayerId)
+    const requestId = searchParams.get("requestId") || null
+    const taxPayerId = searchParams.get("taxPayerId") || null
+    console.log("CreateFilePage - requestId:", requestId, "taxPayerId:", taxPayerId)
     const handleSubmit = (formData: FormData) => {
         createFile(formData, {
             onSuccess: (res) => {

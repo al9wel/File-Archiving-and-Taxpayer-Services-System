@@ -53,7 +53,7 @@ interface FileFormProps {
     onSubmit: (data: FormData) => void
     isLoading?: boolean
     initialTaxPayerId?: string | number | null
-    requestId?: number | null
+    requestId?: string | number | null
 }
 export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, requestId }: FileFormProps) => {
     const { user } = useAuth()

@@ -7,7 +7,7 @@ import { ROUTES } from "@/constants/routes";
 
 const navLinks = [
     { label: "الرئيسية", to: ROUTES.PUBLIC.HOME },
-    { label: "عن النظام", to: ROUTES.PUBLIC.ABOUT },
+    // { label: "عن النظام", to: ROUTES.PUBLIC.ABOUT },
 ];
 
 export default function LandingNavbar() {
@@ -37,7 +37,7 @@ export default function LandingNavbar() {
                 }`}
             style={
                 scrolled
-                    ? { backgroundColor: "rgba(212,205,195,0.9)", borderColor: "var(--landing-line)" }
+                    ? { backgroundColor: "color-mix(in srgb, var(--landing-bg-soft) 90%, transparent)", borderColor: "var(--landing-line)" }
                     : {}
             }
         >

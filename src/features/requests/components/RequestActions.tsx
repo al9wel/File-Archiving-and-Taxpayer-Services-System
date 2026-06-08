@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { ROUTES } from "@/constants/routes";
 import { Check, FilePlus, Loader2, X } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useApproveRequest } from "../hooks/useApproveRequest";
 import { useRejectRequest } from "../hooks/useRejectRequest";
 
@@ -111,17 +111,13 @@ const RequestActions = ({
           )}
 
           {status === "Confirmed" && (
-            <Button
-              onClick={() =>
-                navigate(ROUTES.DASHBOARD.FILES_CREATE, {
-                  state: { requestId, taxPayerId },
-                })
-              }
+            <NavLink
+              to={ROUTES.DASHBOARD.FILES_CREATE + "?requestId=" + requestId + "&taxPayerId=" + taxPayerId}
               className="rounded-xl h-12 px-6 font-bold cursor-pointer hover:bg-primary-hover shadow-md shadow-primary/10"
             >
               <FilePlus className="ml-2 size-4" />
               إنشاء ملف لهذا الطلب
-            </Button>
+            </NavLink>
           )}
 
           {(status === "Archived" || status === "Rejected") && (

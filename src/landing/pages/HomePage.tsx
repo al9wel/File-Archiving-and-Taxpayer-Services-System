@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import NoiseOverlay from "../components/fx/NoiseOverlay";
 
 const HeroExperience = lazy(() => import("@/landing/components/sections/HeroExperience"));
 const SystemFlow = lazy(() => import("@/landing/components/sections/SystemFlow"));
@@ -19,7 +20,7 @@ function SectionFallback() {
 const HomePage = () => {
     return (
         <div className="relative text-[var(--landing-text)]/80" style={{ backgroundColor: "var(--landing-bg)" }} dir="rtl">
-            {/* <NoiseOverlay opacity={0.1} /> */}
+            <NoiseOverlay opacity={0.05} />
 
             <Suspense fallback={<SectionFallback />}>
                 <HeroExperience />
