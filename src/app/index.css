@@ -49,14 +49,13 @@
   --radius: 0.625rem;
 
   /* ── Landing Page — Light Theme ── */
-  --landing-bg: #c4bcb3;
-  --landing-bg-soft: #d4cdc3;
-  --landing-bg-deep: #b5aca1;
+  --landing-bg: #f7f7f6;
+  --landing-bg-soft: #ffffff;
+  --landing-bg-deep: #d4cdc3;
   --landing-text: #1a1815;
   --landing-text-muted: #5a5249;
   --landing-accent: color-mix(in oklab, var(--primary) 90%, white 10%);
-  --landing-accent-glow: color-mix(in oklab, var(--primary) 30%, white 70%) /
-    0.35;
+  --landing-accent-glow: color-mix(in oklab, var(--primary) 30%, white 70%) / 0.35;
   --landing-accent-2: color-mix(in oklab, var(--primary) 85%, white 15%);
   --landing-line: rgba(26, 24, 21, 0.08);
 }
@@ -105,8 +104,7 @@
   --landing-text: #e8e2da;
   --landing-text-muted: #a0988e;
   --landing-accent: color-mix(in oklab, var(--primary) 85%, black 15%);
-  --landing-accent-glow: color-mix(in oklab, var(--primary) 40%, black 60%) /
-    0.45;
+  --landing-accent-glow: color-mix(in oklab, var(--primary) 40%, black 60%) / 0.45;
   --landing-accent-2: color-mix(in oklab, var(--primary) 80%, black 20%);
   --landing-line: rgba(232, 226, 218, 0.08);
 }
@@ -176,11 +174,9 @@
   body {
     @apply font-sans text-foreground;
     background-color: var(--background);
-    background-image: radial-gradient(
-      ellipse at 50% 0%,
-      oklch(0.85 0.025 75 / 0.12),
-      transparent 65%
-    );
+    background-image: radial-gradient(ellipse at 50% 0%,
+        oklch(0.85 0.025 75 / 0.12),
+        transparent 65%);
     scrollbar-width: thin;
     scrollbar-color: var(--primary) transparent;
     scrollbar-behavior: smooth;
@@ -253,6 +249,7 @@
 }
 
 @layer utilities {
+
   :root:not(.dark) .bg-card,
   :root:not(.dark) .bg-popover {
     background-color: #ffffff;

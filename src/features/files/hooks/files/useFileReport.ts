@@ -1,11 +1,8 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { fileReportApi } from "../../api/fileReportApi"
 
-export const useFileReport = (id: string | number) => {
-    return useQuery({
-        queryKey: ["files", "report", id],
-        queryFn: async () => fileReportApi.getFileReport(id),
-        enabled: false,
-        retry: false,
+export const useFileReport = () => {
+    return useMutation({
+        mutationFn: (id: string | number) => fileReportApi.getFileReport(id),
     })
 }

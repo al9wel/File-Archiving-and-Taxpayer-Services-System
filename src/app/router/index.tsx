@@ -43,7 +43,7 @@ import OperationReports from "@/features/operation-reports/pages/OperationReport
 import { createBrowserRouter, Navigate } from "react-router-dom"
 import LandingLayout from "@/landing/layouts/LandingLayout";
 import HomePage from "@/landing/pages/HomePage";
-import AboutPage from "@/landing/pages/AboutPage";
+// import AboutPage from "@/landing/pages/AboutPage";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import Unauthorized from "@/app/pages/Unauthorized";
@@ -92,7 +92,7 @@ export const router = createBrowserRouter([
         errorElement: <AppErrorBoundary />,
         children: [
             { index: true, element: <HomePage /> },
-            { path: ROUTES.PUBLIC.ABOUT.split("/").pop(), element: <AboutPage /> },
+            // { path: ROUTES.PUBLIC.ABOUT.split("/").pop(), element: <AboutPage /> },
         ]
     },
     {

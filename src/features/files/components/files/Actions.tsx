@@ -24,7 +24,7 @@ import { usePermission } from "@/hooks/usePermission"
 export const Actions = ({ file }: { file: File['fileInfo'] }) => {
     const [isOpen, setIsOpen] = useState(false)
     const deleteFile = useDeleteFile()
-    const { refetch: getFileReport, isFetching: isFileReportLoading } = useFileReport(file.id)
+    const { mutateAsync: getFileReport, isPending: isFileReportLoading } = useFileReport()
     const canUpdate = usePermission(ACTIONS.UPDATE_FILE);
     const canDelete = usePermission(ACTIONS.DELETE_FILE);
     const canView = usePermission(ACTIONS.VIEW_FILE);
@@ -43,11 +43,23 @@ export const Actions = ({ file }: { file: File['fileInfo'] }) => {
     }
 
     const handleFileReport = async () => {
-        const result = await getFileReport()
-        if (result.data?.data?.report_url) {
-            window.open(result.data.data.report_url, '_blank', 'noopener,noreferrer')
-        } else {
-            toast.error("تعذر الحصول على تقرير الملف")
+        try {
+            const response = await getFileReport(file.id)
+
+            const reportUrl = response?.data?.report_url
+
+            if (!reportUrl) {
+                toast.error("تعذر الحصول على رابط التقرير")
+                return
+            }
+
+            window.open(
+                reportUrl,
+                "_blank",
+                "noopener,noreferrer"
+            )
+        } catch {
+            toast.error("حدث خطأ أثناء إنشاء التقرير")
         }
     }
 

@@ -1,7 +1,7 @@
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { useEffect, memo } from "react";
 import { ChevronDown } from "lucide-react";
-import ParticlesField from "@/landing/components/fx/ParticlesField";
+// import ParticlesField from "@/landing/components/fx/ParticlesField";
 import { HERO_CONTENT } from "@/landing/content/hero";
 
 const primaryColor = "var(--color-primary)";
@@ -88,7 +88,7 @@ export default function HeroExperience() {
                 <div className="absolute inset-0" style={{ backgroundImage: `linear-gradient(var(--landing-line) 1px, transparent 1px), linear-gradient(90deg, var(--landing-line) 1px, transparent 1px)`, backgroundSize: "80px 80px" }} />
             </div>
 
-            <ParticlesField count={35} />
+            {/* <ParticlesField count={35} /> */}
             <FloatingDocs />
 
             {/* CREATIVE CASCADE — two stacked right, one balanced left */}

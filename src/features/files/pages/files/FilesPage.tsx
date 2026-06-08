@@ -10,14 +10,9 @@ import { toast } from "sonner"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
 
-/**
- * Main Files Management page.
- * Displays a list of all system files in a searchable DataTable and provides
- * access to create, view, edit, and delete operations.
- */
 const FilesPage = () => {
     const { data, isPending, isError } = useFiles()
-    const { refetch: getFilesReports, isFetching: isFilesReportsLoading } = useFilesReports()
+    const { mutateAsync: getFilesReports, isPending: isFilesReportsLoading } = useFilesReports()
     const canView = usePermission(ACTIONS.VIEW_FILE)
     const canViewReport = usePermission(ACTIONS.VIEW_REPORT)
 
@@ -28,11 +23,23 @@ const FilesPage = () => {
     }
 
     const handleFilesReport = async () => {
-        const result = await getFilesReports()
-        if (result.data?.data?.report_url) {
-            window.open(result.data.data.report_url, '_blank', 'noopener,noreferrer')
-        } else {
-            toast.error("تعذر الحصول على التقرير")
+        try {
+            const response = await getFilesReports()
+
+            const reportUrl = response?.data?.report_url
+
+            if (!reportUrl) {
+                toast.error("تعذر الحصول على رابط التقرير")
+                return
+            }
+
+            window.open(
+                reportUrl,
+                "_blank",
+                "noopener,noreferrer"
+            )
+        } catch {
+            toast.error("حدث خطأ أثناء إنشاء التقرير")
         }
     }
 
