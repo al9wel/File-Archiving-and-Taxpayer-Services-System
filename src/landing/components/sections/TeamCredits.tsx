@@ -3,11 +3,11 @@ import { User, Code2, Server, Smartphone, Palette } from "lucide-react";
 import SectionLabel from "@/landing/components/shared/SectionLabel";
 
 const team = [
-    { role: "مدير المشروع", name: "أحمد الوائلي", icon: User, accent: "var(--landing-accent)" },
-    { role: "مطور واجهات أمامية", name: "محمد السياغي", icon: Code2, accent: "#2e6b5e" },
-    { role: "مطور خلفية", name: "عبدالرحمن الحمادي", icon: Server, accent: "#5b4a8a" },
-    { role: "مطور تطبيقات جوالة", name: "علي الطيب", icon: Smartphone, accent: "#b8862d" },
-    { role: "مصمم واجهات", name: "يوسف الحاج", icon: Palette, accent: "#3a6b8a" },
+    { role: "مدير المشروع", name: "حمزة يحيى الوجيه", icon: User, accent: "var(--landing-accent)" },
+    { role: "مطور واجهات أمامية", name: "سالم أحمد الصويل", icon: Code2, accent: "#2e6b5e" },
+    { role: "مطور خلفية", name: "عبدالله سالم باوزير", icon: Server, accent: "#5b4a8a" },
+    { role: "مطور تطبيقات جوالة", name: "موسى سعيد المعلم", icon: Smartphone, accent: "#b8862d" },
+    { role: "مصمم واجهات", name: "عمر خالد القعيطي", icon: Palette, accent: "#3a6b8a" },
 ];
 
 export default function TeamCredits() {
