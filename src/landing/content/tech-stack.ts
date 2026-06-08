@@ -1,4 +1,4 @@
-import { SiReact, SiTypescript, SiTailwindcss, SiDotnet, SiFlutter, SiShadcnui } from "react-icons/si";
+import { SiReact, SiTypescript, SiTailwindcss, SiLaravel, SiFlutter, SiShadcnui } from "react-icons/si";
 import type { IconType } from "react-icons";
 
 export type TechCategory = "frontend" | "backend" | "database" | "mobile" | "tools";
@@ -20,10 +20,11 @@ export const TECH_ITEMS: TechItem[] = [
     { name: "Tailwind CSS", icon: SiTailwindcss, color: "#06B6D4", category: "frontend" },
     { name: "Shadcn UI", icon: SiShadcnui, color: "#000000", category: "frontend" },
     { name: "Framer Motion", icon: null, color: "#0055FF", category: "frontend" },
-    { name: "Laravel", icon: SiDotnet, color: "#512BD4", category: "backend" },
-    { name: "Sanctum", icon: null, color: "#6B4FBB", category: "backend" },
-    { name: "My Sql", icon: null, color: "#CC2927", category: "database" },
+    { name: "Laravel", icon: SiLaravel, color: "#512BD4", category: "backend" },
+    { name: "PHP", icon: null, color: "#6B4FBB", category: "backend" },
+    { name: "MySQL", icon: null, color: "#CC2927", category: "database" },
     { name: "Flutter", icon: SiFlutter, color: "#02569B", category: "mobile" },
+    { name: "Dart", icon: SiFlutter, color: "#02569B", category: "mobile" },
     { name: "Git", icon: null, color: "#F05033", category: "tools" },
     { name: "GitHub", icon: null, color: "#2496ED", category: "tools" },
 ];
@@ -32,7 +33,7 @@ export const TECH_CATEGORIES: Record<TechCategory, { label: string; dot: string;
     frontend: { label: "الواجهة الأمامية", dot: "#61DAFB", desc: "أطر العمل والمكتبات التي تشغل تجربة المستخدم." },
     backend: { label: "الخلفية", dot: "#512BD4", desc: "البنية التحتية للخدمات والمنطق." },
     database: { label: "قواعد البيانات", dot: "#CC2927", desc: "أنظمة التخزين وإدارة البيانات." },
-    mobile: { label: "التطبيقات الجوالة", dot: "#02569B", desc: "منصات التطوير للأجهزة المحمولة." },
+    mobile: { label: "التطبيقات الجوال", dot: "#02569B", desc: "منصات التطوير للأجهزة المحمولة." },
     tools: { label: "الأدوات", dot: "#F05033", desc: "أدوات التحكم بالإصدارات والتشغيل." },
 };
 
