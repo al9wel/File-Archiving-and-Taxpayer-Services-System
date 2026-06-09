@@ -11,8 +11,7 @@ export default function DashboardNavBar() {
     const { theme, setTheme } = useTheme()
     const { user } = useAuth()
 
-    const toggleTheme = () =>
-        setTheme(theme === "light" ? "dark" : "light")
+    const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light")
 
 
 

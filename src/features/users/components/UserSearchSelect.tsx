@@ -44,6 +44,7 @@ export function UserSearchSelect({
   const { data: queryData, isPending, isError } = useSearchUsers(debouncedSearch);
 
   const data = queryData?.data?.users || [];
+  const users = returnValue === "id" ? data?.filter((user: User) => user.role === "Tax_Payer") : data;
 
   const getReturnedValue = (user: User) => {
     return returnValue === "phone" ? (user.phone || "") : user.id;
@@ -102,7 +103,7 @@ export function UserSearchSelect({
 
             {!isPending &&
               !isError &&
-              data?.filter((user: User) => user.role === "Tax_Payer").map((user: User) => (
+              users.map((user: User) => (
                 <CommandItem
                   key={user.id}
                   value={getUserLabel(user)}

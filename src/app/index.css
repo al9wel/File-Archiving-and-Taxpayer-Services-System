@@ -49,9 +49,9 @@
   --radius: 0.625rem;
 
   /* ── Landing Page — Light Theme ── */
-  --landing-bg: #f7f7f6;
-  --landing-bg-soft: #ffffff;
-  --landing-bg-deep: #d4cdc3;
+  --landing-bg: #c4bcb3;
+  --landing-bg-soft: #d4cdc3;
+  --landing-bg-deep: #b5aca1;
   --landing-text: #1a1815;
   --landing-text-muted: #5a5249;
   --landing-accent: color-mix(in oklab, var(--primary) 90%, white 10%);
@@ -61,52 +61,54 @@
 }
 
 .dark {
-  /* ── Dashboard & Global — Dark Theme (Warm Earthy) ── */
-  --background: oklch(0.18 0.02 55);
-  --foreground: oklch(0.88 0.01 75);
-  --card: oklch(0.23 0.015 55);
-  --card-foreground: oklch(0.88 0.01 75);
-  --popover: oklch(0.23 0.015 55);
-  --popover-foreground: oklch(0.88 0.01 75);
-  --primary: oklch(0.58 0.183 28.1);
+  /* ── Dashboard & Global — Dark Theme (Balanced Charcoal) ── */
+  --background: #11151a;
+  --foreground: #f2f4f7;
+  --card: #181d24;
+  --card-foreground: #f2f4f7;
+  --popover: #181d24;
+  --popover-foreground: #f2f4f7;
+  --primary: oklch(0.52 0.17 26.43);
+  --primary-hover: oklch(57.508% 0.2171 27.534);
   --primary-foreground: #ffffff;
-  --secondary: oklch(0.28 0.015 55);
-  --secondary-foreground: oklch(0.88 0.01 75);
-  --muted: oklch(0.25 0.015 55);
-  --muted-foreground: oklch(0.65 0.015 70);
-  --accent: oklch(0.28 0.015 55);
-  --accent-foreground: oklch(0.88 0.01 75);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.32 0.02 55 / 0.4);
-  --input: oklch(0.28 0.015 55);
-  --ring: oklch(0.58 0.183 28.1);
-  --chart-1: oklch(0.58 0.183 28.1);
-  --chart-2: oklch(0.5 0.12 180);
-  --chart-3: oklch(0.6 0.13 250);
-  --chart-4: oklch(0.62 0.15 85);
-  --chart-5: oklch(0.58 0.16 40);
-  --chart-6: oklch(0.65 0.14 290);
-  --chart-7: oklch(0.55 0.02 50);
-  --sidebar: oklch(0.21 0.015 55);
-  --sidebar-foreground: oklch(0.88 0.01 75);
-  --sidebar-primary: oklch(0.58 0.183 28.1);
+  --secondary: #202731;
+  --secondary-foreground: #e7ebf0;
+  --muted: #202731;
+  --muted-foreground: #9ba6b4;
+  --accent: #252d38;
+  --accent-foreground: #f2f4f7;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #2b3440;
+  --input: #2b3440;
+  --ring: oklch(0.52 0.17 26.43);
+  --chart-1: oklch(0.55 0.18 28);
+  --chart-2: #2dd4bf;
+  --chart-3: #93c5fd;
+  --chart-4: #facc15;
+  --chart-5: #fb7185;
+  --chart-6: #a78bfa;
+  --chart-7: #94a3b8;
+  --sidebar: #0f1319;
+  --sidebar-foreground: #e7ebf0;
+  --sidebar-primary: oklch(0.52 0.17 26.43);
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: oklch(0.58 0.183 28.1);
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: oklch(0.32 0.02 55 / 0.4);
-  --sidebar-ring: oklch(0.58 0.183 28.1);
+  --sidebar-accent: #1d242d;
+  --sidebar-accent-foreground: #f2f4f7;
+  --sidebar-border: #27313d;
+  --sidebar-ring: oklch(0.52 0.17 26.43);
   --radius: 0.625rem;
 
   /* ── Landing Page — Dark Theme (overrides for dark mode) ── */
-  --landing-bg: #2a2723;
-  --landing-bg-soft: #35312d;
-  --landing-bg-deep: #1f1d1a;
-  --landing-text: #e8e2da;
-  --landing-text-muted: #a0988e;
-  --landing-accent: color-mix(in oklab, var(--primary) 85%, black 15%);
-  --landing-accent-glow: color-mix(in oklab, var(--primary) 40%, black 60%) / 0.45;
-  --landing-accent-2: color-mix(in oklab, var(--primary) 80%, black 20%);
-  --landing-line: rgba(232, 226, 218, 0.08);
+  --landing-bg: #11151a;
+  --landing-bg-soft: #181d24;
+  --landing-bg-deep: #0b0f14;
+  --landing-text: #f2f4f7;
+  --landing-text-muted: #9ba6b4;
+  --landing-accent: var(--primary);
+  --landing-accent-glow: oklch(0.52 0.17 26.43 / 0.32);
+  --landing-accent-2: var(--primary-hover);
+  --landing-line: rgba(242, 244, 247, 0.1);
 }
 
 @theme inline {
@@ -174,9 +176,7 @@
   body {
     @apply font-sans text-foreground;
     background-color: var(--background);
-    background-image: radial-gradient(ellipse at 50% 0%,
-        oklch(0.85 0.025 75 / 0.12),
-        transparent 65%);
+    background-image: none;
     scrollbar-width: thin;
     scrollbar-color: var(--primary) transparent;
     scrollbar-behavior: smooth;

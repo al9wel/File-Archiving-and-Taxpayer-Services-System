@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 import TaxLogo from "@/assets/images/TaxLogo.png";
 import { useAuth } from "@/hooks/useAuth";
 import { ROUTES } from "@/constants/routes";
+import { Button } from "@/components/ui/button";
+import { useTheme } from "@/hooks/useTheme";
 
 const navLinks = [
     { label: "الرئيسية", to: ROUTES.PUBLIC.HOME },
@@ -15,6 +17,8 @@ export default function LandingNavbar() {
     const [scrolled, setScrolled] = useState(false);
     const location = useLocation();
     const { isAuthenticated } = useAuth();
+    const { theme, setTheme } = useTheme()
+    const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light")
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -78,6 +82,7 @@ export default function LandingNavbar() {
                             style={{ backgroundColor: "var(--landing-accent)" }}
                         >
                             لوحة التحكم
+
                         </NavLink>
                     ) : (
                         <NavLink
@@ -88,7 +93,18 @@ export default function LandingNavbar() {
                             تسجيل الدخول
                         </NavLink>
                     )}
-
+                    <Button
+                        onClick={toggleTheme}
+                        className="rounded-full p-5 duration-300 cursor-pointer"
+                        variant="outline"
+                        size="icon"
+                    >
+                        {theme === "light" ? (
+                            <Moon className="size-5 text-foreground/90" />
+                        ) : (
+                            <Sun className="size-5 text-foreground/90" />
+                        )}
+                    </Button>
                     {/* Mobile toggle */}
                     <button
                         onClick={() => setMobileOpen(!mobileOpen)}

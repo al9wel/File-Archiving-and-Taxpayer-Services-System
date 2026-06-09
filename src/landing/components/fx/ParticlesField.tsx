@@ -9,12 +9,11 @@ interface Particle {
     speedX: number;
     speedY: number;
     opacity: number;
-    hue: number;
 }
 
 export default function ParticlesField({
     count = 40,
-    accentColor = "34, 89%, 50%",
+    accentColor = "26, 72%, 52%",
     className = "",
 }: {
     count?: number;
@@ -46,7 +45,6 @@ export default function ParticlesField({
             speedX: (Math.random() - 0.5) * 0.3,
             speedY: (Math.random() - 0.5) * 0.3,
             opacity: Math.random() * 0.5 + 0.1,
-            hue: Math.random() * 30 + 20,
         }));
 
         const animate = () => {
@@ -71,7 +69,7 @@ export default function ParticlesField({
 
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fillStyle = `hsla(${p.hue}, 89%, 50%, ${p.opacity})`;
+                ctx.fillStyle = `hsla(${accentColor}, ${p.opacity})`;
                 ctx.fill();
 
                 for (let j = i + 1; j < particlesRef.current.length; j++) {
@@ -83,7 +81,7 @@ export default function ParticlesField({
                         ctx.beginPath();
                         ctx.moveTo(p.x, p.y);
                         ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `hsla(${p.hue}, 89%, 50%, ${0.08 * (1 - dist2 / 100)})`;
+                        ctx.strokeStyle = `hsla(${accentColor}, ${0.08 * (1 - dist2 / 100)})`;
                         ctx.lineWidth = 0.5;
                         ctx.stroke();
                     }
@@ -105,7 +103,7 @@ export default function ParticlesField({
             window.removeEventListener("resize", resize);
             window.removeEventListener("mousemove", handleMouse);
         };
-    }, [count]);
+    }, [accentColor, count]);
 
     return (
         <canvas
