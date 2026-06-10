@@ -7,101 +7,66 @@ import ChatHeader from "../components/ChatHeader"
 import ChatInput from "../components/ChatInput"
 import ChatMessage from "../components/ChatMessage"
 import EmptyConversationState from "../components/EmptyConversationState"
-import TypingIndicator from "../components/TypingIndicator"
-import type { CustomerServiceConversation } from "../types/CustomerService"
 import { ArrowRight } from "lucide-react"
 import { Link, useParams } from "react-router-dom"
-
-const conversations: CustomerServiceConversation[] = [
-    {
-        id: "CS-1024",
-        customerName: "أحمد محمد صالح",
-        customerInitials: "أم",
-        lastMessage: "أرغب في معرفة حالة الملف الضريبي وآخر إجراء تم عليه.",
-        date: "2026-06-06",
-        unreadCount: 3,
-        status: "Open",
-        messages: [
-            {
-                id: "msg-1",
-                sender: "customer",
-                content: "مرحباً، أرغب في معرفة حالة الملف الضريبي وآخر إجراء تم عليه.",
-                time: "09:12",
-            },
-            {
-                id: "msg-2",
-                sender: "agent",
-                content: "مرحباً أستاذ أحمد، تم استلام طلبك وسيتم التحقق من حالة الملف.",
-                time: "09:15",
-            },
-            {
-                id: "msg-3",
-                sender: "customer",
-                content: "شكراً لك. هل توجد مستندات ناقصة حالياً؟",
-                time: "09:17",
-            },
-        ],
-    },
-    {
-        id: "CS-1025",
-        customerName: "شركة النور التجارية",
-        customerInitials: "شن",
-        lastMessage: "تم رفع المستندات المطلوبة ونحتاج تأكيد الاستلام.",
-        date: "2026-06-05",
-        unreadCount: 1,
-        status: "Pending",
-        messages: [
-            {
-                id: "msg-1",
-                sender: "customer",
-                content: "تم رفع المستندات المطلوبة ونحتاج تأكيد الاستلام.",
-                time: "14:30",
-            },
-            {
-                id: "msg-2",
-                sender: "agent",
-                content: "شكراً لكم، سيتم مراجعة المستندات والرد عليكم قريباً.",
-                time: "14:42",
-            },
-        ],
-    },
-    {
-        id: "CS-1026",
-        customerName: "سارة عبد الله",
-        customerInitials: "سع",
-        lastMessage: "شكراً لكم، تم حل المشكلة.",
-        date: "2026-06-04",
-        unreadCount: 0,
-        status: "Closed",
-        messages: [
-            {
-                id: "msg-1",
-                sender: "customer",
-                content: "واجهت مشكلة في متابعة الطلب من لوحة المكلف.",
-                time: "11:05",
-            },
-            {
-                id: "msg-2",
-                sender: "agent",
-                content: "تم تحديث حالة الطلب ويمكنك المتابعة الآن.",
-                time: "11:18",
-            },
-            {
-                id: "msg-3",
-                sender: "customer",
-                content: "شكراً لكم، تم حل المشكلة.",
-                time: "11:24",
-            },
-        ],
-    },
-]
+import { useChat } from "../hooks/useChat"
+import { useMessages } from "../hooks/useMessages"
+import { useSendMessage } from "../hooks/useSendMessage"
+import { useEffect, useRef } from "react"
+import { Loader2 } from "lucide-react"
+import ErrorState from "@/app/pages/ErrorState"
+import { toast } from "sonner"
 
 const ConversationDetailsPage = () => {
     const { conversationId } = useParams()
     const canView = usePermission(ACTIONS.VIEW_CUSTOMER_SERVICE)
-    const conversation = conversations.find((item) => item.id === conversationId) || conversations[0]
+
+    const { data: conversation, isPending: chatLoading, isError: chatError } = useChat(conversationId)
+    const { data: messages, isPending: messagesLoading, isError: messagesError } = useMessages(conversationId)
+    const { mutate: sendMessage, isPending: isSending } = useSendMessage()
+
+    const messagesEndRef = useRef<HTMLDivElement>(null)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    }
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [messages])
 
     if (!canView) return <Unauthorized />
+
+
+    if (chatLoading || messagesLoading) {
+        return (
+            <div className="flex flex-col h-[400px] w-full items-center justify-center space-y-4">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-muted-foreground animate-pulse">جاري جلب تفاصيل المحادثة...</p>
+            </div>
+        )
+    }
+
+    if (chatError || messagesError || !conversation) {
+        return <ErrorState />
+    }
+    const userName = conversation?.userName || 'مستخدم غير معروف'
+    const initials = userName !== 'مستخدم غير معروف'
+        ? userName.split(' ').map(n => n[0]).join('').substring(0, 2)
+        : 'U';
+
+    const handleSendMessage = (messageText: string) => {
+        if (conversationId) {
+            sendMessage(
+                { chatId: conversationId, message: messageText },
+                {
+                    onError: (error: any) => {
+                        toast.error(error.message || "فشل إرسال الرسالة")
+                    }
+                }
+            )
+        }
+    }
 
     return (
         <div className="flex h-[calc(100vh-96px)] w-full flex-col px-3 py-3 animate-in fade-in duration-500" dir="rtl">
@@ -116,26 +81,25 @@ const ConversationDetailsPage = () => {
 
             <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-muted/25 shadow-sm">
                 <ChatHeader
-                    customerName={conversation.customerName}
-                    customerInitials={conversation.customerInitials}
-                    conversationId={conversation.id}
-                    status={conversation.status}
+                    customerName={userName}
+                    customerInitials={initials}
+                    conversationId={conversation.userId || conversation.id}
                 />
 
                 <div className="min-h-0 flex-1 overflow-y-auto bg-muted/30 p-4 md:p-6">
-                    {conversation.messages.length ? (
+                    {messages.length ? (
                         <div className="mx-auto flex max-w-5xl flex-col gap-4">
-                            {conversation.messages.map((message) => (
+                            {messages.map((message) => (
                                 <ChatMessage key={message.id} message={message} />
                             ))}
-                            {conversation.status === "Open" && <TypingIndicator />}
+                            <div ref={messagesEndRef} />
                         </div>
                     ) : (
                         <EmptyConversationState title="لا توجد رسائل بعد" />
                     )}
                 </div>
 
-                <ChatInput />
+                <ChatInput onSendMessage={handleSendMessage} isSending={isSending} />
             </div>
         </div>
     )
