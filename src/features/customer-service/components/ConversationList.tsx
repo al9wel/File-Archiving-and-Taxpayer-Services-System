@@ -1,14 +1,24 @@
 import { MessageSquareText, Search } from "lucide-react"
-import type { CustomerServiceConversation } from "../types/CustomerService"
+import type { Chat } from "@/types/CustomerService"
 import ConversationCard from "./ConversationCard"
 import EmptyConversationState from "./EmptyConversationState"
 import { Input } from "@/components/ui/input"
+import { useState, useMemo } from "react"
 
 interface ConversationListProps {
-    conversations: CustomerServiceConversation[]
+    conversations: Chat[]
 }
 
 const ConversationList = ({ conversations }: ConversationListProps) => {
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const filteredConversations = useMemo(
+        () => conversations.filter((conv) =>
+            conv.userName?.toLowerCase().includes(searchQuery.toLowerCase())
+        ),
+        [conversations, searchQuery]
+    );
+
     if (!conversations.length) {
         return <EmptyConversationState title="لا توجد محادثات حالياً" />
     }
@@ -28,12 +38,17 @@ const ConversationList = ({ conversations }: ConversationListProps) => {
                     </div>
                     <div className="relative w-full md:w-80">
                         <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
-                        <Input className="h-10 rounded-xl bg-background pr-9" placeholder="البحث عن محادثة..." />
+                        <Input
+                            className="h-10 rounded-xl bg-background pr-9 border-border"
+                            placeholder="البحث عن محادثة..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
                     </div>
                 </div>
             </div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                {conversations.map((conversation) => (
+                {filteredConversations.map((conversation) => (
                     <ConversationCard key={conversation.id} conversation={conversation} />
                 ))}
             </div>
