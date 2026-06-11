@@ -13,7 +13,6 @@ import {
 import {
     Home,
     LogOut,
-    Settings,
     FileArchive,
     ArrowUpRightFromSquare,
     ClipboardList,
@@ -177,16 +176,6 @@ export default function SideBar() {
                                         <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
                                             <Trash2 className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
                                             <h1> سلة المهملات </h1>
-                                        </SidebarMenuButton>
-                                    )}
-                                </NavLink>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem>
-                                <NavLink to={ROUTES.DASHBOARD.SETTINGS}>
-                                    {({ isActive }) => (
-                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
-                                            <Settings className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
-                                            <h1> الإعدادات </h1>
                                         </SidebarMenuButton>
                                     )}
                                 </NavLink>

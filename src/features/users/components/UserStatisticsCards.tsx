@@ -1,19 +1,18 @@
-import { Users, ShieldCheck, UserCog, User, Receipt, Banknote } from "lucide-react";
+import { Users, ShieldCheck, UserCog, User, Receipt, Banknote, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { UserStatistics } from "@/types/User";
 import { Badge } from "@/components/ui/badge";
 
 interface UserStatisticsCardsProps {
     statistics?: UserStatistics;
+    isPending?: boolean;
 }
 
-export function UserStatisticsCards({ statistics }: UserStatisticsCardsProps) {
-    if (!statistics) return null;
-
+export function UserStatisticsCards({ statistics, isPending }: UserStatisticsCardsProps) {
     const statsConfig = [
         {
             title: "الكل",
-            value: statistics.total_users,
+            value: statistics?.total_users,
             icon: Users,
             color: "text-chart-3",
             bgColor: "bg-chart-3/[0.06] dark:bg-chart-3/20",
@@ -22,7 +21,7 @@ export function UserStatisticsCards({ statistics }: UserStatisticsCardsProps) {
         },
         {
             title: "الادمن",
-            value: statistics.admin_count,
+            value: statistics?.admin_count,
             icon: ShieldCheck,
             color: "text-chart-1",
             bgColor: "bg-chart-1/[0.06] dark:bg-chart-1/20",
@@ -31,7 +30,7 @@ export function UserStatisticsCards({ statistics }: UserStatisticsCardsProps) {
         },
         {
             title: "المدراء",
-            value: statistics.manager_count,
+            value: statistics?.manager_count,
             icon: UserCog,
             color: "text-chart-5",
             bgColor: "bg-chart-5/[0.06] dark:bg-chart-5/20",
@@ -40,7 +39,7 @@ export function UserStatisticsCards({ statistics }: UserStatisticsCardsProps) {
         },
         {
             title: "الموظفين",
-            value: statistics.employee_count,
+            value: statistics?.employee_count,
             icon: User,
             color: "text-chart-4",
             bgColor: "bg-chart-4/[0.06] dark:bg-chart-4/20",
@@ -49,7 +48,7 @@ export function UserStatisticsCards({ statistics }: UserStatisticsCardsProps) {
         },
         {
             title: "المكلفين",
-            value: statistics.tax_payer_count,
+            value: statistics?.tax_payer_count,
             icon: Receipt,
             color: "text-chart-6",
             bgColor: "bg-chart-6/[0.06] dark:bg-chart-6/20",
@@ -58,7 +57,7 @@ export function UserStatisticsCards({ statistics }: UserStatisticsCardsProps) {
         },
         {
             title: "مدراء المأمورين",
-            value: statistics.collectors_manager_count,
+            value: statistics?.collectors_manager_count,
             icon: Banknote,
             color: "text-chart-2",
             bgColor: "bg-chart-2/[0.06] dark:bg-chart-2/20",
@@ -90,7 +89,7 @@ export function UserStatisticsCards({ statistics }: UserStatisticsCardsProps) {
                                 </span>
                             </div>
                             <Badge variant="outline" className="text-muted-foreground font-bold">
-                                {stat.value || 0}
+                                {isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : stat.value ?? 0}
                             </Badge>
                         </div>
 

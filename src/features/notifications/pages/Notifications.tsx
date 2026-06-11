@@ -7,6 +7,7 @@ import { ACTIONS } from "@/constants/permissions"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
 import { NotificationStatisticsCards } from "../components/NotificationStatisticsCards"
+import { useSectionStatistics } from "@/hooks/useSectionStatistics"
 
 /**
  * Main Notifications Management page.
@@ -14,6 +15,7 @@ import { NotificationStatisticsCards } from "../components/NotificationStatistic
  */
 const NotificationsPage = () => {
     const { data, isPending, isError } = useNotifications()
+    const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics()
     const canView = usePermission(ACTIONS.VIEW_NOTIFICATION)
     console.log("Notifications data:", data)
 
@@ -36,7 +38,10 @@ const NotificationsPage = () => {
                     </div>
                 ) : (
                     <>
-                        <NotificationStatisticsCards />
+                        <NotificationStatisticsCards
+                            statistics={statisticsData?.data?.notifications}
+                            isPending={statisticsIsPending}
+                        />
                         <NotificationsList notifications={data?.data.notifications || []} />
                     </>
                 )}

@@ -1,41 +1,54 @@
-import { Bell, BellRing, MailOpen, AlertCircle } from "lucide-react";
+import { Bell, BellRing, MailOpen, AlertCircle, Loader2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import type { SectionStatistics } from "@/types/SectionStatistics";
 
-export function NotificationStatisticsCards() {
+interface NotificationStatisticsCardsProps {
+    statistics?: SectionStatistics["notifications"];
+    isPending?: boolean;
+}
+
+export function NotificationStatisticsCards({ statistics, isPending }: NotificationStatisticsCardsProps) {
     const statsConfig = [
         {
             title: "إجمالي الإشعارات",
-            value: 1250,
+            value: statistics?.total_notifications,
             icon: Bell,
             color: "text-chart-3",
             bgColor: "bg-chart-3/10 dark:bg-chart-3/20",
         },
         {
-            title: "إشعارات جديدة",
-            value: 45,
+            title: "إشعارات عامة",
+            value: statistics?.type_counts?.General,
             icon: BellRing,
             color: "text-chart-1",
             bgColor: "bg-chart-1/10 dark:bg-chart-1/20",
         },
         {
-            title: "تمت القراءة",
-            value: 1180,
+            title: "لمستخدمي النظام",
+            value: statistics?.type_counts?.ForSystemUsers,
             icon: MailOpen,
             color: "text-chart-4",
             bgColor: "bg-chart-4/10 dark:bg-chart-4/20",
         },
         {
-            title: "تنبيهات هامة",
-            value: 25,
+            title: "للمكلفين",
+            value: statistics?.type_counts?.ForTaxPayers,
             icon: AlertCircle,
             color: "text-chart-5",
             bgColor: "bg-chart-5/10 dark:bg-chart-5/20",
         },
+        {
+            title: "خاصة",
+            value: statistics?.type_counts?.Special,
+            icon: Sparkles,
+            color: "text-chart-2",
+            bgColor: "bg-chart-2/10 dark:bg-chart-2/20",
+        },
     ];
 
     return (
-        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4 mb-4">
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-5 mb-4">
             {statsConfig.map((stat, index) => {
                 const Icon = stat.icon;
                 return (
@@ -55,7 +68,7 @@ export function NotificationStatisticsCards() {
                                 </span>
                             </div>
                             <Badge variant="outline" className="text-muted-foreground font-bold">
-                                {stat.value || 0}
+                                {isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : stat.value ?? 0}
                             </Badge>
                         </div>
                     </div>

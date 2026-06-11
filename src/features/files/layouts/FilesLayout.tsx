@@ -4,9 +4,11 @@ import { FileText, Paperclip, ChevronLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
 import { FileStatisticsCards } from "../components/FileStatisticsCards";
+import { useSectionStatistics } from "@/hooks/useSectionStatistics";
 
 const FilesLayout = () => {
     const { pathname } = useLocation();
+    const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics();
 
     const isFilesActive = pathname.startsWith(ROUTES.DASHBOARD.FILES.ROOT) &&
         !pathname.startsWith(ROUTES.DASHBOARD.FILES.ATTACHMENTS);
@@ -28,7 +30,7 @@ const FilesLayout = () => {
             </div>
             <div className=" mx-auto px-3 mt-4" dir="rtl">
                 {/* Statistics Cards */}
-                <FileStatisticsCards />
+                <FileStatisticsCards statistics={statisticsData?.data?.files} isPending={statisticsIsPending} />
 
                 <div className="flex flex-col xl:flex-row gap-3">
                     {/* Internal Sidebar */}

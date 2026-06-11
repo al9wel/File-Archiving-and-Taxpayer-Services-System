@@ -3,7 +3,7 @@ import { ACTIONS } from "@/constants/permissions"
 import { usePermission } from "@/hooks/usePermission"
 import ConversationList from "../components/ConversationList"
 import DashboardHeader from "@/components/layout/DahsboardHeader"
-import { CustomerServiceStatisticsCards } from "../components/CustomerServiceStatisticsCards"
+// import { CustomerServiceStatisticsCards } from "../components/CustomerServiceStatisticsCards"
 import { useChats } from "../hooks/useChats"
 import ErrorState from "@/app/pages/ErrorState"
 import { Loader2 } from "lucide-react"
@@ -22,14 +22,16 @@ const ConversationsPage = () => {
             <div className="w-full px-3 pt-3">
                 <DashboardHeader title=" خدمة العملاء " desc="إدارة محادثات العملاء" />
             </div>
-            <CustomerServiceStatisticsCards />
             {isPending ? (
                 <div className="flex flex-col h-[300px] items-center justify-center space-y-4">
                     <Loader2 className="animate-spin text-primary" size={32} />
                     <p className="text-muted-foreground animate-pulse">جاري تحميل المحادثات...</p>
                 </div>
             ) : (
-                <ConversationList conversations={conversations} />
+                <>
+                    {/* <CustomerServiceStatisticsCards /> */}
+                    <ConversationList conversations={conversations} />
+                </>
             )}
         </div>
     )

@@ -8,6 +8,7 @@ import { ACTIONS } from "@/constants/permissions"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
 import { OperationReportStatisticsCards } from "../components/OperationReportStatisticsCards"
+import { useSectionStatistics } from "@/hooks/useSectionStatistics"
 
 /**
  * Operations Reports Page.
@@ -15,6 +16,7 @@ import { OperationReportStatisticsCards } from "../components/OperationReportSta
  */
 const OperationReports = () => {
     const { data, isLoading, isError } = useOperationReports()
+    const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics()
     const canView = usePermission(ACTIONS.VIEW_REPORT)
 
     if (!canView) return <Unauthorized />
@@ -38,7 +40,10 @@ const OperationReports = () => {
                     </div>
                 ) : (
                     <>
-                        <OperationReportStatisticsCards />
+                        <OperationReportStatisticsCards
+                            statistics={statisticsData?.data?.activity_log}
+                            isPending={statisticsIsPending}
+                        />
                         <DataTable columns={columns} data={data?.data || []} />
                     </>
                 )}

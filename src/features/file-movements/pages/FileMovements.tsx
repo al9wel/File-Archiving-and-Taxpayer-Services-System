@@ -11,10 +11,11 @@ import { toast } from "sonner"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
 import { FileMovementStatisticsCards } from "../components/FileMovementStatisticsCards"
-import type { FileMovementStatistics } from "@/types/FileMovments"
+import { useSectionStatistics } from "@/hooks/useSectionStatistics"
 
 const FileMovements = () => {
     const { data, isPending, isError } = useFileMovements()
+    const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics()
 
     const { mutateAsync: getMovementsReport, isPending: isMovementsReportsLoading } = useFileMovementsReport()
 
@@ -27,8 +28,7 @@ const FileMovements = () => {
         return <ErrorState />
     }
 
-    const fileMovements = data?.data?.filesMovements || []
-    const statistics = data?.data?.statistics
+
 
     const handleMovementsReport = async () => {
         try {
@@ -75,7 +75,8 @@ const FileMovements = () => {
                     <>
                         <div className="w-full">
                             <FileMovementStatisticsCards
-                                statistics={statistics as FileMovementStatistics}
+                                statistics={statisticsData?.data?.files_movements}
+                                isPending={statisticsIsPending}
                             />
                         </div>
 
@@ -84,6 +85,9 @@ const FileMovements = () => {
                                 <Button
                                     onClick={handleMovementsReport}
                                     disabled={isMovementsReportsLoading}
+                                    className="cursor-pointer p-4 hover:bg-primary-hover"
+                                    size="lg"
+
                                 >
                                     {isMovementsReportsLoading ? (
                                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -100,7 +104,7 @@ const FileMovements = () => {
 
                         <DataTable
                             columns={columns}
-                            data={fileMovements}
+                            data={data?.data?.filesMovements || []}
                         />
                     </>
                 )}

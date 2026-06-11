@@ -8,7 +8,7 @@ import { ACTIONS } from "@/constants/permissions"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
 import { UserStatisticsCards } from "../components/UserStatisticsCards"
-import type { UserStatistics } from "@/types/User"
+import { useSectionStatistics } from "@/hooks/useSectionStatistics"
 
 /**
  * Main User Management page.
@@ -17,14 +17,13 @@ import type { UserStatistics } from "@/types/User"
  */
 const Users = () => {
     const { data, isPending, isError } = useUsers()
+    const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics()
     const canView = usePermission(ACTIONS.VIEW_USER)
     if (!canView) return <Unauthorized />
 
     if (isError) {
         return <ErrorState />
     }
-    const users = data?.data?.users || []
-    const statistics = data?.data?.statistics || []
     return (
         <>
 
@@ -40,9 +39,9 @@ const Users = () => {
                 ) : (
                     <>
                         <div className="w-full">
-                            <UserStatisticsCards statistics={statistics as UserStatistics} />
+                            <UserStatisticsCards statistics={statisticsData?.data?.users} isPending={statisticsIsPending} />
                         </div>
-                        <DataTable columns={columns} data={users} />
+                        <DataTable columns={columns} data={data?.data?.users || []} />
                     </>
                 )}
             </div>

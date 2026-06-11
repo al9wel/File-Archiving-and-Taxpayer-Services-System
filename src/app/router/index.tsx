@@ -4,7 +4,6 @@ import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
 import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
 import VerifyOtpPage from "@/features/auth/pages/VerifyOtpPage";
 import Main from "@/features/main/pages/Main";
-import Settings from "@/features/settings/pages/Settings";
 import FilesLayout from "@/features/files/layouts/FilesLayout";
 import FilesPage from "@/features/files/pages/files/FilesPage";
 import CreateFilePage from "@/features/files/pages/files/CreateFilePage";
@@ -270,7 +269,6 @@ export const router = createBrowserRouter([
                         path: "",
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN]} />,
                         children: [
-                            { path: ROUTES.DASHBOARD.SETTINGS.split("/").pop(), element: <Settings /> },
                             { path: ROUTES.DASHBOARD.OPERATION_REPORTS.split("/").pop(), element: <OperationReports /> },
                             { path: ROUTES.DASHBOARD.TRASH_BIN.split("/").pop(), element: <TrashBinPage /> },
                             {

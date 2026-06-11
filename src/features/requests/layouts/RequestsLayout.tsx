@@ -4,6 +4,7 @@ import { Clock, CheckCircle2, Archive, XCircle, ChevronLeft } from "lucide-react
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
 import { RequestStatisticsCards } from "../components/RequestStatisticsCards";
+import { useSectionStatistics } from "@/hooks/useSectionStatistics";
 
 const sidebarLinks = [
     { title: "الطلبات المعلقة", path: ROUTES.DASHBOARD.REQUESTS.PENDING, icon: Clock, },
@@ -14,6 +15,7 @@ const sidebarLinks = [
 
 const RequestsLayout = () => {
     const { pathname } = useLocation();
+    const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics();
 
     return (
         <>
@@ -25,7 +27,7 @@ const RequestsLayout = () => {
             </div>
             <div className=" mx-auto px-3 pb-10" dir="rtl">
                 {/* Statistics Cards */}
-                <RequestStatisticsCards />
+                <RequestStatisticsCards statistics={statisticsData?.data?.requests} isPending={statisticsIsPending} />
 
                 {/* Internal Sidebar (Right side in RTL) */}
                 <div className="flex flex-col lg:flex-row gap-3">

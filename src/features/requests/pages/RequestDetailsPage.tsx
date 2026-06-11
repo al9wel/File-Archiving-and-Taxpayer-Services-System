@@ -50,7 +50,7 @@ const RequestDetailsPage = () => {
     const statusMeta = statusConfig[status] || { label: status, class: "bg-muted text-muted-foreground" };
     const fileTypeLabel = fileTypeConfig[RequestInfo.fileType] || RequestInfo.fileType;
 
-    const displayDate = "2026-05-25";
+    const displayDate = RequestInfo.createdAt || "غير متوفر";
 
     const infoItems = [
         { label: "رقم الطلب", value: `#${RequestInfo.id}`, icon: Hash },

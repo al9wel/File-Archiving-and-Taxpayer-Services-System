@@ -1,19 +1,18 @@
-import { RefreshCcw, Archive, Send, AlertTriangle } from "lucide-react";
+import { RefreshCcw, Archive, Send, AlertTriangle, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { FileMovementStatistics } from "@/types/FileMovments";
 import { Badge } from "@/components/ui/badge";
 
 interface FileMovementStatisticsCardsProps {
     statistics?: FileMovementStatistics;
+    isPending?: boolean;
 }
 
-export function FileMovementStatisticsCards({ statistics }: FileMovementStatisticsCardsProps) {
-    if (!statistics) return null;
-
+export function FileMovementStatisticsCards({ statistics, isPending }: FileMovementStatisticsCardsProps) {
     const statsConfig = [
         {
             title: "إجمالي الحركات",
-            value: statistics.total_movements,
+            value: statistics?.total_movements,
             icon: RefreshCcw,
             color: "text-chart-3",
             bgColor: "bg-chart-3/[0.06] dark:bg-chart-3/20",
@@ -21,7 +20,7 @@ export function FileMovementStatisticsCards({ statistics }: FileMovementStatisti
         },
         {
             title: "داخل الأرشيف",
-            value: statistics.inside_archive_count,
+            value: statistics?.inside_archive_count,
             icon: Archive,
             color: "text-chart-4",
             bgColor: "bg-chart-4/[0.06] dark:bg-chart-4/20",
@@ -29,7 +28,7 @@ export function FileMovementStatisticsCards({ statistics }: FileMovementStatisti
         },
         {
             title: "خارج الأرشيف",
-            value: statistics.outside_archive_count,
+            value: statistics?.outside_archive_count,
             icon: Send,
             color: "text-chart-5",
             bgColor: "bg-chart-5/[0.06] dark:bg-chart-5/20",
@@ -37,7 +36,7 @@ export function FileMovementStatisticsCards({ statistics }: FileMovementStatisti
         },
         {
             title: "مفقود",
-            value: statistics.missing_count,
+            value: statistics?.missing_count,
             icon: AlertTriangle,
             color: "text-chart-1",
             bgColor: "bg-chart-1/[0.06] dark:bg-chart-1/20",
@@ -66,7 +65,7 @@ export function FileMovementStatisticsCards({ statistics }: FileMovementStatisti
                                 </span>
                             </div>
                             <Badge variant="outline" className="text-muted-foreground font-bold">
-                                {stat.value || 0}
+                                {isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : stat.value ?? 0}
                             </Badge>
                         </div>
                     </div>

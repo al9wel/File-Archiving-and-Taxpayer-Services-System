@@ -1,33 +1,39 @@
-import { Activity, ShieldAlert, CheckCircle, Database } from "lucide-react";
+import { Activity, ShieldAlert, CheckCircle, Database, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import type { SectionStatistics } from "@/types/SectionStatistics";
 
-export function OperationReportStatisticsCards() {
+interface OperationReportStatisticsCardsProps {
+    statistics?: SectionStatistics["activity_log"];
+    isPending?: boolean;
+}
+
+export function OperationReportStatisticsCards({ statistics, isPending }: OperationReportStatisticsCardsProps) {
     const statsConfig = [
         {
             title: "إجمالي العمليات",
-            value: 24500,
+            value: statistics?.total,
             icon: Activity,
             color: "text-chart-3",
             bgColor: "bg-chart-3/10 dark:bg-chart-3/20",
         },
         {
-            title: "عمليات ناجحة",
-            value: 23100,
+            title: "عمليات إنشاء",
+            value: statistics?.created,
             icon: CheckCircle,
             color: "text-chart-4",
             bgColor: "bg-chart-4/10 dark:bg-chart-4/20",
         },
         {
-            title: "تحذيرات / أخطاء",
-            value: 1400,
+            title: "عمليات تعديل",
+            value: statistics?.updated,
             icon: ShieldAlert,
             color: "text-chart-1",
             bgColor: "bg-chart-1/10 dark:bg-chart-1/20",
         },
         {
-            title: "قواعد البيانات",
-            value: 3,
+            title: "عمليات حذف",
+            value: statistics?.deleted,
             icon: Database,
             color: "text-chart-5",
             bgColor: "bg-chart-5/10 dark:bg-chart-5/20",
@@ -55,7 +61,7 @@ export function OperationReportStatisticsCards() {
                                 </span>
                             </div>
                             <Badge variant="outline" className="text-muted-foreground font-bold">
-                                {stat.value || 0}
+                                {isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : stat.value ?? 0}
                             </Badge>
                         </div>
                     </div>
