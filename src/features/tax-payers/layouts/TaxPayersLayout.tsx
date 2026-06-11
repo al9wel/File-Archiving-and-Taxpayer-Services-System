@@ -4,8 +4,10 @@ import { Users, FileText, Settings2, ChevronLeft, } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
 import { TaxPayerStatisticsCards } from "../components/TaxPayerStatisticsCards";
+import { useSectionStatistics } from "@/hooks/useSectionStatistics";
 
 const TaxPayersLayout = () => {
+    const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics();
     const mainLinks = [
         { title: "المكلفين", path: ROUTES.DASHBOARD.TAXPAYERS.PAYERS.ROOT, icon: Users },
         { title: "نوع الضريبة", path: ROUTES.DASHBOARD.TAXPAYERS.TYPES, icon: Settings2 },
@@ -22,7 +24,7 @@ const TaxPayersLayout = () => {
             </div>
             <div className=" mx-auto px-3 mt-4" dir="rtl">
                 {/* show the cards here */}
-                <TaxPayerStatisticsCards />
+                <TaxPayerStatisticsCards statistics={statisticsData?.data?.tax_payers} isPending={statisticsIsPending} />
 
                 <div className="flex flex-col xl:flex-row gap-3">
                     {/* Internal Sidebar */}

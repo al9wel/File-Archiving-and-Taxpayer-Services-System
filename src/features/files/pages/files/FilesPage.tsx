@@ -58,6 +58,8 @@ const FilesPage = () => {
                                 <Button
                                     onClick={handleFilesReport}
                                     disabled={isFilesReportsLoading}
+                                    className="cursor-pointer p-4 hover:bg-primary-hover"
+                                    size="lg"
                                 >
                                     {isFilesReportsLoading ? (
                                         <Loader2 className="h-4 w-4 animate-spin" />

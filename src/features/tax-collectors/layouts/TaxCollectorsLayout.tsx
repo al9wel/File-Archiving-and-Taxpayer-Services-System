@@ -6,6 +6,7 @@ import DashboardHeader from "@/components/layout/DahsboardHeader";
 import { CreateTaxCollectorDialog } from "../components/tax-collectors/CreateTaxCollectorDialog";
 import { CreateEmploymentTypeDialog } from "../components/employment-types/CreateEmploymentTypeDialog";
 import { TaxCollectorStatisticsCards } from "../components/TaxCollectorStatisticsCards";
+import { useSectionStatistics } from "@/hooks/useSectionStatistics";
 
 
 const sidebarLinks = [
@@ -15,6 +16,7 @@ const sidebarLinks = [
 
 const TaxCollectorsLayout = () => {
     const location = useLocation();
+    const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics();
 
     // Determine which action button to show based on the route
     const renderAction = () => {
@@ -38,7 +40,10 @@ const TaxCollectorsLayout = () => {
 
             <div className=" mx-auto px-3" dir="rtl">
                 {/* Statistics Cards */}
-                <TaxCollectorStatisticsCards />
+                <TaxCollectorStatisticsCards
+                    statistics={statisticsData?.data?.tax_collectors_and_job_types}
+                    isPending={statisticsIsPending}
+                />
 
 
 

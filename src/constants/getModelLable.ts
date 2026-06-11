@@ -1,0 +1,22 @@
+export const getName: Record<string, string> = {
+    UserModel: "المستخدمين",
+    ActivityTypeModel: "نوع النشاط",
+    DepartmentModel: "الأقسام",
+    DistrictModel: "الأحياء",
+    PaymentTypeModel: "أنواع السداد",
+    RegionModel: "المناطق",
+    FileModel: "الملفات",
+    FileMovementModel: "حركة الملفات",
+    RequestModel: "الطلبات",
+    TaxPayerModel: "المكلفين",
+    TaxCollectorModel: "المأمورين",
+    NotificationModel: "الإشعارات",
+    JobTypeModel: "نوع التوظيف",
+    TaxInformationModel: "معلومات الضريبة",
+    TaxTypeModel: "أنواع الضريبة",
+    IndividualModel: "الأفراد",
+    CompanyModel: "الشركات",
+    CharitableCompanyModel: "الشركات الخيرية",
+    RecyclePinModel: "سلة المهملات",
+    AttachmentFileModel: "ملحقات الملفات"
+}

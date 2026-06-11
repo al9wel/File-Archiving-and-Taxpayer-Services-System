@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
 
 import { BasicInfoStatisticsCards } from "../components/BasicInfoStatisticsCards";
+import { useSectionStatistics } from "@/hooks/useSectionStatistics";
 
 const sidebarLinks = [
     { title: "الأقسام", path: ROUTES.DASHBOARD.BASIC_INFO.DEPARTMENTS, icon: Building2 },
@@ -16,6 +17,7 @@ const sidebarLinks = [
 ];
 
 const BasicInfoLayout = () => {
+    const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics();
     return (
         <>
             <div className="w-full px-3 pt-3">
@@ -26,7 +28,7 @@ const BasicInfoLayout = () => {
             </div>
             <div className=" mx-auto px-3" dir="rtl">
                 {/* Statistics Cards */}
-                <BasicInfoStatisticsCards />
+                <BasicInfoStatisticsCards statistics={statisticsData?.data?.overview} isPending={statisticsIsPending} />
 
                 {/* Internal Sidebar (Right side in RTL) */}
                 <div className="flex flex-col lg:flex-row gap-3">

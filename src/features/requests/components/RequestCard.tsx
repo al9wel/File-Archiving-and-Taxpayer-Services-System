@@ -27,8 +27,7 @@ const RequestCard = ({ request }: RequestCardProps) => {
     const statusMeta = statusConfig[status] || { label: status, class: "bg-muted text-muted-foreground" };
     const fileTypeLabel = fileTypeConfig[RequestInfo.fileType] || RequestInfo.fileType;
 
-    // Use a clean mock date since creation date is not in the schema, but is required visually
-    const displayDate = "2026-05-25";
+    const displayDate = RequestInfo.createdAt || "غير متوفر";
 
     return (
         <Link to={`/dashboard/requests/${status.toLowerCase()}/${RequestInfo.id}`} className="block group">

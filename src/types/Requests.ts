@@ -18,6 +18,7 @@ export interface Request {
         source?: string;
         requestStatus: "Archived" | "Pending" | "Confirmed" | "Rejected";
         note?: string | null;
+        createdAt: string;
     },
     UserInfo: {
         id: number;

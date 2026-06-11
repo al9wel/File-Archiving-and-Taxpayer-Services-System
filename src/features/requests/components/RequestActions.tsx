@@ -90,7 +90,7 @@ const RequestActions = ({
                 onClick={openRejectDialog}
                 disabled={isMutating}
                 variant="destructive"
-                className="rounded-xl h-12 px-6 font-bold cursor-pointer hover:bg-destructive/95"
+                className="rounded-xl h-12 px-6 font-bold cursor-pointer "
               >
                 <X className="ml-2 size-4" />
                 رفض الطلب
@@ -113,7 +113,7 @@ const RequestActions = ({
           {status === "Confirmed" && (
             <NavLink
               to={ROUTES.DASHBOARD.FILES_CREATE + "?requestId=" + requestId + "&taxPayerId=" + taxPayerId}
-              className="rounded-xl h-12 px-6 font-bold cursor-pointer hover:bg-primary-hover shadow-md shadow-primary/10"
+              className=" flex justify-center items-center rounded-xl h-12 px-6 font-bold bg-primary text-primary-foreground cursor-pointer hover:bg-primary-hover shadow-md shadow-primary/10"
             >
               <FilePlus className="ml-2 size-4" />
               إنشاء ملف لهذا الطلب

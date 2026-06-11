@@ -7,7 +7,7 @@ import { usePermission } from "@/hooks/usePermission"
 import { ACTIONS } from "@/constants/permissions"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
-import { TrashBinStatisticsCards } from "../components/TrashBinStatisticsCards"
+// import { TrashBinStatisticsCards } from "../components/TrashBinStatisticsCards"
 
 const TrashBinPage = () => {
     const { data, isLoading, isError } = useTrashBin()
@@ -36,7 +36,7 @@ const TrashBinPage = () => {
                     </div>
                 ) : (
                     <>
-                        <TrashBinStatisticsCards />
+                        {/* <TrashBinStatisticsCards /> */}
                         <DataTable columns={columns} data={data?.data || []} />
                     </>
                 )}

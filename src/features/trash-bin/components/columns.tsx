@@ -2,27 +2,7 @@ import type { RecycleBin } from "@/types/RecycleBin"
 import type { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { Actions } from "./Actions"
-
-const modelNames: Record<string, string> = {
-    UserModel: "المستخدمين",
-    ActivityTypeModel: "نوع النشاط",
-    DepartmentModel: "الأقسام",
-    DistrictModel: "الأحياء",
-    PaymentTypeModel: "أنواع السداد",
-    RegionModel: "المناطق",
-    FileModel: "الملفات",
-    FileMovementModel: "حركة الملفات",
-    RequestModel: "الطلبات",
-    TaxPayerModel: "المكلفين",
-    TaxCollectorModel: "المأمورين",
-    NotificationModel: "الإشعارات",
-    JobTypeModel: "نوع التوظيف",
-    TaxInformationModel: "معلومات الضريبة",
-    TaxTypeModel: "أنواع الضريبة",
-    IndividualModel: "الأفراد",
-    CompanyModel: "الشركات",
-    CharitableCompanyModel: "الشركات الخيرية",
-}
+import { getName } from "@/constants/getModelLable"
 
 const roleNames: Record<string, string> = {
     Admin: "أدمن",
@@ -73,7 +53,7 @@ export const columns: ColumnDef<RecycleBin>[] = [
     {
         accessorKey: "model",
         header: "العنصر",
-        cell: ({ row }) => modelNames[row.original.model] || row.original.model,
+        cell: ({ row }) => getName[row.original.model] || row.original.model,
     },
     {
         accessorKey: "datetime",
