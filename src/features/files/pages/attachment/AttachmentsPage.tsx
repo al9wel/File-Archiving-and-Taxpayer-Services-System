@@ -23,7 +23,7 @@ const AttachmentsPage = () => {
                     <p className="text-muted-foreground animate-pulse">جاري جلب المرفقات...</p>
                 </div>
             ) : (
-                <AttachmentTable columns={columns} data={attachments?.data || []} />
+                <AttachmentTable columns={columns} data={attachments?.data.attachments || []} />
             )}
         </div>
     );

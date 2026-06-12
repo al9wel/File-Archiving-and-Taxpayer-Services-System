@@ -5,3 +5,6 @@ export interface Attachment {
     attachmentFile: string,
     file: File["fileInfo"],
 }
+export type AttachmentStore = {
+    attachments: Attachment[];
+}

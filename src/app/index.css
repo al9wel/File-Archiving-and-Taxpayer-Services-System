@@ -49,9 +49,18 @@
   --radius: 0.625rem;
 
   /* ── Landing Page — Light Theme ── */
-  --landing-bg: #c4bcb3;
+  /* --landing-bg: #c4bcb3;
   --landing-bg-soft: #d4cdc3;
   --landing-bg-deep: #b5aca1;
+  --landing-text: #1a1815;
+  --landing-text-muted: #5a5249;
+  --landing-accent: color-mix(in oklab, var(--primary) 90%, white 10%);
+  --landing-accent-glow: color-mix(in oklab, var(--primary) 30%, white 70%) / 0.35;
+  --landing-accent-2: color-mix(in oklab, var(--primary) 85%, white 15%);
+  --landing-line: rgba(26, 24, 21, 0.08); */
+  --landing-bg: #f7f7f6;
+  --landing-bg-soft: #ffffff;
+  --landing-bg-deep: #d4cdc3;
   --landing-text: #1a1815;
   --landing-text-muted: #5a5249;
   --landing-accent: color-mix(in oklab, var(--primary) 90%, white 10%);

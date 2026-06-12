@@ -1,5 +1,5 @@
 import { fetchClient } from '@/lib/fetchClient'
-import type { Attachment } from '@/types/Attachment'
+import type { Attachment, AttachmentStore } from '@/types/Attachment'
 
 export const attachmentApi = {
     createAttachment: (data: FormData): Promise<{ data: any; message: string }> => {
@@ -9,7 +9,7 @@ export const attachmentApi = {
         })
     },
 
-    getAttachments: (): Promise<{ data: Attachment[]; message: string }> => {
+    getAttachments: (): Promise<{ data: AttachmentStore; message: string }> => {
         return fetchClient('/attachment', {
             method: 'GET',
         })
