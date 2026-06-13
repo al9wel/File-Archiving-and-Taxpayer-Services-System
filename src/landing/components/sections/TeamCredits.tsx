@@ -1,13 +1,18 @@
 import { motion } from "motion/react";
-import { User, Code2, Server, Smartphone, Palette } from "lucide-react";
 import SectionLabel from "@/landing/components/shared/SectionLabel";
+import avatar1 from "@/assets/images/avatar1.jpg";
+import avatar2 from "@/assets/images/avatar2.png";
+import avatar3 from "@/assets/images/avatar3.png";
+import avatar4 from "@/assets/images/avatar4.png";
+import avatar5 from "@/assets/images/avatar5.png";
+
 
 const team = [
-    { role: "مدير المشروع", name: "حمزة يحيى الوجيه", icon: User, accent: "var(--landing-accent)" },
-    { role: "مطور واجهات أمامية", name: "سالم أحمد الصويل", icon: Code2, accent: "#2e6b5e" },
-    { role: "مطور خلفية", name: "عبدالله سالم باوزير", icon: Server, accent: "#5b4a8a" },
-    { role: "مطور تطبيقات جوالة", name: "موسى سعيد المعلم", icon: Smartphone, accent: "#b8862d" },
-    { role: "مصمم واجهات", name: "عمر خالد القعيطي", icon: Palette, accent: "#3a6b8a" },
+    { role: "Team Leader", name: "حمزة يحيى الوجيه", image: avatar1, accent: "var(--landing-accent)" },
+    { role: "Team Member", name: "سالم أحمد الصويل", image: avatar2, accent: "#2e6b5e" },
+    { role: "Team Member", name: "عبدالله سالم باوزير", image: avatar3, accent: "#5b4a8a" },
+    { role: "Team Member", name: "موسى سعيد المعلم", image: avatar4, accent: "#b8862d" },
+    { role: "Team Member", name: "عمر خالد القعيطي", image: avatar5, accent: "#3a6b8a" },
 ];
 
 export default function TeamCredits() {
@@ -36,10 +41,9 @@ export default function TeamCredits() {
 
                     <div className="space-y-0">
                         {team.map((member, i) => {
-                            const Icon = member.icon;
                             return (
                                 <motion.div
-                                    key={member.role}
+                                    key={member.name}
                                     initial={{ opacity: 0, x: 40 }}
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true, margin: "-60px" }}
@@ -47,15 +51,14 @@ export default function TeamCredits() {
                                     className="relative flex items-center gap-8 py-8 group"
                                 >
                                     <div
-                                        className="relative z-10 w-14 h-14 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-500"
+                                        className="relative z-10 w-14 h-14 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-500 overflow-hidden"
                                         style={{
                                             borderColor: `color-mix(in srgb, ${member.accent} 40%, transparent 60%)`,
-                                            backgroundColor: `color-mix(in srgb, ${member.accent} 8%, var(--landing-bg-soft) 92%)`,
                                         }}
                                     >
-                                        <Icon className="w-6 h-6" style={{ color: member.accent }} />
+                                        <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
                                         <div
-                                            className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-md"
+                                            className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500 mix-blend-color"
                                             style={{ backgroundColor: member.accent }}
                                         />
                                     </div>
