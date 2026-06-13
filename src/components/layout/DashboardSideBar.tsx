@@ -34,7 +34,6 @@ import { useTheme } from "@/hooks/useTheme"
 import { useAuth } from "@/hooks/useAuth"
 import { useLogout } from "@/features/auth/hooks/useLogout"
 import { ROUTES } from "@/constants/routes"
-import { ROLES } from "@/constants/roles"
 
 export default function SideBar() {
     const { open } = useSidebar()
@@ -112,18 +111,16 @@ export default function SideBar() {
                                     )}
                                 </NavLink>
                             </SidebarMenuItem>
-                            {user?.role === ROLES.ADMIN && (
-                                <SidebarMenuItem>
-                                    <NavLink to={ROUTES.DASHBOARD.CUSTOMER_SERVICE.ROOT}>
-                                        {({ isActive }) => (
-                                            <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
-                                                <MessageSquareText className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
-                                                <h1> خدمة العملاء </h1>
-                                            </SidebarMenuButton>
-                                        )}
-                                    </NavLink>
-                                </SidebarMenuItem>
-                            )}
+                            <SidebarMenuItem>
+                                <NavLink to={ROUTES.DASHBOARD.CUSTOMER_SERVICE.ROOT}>
+                                    {({ isActive }) => (
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <MessageSquareText className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
+                                            <h1> خدمة العملاء </h1>
+                                        </SidebarMenuButton>
+                                    )}
+                                </NavLink>
+                            </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.ROOT}>
                                     {({ isActive }) => (

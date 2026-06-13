@@ -19,7 +19,6 @@ const CreateFilePage = () => {
 
     const requestId = searchParams.get("requestId") || null
     const taxPayerId = searchParams.get("taxPayerId") || null
-    console.log("CreateFilePage - requestId:", requestId, "taxPayerId:", taxPayerId)
     const handleSubmit = (formData: FormData) => {
         createFile(formData, {
             onSuccess: (res) => {
