@@ -132,12 +132,13 @@ export const router = createBrowserRouter([
                     { index: true, element: <Navigate to={ROUTES.DASHBOARD.MAIN.split("/").pop() || ""} replace /> },
                     { path: ROUTES.DASHBOARD.MAIN.split("/").pop(), element: <Main /> },
 
-                    // ── Files (ADMIN, MANAGER, EMPLOYEE) ────────────────────
+                    // ── Files, Requests, Customer Service (ADMIN, MANAGER, EMPLOYEE) ────────────────────
                     {
-                        path: ROUTES.DASHBOARD.FILES.ROOT.split("/").pop(),
+                        path: "",
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER, ROLES.EMPLOYEE]} />,
                         children: [
                             {
+                                path: ROUTES.DASHBOARD.FILES.ROOT.split("/").pop(),
                                 element: <FilesLayout />,
                                 children: [
                                     { index: true, element: <FilesPage /> },
@@ -145,6 +146,28 @@ export const router = createBrowserRouter([
                                     { path: "create", element: <CreateFilePage /> },
                                     { path: ":id/edit", element: <EditFilePage /> },
                                     { path: ROUTES.DASHBOARD.FILES.ATTACHMENTS.split("/").pop(), element: <AttachmentsPage /> },
+                                ]
+                            },
+                            {
+                                path: ROUTES.DASHBOARD.REQUESTS.ROOT.split("/").pop(),
+                                element: <RequestsLayout />,
+                                children: [
+                                    { index: true, element: <Navigate to="pending" replace /> },
+                                    { path: "pending", element: <PendingRequestsPage /> },
+                                    { path: "pending/:requestId", element: <RequestDetailsPage /> },
+                                    { path: "confirmed", element: <ConfirmedRequestsPage /> },
+                                    { path: "confirmed/:requestId", element: <RequestDetailsPage /> },
+                                    { path: "archived", element: <ArchivedRequestsPage /> },
+                                    { path: "archived/:requestId", element: <RequestDetailsPage /> },
+                                    { path: "rejected", element: <RejectedRequestsPage /> },
+                                    { path: "rejected/:requestId", element: <RequestDetailsPage /> },
+                                ]
+                            },
+                            {
+                                path: ROUTES.DASHBOARD.CUSTOMER_SERVICE.ROOT.split("/").pop(),
+                                children: [
+                                    { index: true, element: <ConversationsPage /> },
+                                    { path: ":conversationId", element: <ConversationDetailsPage /> },
                                 ]
                             },
                         ]
@@ -162,26 +185,11 @@ export const router = createBrowserRouter([
                         ]
                     },
 
-                    // ── Requests, Basic Info, Taxpayers (ADMIN, MANAGER) ────
+                    // ── Basic Info, Taxpayers (ADMIN, MANAGER) ────
                     {
                         path: "",
                         element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
                         children: [
-                            {
-                                path: ROUTES.DASHBOARD.REQUESTS.ROOT.split("/").pop(),
-                                element: <RequestsLayout />,
-                                children: [
-                                    { index: true, element: <Navigate to="pending" replace /> },
-                                    { path: "pending", element: <PendingRequestsPage /> },
-                                    { path: "pending/:requestId", element: <RequestDetailsPage /> },
-                                    { path: "confirmed", element: <ConfirmedRequestsPage /> },
-                                    { path: "confirmed/:requestId", element: <RequestDetailsPage /> },
-                                    { path: "archived", element: <ArchivedRequestsPage /> },
-                                    { path: "archived/:requestId", element: <RequestDetailsPage /> },
-                                    { path: "rejected", element: <RejectedRequestsPage /> },
-                                    { path: "rejected/:requestId", element: <RequestDetailsPage /> },
-                                ]
-                            },
                             {
                                 path: ROUTES.DASHBOARD.TAXPAYERS.ROOT.split("/").pop(),
                                 element: <TaxPayersLayout />,
@@ -278,13 +286,6 @@ export const router = createBrowserRouter([
                                     { path: "create", element: <CreateNotificationPage /> },
                                     { path: ":id/edit", element: <UpdateNotificationPage /> },
                                     { path: ":id", element: <ShowNotificationPage /> },
-                                ]
-                            },
-                            {
-                                path: ROUTES.DASHBOARD.CUSTOMER_SERVICE.ROOT.split("/").pop(),
-                                children: [
-                                    { index: true, element: <ConversationsPage /> },
-                                    { path: ":conversationId", element: <ConversationDetailsPage /> },
                                 ]
                             },
                         ]

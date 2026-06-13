@@ -8,7 +8,7 @@ import ErrorState from "@/app/pages/ErrorState";
 
 const ConfirmedRequestsPage = () => {
     const { data, isPending, isError } = useConfirmedRequests();
-    const canView = usePermission(ACTIONS.VIEW_REQUEST);
+    const canView = usePermission(ACTIONS.ACCEPTED_REQUEST);
 
     if (!canView) return <Unauthorized />;
 

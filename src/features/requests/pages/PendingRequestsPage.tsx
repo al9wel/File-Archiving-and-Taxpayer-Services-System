@@ -8,7 +8,7 @@ import ErrorState from "@/app/pages/ErrorState";
 
 const PendingRequestsPage = () => {
     const { data, isPending, isError } = usePendingRequests();
-    const canView = usePermission(ACTIONS.VIEW_REQUEST);
+    const canView = usePermission(ACTIONS.PENDING_REQUEST);
 
     if (!canView) return <Unauthorized />;
 

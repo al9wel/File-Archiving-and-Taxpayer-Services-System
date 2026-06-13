@@ -8,7 +8,7 @@ import ErrorState from "@/app/pages/ErrorState";
 
 const RejectedRequestsPage = () => {
     const { data, isPending, isError } = useRejectedRequests();
-    const canView = usePermission(ACTIONS.VIEW_REQUEST);
+    const canView = usePermission(ACTIONS.REJECTED_REQUEST);
 
     if (!canView) return <Unauthorized />;
 

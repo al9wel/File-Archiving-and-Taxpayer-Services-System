@@ -28,7 +28,7 @@ const RequestDetailsPage = () => {
     const navigate = useNavigate();
 
     const { data: requestRes, isPending, isError } = useRequestDetails(requestId!);
-    const canView = usePermission(ACTIONS.VIEW_REQUEST);
+    const canView = usePermission(ACTIONS.REQUEST_DETAIL);
 
     if (!canView) return <Unauthorized />;
 

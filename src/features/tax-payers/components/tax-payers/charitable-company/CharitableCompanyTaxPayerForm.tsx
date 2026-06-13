@@ -14,7 +14,7 @@ import { ROLES } from "@/constants/roles"
 const taxPayerSchema = z.object({
     firstName: z.string().min(2, "الاسم الأول يجب أن يكون حرفين على الأقل"),
     lastName: z.string().min(2, "اسم العائلة يجب أن يكون حرفين على الأقل"),
-    phone: z.string().min(9, "رقم الهاتف غير صحيح"),
+    phone: z.string().length(9, "رقم الهاتف غير صحيح").startsWith("7", "يجب ان يبدأ الرقم ب 7"),
     role: z.string(),
     departmentID: z.string().min(1, "يرجى اختيار القسم"),
     fileType: z.enum(["Individual", "Company", "CharitableCompany"]),
@@ -63,8 +63,8 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
     })
 
     useEffect(() => {
-        if (!isAdmin && user?.department?.id) {
-            setValue("departmentID", user.department.id.toString())
+        if (!isAdmin && user?.departmentID) {
+            setValue("departmentID", user.departmentID.toString())
         }
 
         if (initialData) {
@@ -73,7 +73,7 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
                 lastName: initialData.userInfo?.lastName || "",
                 phone: initialData.userInfo?.phone || "",
                 role: initialData.userInfo?.role || "Tax_Payer",
-                departmentID: isAdmin ? initialData.userInfo?.department?.id.toString() : user?.department?.id?.toString(),
+                departmentID: isAdmin ? initialData.userInfo?.department?.id.toString() : user?.departmentID?.toString(),
                 fileType: "CharitableCompany",
                 tradeName: initialData.taxPayerInfo?.tradeName || "",
             });
@@ -87,7 +87,7 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
             if (initialData.taxPayerInfo?.propertyDocPict) setPropertyDocName(initialData.taxPayerInfo.propertyDocPict.split('/').pop() || "الملف الحالي");
             if (initialData.charitableCompanyInfo?.byLawsCopy) setByLawsName(initialData.charitableCompanyInfo.byLawsCopy.split('/').pop() || "الملف الحالي");
         }
-    }, [initialData, isAdmin, reset, setValue, user?.department?.id])
+    }, [initialData, isAdmin, reset, setValue, user?.departmentID])
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: keyof CharitableCompanyTaxPayerFormValues, setter: (val: string | null) => void) => {
         const file = e.target.files?.[0]
@@ -114,7 +114,7 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
         fields.forEach(fieldName => {
             const value = values[fieldName as keyof CharitableCompanyTaxPayerFormValues]
             const isUnchangedPhone = fieldName === "phone" && initialData && value === initialData.userInfo?.phone;
-            
+
             if (value !== undefined && value !== null && value !== "" && !isUnchangedPhone) {
                 formData.append(fieldName, value instanceof File ? value : String(value))
             }
@@ -185,7 +185,7 @@ export const CharitableCompanyTaxPayerForm = ({ initialData, onSubmit, isLoading
                             <AdminDepartmentSelect setValue={setValue} watch={watch} fieldName="departmentID" />
                         ) : (
                             <Input
-                                value={user?.department?.name || ""}
+                                value={user?.departmentName || ""}
                                 readOnly
                                 className="h-12 rounded-xl bg-muted/30 border-none cursor-default focus-visible:ring-0"
                             />

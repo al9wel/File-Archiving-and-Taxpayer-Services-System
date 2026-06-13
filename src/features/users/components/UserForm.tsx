@@ -23,7 +23,7 @@ import { ROLES } from "@/constants/roles"
 const userSchema = z.object({
     firstName: z.string().min(2, "الاسم الأول يجب أن يكون حرفين على الأقل"),
     lastName: z.string().min(2, "اسم العائلة يجب أن يكون حرفين على الأقل"),
-    phone: z.string().min(9, "رقم الهاتف غير صحيح"),
+    phone: z.string().length(9, "رقم الهاتف غير صحيح").startsWith("7", "يجب ان يبدأ الرقم ب 7"),
     userName: z.string().optional().or(z.literal('')),
     role: z.string().min(1, "يرجى اختيار الدور الوظيفي"),
     departmentID: z.string().min(1, "يرجى اختيار القسم"),
@@ -55,11 +55,10 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
             departmentID: initialData?.department?.id?.toString() || "1",
         }
     })
-
     // Watch for initialData changes
     useEffect(() => {
-        if (!isAdmin && user?.department?.id) {
-            setValue("departmentID", user.department.id.toString())
+        if (!isAdmin && user?.departmentID) {
+            setValue("departmentID", user.departmentID.toString())
         }
 
         if (initialData?.image) {
@@ -208,7 +207,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
                                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-2 block">
                                     رقم الهاتف *
                                 </label>
-                                <Input placeholder="+96777xxxxxxx" {...register("phone")} className="h-12 bg-muted/30" dir="ltr" />
+                                <Input placeholder="7********" {...register("phone")} className="h-12 bg-muted/30" dir="ltr" />
                                 {errors.phone && <p className="text-sm font-medium text-destructive mt-1">{errors.phone.message}</p>}
                             </div>
                         </div>
@@ -229,7 +228,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
                                 {isAdmin ? (
                                     <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentID?.message} fieldName="departmentID" />
                                 ) : (
-                                    <Input value={user?.department?.name || ""} readOnly className="h-12 bg-muted/30" />
+                                    <Input value={user?.departmentName || ""} readOnly className="h-12 bg-muted/30" />
                                 )}
                             </div>
                             {initialData && (

@@ -8,7 +8,7 @@ import ErrorState from "@/app/pages/ErrorState";
 
 const ArchivedRequestsPage = () => {
     const { data, isPending, isError } = useArchivedRequests();
-    const canView = usePermission(ACTIONS.VIEW_REQUEST);
+    const canView = usePermission(ACTIONS.ARCHIVED_REQUEST);
 
     if (!canView) return <Unauthorized />;
 

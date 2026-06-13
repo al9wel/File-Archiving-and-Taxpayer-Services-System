@@ -37,9 +37,7 @@ export const useLogin = () => {
 
       // Update global Zustand auth store
       setUser(response.data.user);
-
-      // Redirect to Dashboard
-      navigate(ROUTES.DASHBOARD.MAIN);
+      navigate(ROUTES.DASHBOARD.FILE_MOVEMENTS);
     },
   });
 };

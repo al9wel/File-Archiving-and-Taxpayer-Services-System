@@ -15,7 +15,7 @@ import { ROLES } from "@/constants/roles";
 
 const taxCollectorSchema = z.object({
     fullName: z.string().min(3, "الإسم بالكامل يجب أن يكون 3 أحرف على الأقل"),
-    phone: z.string().min(6, "رقم الهاتف غير صالح"),
+    phone: z.string().length(9, "رقم الهاتف غير صحيح").startsWith("7", "يجب ان يبدأ الرقم ب 7"),
     jobTypeId: z.string().min(1, "الرجاء اختيار نوع الوظيفة"),
     deptID: z.string().min(1, "الرجاء اختيار القسم"),
     idCard: z.any().optional(), // File upload
@@ -46,8 +46,8 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
     });
 
     useEffect(() => {
-        if (!isAdmin && user?.department?.id) {
-            setValue("deptID", user.department.id.toString());
+        if (!isAdmin && user?.departmentID) {
+            setValue("deptID", user.departmentID.toString());
         }
 
         if (initialData) {
@@ -77,7 +77,7 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
         fields.forEach(field => {
             const value = values[field as keyof TaxCollectorFormValues];
             const isUnchangedPhone = field === "phone" && initialData && value === initialData.phone;
-            
+
             if (value !== undefined && value !== null && value !== "" && !isUnchangedPhone) {
                 formData.append(field, value instanceof File ? value : String(value));
             }
@@ -92,8 +92,8 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                 {/* Full Name */}
                 <div className="space-y-2 col-span-2">
                     <label className="text-sm font-medium flex items-center gap-1">
-<span className="text-destructive">*</span>
-                         الإسم بالكامل
+                        <span className="text-destructive">*</span>
+                        الإسم بالكامل
                     </label>
                     <Input
                         placeholder="أدخل الإسم بالكامل"
@@ -108,11 +108,11 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                 {/* Phone */}
                 <div className="space-y-2">
                     <label className="text-sm font-medium flex items-center gap-1">
-<span className="text-destructive">*</span>
-                         رقم الهاتف
+                        <span className="text-destructive">*</span>
+                        رقم الهاتف
                     </label>
                     <Input
-                        placeholder="أدخل رقم الهاتف"
+                        placeholder="7********"
                         {...register("phone")}
                         className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-1 focus-visible:ring-destructive"
                         dir="ltr"
@@ -122,42 +122,13 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                     )}
                 </div>
 
-                {/* ID Card File */}
-                <div className="space-y-2">
-                    <label className="text-sm font-medium flex items-center gap-1">
-                        نسخة رقمية من الهوية
-                    </label>
-                    <Card className="p-0 rounded-xl border shadow-sm bg-muted/10 overflow-hidden">
-                        <div className="relative border-2 border-dashed border-muted-foreground/10 rounded-xl p-3 flex flex-col items-center justify-center group hover:border-destructive/50 transition-colors cursor-pointer text-center bg-transparent">
-                            <div className="w-8 h-8 rounded-full bg-destructive/10 text-destructive flex items-center justify-center mb-1 transition-transform group-hover:scale-110">
-                                {idCardName ? <Check size={16} /> : <Upload size={16} />}
-                            </div>
-                            {idCardName ? (
-                                <div className="flex flex-col items-center gap-0">
-                                    <span className="text-[10px] font-medium text-destructive truncate max-w-[120px]">{idCardName}</span>
-                                    <span className="text-[8px] text-muted-foreground">تم الرفع بنجاح</span>
-                                </div>
-                            ) : (
-                                <div className="space-y-0">
-                                    <span className="text-[10px] font-bold">اسحب الملف هنا</span>
-                                    <p className="text-[8px] text-muted-foreground">أو انقر للاختيار</p>
-                                </div>
-                            )}
-                            <input
-                                type="file"
-                                className="absolute inset-0 opacity-0 cursor-pointer"
-                                accept=".pdf,image/*"
-                                onChange={handleIdCardChange}
-                            />
-                        </div>
-                    </Card>
-                </div>
+
 
                 {/* Job Type */}
                 <div className="space-y-2">
                     <label className="text-sm font-medium flex items-center gap-1">
-<span className="text-destructive">*</span>
-                         نوع التوظيف
+                        <span className="text-destructive">*</span>
+                        نوع التوظيف
                     </label>
                     <div className="h-12 w-full">
                         <Select
@@ -192,18 +163,48 @@ export const TaxCollectorForm = ({ initialData, onSubmit, onCancel, isLoading }:
                 {/* Department */}
                 <div className="space-y-2">
                     <label className="text-sm font-medium flex items-center gap-1">
-<span className="text-destructive">*</span>
-                         القسم
+                        <span className="text-destructive">*</span>
+                        القسم
                     </label>
                     {isAdmin ? (
                         <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.deptID?.message} fieldName="deptID" />
                     ) : (
                         <Input
-                            value={user?.department?.name || ""}
+                            value={user?.departmentName || ""}
                             readOnly
                             className="text-right h-12 rounded-xl bg-muted/30 border border-muted-foreground/10 focus-visible:ring-0"
                         />
                     )}
+                </div>
+                {/* ID Card File */}
+                <div className="space-y-2">
+                    <label className="text-sm font-medium flex items-center gap-1">
+                        نسخة رقمية من الهوية
+                    </label>
+                    <Card className="p-0 rounded-xl border shadow-sm bg-muted/10 overflow-hidden">
+                        <div className="relative border-2 border-dashed border-muted-foreground/10 rounded-xl p-3 flex flex-col items-center justify-center group hover:border-destructive/50 transition-colors cursor-pointer text-center bg-transparent">
+                            <div className="w-8 h-8 rounded-full bg-destructive/10 text-destructive flex items-center justify-center mb-1 transition-transform group-hover:scale-110">
+                                {idCardName ? <Check size={16} /> : <Upload size={16} />}
+                            </div>
+                            {idCardName ? (
+                                <div className="flex flex-col items-center gap-0">
+                                    <span className="text-[10px] font-medium text-destructive truncate max-w-[120px]">{idCardName}</span>
+                                    <span className="text-[8px] text-muted-foreground">تم الرفع بنجاح</span>
+                                </div>
+                            ) : (
+                                <div className="space-y-0">
+                                    <span className="text-[10px] font-bold">اسحب الملف هنا</span>
+                                    <p className="text-[8px] text-muted-foreground">أو انقر للاختيار</p>
+                                </div>
+                            )}
+                            <input
+                                type="file"
+                                className="absolute inset-0 opacity-0 cursor-pointer"
+                                accept=".pdf,image/*"
+                                onChange={handleIdCardChange}
+                            />
+                        </div>
+                    </Card>
                 </div>
             </div>
 
