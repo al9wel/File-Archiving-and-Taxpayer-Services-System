@@ -69,6 +69,7 @@ import ShowNotificationPage from "@/features/notifications/pages/ShowNotificatio
 import TrashBinPage from "@/features/trash-bin/pages/TrashBinPage";
 import ConversationsPage from "@/features/customer-service/pages/ConversationsPage";
 import ConversationDetailsPage from "@/features/customer-service/pages/ConversationDetailsPage";
+import SettingsPage from "@/features/settings/pages/SettingsPage";
 
 // dont use it just read it to understand the structure of tax payers routes
 // const taxPayersFeaturesRoutes = [
@@ -131,6 +132,9 @@ export const router = createBrowserRouter([
                     // ── Dashboard (ALL ROLES) ───────────────────────────────
                     { index: true, element: <Navigate to={ROUTES.DASHBOARD.MAIN.split("/").pop() || ""} replace /> },
                     { path: ROUTES.DASHBOARD.MAIN.split("/").pop(), element: <Main /> },
+                    {
+                        path: ROUTES.DASHBOARD.SETTINGS.split("/").pop(), element: <SettingsPage />,
+                    },
 
                     // ── Files, Requests, Customer Service (ADMIN, MANAGER, EMPLOYEE) ────────────────────
                     {

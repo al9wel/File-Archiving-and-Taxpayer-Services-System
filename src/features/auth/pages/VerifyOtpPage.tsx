@@ -9,7 +9,7 @@ import { useForgotPasswordStore } from "../store/useForgotPasswordStore";
 export default function VerifyOtpPage() {
     const navigate = useNavigate();
     const { mutate: verifyOtp, isPending, isError, error } = useVerifyForgotPasswordOtp();
-    const { userId, code: storeCode, setIsVerified } = useForgotPasswordStore();
+    const { userId, code: storeCode, setIsVerified, setUserIdAndCode } = useForgotPasswordStore();
 
     const [formError, setFormError] = useState("");
 
@@ -37,6 +37,7 @@ export default function VerifyOtpPage() {
         verifyOtp({ userId, code }, {
             onSuccess: () => {
                 setIsVerified(true);
+                setUserIdAndCode(userId, code); // Store the code for potential future use (e.g., displaying it for testing)
                 navigate(ROUTES.PUBLIC.RESET_PASSWORD);
             }
         });
@@ -47,7 +48,7 @@ export default function VerifyOtpPage() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-muted/40 px-4" dir="rtl">
             <div className="w-full max-w-md bg-card rounded-2xl shadow-lg border border-primary/10 overflow-hidden p-8 space-y-6">
-                
+
                 <div className="space-y-2 text-center">
                     <div className="flex justify-center mb-4">
                         <div className="p-4 rounded-full bg-primary/10 text-primary">

@@ -23,7 +23,8 @@ import {
     Info,
     Bell,
     Trash2,
-    MessageSquareText
+    MessageSquareText,
+    Settings
 } from "lucide-react"
 import TaxLogo from "@/assets/images/TaxLogo.png"
 import TaxLogoDark from "@/assets/images/TaxLogoDark.png"
@@ -157,6 +158,16 @@ export default function SideBar() {
                 <SidebarGroup>
                     <SidebarGroupContent className="border-t-2">
                         <SidebarMenu>
+                            <SidebarMenuItem>
+                                <NavLink to={ROUTES.DASHBOARD.SETTINGS}>
+                                    {({ isActive }) => (
+                                        <SidebarMenuButton isActive={isActive} className=" mt-2 text-[18px] p-4.5 font-medium cursor-pointer">
+                                            <Settings className="-mr-0.5" style={{ width: "22px", height: "22px" }} />
+                                            <h1> الإعدادات </h1>
+                                        </SidebarMenuButton>
+                                    )}
+                                </NavLink>
+                            </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <NavLink to={ROUTES.DASHBOARD.OPERATION_REPORTS}>
                                     {({ isActive }) => (

@@ -56,6 +56,7 @@ export default function ResetPasswordPage() {
         }
 
         if (isForgotPasswordMode && userId) {
+
             resetForgotPassword({
                 userId,
                 code: code?.toString() || '',
