@@ -76,7 +76,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
         if (initialData?.userName) {
             setValue("userName", initialData.userName)
         }
-    }, [initialData, isAdmin, setValue, user?.department?.id])
+    }, [initialData, isAdmin, setValue, user?.departmentID])
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -118,13 +118,18 @@ export const UserForm = ({ initialData, onSubmit, isLoading }: UserFormProps) =>
         onSubmit(formData)
     }
 
-    const roles = [
-        { id: "Employee", label: "موظف", icon: User },
+    const rolesWithManager = [
         { id: "Manager", label: "مدير", icon: UserCheck },
-        // { id: "Admin", label: "ادمن", icon: UserCog },
+        { id: "Employee", label: "موظف", icon: User },
         { id: "Collectors_Manager", label: "مدير المأمورين", icon: UsersRound },
         { id: "Tax_Payer", label: "مكلف", icon: UsersRound },
     ]
+    const rolesWithOutManager = [
+        { id: "Employee", label: "موظف", icon: User },
+        { id: "Collectors_Manager", label: "مدير المأمورين", icon: UsersRound },
+        { id: "Tax_Payer", label: "مكلف", icon: UsersRound },
+    ]
+    const roles = user?.role === ROLES.MANAGER ? rolesWithOutManager : rolesWithManager
 
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-8" dir="rtl">
