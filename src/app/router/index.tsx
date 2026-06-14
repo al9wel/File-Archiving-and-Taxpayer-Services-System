@@ -275,6 +275,17 @@ export const router = createBrowserRouter([
                             { path: ":id/edit", element: <UpdateUser /> }
                         ]
                     },
+                    // ── Notifications (ADMIN, MANAGER) ──────────────────────────────
+                    {
+                        path: ROUTES.DASHBOARD.NOTIFICATIONS.split("/").pop(),
+                        element: <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.MANAGER]} />,
+                        children: [
+                            { index: true, element: <NotificationsPage /> },
+                            { path: "create", element: <CreateNotificationPage /> },
+                            { path: ":id/edit", element: <UpdateNotificationPage /> },
+                            { path: ":id", element: <ShowNotificationPage /> },
+                        ]
+                    },
 
                     // ── Admin Only (Settings, Reports, Notifications) ───────
                     {
@@ -283,15 +294,6 @@ export const router = createBrowserRouter([
                         children: [
                             { path: ROUTES.DASHBOARD.OPERATION_REPORTS.split("/").pop(), element: <OperationReports /> },
                             { path: ROUTES.DASHBOARD.TRASH_BIN.split("/").pop(), element: <TrashBinPage /> },
-                            {
-                                path: ROUTES.DASHBOARD.NOTIFICATIONS.split("/").pop(),
-                                children: [
-                                    { index: true, element: <NotificationsPage /> },
-                                    { path: "create", element: <CreateNotificationPage /> },
-                                    { path: ":id/edit", element: <UpdateNotificationPage /> },
-                                    { path: ":id", element: <ShowNotificationPage /> },
-                                ]
-                            },
                         ]
                     },
                 ]

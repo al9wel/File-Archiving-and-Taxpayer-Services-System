@@ -28,7 +28,6 @@ export const Actions = ({ file }: { file: File['fileInfo'] }) => {
     const canUpdate = usePermission(ACTIONS.UPDATE_FILE);
     const canDelete = usePermission(ACTIONS.DELETE_FILE);
     const canView = usePermission(ACTIONS.VIEW_FILE);
-    const canViewReport = usePermission(ACTIONS.VIEW_REPORT);
 
     const handleDelete = () => {
         deleteFile.mutate(file.id, {
@@ -65,7 +64,7 @@ export const Actions = ({ file }: { file: File['fileInfo'] }) => {
 
     return (
         <div className="flex items-center justify-center gap-2">
-            {canViewReport && (
+            {canView && (
                 <Button
                     variant="ghost"
                     size="icon"

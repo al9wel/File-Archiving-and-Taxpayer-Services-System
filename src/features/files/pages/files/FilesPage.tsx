@@ -14,8 +14,6 @@ const FilesPage = () => {
     const { data, isPending, isError } = useFiles()
     const { mutateAsync: getFilesReports, isPending: isFilesReportsLoading } = useFilesReports()
     const canView = usePermission(ACTIONS.VIEW_FILE)
-    const canViewReport = usePermission(ACTIONS.VIEW_REPORT)
-
     if (!canView) return <Unauthorized />
 
     if (isError) {
@@ -53,7 +51,7 @@ const FilesPage = () => {
                     </div>
                 ) : (
                     <>
-                        {canViewReport && (
+                        {canView && (
                             <div className="flex justify-end mb-3">
                                 <Button
                                     onClick={handleFilesReport}

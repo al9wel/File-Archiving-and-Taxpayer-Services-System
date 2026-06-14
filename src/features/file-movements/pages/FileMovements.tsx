@@ -20,7 +20,6 @@ const FileMovements = () => {
     const { mutateAsync: getMovementsReport, isPending: isMovementsReportsLoading } = useFileMovementsReport()
 
     const canView = usePermission(ACTIONS.VIEW_FILE_MOVEMENT)
-    const canViewReport = usePermission(ACTIONS.VIEW_REPORT)
 
     if (!canView) return <Unauthorized />
 
@@ -80,7 +79,7 @@ const FileMovements = () => {
                             />
                         </div>
 
-                        {canViewReport && (
+                        {canView && (
                             <div className="flex justify-end mb-3">
                                 <Button
                                     onClick={handleMovementsReport}

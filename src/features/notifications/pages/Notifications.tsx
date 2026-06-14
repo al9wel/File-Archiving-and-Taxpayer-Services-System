@@ -17,7 +17,6 @@ const NotificationsPage = () => {
     const { data, isPending, isError } = useNotifications()
     const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics()
     const canView = usePermission(ACTIONS.VIEW_NOTIFICATION)
-    console.log("Notifications data:", data)
 
     if (!canView) return <Unauthorized />
 
