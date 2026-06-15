@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useChangePassword } from "../hooks/useChangePassword";
-import type { ChangePasswordPayload } from "@/types/settings";
+import type { ChangePasswordPayload } from "@/types/Settings";
 
 const changePasswordSchema = z.object({
     currentPassword: z.string().min(1, "كلمة المرور الحالية مطلوبة"),

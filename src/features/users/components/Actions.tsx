@@ -76,7 +76,7 @@ export const Actions = ({ user }: { user: User }) => {
                             </div>
                             <AlertDialogDescription className="text-right pt-2 space-y-1">
                                 <span className="block">هل أنت متأكد من حذف المستخدم <span className="font-bold text-foreground">{user.firstName} {user.lastName}</span>؟</span>
-                                <span className="block text-destructive font-bold text-xs">تنبيه: سيتم حذف هذا المستخدم وكافة بيانات المكلف المرتبط به.</span>
+                                <span className="block text-destructive font-bold text-xs">تنبيه: سيتم حذف هذا المستخدم وكافة البيانات المرتبط به.</span>
                                 <span className="block text-muted-foreground text-xs pt-1">لا يمكن التراجع عن هذا الإجراء وسيتم إزالة كافة بياناته من النظام.</span>
                             </AlertDialogDescription>
                         </AlertDialogHeader>

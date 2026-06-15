@@ -3,7 +3,7 @@ import type {
     ChangePasswordApiPayload,
     ChangePasswordPayload,
     ChangePasswordResponse,
-} from "@/types/settings";
+} from "@/types/Settings";
 
 const toApiPayload = (data: ChangePasswordPayload): ChangePasswordApiPayload => ({
     current_password: data.currentPassword,
