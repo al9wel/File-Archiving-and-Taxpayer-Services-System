@@ -36,8 +36,8 @@ const FilesPage = () => {
                 "_blank",
                 "noopener,noreferrer"
             )
-        } catch {
-            toast.error("حدث خطأ أثناء إنشاء التقرير")
+        } catch (error: any) {
+            toast.error(error.message || "حدث خطأ أثناء إنشاء التقرير")
         }
     }
 
