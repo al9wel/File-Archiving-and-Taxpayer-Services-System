@@ -28,7 +28,7 @@ export const fetchClient = async (endpoint: string, options: RequestInit = {}) =
     let errorMessage = 'حدث خطأ يرجى المحاولة في وقت اخر';
     try {
       const data = await response.json();
-      errorMessage = data.message || data.error || errorMessage;
+      errorMessage = data.message || data.error || data.error_message || errorMessage;
     } catch {
       errorMessage = response.statusText;
     }
