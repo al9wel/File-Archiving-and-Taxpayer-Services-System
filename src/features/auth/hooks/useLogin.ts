@@ -8,8 +8,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { saveAccessToken, saveUserId } from '@/lib/authStorage';
 
 export const useLogin = () => {
-  // const setUser = useAuthStore((state) => state.setUser);
-  // const setNeedsPasswordReset = useAuthStore((state) => state.setNeedsPasswordReset);
   const { setUser, setNeedsPasswordReset } = useAuth()
   const navigate = useNavigate();
 
