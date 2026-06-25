@@ -3,10 +3,6 @@ import { router } from "@/app/router";
 import { RouterProvider } from "react-router-dom";
 import ErrorState from "./pages/ErrorState";
 import { useUser } from "@/features/auth/hooks/useUser";
-// import { useUser } from "@/features/auth/hooks/useUser"
-// import { Loader2 } from "lucide-react"
-// import ErrorState from "./pages/ErrorState"
-// import NoiseOverlay from "@/landing/components/fx/NoiseOverlay"
 
 const AppContent = () => {
   // isLoading is true while fetching the initial session, false otherwise.
