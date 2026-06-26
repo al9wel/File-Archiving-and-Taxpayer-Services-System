@@ -25,8 +25,9 @@ export const paymentTypesApi = {
     },
 
     updatePaymentType: (id: string | number, data: FormData): Promise<{ data: PaymentType; message: string }> => {
+        data.append("_method", "PUT");
         return fetchClient(`/payment_types/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         });
     },

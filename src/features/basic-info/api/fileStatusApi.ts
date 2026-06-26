@@ -25,8 +25,9 @@ export const fileStatusApi = {
     },
 
     updateFileStatus: (id: string | number, data: FormData): Promise<{ data: FileStatus; message: string }> => {
+        data.append("_method", "PUT");
         return fetchClient(`/file-status/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         });
     },

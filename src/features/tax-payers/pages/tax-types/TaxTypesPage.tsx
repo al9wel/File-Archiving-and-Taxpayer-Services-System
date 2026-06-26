@@ -10,7 +10,7 @@ import Unauthorized from "@/app/pages/Unauthorized";
 const TaxTypesPage = () => {
     const { data: taxTypes, isLoading, isError } = useTaxTypes();
     const canView = usePermission(ACTIONS.VIEW_TAX_PAYER);
-
+    console.log(taxTypes)
     if (!canView) return <Unauthorized />;
 
     if (isError) return <ErrorState />;

@@ -1,10 +1,8 @@
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
 import { Users, Briefcase, ChevronLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
-import { CreateTaxCollectorDialog } from "../components/tax-collectors/CreateTaxCollectorDialog";
-import { CreateEmploymentTypeDialog } from "../components/employment-types/CreateEmploymentTypeDialog";
 import { TaxCollectorStatisticsCards } from "../components/TaxCollectorStatisticsCards";
 import { useSectionStatistics } from "@/hooks/useSectionStatistics";
 
@@ -15,19 +13,7 @@ const sidebarLinks = [
 ];
 
 const TaxCollectorsLayout = () => {
-    const location = useLocation();
     const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics();
-
-    // Determine which action button to show based on the route
-    const renderAction = () => {
-        if (location.pathname === ROUTES.DASHBOARD.TAX_COLLECTORS.COLLECTORS) {
-            return <CreateTaxCollectorDialog />;
-        }
-        if (location.pathname === ROUTES.DASHBOARD.TAX_COLLECTORS.EMPLOYMENT_TYPES) {
-            return <CreateEmploymentTypeDialog />;
-        }
-        return null;
-    };
 
     return (
         <>
@@ -80,9 +66,7 @@ const TaxCollectorsLayout = () => {
                             ))}
                         </div>
                     </Card>
-                    <div className="lg:hidden flex justify-end">
-                        {renderAction()}
-                    </div>
+
                     {/* Main Content (Left side in RTL) */}
                     <div className="flex-1 min-w-0">
                         <Outlet />

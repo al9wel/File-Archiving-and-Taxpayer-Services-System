@@ -25,8 +25,9 @@ export const activityTypesApi = {
     },
 
     updateActivityType: (id: string | number, data: FormData): Promise<{ data: ActivityType; message: string }> => {
+        data.append("_method", "PUT");
         return fetchClient(`/activity_types/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         });
     },

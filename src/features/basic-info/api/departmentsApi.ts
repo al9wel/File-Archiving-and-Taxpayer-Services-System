@@ -26,8 +26,9 @@ export const departmentsApi = {
 
     updateDepartment: (id: string | number, data: FormData): Promise<{ data: Department; message: string }> => {
         // Using PUT as per OpenAPI spec
+        data.append("_method", "PUT");
         return fetchClient(`/departments/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         });
     },

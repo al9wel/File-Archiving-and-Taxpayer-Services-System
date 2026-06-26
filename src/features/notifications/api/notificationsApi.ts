@@ -24,8 +24,9 @@ export const notificationsApi = {
     updateNotification: (id: string | number, data: FormData): Promise<{ data: Notification; message: string }> => {
         // Using PUT for update as per OpenAPI spec. 
         // If Laravel requires method spoofing with POST and _method="PUT", we can adjust if it fails.
+        data.append("_method", "PUT");
         return fetchClient(`/notification/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         })
     },

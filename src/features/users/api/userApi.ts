@@ -40,14 +40,15 @@ export const userApi = {
 
     /**
      * Updates an existing user's data.
-     * Note: Uses POST with method spoofing (_method: "PUT" inside FormData) 
+     * Note: Uses POST with method spoofing (_method: 'POST' inside FormData) 
      * to support multipart updates in PHP/Laravel.
      * @param id - The unique identifier of the user to update.
      * @param data - FormData containing updated fields and optional new files.
      */
     updateUser: (id: string | number, data: FormData): Promise<{ data: User; message: string }> => {
+        data.append("_method", "PUT");
         return fetchClient(`/app_users/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         })
     },

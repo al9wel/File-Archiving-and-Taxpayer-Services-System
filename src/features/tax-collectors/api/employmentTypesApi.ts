@@ -22,8 +22,9 @@ export const employmentTypesApi = {
     },
 
     updateEmploymentType: (id: string | number, data: FormData): Promise<{ data: EmploymentType; message: string }> => {
+        data.append("_method", "PUT");
         return fetchClient(`/job-types/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         });
     },

@@ -30,8 +30,9 @@ export const districtsApi = {
     },
 
     updateDistrict: (id: string | number, data: FormData): Promise<{ data: District; message: string }> => {
+        data.append("_method", "PUT");
         return fetchClient(`/districts/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         });
     },

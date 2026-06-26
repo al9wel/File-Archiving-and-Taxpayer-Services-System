@@ -24,8 +24,9 @@ export const charitableCompanyTaxPayersApi = {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     updateTaxPayer: (id: string | number, data: FormData): Promise<{ data: any; message: string }> => {
+        data.append("_method", "PUT");
         return fetchClient(`/charitable-companies/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         })
     },
