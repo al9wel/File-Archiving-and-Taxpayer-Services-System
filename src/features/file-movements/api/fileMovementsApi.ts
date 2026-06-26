@@ -45,9 +45,10 @@ export const fileMovementsApi = {
         // Appending _method for method spoofing if needed by backend for multipart PUT,
         // although OpenAPI indicates PUT directly. We'll use POST with _method="PUT" to match Laravel patterns often used,
         // but since OpenAPI says PUT, we'll try PUT first unless userApi explicitly did spoofing. 
-        // userApi used method: 'PUT'.
+        // userApi used method: 'POST'.
+        data.append("_method", "PUT");
         return fetchClient(`/files-movements/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         })
     },

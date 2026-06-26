@@ -22,8 +22,9 @@ export const taxTypesApi = {
     },
 
     updateTaxType: (id: string | number, data: FormData): Promise<{ data: TaxType; message: string }> => {
+        data.append("_method", "PUT");
         return fetchClient(`/tax-types/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         })
     },

@@ -37,13 +37,14 @@ export const fileApi = {
 
     /**
      * Updates an existing file's data.
-     * Note: Uses POST with method spoofing (_method: "PUT" inside FormData) 
+     * Note: Uses POST with method spoofing (_method: 'POST' inside FormData) 
      * @param id - The unique identifier of the file to update.
      * @param data - FormData containing updated fields.
      */
     updateFile: (id: string | number, data: FormData): Promise<{ data: any; message: string }> => {
+        data.append("_method", "PUT");
         return fetchClient(`/files/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         })
     },

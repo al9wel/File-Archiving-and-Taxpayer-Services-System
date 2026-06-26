@@ -22,8 +22,9 @@ export const attachmentApi = {
     },
 
     updateAttachment: (id: string | number, data: FormData): Promise<{ data: any; message: string }> => {
+        data.append("_method", "PUT");
         return fetchClient(`/attachment/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         })
     },

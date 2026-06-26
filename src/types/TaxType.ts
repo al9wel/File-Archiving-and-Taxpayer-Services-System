@@ -1,6 +1,6 @@
 
 export interface TaxType {
-    id: number;
+    id: number | string;
     name: string;
     createdAt?: string;
     updatedAt?: string;

@@ -38,8 +38,9 @@ export const requestsApi = {
     approveRequest: (requestId: string | number): Promise<{ message: string }> => {
         const formData = new FormData();
         formData.append("requestId", String(requestId));
+        formData.append("_method", "PUT");
         return fetchClient('/accept-request', {
-            method: 'PUT',
+            method: 'POST',
             body: formData,
         });
     },
@@ -48,8 +49,9 @@ export const requestsApi = {
         const formData = new FormData();
         formData.append("requestId", String(requestId));
         formData.append("note", String(note));
+        formData.append("_method", "PUT");
         return fetchClient('/reject-request', {
-            method: 'PUT',
+            method: 'POST',
             body: formData,
         });
     },

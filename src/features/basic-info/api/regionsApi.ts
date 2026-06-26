@@ -25,8 +25,9 @@ export const regionsApi = {
     },
 
     updateRegion: (id: string | number, data: FormData): Promise<{ data: Region; message: string }> => {
+        data.append("_method", "PUT");
         return fetchClient(`/regions/${id}`, {
-            method: 'PUT',
+            method: 'POST',
             body: data,
         });
     },
