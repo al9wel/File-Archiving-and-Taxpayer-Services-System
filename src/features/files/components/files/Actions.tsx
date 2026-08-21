@@ -1,7 +1,6 @@
 import { useState } from "react"
 import type { File } from "@/types/File"
 import { useDeleteFile } from "../../hooks/files/useDeleteFile"
-import { useFileReport } from "../../hooks/files/useFileReport"
 import { NavLink } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Eye, FileText, Pencil, Trash2, Loader2, AlertTriangle } from "lucide-react"
@@ -21,10 +20,12 @@ import {
 import { ACTIONS } from "@/constants/permissions"
 import { usePermission } from "@/hooks/usePermission"
 
+import { generateSingleFileReport } from "@/services/reports"
+
 export const Actions = ({ file }: { file: File['fileInfo'] }) => {
     const [isOpen, setIsOpen] = useState(false)
+    const [isGeneratingReport, setIsGeneratingReport] = useState(false)
     const deleteFile = useDeleteFile()
-    const { mutateAsync: getFileReport, isPending: isFileReportLoading } = useFileReport()
     const canUpdate = usePermission(ACTIONS.UPDATE_FILE);
     const canDelete = usePermission(ACTIONS.DELETE_FILE);
     const canView = usePermission(ACTIONS.VIEW_FILE);
@@ -43,22 +44,13 @@ export const Actions = ({ file }: { file: File['fileInfo'] }) => {
 
     const handleFileReport = async () => {
         try {
-            const response = await getFileReport(file.id)
-
-            const reportUrl = response?.data?.report_url
-
-            if (!reportUrl) {
-                toast.error("تعذر الحصول على رابط التقرير")
-                return
-            }
-
-            window.open(
-                reportUrl,
-                "_blank",
-                "noopener,noreferrer"
-            )
+            setIsGeneratingReport(true)
+            await generateSingleFileReport(file)
+            toast.success("تم إنشاء تقرير الملف بنجاح")
         } catch (error: any) {
             toast.error(error.message || "حدث خطأ أثناء إنشاء التقرير")
+        } finally {
+            setIsGeneratingReport(false)
         }
     }
 
@@ -70,10 +62,10 @@ export const Actions = ({ file }: { file: File['fileInfo'] }) => {
                     size="icon"
                     className="h-8 w-8 text-emerald-600"
                     onClick={handleFileReport}
-                    disabled={isFileReportLoading}
+                    disabled={isGeneratingReport}
                     title="تقرير الملف"
                 >
-                    {isFileReportLoading ? (
+                    {isGeneratingReport ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
                     ) : (
                         <FileText className="h-4 w-4" />

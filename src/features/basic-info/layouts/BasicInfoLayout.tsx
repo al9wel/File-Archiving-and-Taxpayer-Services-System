@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
-import { Building2, Activity, CreditCard, Navigation, Map, ChevronLeft, FileCheck } from "lucide-react";
+import { Building2, Activity, CreditCard, Navigation, Map, ChevronLeft, FileCheck, Settings2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
 
@@ -14,6 +14,7 @@ const sidebarLinks = [
     { title: "نوع السداد", path: ROUTES.DASHBOARD.BASIC_INFO.PAYMENT_TYPES, icon: CreditCard },
     { title: "المناطق", path: ROUTES.DASHBOARD.BASIC_INFO.REGIONS, icon: Navigation },
     { title: "الأحياء", path: ROUTES.DASHBOARD.BASIC_INFO.DISTRICTS, icon: Map },
+    { title: "نوع الضريبة", path: ROUTES.DASHBOARD.BASIC_INFO.TAX_TYPES, icon: Settings2 },
 ];
 
 const BasicInfoLayout = () => {

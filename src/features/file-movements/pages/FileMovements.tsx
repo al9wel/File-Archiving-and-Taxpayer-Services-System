@@ -2,7 +2,6 @@ import DashboardHeader from "@/components/layout/DahsboardHeader"
 import { DataTable } from "../components/data-table"
 import { columns } from "../components/columns"
 import { useFileMovements } from "../hooks/useFileMovements"
-import { useFileMovementsReport } from "../hooks/useFileMovementsReport"
 import { Loader2, FileText } from "lucide-react"
 import { usePermission } from "@/hooks/usePermission"
 import { ACTIONS } from "@/constants/permissions"
@@ -13,11 +12,14 @@ import ErrorState from "@/app/pages/ErrorState"
 import { FileMovementStatisticsCards } from "../components/FileMovementStatisticsCards"
 import { useSectionStatistics } from "@/hooks/useSectionStatistics"
 
+import { useState } from "react"
+import { generateFileMovementsReport } from "@/services/reports"
+
 const FileMovements = () => {
     const { data, isPending, isError } = useFileMovements()
     const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics()
 
-    const { mutateAsync: getMovementsReport, isPending: isMovementsReportsLoading } = useFileMovementsReport()
+    const [isGeneratingReport, setIsGeneratingReport] = useState(false)
 
     const canView = usePermission(ACTIONS.VIEW_FILE_MOVEMENT)
 
@@ -27,26 +29,18 @@ const FileMovements = () => {
         return <ErrorState />
     }
 
-
-
     const handleMovementsReport = async () => {
         try {
-            const response = await getMovementsReport()
-
-            const reportUrl = response?.data?.report_url
-
-            if (!reportUrl) {
-                toast.error("تعذر الحصول على رابط التقرير")
-                return
-            }
-
-            window.open(
-                reportUrl,
-                "_blank",
-                "noopener,noreferrer"
+            setIsGeneratingReport(true)
+            await generateFileMovementsReport(
+                data?.data?.filesMovements || [],
+                statisticsData?.data?.files_movements
             )
+            toast.success("تم إنشاء تقرير حركات الملفات بنجاح")
         } catch (error: any) {
             toast.error(error.message || "حدث خطأ أثناء إنشاء التقرير")
+        } finally {
+            setIsGeneratingReport(false)
         }
     }
 
@@ -83,12 +77,12 @@ const FileMovements = () => {
                             <div className="flex justify-end mb-3">
                                 <Button
                                     onClick={handleMovementsReport}
-                                    disabled={isMovementsReportsLoading}
+                                    disabled={isGeneratingReport}
                                     className="cursor-pointer p-4 hover:bg-primary-hover"
                                     size="lg"
 
                                 >
-                                    {isMovementsReportsLoading ? (
+                                    {isGeneratingReport ? (
                                         <Loader2 className="h-4 w-4 animate-spin" />
                                     ) : (
                                         <FileText className="h-4 w-4" />

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Check, FileText, Loader2, Upload } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useTaxTypes } from "../../hooks/tax-type/useTaxTypes";
+import { useTaxTypes } from "@/features/basic-info/hooks/tax-type/useTaxTypes";
 import { TaxPayerSearchSelect } from "../tax-payers/TaxPayerSearchSelect";
 
 const taxInfoSchema = z.object({
