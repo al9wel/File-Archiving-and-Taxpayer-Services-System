@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { ROUTES } from "@/constants/routes";
-import { Users, FileText, Settings2, ChevronLeft, } from "lucide-react";
+import { Users, FileText, ChevronLeft, } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import DashboardHeader from "@/components/layout/DahsboardHeader";
 import { TaxPayerStatisticsCards } from "../components/TaxPayerStatisticsCards";
@@ -10,7 +10,6 @@ const TaxPayersLayout = () => {
     const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics();
     const mainLinks = [
         { title: "المكلفين", path: ROUTES.DASHBOARD.TAXPAYERS.PAYERS.ROOT, icon: Users },
-        { title: "نوع الضريبة", path: ROUTES.DASHBOARD.TAXPAYERS.TYPES, icon: Settings2 },
         { title: "البيانات الضريبية", path: ROUTES.DASHBOARD.TAXPAYERS.INFO, icon: FileText },
     ];
 

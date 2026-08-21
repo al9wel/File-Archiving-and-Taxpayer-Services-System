@@ -29,7 +29,7 @@ import DistrictsPage from "@/features/basic-info/pages/DistrictsPage";
 import FileStatusPage from "@/features/basic-info/pages/FileStatusPage";
 
 import TaxPayersLayout from "@/features/tax-payers/layouts/TaxPayersLayout";
-import TaxTypesPage from "@/features/tax-payers/pages/tax-types/TaxTypesPage";
+import TaxTypesPage from "@/features/basic-info/pages/tax-types/TaxTypesPage";
 import TaxInfoPage from "@/features/tax-payers/pages/tax-info/TaxInfoPage";
 import TaxCollectorsLayout from "@/features/tax-collectors/layouts/TaxCollectorsLayout";
 import TaxCollectorsPage from "@/features/tax-collectors/pages/TaxCollectorsPage";
@@ -227,7 +227,6 @@ export const router = createBrowserRouter([
                                             },
                                         ]
                                     },
-                                    { path: ROUTES.DASHBOARD.TAXPAYERS.TYPES.split("/").pop(), element: <TaxTypesPage /> },
                                     { path: ROUTES.DASHBOARD.TAXPAYERS.INFO.split("/").pop(), element: <TaxInfoPage /> },
                                 ]
                             },
@@ -242,6 +241,7 @@ export const router = createBrowserRouter([
                                     { path: ROUTES.DASHBOARD.BASIC_INFO.REGIONS.split("/").pop(), element: <RegionsPage /> },
                                     { path: ROUTES.DASHBOARD.BASIC_INFO.DISTRICTS.split("/").pop(), element: <DistrictsPage /> },
                                     { path: ROUTES.DASHBOARD.BASIC_INFO.FILE_STATUS.split("/").pop(), element: <FileStatusPage /> },
+                                    { path: ROUTES.DASHBOARD.BASIC_INFO.TAX_TYPES.split("/").pop(), element: <TaxTypesPage /> },
                                 ]
                             },
                         ]

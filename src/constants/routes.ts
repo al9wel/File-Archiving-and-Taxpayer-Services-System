@@ -42,6 +42,7 @@ export const ROUTES = {
       REGIONS: "/dashboard/basic-info/regions",
       DISTRICTS: "/dashboard/basic-info/districts",
       FILE_STATUS: "/dashboard/basic-info/file-status",
+      TAX_TYPES: "/dashboard/basic-info/tax-types",
     },
     NOTIFICATIONS: "/dashboard/notifications",
     NOTIFICATIONS_CREATE: "/dashboard/notifications/create",
@@ -69,7 +70,6 @@ export const ROUTES = {
           SHOW: "/dashboard/tax-payers/payers/charitable-company/:id",
         }
       },
-      TYPES: "/dashboard/tax-payers/types",
       INFO: "/dashboard/tax-payers/info",
     },
     TAX_COLLECTORS: {
