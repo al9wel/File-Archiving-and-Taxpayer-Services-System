@@ -1,7 +1,6 @@
 import { DataTable } from "../../components/files/data-table"
 import { columns } from "../../components/files/columns"
 import { useFiles } from "../../hooks/files/useFiles"
-import { useFilesReports } from "../../hooks/files/useFilesReports"
 import { Loader2, FileText } from "lucide-react"
 import { usePermission } from "@/hooks/usePermission"
 import { ACTIONS } from "@/constants/permissions"
@@ -10,9 +9,12 @@ import { toast } from "sonner"
 import Unauthorized from "@/app/pages/Unauthorized"
 import ErrorState from "@/app/pages/ErrorState"
 
+import { useState } from "react"
+import { generateAllFilesReport } from "@/services/reports"
+
 const FilesPage = () => {
     const { data, isPending, isError } = useFiles()
-    const { mutateAsync: getFilesReports, isPending: isFilesReportsLoading } = useFilesReports()
+    const [isGeneratingReport, setIsGeneratingReport] = useState(false)
     const canView = usePermission(ACTIONS.VIEW_FILE)
     if (!canView) return <Unauthorized />
 
@@ -22,22 +24,13 @@ const FilesPage = () => {
 
     const handleFilesReport = async () => {
         try {
-            const response = await getFilesReports()
-
-            const reportUrl = response?.data?.report_url
-
-            if (!reportUrl) {
-                toast.error("تعذر الحصول على رابط التقرير")
-                return
-            }
-
-            window.open(
-                reportUrl,
-                "_blank",
-                "noopener,noreferrer"
-            )
+            setIsGeneratingReport(true)
+            await generateAllFilesReport(data?.data || [])
+            toast.success("تم إنشاء تقرير جميع الملفات بنجاح")
         } catch (error: any) {
             toast.error(error.message || "حدث خطأ أثناء إنشاء التقرير")
+        } finally {
+            setIsGeneratingReport(false)
         }
     }
 
@@ -55,11 +48,11 @@ const FilesPage = () => {
                             <div className="flex justify-end mb-3">
                                 <Button
                                     onClick={handleFilesReport}
-                                    disabled={isFilesReportsLoading}
+                                    disabled={isGeneratingReport}
                                     className="cursor-pointer p-4 hover:bg-primary-hover"
                                     size="lg"
                                 >
-                                    {isFilesReportsLoading ? (
+                                    {isGeneratingReport ? (
                                         <Loader2 className="h-4 w-4 animate-spin" />
                                     ) : (
                                         <FileText className="h-4 w-4" />
