@@ -48,7 +48,7 @@ export function generateAllTaxPayersHtmlTemplate(taxPayers: TaxPayers[]): string
             <div style="text-align: right;">
                 <h3 style="margin: 0; font-size: 14px; font-weight: 700; color: #8b1e1e;">الجمهورية اليمنية</h3>
                 <h4 style="margin: 4px 0 0 0; font-size: 12px; font-weight: 600; color: #374151;">وزارة المالية - مصلحة الضرائب</h4>
-                <h4 style="margin: 2px 0 0 0; font-size: 12px; font-weight: 600; color: #4b5563;">مكتب الضرائب بمحافظة حضرموت - الساحل</h4>
+                <h4 style="margin: 2px 0 0 0; font-size: 12px; font-weight: 600; color: #4b5563;">مكتب الضرائب بمحافظة حضرموت الساحل</h4>
             </div>
 
             <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">

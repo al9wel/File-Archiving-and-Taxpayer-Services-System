@@ -21,6 +21,8 @@ import { usePermission } from "@/hooks/usePermission"
 import type { TaxPayers } from "@/types/TaxPayers"
 import { generateSingleTaxPayerReport } from "@/services/reports"
 
+import { individualTaxPayersApi } from "../../../api/individualTaxPayersApi"
+
 export const IndividualTaxPayerActions = ({ taxPayerId, taxPayer }: { taxPayerId: string | number; taxPayer?: TaxPayers }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [isGeneratingReport, setIsGeneratingReport] = useState(false)
@@ -43,10 +45,19 @@ export const IndividualTaxPayerActions = ({ taxPayerId, taxPayer }: { taxPayerId
     }
 
     const handleReport = async () => {
-        if (!taxPayer) return
         try {
             setIsGeneratingReport(true)
-            await generateSingleTaxPayerReport(taxPayer)
+            // Fetch complete taxpayer details with all documents and relations
+            let fullData: any = taxPayer;
+            try {
+                const res = await individualTaxPayersApi.getTaxPayer(taxPayerId);
+                if (res?.data) {
+                    fullData = res.data;
+                }
+            } catch {
+                // fallback to basic data if API call fails
+            }
+            await generateSingleTaxPayerReport(fullData)
             toast.success("تم إنشاء تقرير المكلف بنجاح")
         } catch (error: any) {
             toast.error(error.message || "حدث خطأ أثناء إنشاء التقرير")

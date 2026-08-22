@@ -1,18 +1,23 @@
+import { useState } from "react"
 import { useCompanyTaxPayer } from "../../../hooks/tax-payers/company/useCompanyTaxPayer"
 import { useParams, useNavigate } from "react-router-dom"
-import { Loader2, User as UserIcon, Phone, Shield, Briefcase, ArrowLeft, Pencil, FileText, Hash } from "lucide-react"
+import { Loader2, User as UserIcon, Phone, Shield, Briefcase, ArrowLeft, Pencil, FileText, Hash, Printer } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ROUTES } from "@/constants/routes"
 import { usePermission } from "@/hooks/usePermission"
 import { ACTIONS } from "@/constants/permissions"
 import ErrorState from "@/app/pages/ErrorState"
+import { toast } from "sonner"
+import { generateSingleTaxPayerReport } from "@/services/reports"
 
 const ViewCompanyTaxPayerPage = () => {
     const { id } = useParams()
     const navigate = useNavigate()
     const { data: payer, isLoading, isError } = useCompanyTaxPayer(id!)
     const canUpdate = usePermission(ACTIONS.UPDATE_TAX_PAYER)
+    const [isGeneratingReport, setIsGeneratingReport] = useState(false)
+
     if (isError) return <ErrorState />
 
     if (isLoading) {
@@ -25,6 +30,19 @@ const ViewCompanyTaxPayerPage = () => {
     }
 
     const data = payer?.data;
+
+    const handleReport = async () => {
+        if (!data) return
+        try {
+            setIsGeneratingReport(true)
+            await generateSingleTaxPayerReport(data)
+            toast.success("تم إنشاء تقرير المكلف بنجاح")
+        } catch (error: any) {
+            toast.error(error.message || "حدث خطأ أثناء إنشاء التقرير")
+        } finally {
+            setIsGeneratingReport(false)
+        }
+    }
 
     const infoItems = [
         { label: "الاسم التجاري", value: data?.taxPayerInfo?.tradeName, icon: Briefcase },
@@ -58,6 +76,19 @@ const ViewCompanyTaxPayerPage = () => {
                     className="rounded-xl hover:bg-accent cursor-pointer h-12 px-6"
                 >
                     <ArrowLeft className="ml-2 h-4 w-4" /> رجوع
+                </Button>
+                <Button
+                    onClick={handleReport}
+                    disabled={isGeneratingReport}
+                    variant="outline"
+                    className="rounded-xl cursor-pointer h-12 px-6 border-primary/30 text-primary hover:bg-primary/5"
+                >
+                    {isGeneratingReport ? (
+                        <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                    ) : (
+                        <Printer className="ml-2 h-4 w-4" />
+                    )}
+                    طباعة التقرير
                 </Button>
                 {canUpdate && (
                     <Button

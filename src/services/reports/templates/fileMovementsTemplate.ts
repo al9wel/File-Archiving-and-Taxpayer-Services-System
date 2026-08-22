@@ -64,7 +64,7 @@ export function generateFileMovementsHtmlTemplate(
             <div style="text-align: right;">
                 <h3 style="margin: 0; font-size: 14px; font-weight: 700; color: #8b1e1e;">الجمهورية اليمنية</h3>
                 <h4 style="margin: 4px 0 0 0; font-size: 12px; font-weight: 600; color: #374151;">وزارة المالية - مصلحة الضرائب</h4>
-                <h4 style="margin: 2px 0 0 0; font-size: 12px; font-weight: 600; color: #4b5563;">مكتب الضرائب بمحافظة حضرموت - الساحل</h4>
+                <h4 style="margin: 2px 0 0 0; font-size: 12px; font-weight: 600; color: #4b5563;">مكتب الضرائب بمحافظة حضرموت الساحل</h4>
             </div>
 
             <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -84,23 +84,23 @@ export function generateFileMovementsHtmlTemplate(
             <p style="margin: 8px 0 0 0; font-size: 13px; font-weight: 600; color: #8b1e1e;">سجل وتفاصيل حركات الملفات وإحصائيات التداول</p>
         </div>
 
-        <!-- Stats Bar -->
+        <!-- Stats Bar with colored top borders matching movement status -->
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px;">
             <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #8b1e1e; padding: 10px; border-radius: 8px; text-align: center;">
                 <div style="font-size: 11px; color: #64748b; font-weight: 600;">إجمالي الحركات</div>
                 <div style="font-size: 17px; font-weight: 800; color: #111827; margin-top: 4px;">${totalMovements}</div>
             </div>
-            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #8b1e1e; padding: 10px; border-radius: 8px; text-align: center;">
-                <div style="font-size: 11px; color: #64748b; font-weight: 600;">داخل الأرشيف</div>
-                <div style="font-size: 17px; font-weight: 800; color: #111827; margin-top: 4px;">${insideCount}</div>
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #16a34a; padding: 10px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 11px; color: #15803d; font-weight: 600;">داخل الأرشيف</div>
+                <div style="font-size: 17px; font-weight: 800; color: #166534; margin-top: 4px;">${insideCount}</div>
             </div>
-            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #8b1e1e; padding: 10px; border-radius: 8px; text-align: center;">
-                <div style="font-size: 11px; color: #64748b; font-weight: 600;">خارج الأرشيف</div>
-                <div style="font-size: 17px; font-weight: 800; color: #111827; margin-top: 4px;">${outsideCount}</div>
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #d97706; padding: 10px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 11px; color: #b45309; font-weight: 600;">خارج الأرشيف</div>
+                <div style="font-size: 17px; font-weight: 800; color: #92400e; margin-top: 4px;">${outsideCount}</div>
             </div>
-            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #8b1e1e; padding: 10px; border-radius: 8px; text-align: center;">
-                <div style="font-size: 11px; color: #64748b; font-weight: 600;">مفقود</div>
-                <div style="font-size: 17px; font-weight: 800; color: #111827; margin-top: 4px;">${missingCount}</div>
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #dc2626; padding: 10px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 11px; color: #b91c1c; font-weight: 600;">مفقود</div>
+                <div style="font-size: 17px; font-weight: 800; color: #991b1b; margin-top: 4px;">${missingCount}</div>
             </div>
         </div>
 
