@@ -69,7 +69,7 @@ export function generateFileMovementsHtmlTemplate(
 
             <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <img src="${TAX_LOGO_URL}" alt="شعار النظام" style="height: 52px; width: auto; object-fit: contain; margin: 0 auto 6px auto; display: block;" />
-                <span style="font-size: 12px; color: #8b1e1e; font-weight: 800; letter-spacing: -0.2px;">نظام الأرشفة وخدمات المكلفين</span>
+                <span style="font-size: 12px; color: #8b1e1e; font-weight: 800;">نظام الأرشفة وخدمات المكلفين</span>
             </div>
 
             <div style="text-align: left;">
@@ -78,15 +78,29 @@ export function generateFileMovementsHtmlTemplate(
             </div>
         </div>
 
-        <!-- Title & Stats Bar -->
-        <div style="margin-bottom: 20px; background-color: #fef2f2; padding: 14px; border-radius: 8px; border: 1px solid #fee2e2;">
-            <h1 style="margin: 0 0 12px 0; font-size: 20px; font-weight: 800; color: #781919; text-align: center;">تقرير حركة الملفات الأرشيفية</h1>
-            
-            <div style="display: flex; justify-content: space-around; background-color: #ffffff; padding: 10px; border-radius: 6px; border: 1px solid #fecaca; font-size: 12px;">
-                <div><span style="color: #64748b;">إجمالي الحركات:</span> <strong style="color: #8b1e1e; font-size: 14px;">${totalMovements}</strong></div>
-                <div><span style="color: #065f46;">داخل الأرشيف:</span> <strong style="color: #047857; font-size: 14px;">${insideCount}</strong></div>
-                <div><span style="color: #075985;">خارج الأرشيف:</span> <strong style="color: #0284c7; font-size: 14px;">${outsideCount}</strong></div>
-                <div><span style="color: #991b1b;">مفقود:</span> <strong style="color: #dc2626; font-size: 14px;">${missingCount}</strong></div>
+        <!-- Title -->
+        <div style="text-align: center; margin-bottom: 20px; background-color: #fef2f2; padding: 12px; border-radius: 8px; border: 1px solid #fee2e2;">
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800; color: #781919;">تقرير حركة الملفات الأرشيفية</h1>
+            <p style="margin: 8px 0 0 0; font-size: 13px; font-weight: 600; color: #8b1e1e;">سجل وتفاصيل حركات الملفات وإحصائيات التداول</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px;">
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #8b1e1e; padding: 10px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 11px; color: #64748b; font-weight: 600;">إجمالي الحركات</div>
+                <div style="font-size: 17px; font-weight: 800; color: #111827; margin-top: 4px;">${totalMovements}</div>
+            </div>
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #8b1e1e; padding: 10px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 11px; color: #64748b; font-weight: 600;">داخل الأرشيف</div>
+                <div style="font-size: 17px; font-weight: 800; color: #111827; margin-top: 4px;">${insideCount}</div>
+            </div>
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #8b1e1e; padding: 10px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 11px; color: #64748b; font-weight: 600;">خارج الأرشيف</div>
+                <div style="font-size: 17px; font-weight: 800; color: #111827; margin-top: 4px;">${outsideCount}</div>
+            </div>
+            <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-top: 3px solid #8b1e1e; padding: 10px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 11px; color: #64748b; font-weight: 600;">مفقود</div>
+                <div style="font-size: 17px; font-weight: 800; color: #111827; margin-top: 4px;">${missingCount}</div>
             </div>
         </div>
 

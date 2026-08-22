@@ -44,7 +44,7 @@ export function generateSingleFileHtmlTemplate(file: File["fileInfo"]): string {
 
             <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <img src="${TAX_LOGO_URL}" alt="شعار النظام" style="height: 48px; width: auto; object-fit: contain; margin: 0 auto 5px auto; display: block;" />
-                <span style="font-size: 11px; color: #8b1e1e; font-weight: 800; letter-spacing: -0.2px;">نظام الأرشفة وخدمات المكلفين</span>
+                <span style="font-size: 11px; color: #8b1e1e; font-weight: 800;">نظام الأرشفة وخدمات المكلفين</span>
             </div>
 
             <div style="text-align: left;">

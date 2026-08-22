@@ -1,9 +1,12 @@
 import type { File } from "@/types/File";
 import type { FileMovement, FileMovementStatistics } from "@/types/FileMovments";
+import type { TaxPayers } from "@/types/TaxPayers";
 import { generatePdfFromHtml } from "./pdfGenerator";
 import { generateAllFilesHtmlTemplate } from "./templates/allFilesTemplate";
 import { generateSingleFileHtmlTemplate } from "./templates/singleFileTemplate";
 import { generateFileMovementsHtmlTemplate } from "./templates/fileMovementsTemplate";
+import { generateAllTaxPayersHtmlTemplate } from "./templates/allTaxPayersTemplate";
+import { generateSingleTaxPayerHtmlTemplate } from "./templates/singleTaxPayerTemplate";
 
 /**
  * Generates an official A4 Landscape report for all files.
@@ -40,3 +43,26 @@ export async function generateFileMovementsReport(
         fileName: `تقرير_حركة_الملفات_${new Date().toISOString().slice(0, 10)}.pdf`,
     });
 }
+
+/**
+ * Generates an official A4 Landscape report for all taxpayers.
+ */
+export async function generateAllTaxPayersReport(taxPayers: TaxPayers[]): Promise<void> {
+    const htmlContent = generateAllTaxPayersHtmlTemplate(taxPayers);
+    await generatePdfFromHtml(htmlContent, {
+        orientation: "landscape",
+        fileName: `تقرير_جميع_المكلفين_${new Date().toISOString().slice(0, 10)}.pdf`,
+    });
+}
+
+/**
+ * Generates an official A4 Portrait report for a single taxpayer.
+ */
+export async function generateSingleTaxPayerReport(taxPayer: TaxPayers): Promise<void> {
+    const htmlContent = generateSingleTaxPayerHtmlTemplate(taxPayer);
+    await generatePdfFromHtml(htmlContent, {
+        orientation: "portrait",
+        fileName: `تقرير_مكلف_${taxPayer.taxPayerId}_${new Date().toISOString().slice(0, 10)}.pdf`,
+    });
+}
+
