@@ -3,7 +3,7 @@ import { useDeleteCompanyTaxPayer } from "../../../hooks/tax-payers/company/useD
 
 import { NavLink } from "react-router-dom"
 import { Button } from "@/components/ui/button"
-import { Eye, Pencil, Trash2, Loader2, AlertTriangle } from "lucide-react"
+import { Eye, FileText, Pencil, Trash2, Loader2, AlertTriangle } from "lucide-react"
 import { ROUTES } from "@/constants/routes"
 import { toast } from "sonner"
 import {
@@ -19,9 +19,12 @@ import {
 } from "@/components/ui/alert-dialog"
 import { ACTIONS } from "@/constants/permissions"
 import { usePermission } from "@/hooks/usePermission"
+import type { TaxPayers } from "@/types/TaxPayers"
+import { generateSingleTaxPayerReport } from "@/services/reports"
 
-export const CompanyTaxPayerActions = ({ taxPayerId }: { taxPayerId: string | number | null }) => {
+export const CompanyTaxPayerActions = ({ taxPayerId, taxPayer }: { taxPayerId: string | number | null; taxPayer?: TaxPayers }) => {
     const [isOpen, setIsOpen] = useState(false)
+    const [isGeneratingReport, setIsGeneratingReport] = useState(false)
     const deleteCompany = useDeleteCompanyTaxPayer()
     const canUpdate = usePermission(ACTIONS.UPDATE_TAX_PAYER);
     const canDelete = usePermission(ACTIONS.DELETE_TAX_PAYER);
@@ -41,8 +44,37 @@ export const CompanyTaxPayerActions = ({ taxPayerId }: { taxPayerId: string | nu
         })
     }
 
+    const handleReport = async () => {
+        if (!taxPayer) return
+        try {
+            setIsGeneratingReport(true)
+            await generateSingleTaxPayerReport(taxPayer)
+            toast.success("تم إنشاء تقرير المكلف بنجاح")
+        } catch (error: any) {
+            toast.error(error.message || "حدث خطأ أثناء إنشاء التقرير")
+        } finally {
+            setIsGeneratingReport(false)
+        }
+    }
+
     return (
         <div className="flex items-center justify-center gap-2">
+            {canView && taxPayer && (
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-emerald-600"
+                    onClick={handleReport}
+                    disabled={isGeneratingReport}
+                    title="تقرير المكلف"
+                >
+                    {isGeneratingReport ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                        <FileText className="h-4 w-4" />
+                    )}
+                </Button>
+            )}
             {canView && (
                 <NavLink to={ROUTES.DASHBOARD.TAXPAYERS.PAYERS.COMPANY.SHOW.replace(":id", taxPayerId!.toString())}>
                     <Button variant="ghost" size="icon" className="h-8 w-8 text-primary">

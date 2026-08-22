@@ -36,18 +36,19 @@ export const columns: ColumnDef<TaxPayers>[] = [
         header: "العمليات",
         cell: ({ row }) => {
             if (row.original.taxPayerFileType === "Individual") {
-                return <IndividualTaxPayerActions taxPayerId={row.original.taxPayerId} />
+                return <IndividualTaxPayerActions taxPayerId={row.original.taxPayerId} taxPayer={row.original} />
             }
             if (row.original.taxPayerFileType === "Company") {
                 if (row.original.companyId) {
-                    return <CompanyTaxPayerActions taxPayerId={row.original.companyId} />
+                    return <CompanyTaxPayerActions taxPayerId={row.original.companyId} taxPayer={row.original} />
                 }
             }
             if (row.original.taxPayerFileType === "CharitableCompany") {
                 if (row.original.charitableCompanyId) {
-                    return <CharitableCompanyTaxPayerActions taxPayerId={row.original.charitableCompanyId} />
+                    return <CharitableCompanyTaxPayerActions taxPayerId={row.original.charitableCompanyId} taxPayer={row.original} />
                 }
             }
         }
     }
 ]
+
