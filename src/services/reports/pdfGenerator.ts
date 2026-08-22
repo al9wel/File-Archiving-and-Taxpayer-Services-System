@@ -81,6 +81,21 @@ export async function generatePdfFromHtml(
         if (iframeDoc.fonts) {
             await iframeDoc.fonts.ready;
         }
+
+        // Wait for all images in iframe (such as TaxLogo) to load completely
+        const images = Array.from(iframeDoc.images);
+        if (images.length > 0) {
+            await Promise.all(
+                images.map((img) => {
+                    if (img.complete) return Promise.resolve();
+                    return new Promise((resolve) => {
+                        img.onload = () => resolve(true);
+                        img.onerror = () => resolve(true);
+                    });
+                })
+            );
+        }
+
         // Small delay to ensure all DOM elements are fully settled
         await new Promise((resolve) => setTimeout(resolve, 150));
 
