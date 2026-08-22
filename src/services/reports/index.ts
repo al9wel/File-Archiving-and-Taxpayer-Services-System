@@ -56,13 +56,15 @@ export async function generateAllTaxPayersReport(taxPayers: TaxPayers[]): Promis
 }
 
 /**
- * Generates an official A4 Portrait report for a single taxpayer.
+ * Generates an official A4 Portrait report for a single taxpayer (supports all taxpayer types and full details).
  */
-export async function generateSingleTaxPayerReport(taxPayer: TaxPayers): Promise<void> {
+export async function generateSingleTaxPayerReport(taxPayer: any): Promise<void> {
     const htmlContent = generateSingleTaxPayerHtmlTemplate(taxPayer);
+    const id = taxPayer?.taxPayerInfo?.id || taxPayer?.taxPayerId || "مكلف";
     await generatePdfFromHtml(htmlContent, {
         orientation: "portrait",
-        fileName: `تقرير_مكلف_${taxPayer.taxPayerId}_${new Date().toISOString().slice(0, 10)}.pdf`,
+        fileName: `تقرير_مكلف_${id}_${new Date().toISOString().slice(0, 10)}.pdf`,
     });
 }
+
 
