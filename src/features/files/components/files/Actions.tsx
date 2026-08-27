@@ -106,7 +106,7 @@ export const Actions = ({ file }: { file: File['fileInfo'] }) => {
                                 <AlertDialogTitle className="text-right">حذف الملف</AlertDialogTitle>
                             </div>
                             <AlertDialogDescription className="text-right pt-2 space-y-1">
-                                <span className="block">هل أنت متأكد من حذف الملف الخاص بالمكلف <span className="font-bold text-foreground">{file.taxPayer?.tradeName || file.taxNumber}</span>؟</span>
+                                <span className="block">هل أنت متأكد من حذف الملف الخاص بالمكلف <span className="font-bold text-foreground">{file.user ? `${file.user.firstName} ${file.user.lastName}` : (file.taxNumber || file.inventoryNumber)}</span>؟</span>
                                 <span className="block text-muted-foreground text-xs pt-1">لا يمكن التراجع عن هذا الإجراء وسيتم إزالة الملف من النظام.</span>
                             </AlertDialogDescription>
                         </AlertDialogHeader>

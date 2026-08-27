@@ -6,11 +6,22 @@ import type { File } from '@/types/File'
  */
 export const fileApi = {
     /**
-     * Creates a new file.
+     * Creates a new file for an existing user.
      * @param data - FormData containing file details.
      */
     createFile: (data: FormData): Promise<{ data: any; message: string }> => {
         return fetchClient(`/files`, {
+            method: 'POST',
+            body: data,
+        })
+    },
+
+    /**
+     * Creates a new user and opens a file in a single request.
+     * @param data - FormData containing user profile & file details.
+     */
+    createFileWithUser: (data: FormData): Promise<{ data: any; message: string }> => {
+        return fetchClient(`/files/create-file-with-user`, {
             method: 'POST',
             body: data,
         })

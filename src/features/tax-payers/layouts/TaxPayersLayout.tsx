@@ -9,7 +9,7 @@ import { useSectionStatistics } from "@/hooks/useSectionStatistics";
 const TaxPayersLayout = () => {
     const { data: statisticsData, isPending: statisticsIsPending } = useSectionStatistics();
     const mainLinks = [
-        { title: "المكلفين", path: ROUTES.DASHBOARD.TAXPAYERS.PAYERS.ROOT, icon: Users },
+        { title: "أنشطة المكلفين", path: ROUTES.DASHBOARD.TAXPAYERS.PAYERS.ROOT, icon: Users },
         { title: "البيانات الضريبية", path: ROUTES.DASHBOARD.TAXPAYERS.INFO, icon: FileText },
     ];
 
@@ -17,8 +17,8 @@ const TaxPayersLayout = () => {
         <>
             <div className="w-full px-3 pt-3">
                 <DashboardHeader
-                    title=" إدارة المكلفين "
-                    desc="إدارة المكلفين وأنواع الضرائب والبيانات الضريبية"
+                    title=" إدارة أنشطة المكلفين "
+                    desc="إدارة أنشطة المكلفين والبيانات الضريبية"
                 />
             </div>
             <div className=" mx-auto px-3 mt-4" dir="rtl">

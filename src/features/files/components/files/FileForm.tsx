@@ -14,72 +14,118 @@ import {
 import {
     Check,
     Loader2,
+    Upload,
+    User as UserIcon,
+    UserPlus,
+    UserCheck,
 } from "lucide-react"
 import type { File } from "@/types/File"
-
+import { Card } from "@/components/ui/card"
 import { AdminDepartmentSelect } from "@/features/basic-info/components/departments/AdminDepartmentSelect"
-import { TaxPayerSearchSelect } from "@/features/tax-payers/components/tax-payers/TaxPayerSearchSelect"
+import { UserSearchSelect } from "@/features/users/components/UserSearchSelect"
 import { useFileStatuses } from "@/features/basic-info/hooks/file-status/useFileStatuses"
 import { useActivityTypes } from "@/features/basic-info/hooks/activity-types/useActivityTypes"
 import { usePaymentTypes } from "@/features/basic-info/hooks/payment-types/usePaymentTypes"
-import { useRegions } from "@/features/basic-info/hooks/regions/useRegions"
-// import { useDistricts } from "@/features/basic-info/hooks/districts/useDistricts"
 import type { FileStatus } from "@/types/FileStatus"
-import type { ActivityType, District, PaymentType, Region } from "@/types"
+import type { ActivityType, PaymentType } from "@/types"
 import { useAuth } from "@/hooks/useAuth"
 import { ROLES } from "@/constants/roles"
-import { useDistrictsByRegion } from "@/features/basic-info/hooks/districts/useDistrictsByRegion"
 
-const fileSchema = z.object({
-    taxNumber: z.string().min(1, "رقم المكلف الضريبي مطلوب"),
+const createFileWithUserSchema = z.object({
+    // User fields
+    firstName: z.string().min(2, "الاسم الأول يجب أن يكون حرفين على الأقل"),
+    lastName: z.string().min(2, "اسم العائلة يجب أن يكون حرفين على الأقل"),
+    phone: z.string().length(9, "رقم الهاتف غير صحيح").startsWith("7", "يجب أن يبدأ الرقم بـ 7"),
+    role: z.string().default("Tax_Payer"),
+    departmentID: z.string().min(1, "يرجى اختيار القسم"),
+    idCard: z.any().refine((file) => file instanceof File || (typeof file === "string" && file.length > 0), "ملف البطاقة الشخصية (PDF) مطلوب"),
+    image: z.any().refine((file) => file instanceof File || (typeof file === "string" && file.length > 0), "الصورة الشخصية مطلوبة"),
+
+    // File fields
     inventoryNumber: z.string().min(1, "رقم الحصر مطلوب"),
+    taxNumber: z.string().optional().or(z.literal("")),
     docsCount: z.string().min(1, "عدد المستندات مطلوب"),
-    taxPayerId: z.string().min(1, "يرجى اختيار المكلف"),
-    departmentId: z.string().min(1, "يرجى اختيار القسم"),
+    departmentId: z.string().min(1, "يرجى اختيار قسم الملف"),
     fileStatusId: z.string().min(1, "يرجى اختيار حالة الملف"),
     activityTypeId: z.string().min(1, "يرجى اختيار نوع النشاط"),
     paymentTypeId: z.string().min(1, "يرجى اختيار نوع الدفع"),
-    regionId: z.string().min(1, "يرجى اختيار المنطقة"),
-    districtId: z.string().min(1, "يرجى اختيار الحي"),
-    activityStartDate: z.string().min(1, "تاريخ بداية النشاط مطلوب"),
+    activityStartDate: z.string().optional().or(z.literal("")),
     note: z.string().optional(),
     requestId: z.string().optional(),
 })
 
-type FileFormValues = z.infer<typeof fileSchema>
+const createFileExistingUserSchema = z.object({
+    userId: z.string().min(1, "يرجى اختيار المكلف (المستخدم)"),
+    inventoryNumber: z.string().min(1, "رقم الحصر مطلوب"),
+    taxNumber: z.string().optional().or(z.literal("")),
+    docsCount: z.string().min(1, "عدد المستندات مطلوب"),
+    departmentId: z.string().min(1, "يرجى اختيار قسم الملف"),
+    fileStatusId: z.string().min(1, "يرجى اختيار حالة الملف"),
+    activityTypeId: z.string().min(1, "يرجى اختيار نوع النشاط"),
+    paymentTypeId: z.string().min(1, "يرجى اختيار نوع الدفع"),
+    activityStartDate: z.string().optional().or(z.literal("")),
+    note: z.string().optional(),
+    requestId: z.string().optional(),
+})
+
+const editFileSchema = z.object({
+    inventoryNumber: z.string().min(1, "رقم الحصر مطلوب"),
+    taxNumber: z.string().optional().or(z.literal("")),
+    docsCount: z.string().min(1, "عدد المستندات مطلوب"),
+    departmentId: z.string().min(1, "يرجى اختيار قسم الملف"),
+    fileStatusId: z.string().min(1, "يرجى اختيار حالة الملف"),
+    activityTypeId: z.string().min(1, "يرجى اختيار نوع النشاط"),
+    paymentTypeId: z.string().min(1, "يرجى اختيار نوع الدفع"),
+    activityStartDate: z.string().optional().or(z.literal("")),
+    note: z.string().optional(),
+})
 
 interface FileFormProps {
     initialData?: File['fileInfo'] | null
-    onSubmit: (data: FormData) => void
+    onSubmit: (data: FormData, mode: "with-user" | "existing-user" | "edit") => void
     isLoading?: boolean
-    initialTaxPayerId?: string | number | null
+    initialUserId?: string | number | null
     requestId?: string | number | null
 }
-export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, requestId }: FileFormProps) => {
+
+export const FileForm = ({ initialData, onSubmit, isLoading, initialUserId, requestId }: FileFormProps) => {
     const { user } = useAuth()
     const isAdmin = user?.role === ROLES.ADMIN
+    const isEdit = Boolean(initialData)
+
+    const [creationMode, setCreationMode] = useState<"with-user" | "existing-user">("with-user")
+    const [imagePreview, setImagePreview] = useState<string | null>(null)
+    const [idCardName, setIdCardName] = useState<string | null>(null)
 
     const { data: fileStatuses, isPending: isLoadingFileStatuses } = useFileStatuses()
     const { data: activityTypes, isPending: isLoadingActivityTypes } = useActivityTypes()
     const { data: paymentTypes, isPending: isLoadingPaymentTypes } = usePaymentTypes()
-    const [regionId, setRegionId] = useState<string | number | null>(0)
-    const { data: regions, isPending: isLoadingRegions } = useRegions()
-    const { data: districts, isPending: isLoadingDistricts } = useDistrictsByRegion(regionId!)
-    // const { data: districts, isPending: isLoadingDistricts } = useDistricts()
 
-    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<FileFormValues>({
-        resolver: zodResolver(fileSchema),
+    const currentSchema = isEdit
+        ? editFileSchema
+        : creationMode === "with-user"
+            ? createFileWithUserSchema
+            : createFileExistingUserSchema
+
+    const { register, handleSubmit, setValue, watch, reset, formState: { errors } } = useForm<any>({
+        resolver: zodResolver(currentSchema),
         defaultValues: {
-            taxNumber: initialData?.taxNumber?.toString() || "",
+            // User defaults
+            firstName: "",
+            lastName: "",
+            phone: "",
+            role: "Tax_Payer",
+            departmentID: user?.departmentID?.toString() || "1",
+            userId: initialUserId ? initialUserId.toString() : "",
+
+            // File defaults
             inventoryNumber: initialData?.inventoryNumber?.toString() || "",
+            taxNumber: initialData?.taxNumber?.toString() || "",
             docsCount: initialData?.docsCount?.toString() || "",
-            taxPayerId: initialData?.taxPayer?.id?.toString() || (initialTaxPayerId ? initialTaxPayerId.toString() : ""),
-            departmentId: initialData?.department?.id?.toString() || "",
+            departmentId: initialData?.department?.id?.toString() || user?.departmentID?.toString() || "1",
             fileStatusId: initialData?.fileStatus?.id?.toString() || "",
             activityTypeId: initialData?.activityType?.id?.toString() || "",
             paymentTypeId: initialData?.paymentType?.id?.toString() || "",
-            regionId: initialData?.region?.id?.toString() || "",
-            districtId: initialData?.district?.id?.toString() || "",
             activityStartDate: initialData?.activityStartDate || "",
             note: initialData?.note || "",
             requestId: requestId ? requestId.toString() : "",
@@ -88,83 +134,321 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
 
     useEffect(() => {
         if (!isAdmin && user?.departmentID) {
+            setValue("departmentID", user.departmentID.toString())
             setValue("departmentId", user.departmentID.toString())
         }
 
-        // Pre-fill taxpayer from request flow
-        if (initialTaxPayerId && !initialData) {
-            setValue("taxPayerId", initialTaxPayerId.toString(), { shouldValidate: true })
+        if (initialUserId && !initialData) {
+            setCreationMode("existing-user")
+            setValue("userId", initialUserId.toString(), { shouldValidate: true })
         }
 
         if (initialData) {
-            setValue("taxNumber", initialData.taxNumber?.toString() || "")
-            setValue("inventoryNumber", initialData.inventoryNumber?.toString() || "")
-            setValue("docsCount", initialData.docsCount?.toString() || "")
-            setValue("taxPayerId", initialData.taxPayer?.id?.toString() || "")
-            if (isAdmin) setValue("departmentId", initialData.department?.id?.toString() || "")
-            setValue("fileStatusId", initialData.fileStatus?.id?.toString() || "")
-            setValue("activityTypeId", initialData.activityType?.id?.toString() || "")
-            setValue("paymentTypeId", initialData.paymentType?.id?.toString() || "")
-            setValue("regionId", initialData.region?.id?.toString() || "")
-            setValue("districtId", initialData.district?.id?.toString() || "")
-            setValue("activityStartDate", initialData.activityStartDate || "")
-            setValue("note", initialData.note || "")
-            setRegionId(initialData.region?.id || null)
+            reset({
+                inventoryNumber: initialData.inventoryNumber?.toString() || "",
+                taxNumber: initialData.taxNumber?.toString() || "",
+                docsCount: initialData.docsCount?.toString() || "",
+                departmentId: initialData.department?.id?.toString() || "",
+                fileStatusId: initialData.fileStatus?.id?.toString() || "",
+                activityTypeId: initialData.activityType?.id?.toString() || "",
+                paymentTypeId: initialData.paymentType?.id?.toString() || "",
+                activityStartDate: initialData.activityStartDate || "",
+                note: initialData.note || "",
+            })
         }
-    }, [initialData, isAdmin, setValue, user?.departmentID, initialTaxPayerId])
+    }, [initialData, isAdmin, setValue, reset, user?.departmentID, initialUserId])
 
-    const handleFormSubmit = (values: FileFormValues) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: string, setter?: (name: string) => void) => {
+        const file = e.target.files?.[0]
+        if (file) {
+            setValue(fieldName, file, { shouldValidate: true })
+            if (setter) setter(file.name)
+            if (fieldName === "image") {
+                const reader = new FileReader()
+                reader.onloadend = () => setImagePreview(reader.result as string)
+                reader.readAsDataURL(file)
+            }
+        }
+    }
+
+    const handleFormSubmit = (values: any) => {
         const formData = new FormData()
-        if (initialData) {
-            if (initialData.inventoryNumber !== values.inventoryNumber) {
-                formData.append("inventoryNumber", values.inventoryNumber)
-            }
-        }
-        else {
-            formData.append("inventoryNumber", values.inventoryNumber)
-        }
-        const commonFields = ["taxNumber", "docsCount", "taxPayerId", "departmentId", "fileStatusId", "activityTypeId", "paymentTypeId", "regionId", "districtId", "activityStartDate", "note", "requestId"]
 
-        commonFields.forEach(fieldName => {
-            const value = values[fieldName as keyof FileFormValues]
-            if (value !== undefined && value !== null && value !== "") {
-                formData.append(fieldName, value as string)
+        if (isEdit) {
+            formData.append("inventoryNumber", values.inventoryNumber)
+            if (values.taxNumber) formData.append("taxNumber", values.taxNumber)
+            formData.append("docsCount", values.docsCount)
+            formData.append("departmentId", values.departmentId)
+            formData.append("fileStatusId", values.fileStatusId)
+            formData.append("activityTypeId", values.activityTypeId)
+            formData.append("paymentTypeId", values.paymentTypeId)
+            if (values.activityStartDate) formData.append("activityStartDate", values.activityStartDate)
+            if (values.note) formData.append("note", values.note)
+            onSubmit(formData, "edit")
+            return
+        }
+
+        if (creationMode === "with-user") {
+            // User fields
+            formData.append("firstName", values.firstName)
+            formData.append("lastName", values.lastName)
+            formData.append("phone", values.phone)
+            formData.append("role", "Tax_Payer")
+            formData.append("departmentID", values.departmentID || values.departmentId)
+
+            if (values.idCard instanceof File) {
+                formData.append("idCard", values.idCard)
             }
-        })
-        onSubmit(formData)
+            if (values.image instanceof File) {
+                formData.append("image", values.image)
+            }
+
+            // File fields
+            formData.append("inventoryNumber", values.inventoryNumber)
+            if (values.taxNumber) formData.append("taxNumber", values.taxNumber)
+            formData.append("docsCount", values.docsCount)
+            formData.append("departmentId", values.departmentId)
+            formData.append("fileStatusId", values.fileStatusId)
+            formData.append("activityTypeId", values.activityTypeId)
+            formData.append("paymentTypeId", values.paymentTypeId)
+            if (values.activityStartDate) formData.append("activityStartDate", values.activityStartDate)
+            if (values.note) formData.append("note", values.note)
+            if (values.requestId) formData.append("requestId", values.requestId)
+
+            onSubmit(formData, "with-user")
+        } else {
+            // Existing user mode
+            formData.append("userId", values.userId)
+            formData.append("inventoryNumber", values.inventoryNumber)
+            if (values.taxNumber) formData.append("taxNumber", values.taxNumber)
+            formData.append("docsCount", values.docsCount)
+            formData.append("departmentId", values.departmentId)
+            formData.append("fileStatusId", values.fileStatusId)
+            formData.append("activityTypeId", values.activityTypeId)
+            formData.append("paymentTypeId", values.paymentTypeId)
+            if (values.activityStartDate) formData.append("activityStartDate", values.activityStartDate)
+            if (values.note) formData.append("note", values.note)
+            if (values.requestId) formData.append("requestId", values.requestId)
+
+            onSubmit(formData, "existing-user")
+        }
     }
 
     return (
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-8" dir="rtl">
             <div className="space-y-8">
-                {/* Section 1: Basic Info */}
-                <div className="bg-card p-6 pb-2 rounded-2xl border shadow-sm space-y-6">
-                    <div className="flex items-center gap-3 mb-4">
-                        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold">1</span>
-                        <h2 className="text-xl font-bold">البيانات الأساسية للملف</h2>
+                {/* Creation Mode Selector (Only when creating a new file) */}
+                {!isEdit && (
+                    <div className="bg-card p-4 rounded-2xl border shadow-sm flex flex-col sm:flex-row gap-3">
+                        <Button
+                            type="button"
+                            variant={creationMode === "with-user" ? "default" : "outline"}
+                            onClick={() => setCreationMode("with-user")}
+                            className={`flex-1 h-13 rounded-xl gap-2 font-bold transition-all ${
+                                creationMode === "with-user"
+                                    ? "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-md"
+                                    : "bg-muted/30 hover:bg-muted"
+                            }`}
+                        >
+                            <UserPlus className="size-5" />
+                            <span>مكلف جديد (إنشاء مستخدم وفتح ملف)</span>
+                        </Button>
+
+                        <Button
+                            type="button"
+                            variant={creationMode === "existing-user" ? "default" : "outline"}
+                            onClick={() => setCreationMode("existing-user")}
+                            className={`flex-1 h-13 rounded-xl gap-2 font-bold transition-all ${
+                                creationMode === "existing-user"
+                                    ? "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-md"
+                                    : "bg-muted/30 hover:bg-muted"
+                            }`}
+                        >
+                            <UserCheck className="size-5" />
+                            <span>مكلف مسجل مسبقاً (ربط بمستخدم موجود)</span>
+                        </Button>
+                    </div>
+                )}
+
+                {/* Edit Mode Owner Info Badge */}
+                {isEdit && initialData?.user && (
+                    <Card className="p-6 rounded-2xl border shadow-sm bg-primary/5 border-primary/20">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold shrink-0">
+                                <UserIcon className="size-6" />
+                            </div>
+                            <div className="space-y-1 text-right">
+                                <span className="text-xs text-muted-foreground font-semibold">صاحب الملف (المكلف)</span>
+                                <h3 className="text-lg font-bold">
+                                    {initialData.user.firstName} {initialData.user.lastName}
+                                    {initialData.user.userName && ` (@${initialData.user.userName})`}
+                                </h3>
+                                <p className="text-xs text-muted-foreground">
+                                    الهاتف: {initialData.user.phone || "—"} | القسم: {initialData.department?.name || "—"}
+                                </p>
+                            </div>
+                        </div>
+                    </Card>
+                )}
+
+                {/* Section 1: User Info (Only if creationMode === "with-user") */}
+                {!isEdit && creationMode === "with-user" && (
+                    <div className="bg-card p-6 rounded-2xl border shadow-sm space-y-6">
+                        <div className="flex items-center gap-3">
+                            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold">1</span>
+                            <h2 className="text-xl font-bold">بيانات المكلف (المستخدم الجديد)</h2>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label className="text-sm font-medium leading-none mb-2 block">
+                                    الاسم الأول *
+                                </label>
+                                <Input placeholder="الاسم الأول" {...register("firstName")} className="h-12 bg-muted/30 rounded-xl" />
+                                {errors.firstName?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.firstName.message)}</p>}
+                            </div>
+
+                            <div>
+                                <label className="text-sm font-medium leading-none mb-2 block">
+                                    اسم العائلة *
+                                </label>
+                                <Input placeholder="اسم العائلة" {...register("lastName")} className="h-12 bg-muted/30 rounded-xl" />
+                                {errors.lastName?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.lastName.message)}</p>}
+                            </div>
+
+                            <div>
+                                <label className="text-sm font-medium leading-none mb-2 block">
+                                    رقم الهاتف (9 أرقام تبدأ بـ 7) *
+                                </label>
+                                <Input placeholder="7XXXXXXXX" {...register("phone")} className="h-12 bg-muted/30 rounded-xl text-left" dir="ltr" />
+                                {errors.phone?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.phone.message)}</p>}
+                            </div>
+
+                            <div>
+                                <label className="text-sm font-medium leading-none mb-2 block">
+                                    قسم المستخدم *
+                                </label>
+                                {isAdmin ? (
+                                    <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentID?.message ? String(errors.departmentID.message) : undefined} fieldName="departmentID" />
+                                ) : (
+                                    <Input value={user?.departmentName || ""} readOnly className="h-12 bg-muted/30 rounded-xl" />
+                                )}
+                            </div>
+
+                            {/* User Files: ID Card (PDF) & Image */}
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium block">
+                                    ملف البطاقة الشخصية (PDF) *
+                                </label>
+                                <div className="relative border-2 border-dashed border-muted-foreground/20 rounded-xl p-4 flex flex-col items-center justify-center hover:border-primary/50 transition-colors cursor-pointer bg-muted/5 h-[110px]">
+                                    <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1">
+                                        {idCardName ? <Check size={16} /> : <Upload size={16} />}
+                                    </div>
+                                    <span className="text-xs text-muted-foreground truncate max-w-full px-2">
+                                        {idCardName || "انقر لرفع البطاقة الشخصية (PDF)"}
+                                    </span>
+                                    <input
+                                        type="file"
+                                        accept=".pdf"
+                                        className="absolute inset-0 opacity-0 cursor-pointer"
+                                        onChange={(e) => handleFileChange(e, "idCard", setIdCardName)}
+                                    />
+                                </div>
+                                {errors.idCard?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.idCard.message)}</p>}
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium block">
+                                    الصورة الشخصية *
+                                </label>
+                                <div className="relative border-2 border-dashed border-muted-foreground/20 rounded-xl p-4 flex flex-col items-center justify-center hover:border-primary/50 transition-colors cursor-pointer bg-muted/5 h-[110px]">
+                                    {imagePreview ? (
+                                        <img src={imagePreview} alt="Preview" className="h-14 w-14 rounded-full object-cover mb-1 border" />
+                                    ) : (
+                                        <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1">
+                                            <Upload size={16} />
+                                        </div>
+                                    )}
+                                    <span className="text-xs text-muted-foreground">
+                                        {imagePreview ? "تغيير الصورة" : "انقر لرفع صورة شخصية"}
+                                    </span>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        className="absolute inset-0 opacity-0 cursor-pointer"
+                                        onChange={(e) => handleFileChange(e, "image")}
+                                    />
+                                </div>
+                                {errors.image?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.image.message)}</p>}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Section 1 (Alt): Select Existing User */}
+                {!isEdit && creationMode === "existing-user" && (
+                    <div className="bg-card p-6 rounded-2xl border shadow-sm space-y-6">
+                        <div className="flex items-center gap-3">
+                            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold">1</span>
+                            <h2 className="text-xl font-bold">اختيار المكلف المسجل</h2>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium leading-none mb-2 block">
+                                المكلف (المستخدم) *
+                            </label>
+                            <UserSearchSelect
+                                value={watch("userId") ? Number(watch("userId")) : undefined}
+                                onSelect={(id) => setValue("userId", id.toString(), { shouldValidate: true })}
+                                disabled={isLoading || Boolean(initialUserId)}
+                            />
+                            {errors.userId?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.userId.message)}</p>}
+                        </div>
+                    </div>
+                )}
+
+                {/* Section 2: File Details */}
+                <div className="bg-card p-6 rounded-2xl border shadow-sm space-y-6">
+                    <div className="flex items-center gap-3">
+                        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold">
+                            {isEdit ? "1" : "2"}
+                        </span>
+                        <h2 className="text-xl font-bold">بيانات الملف الضريبي</h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="text-sm font-medium leading-none mb-2 block">
-                                المكلف *
+                                رقم الحصر *
                             </label>
-                            <TaxPayerSearchSelect
-                                value={watch("taxPayerId") ? Number(watch("taxPayerId")) : undefined}
-                                onSelect={(id) => setValue("taxPayerId", id.toString(), { shouldValidate: true })}
-                                disabled={isLoading || Boolean(requestId)}
-                            />
-                            {errors.taxPayerId && <p className="text-sm font-medium text-destructive mt-1">{errors.taxPayerId.message}</p>}
+                            <Input placeholder="رقم الحصر" {...register("inventoryNumber")} className="h-12 bg-muted/30 rounded-xl" />
+                            {errors.inventoryNumber?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.inventoryNumber.message)}</p>}
                         </div>
 
                         <div>
                             <label className="text-sm font-medium leading-none mb-2 block">
-                                القسم *
+                                رقم الملف الضريبي
+                            </label>
+                            <Input placeholder="الرقم الضريبي (اختياري)" {...register("taxNumber")} className="h-12 bg-muted/30 rounded-xl" />
+                            {errors.taxNumber?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.taxNumber.message)}</p>}
+                        </div>
+
+                        <div>
+                            <label className="text-sm font-medium leading-none mb-2 block">
+                                عدد المستندات *
+                            </label>
+                            <Input type="number" placeholder="عدد المستندات" {...register("docsCount")} className="h-12 bg-muted/30 rounded-xl" />
+                            {errors.docsCount?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.docsCount.message)}</p>}
+                        </div>
+
+                        <div>
+                            <label className="text-sm font-medium leading-none mb-2 block">
+                                قسم الملف *
                             </label>
                             {isAdmin ? (
-                                <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentId?.message} fieldName="departmentId" />
+                                <AdminDepartmentSelect setValue={setValue} watch={watch} error={errors.departmentId?.message ? String(errors.departmentId.message) : undefined} fieldName="departmentId" />
                             ) : (
-                                <Input value={user?.departmentName || ""} readOnly className="h-12 bg-muted/30" />
+                                <Input value={user?.departmentName || ""} readOnly className="h-12 bg-muted/30 rounded-xl" />
                             )}
                         </div>
 
@@ -173,8 +457,8 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                                 حالة الملف *
                             </label>
                             <div className="h-12 w-full">
-                                <Select onValueChange={(v) => setValue("fileStatusId", v)} value={watch("fileStatusId")} disabled={isLoadingFileStatuses}>
-                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                                <Select onValueChange={(v) => setValue("fileStatusId", v, { shouldValidate: true })} value={watch("fileStatusId")} disabled={isLoadingFileStatuses}>
+                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30 rounded-xl">
                                         {isLoadingFileStatuses ? (
                                             <div className="flex items-center gap-2">
                                                 <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
@@ -193,7 +477,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                                     </SelectContent>
                                 </Select>
                             </div>
-                            {errors.fileStatusId && <p className="text-sm font-medium text-destructive mt-1">{errors.fileStatusId.message}</p>}
+                            {errors.fileStatusId?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.fileStatusId.message)}</p>}
                         </div>
 
                         <div>
@@ -201,8 +485,8 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                                 نوع النشاط *
                             </label>
                             <div className="h-12 w-full">
-                                <Select onValueChange={(v) => setValue("activityTypeId", v)} value={watch("activityTypeId")} disabled={isLoadingActivityTypes}>
-                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                                <Select onValueChange={(v) => setValue("activityTypeId", v, { shouldValidate: true })} value={watch("activityTypeId")} disabled={isLoadingActivityTypes}>
+                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30 rounded-xl">
                                         {isLoadingActivityTypes ? (
                                             <div className="flex items-center gap-2">
                                                 <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
@@ -221,7 +505,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                                     </SelectContent>
                                 </Select>
                             </div>
-                            {errors.activityTypeId && <p className="text-sm font-medium text-destructive mt-1">{errors.activityTypeId.message}</p>}
+                            {errors.activityTypeId?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.activityTypeId.message)}</p>}
                         </div>
 
                         <div>
@@ -229,8 +513,8 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                                 نوع الدفع *
                             </label>
                             <div className="h-12 w-full">
-                                <Select onValueChange={(v) => setValue("paymentTypeId", v)} value={watch("paymentTypeId")} disabled={isLoadingPaymentTypes}>
-                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
+                                <Select onValueChange={(v) => setValue("paymentTypeId", v, { shouldValidate: true })} value={watch("paymentTypeId")} disabled={isLoadingPaymentTypes}>
+                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30 rounded-xl">
                                         {isLoadingPaymentTypes ? (
                                             <div className="flex items-center gap-2">
                                                 <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
@@ -249,118 +533,22 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                                     </SelectContent>
                                 </Select>
                             </div>
-                            {errors.paymentTypeId && <p className="text-sm font-medium text-destructive mt-1">{errors.paymentTypeId.message}</p>}
+                            {errors.paymentTypeId?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.paymentTypeId.message)}</p>}
                         </div>
 
                         <div>
                             <label className="text-sm font-medium leading-none mb-2 block">
-                                المنطقة *
+                                تاريخ بداية النشاط
                             </label>
-                            <div className="h-12 w-full">
-                                <Select
-                                    onValueChange={(v) => {
-                                        setValue("regionId", v)
-                                        setRegionId(v)
-                                    }}
-                                    value={watch("regionId")} disabled={isLoadingRegions}>
-                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
-                                        {isLoadingRegions ? (
-                                            <div className="flex items-center gap-2">
-                                                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                                <span className="text-muted-foreground">جاري التحميل...</span>
-                                            </div>
-                                        ) : (
-                                            <SelectValue placeholder="اختر المنطقة" />
-                                        )}
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {regions?.data?.map((region: Region) => (
-                                            <SelectItem key={region.id} value={region.id.toString()}>
-                                                {region.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            {errors.regionId && <p className="text-sm font-medium text-destructive mt-1">{errors.regionId.message}</p>}
-                        </div>
-
-                        <div>
-                            <label className="text-sm font-medium leading-none mb-2 block">
-                                الحي *
-                            </label>
-                            <div className="h-12 w-full">
-                                <Select onValueChange={(v) => setValue("districtId", v)} value={watch("districtId")} disabled={isLoadingDistricts}>
-                                    <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
-                                        {isLoadingDistricts ? (
-                                            <div className="flex items-center gap-2">
-                                                <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                                <span className="text-muted-foreground">جاري التحميل...</span>
-                                            </div>
-                                        ) : (
-                                            <SelectValue placeholder="اختر الحي" />
-                                        )}
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {districts?.data?.map((district: District) => (
-                                            <SelectItem key={district.id} value={district.id.toString()}>
-                                                {district.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            {errors.districtId && <p className="text-sm font-medium text-destructive mt-1">{errors.districtId.message}</p>}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Section 2: Related Data */}
-
-                <div className="bg-card p-6 rounded-2xl border shadow-sm space-y-6">
-                    <div className="flex items-center gap-3 mb-4">
-                        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold">2</span>
-                        <h2 className="text-xl font-bold">تفاصيل الملف</h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="text-sm font-medium leading-none mb-2 block">
-                                رقم الملف الضريبي *
-                            </label>
-                            <Input placeholder="رقم المكلف الضريبي" {...register("taxNumber")} className="h-12 bg-muted/30" />
-                            {errors.taxNumber && <p className="text-sm font-medium text-destructive mt-1">{errors.taxNumber.message}</p>}
-                        </div>
-
-                        <div>
-                            <label className="text-sm font-medium leading-none mb-2 block">
-                                رقم الحصر *
-                            </label>
-                            <Input placeholder="رقم الحصر" {...register("inventoryNumber")} className="h-12 bg-muted/30" />
-                            {errors.inventoryNumber && <p className="text-sm font-medium text-destructive mt-1">{errors.inventoryNumber.message}</p>}
-                        </div>
-
-                        <div>
-                            <label className="text-sm font-medium leading-none mb-2 block">
-                                عدد المستندات *
-                            </label>
-                            <Input type="number" placeholder="عدد المستندات" {...register("docsCount")} className="h-12 bg-muted/30" />
-                            {errors.docsCount && <p className="text-sm font-medium text-destructive mt-1">{errors.docsCount.message}</p>}
-                        </div>
-
-                        <div>
-                            <label className="text-sm font-medium leading-none mb-2 block">
-                                تاريخ بداية النشاط *
-                            </label>
-                            <Input type="date" {...register("activityStartDate")} className="h-12 bg-muted/30 text-right" dir="ltr" />
-                            {errors.activityStartDate && <p className="text-sm font-medium text-destructive mt-1">{errors.activityStartDate.message}</p>}
+                            <Input type="date" {...register("activityStartDate")} className="h-12 bg-muted/30 rounded-xl text-right" dir="ltr" />
+                            {errors.activityStartDate?.message && <p className="text-sm font-medium text-destructive mt-1">{String(errors.activityStartDate.message)}</p>}
                         </div>
 
                         <div className="md:col-span-2">
                             <label className="text-sm font-medium leading-none mb-2 block">
                                 ملاحظات
                             </label>
-                            <Input placeholder="أدخل أي ملاحظات إضافية" {...register("note")} className="h-12 bg-muted/30" />
+                            <Input placeholder="أدخل أي ملاحظات إضافية" {...register("note")} className="h-12 bg-muted/30 rounded-xl" />
                         </div>
                     </div>
                 </div>
@@ -376,7 +564,7 @@ export const FileForm = ({ initialData, onSubmit, isLoading, initialTaxPayerId, 
                         ) : (
                             <Check className="size-5" />
                         )}
-                        <span>{initialData ? "تحديث بيانات الملف" : "حفظ بيانات الملف"}</span>
+                        <span>{initialData ? "تحديث بيانات الملف" : "حفظ وفتح الملف"}</span>
                     </Button>
                     <Button
                         type="button"

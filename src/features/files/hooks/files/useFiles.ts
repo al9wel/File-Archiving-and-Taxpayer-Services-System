@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query"
 import { fileApi } from "../../api/fileApi"
 
-export const useFiles = () => {
+export const useFiles = (searchQuery = "") => {
     return useQuery({
-        queryKey: ["files"],
-        queryFn: async () => fileApi.getFiles(),
+        queryKey: ["files", searchQuery],
+        queryFn: async () => fileApi.getFiles(searchQuery),
     })
-}
+}

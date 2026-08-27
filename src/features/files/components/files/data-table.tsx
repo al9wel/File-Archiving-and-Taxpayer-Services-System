@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import {
     type ColumnDef,
@@ -20,32 +19,35 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Search, ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft, Plus } from "lucide-react"
+import { Search, ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft, Plus, Loader2 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { NavLink } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { usePermission } from "@/hooks/usePermission"
 import { ACTIONS } from "@/constants/permissions"
 import { useActivityTypes } from "@/features/basic-info/hooks/activity-types/useActivityTypes"
-import { useRegions } from "@/features/basic-info/hooks/regions/useRegions"
-// import { useDistricts } from "@/features/basic-info/hooks/districts/useDistricts"
-import { useDistrictsByRegion } from "@/features/basic-info/hooks/districts/useDistrictsByRegion"
+import { useFileStatuses } from "@/features/basic-info/hooks/file-status/useFileStatuses"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    searchValue?: string
+    onSearchChange?: (val: string) => void
+    isLoading?: boolean
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    searchValue = "",
+    onSearchChange,
+    isLoading = false,
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const canCreate = usePermission(ACTIONS.CREATE_FILE);
-    const [regionId, setRegionId] = React.useState<string | number | null>(0)
+    const canCreate = usePermission(ACTIONS.CREATE_FILE)
     const { data: activityTypes } = useActivityTypes()
-    const { data: regions } = useRegions()
-    const { data: districts } = useDistrictsByRegion(regionId!)
+    const { data: fileStatuses } = useFileStatuses()
+
     const table = useReactTable({
         data,
         columns,
@@ -58,113 +60,87 @@ export function DataTable<TData, TValue>({
         },
         initialState: {
             pagination: {
-                pageSize: 5,
+                pageSize: 10,
             },
         },
     })
 
     return (
-        <div className="space-y-2" dir="rtl">
-            {/* Filters */}
+        <div className="space-y-4" dir="rtl">
+            {/* Filters Header */}
             <div className="bg-card p-4 rounded-2xl border border-border shadow-sm">
-                <div className="grid grid-cols-1 xl:grid-cols-[2fr_2fr_auto_auto] gap-2 items-end">
-                    {/* Search Input */}
+                <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr_1fr_auto] gap-3 items-end">
+                    {/* Server-Side Search Input */}
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-muted-foreground">البحث بالاسم التجاري</label>
+                        <label className="text-xs font-bold text-muted-foreground">البحث بالاسم / اسم المستخدم</label>
                         <div className="relative">
                             <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             <Input
-                                placeholder="الاسم التجاري"
-                                value={(table.getColumn("tradeName")?.getFilterValue() as string) ?? ""}
-                                onChange={(event) => table.getColumn("tradeName")?.setFilterValue(event.target.value)}
+                                placeholder="ابحث بالاسم الأول، الأخير، أو اسم المستخدم..."
+                                value={searchValue}
+                                onChange={(event) => onSearchChange?.(event.target.value)}
                                 className="h-11 pr-10 rounded-xl bg-muted/30 border-muted-foreground/10"
                             />
                         </div>
                     </div>
 
-                    {/* Three Selects */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-muted-foreground">نوع النشاط</label>
-                            <Select value={(table.getColumn("activityType")?.getFilterValue() as string) || "all"} onValueChange={(value) => table.getColumn("activityType")?.setFilterValue(value === "all" ? "" : value)}>
-                                <SelectTrigger style={{ height: "2.75rem" }} className="h-11 w-full rounded-xl bg-muted/30 border-muted-foreground/10">
-                                    <SelectValue placeholder="الكل" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">الكل</SelectItem>
-                                    {activityTypes?.data?.map((type) => <SelectItem key={type.id} value={type.id.toString()}>{type.name}</SelectItem>)}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-muted-foreground">المنطقة</label>
-                            <Select value={(table.getColumn("region")?.getFilterValue() as string) || "all"}
-                                onValueChange={(value) => {
-                                    setRegionId(value === "all" ? null : parseInt(value));
-                                    table.getColumn("region")?.setFilterValue(value === "all" ? "" : value)
-                                }}>
-                                <SelectTrigger style={{ height: "2.75rem" }} className="h-11 w-full rounded-xl bg-muted/30 border-muted-foreground/10">
-                                    <SelectValue placeholder="الكل" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">الكل</SelectItem>
-                                    {regions?.data?.map((region) => <SelectItem key={region.id} value={region.id.toString()}>{region.name}</SelectItem>)}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-xs font-bold text-muted-foreground">الحي</label>
-                            <Select value={(table.getColumn("district")?.getFilterValue() as string) || "all"} onValueChange={(value) => table.getColumn("district")?.setFilterValue(value === "all" ? "" : value)}>
-                                <SelectTrigger style={{ height: "2.75rem" }} className="h-11 w-full rounded-xl bg-muted/30 border-muted-foreground/10">
-                                    <SelectValue placeholder="الكل" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">الكل</SelectItem>
-                                    {districts?.data?.map((district) => <SelectItem key={district.id} value={district.id.toString()}>{district.name}</SelectItem>)}
-                                </SelectContent>
-                            </Select>
-                        </div>
+                    {/* Activity Type Filter */}
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-muted-foreground">نوع النشاط</label>
+                        <Select
+                            value={(table.getColumn("activityType")?.getFilterValue() as string) || "all"}
+                            onValueChange={(value) => table.getColumn("activityType")?.setFilterValue(value === "all" ? "" : value)}
+                        >
+                            <SelectTrigger style={{ height: "2.75rem" }} className="h-11 w-full rounded-xl bg-muted/30 border-muted-foreground/10">
+                                <SelectValue placeholder="الكل" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">الكل</SelectItem>
+                                {activityTypes?.data?.map((type) => (
+                                    <SelectItem key={type.id} value={type.name}>
+                                        {type.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
 
-                    {/* File Type Filter */}
+                    {/* File Status Filter */}
                     <div className="space-y-2">
-                        <label className="text-xs font-bold text-muted-foreground">نوع الملف</label>
-                        <div className="grid grid-cols-4 rounded-xl bg-muted/30 p-1 h-11">
-                            {[
-                                { value: "", label: "الكل" },
-                                { value: "Individual", label: "فرد" },
-                                { value: "Company", label: "شركة" },
-                                { value: "CharitableCompany", label: "خيرية" },
-                            ].map((option) => (
-                                <button
-                                    key={option.label}
-                                    type="button"
-                                    onClick={() => table.getColumn("fileType")?.setFilterValue(option.value)}
-                                    className={`rounded-lg px-2 text-xs font-bold transition-colors cursor-pointer ${((table.getColumn("fileType")?.getFilterValue() as string) ?? "") === option.value
-                                        ? "bg-primary text-primary-foreground shadow-sm"
-                                        : "text-muted-foreground hover:text-foreground"
-                                        }`}
-                                >
-                                    {option.label}
-                                </button>
-                            ))}
-                        </div>
+                        <label className="text-xs font-bold text-muted-foreground">حالة الملف</label>
+                        <Select
+                            value={(table.getColumn("fileStatus_statusName")?.getFilterValue() as string) || "all"}
+                            onValueChange={(value) => table.getColumn("fileStatus_statusName")?.setFilterValue(value === "all" ? "" : value)}
+                        >
+                            <SelectTrigger style={{ height: "2.75rem" }} className="h-11 w-full rounded-xl bg-muted/30 border-muted-foreground/10">
+                                <SelectValue placeholder="الكل" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="all">الكل</SelectItem>
+                                {fileStatuses?.data?.map((status) => (
+                                    <SelectItem key={status.id} value={status.statusName}>
+                                        {status.statusName}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     {/* Add Button */}
                     {canCreate && (
                         <div className="space-y-2">
-                            <label className="text-xs font-bold text-muted-foreground opacity-0">إضافة</label>
+                            <label className="text-xs font-bold text-muted-foreground opacity-0 hidden xl:block">إضافة</label>
                             <NavLink to={ROUTES.DASHBOARD.FILES_CREATE}>
-                                <Button className="h-11 px-4 w-full xl:w-fit rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-1 transition-all active:scale-95 whitespace-nowrap">
+                                <Button className="h-11 px-6 w-full xl:w-fit rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground shadow-lg shadow-primary/20 cursor-pointer flex items-center justify-center gap-2 transition-all active:scale-95 whitespace-nowrap font-bold">
                                     <Plus className="h-4 w-4" />
-                                    <span className="font-bold text-sm">إضافة</span>
+                                    <span>إضافة ملف</span>
                                 </Button>
                             </NavLink>
                         </div>
                     )}
                 </div>
             </div>
+
             {/* Table Area Section */}
             <div className="overflow-hidden rounded-2xl border shadow-sm bg-card">
                 <Table>
@@ -187,7 +163,16 @@ export function DataTable<TData, TValue>({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                        {isLoading ? (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="h-32 text-center">
+                                    <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                                        <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                                        <span>جاري تحميل الملفات...</span>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ) : table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     className="hover:bg-muted/50 border-muted/20 transition-colors"
@@ -204,7 +189,7 @@ export function DataTable<TData, TValue>({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-32 text-center text-muted-foreground italic">
-                                    لا توجد بيانات تطابق بحثك...
+                                    لا توجد ملفات مسجلة تطابق معايير البحث...
                                 </TableCell>
                             </TableRow>
                         )}
@@ -215,7 +200,7 @@ export function DataTable<TData, TValue>({
             {/* Pagination Controls */}
             <div className="flex items-center justify-between px-2 py-2">
                 <div className="text-sm text-muted-foreground font-medium">
-                    صفحة {table.getState().pagination.pageIndex + 1} من {table.getPageCount()}
+                    صفحة {table.getState().pagination.pageIndex + 1} من {Math.max(1, table.getPageCount())}
                 </div>
                 <div className="flex items-center gap-2">
                     <Button

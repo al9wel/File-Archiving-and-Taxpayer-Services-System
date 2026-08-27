@@ -1,5 +1,6 @@
 import { FileForm } from "../../components/files/FileForm"
 import { useCreateFile } from "../../hooks/files/useCreateFile"
+import { useCreateFileWithUser } from "../../hooks/files/useCreateFileWithUser"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { toast } from "sonner"
@@ -14,21 +15,30 @@ import Unauthorized from "@/app/pages/Unauthorized"
 const CreateFilePage = () => {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
-    const { mutate: createFile, isPending } = useCreateFile()
+    const { mutate: createFile, isPending: isPendingFile } = useCreateFile()
+    const { mutate: createFileWithUser, isPending: isPendingFileWithUser } = useCreateFileWithUser()
     const canCreate = usePermission(ACTIONS.CREATE_FILE)
 
     const requestId = searchParams.get("requestId") || null
-    const taxPayerId = searchParams.get("taxPayerId") || null
-    const handleSubmit = (formData: FormData) => {
-        createFile(formData, {
-            onSuccess: (res) => {
-                toast.success(res.message || "تم إضافة الملف بنجاح")
+    const userId = searchParams.get("userId") || searchParams.get("taxPayerId") || null
+
+    const handleSubmit = (formData: FormData, mode: "with-user" | "existing-user" | "edit") => {
+        const mutation = mode === "with-user" ? createFileWithUser : createFile
+
+        mutation(formData, {
+            onSuccess: (res: any) => {
+                toast.success(res.message || "تم إنشاء الملف بنجاح")
+                const createdId = res?.data?.id || res?.data?.fileInfo?.id || ""
                 setTimeout(() => {
-                    navigate(ROUTES.DASHBOARD.FILES_SHOW.replace(":id", res.data.fileInfo.id.toString()))
+                    if (createdId) {
+                        navigate(ROUTES.DASHBOARD.FILES_SHOW.replace(":id", createdId.toString()))
+                    } else {
+                        navigate(ROUTES.DASHBOARD.FILES.ROOT)
+                    }
                 }, 1000)
             },
-            onError: (error) => {
-                toast.error(error.message || "فشل إضافة الملف")
+            onError: (error: any) => {
+                toast.error(error.message || error.error || "فشل إنشاء الملف")
             }
         })
     }
@@ -36,18 +46,16 @@ const CreateFilePage = () => {
     if (!canCreate) return <Unauthorized />
 
     return (
-        <>
-            {/* <div className="w-full px-3 pt-3">
-                <DashboardHeader
-                    title=" إضافة ملف "
-                    desc="أدخل البيانات الأساسية للملف الجديد."
-                />
-            </div> */}
-            <div className="container mx-auto px-4 py-8 animate-in fade-in duration-500">
-                <FileForm onSubmit={handleSubmit} isLoading={isPending} initialTaxPayerId={taxPayerId} requestId={requestId} />
-            </div>
-        </>
+        <div className="container mx-auto px-4 py-8 animate-in fade-in duration-500">
+            <FileForm
+                onSubmit={handleSubmit}
+                isLoading={isPendingFile || isPendingFileWithUser}
+                initialUserId={userId}
+                requestId={requestId}
+            />
+        </div>
     )
 }
 
 export default CreateFilePage
+

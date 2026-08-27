@@ -1,0 +1,493 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Default module",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/tax-payers": {
+      "post": {
+        "summary": "Create_TaxPayer",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "examples": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "Get_All_Individuals_TaxPayers",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/tax-payers/2": {
+      "get": {
+        "summary": "Find_TaxPayer_By_Id",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Updated_TaxPayer",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "tradeName": {
+                    "example": "مركز الخير",
+                    "type": "string"
+                  },
+                  "_method": {
+                    "example": "PUT",
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "tradeName": "مركز الخير",
+                "_method": "PUT"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/tax-payer-by-userId/4": {
+      "get": {
+        "summary": "Find_TaxPayer_By_UserID",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/tax-payers/4": {
+      "delete": {
+        "summary": "Delete_TaxPayer",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/get-tax-payers-with-special-info": {
+      "get": {
+        "summary": "All_TaxPayers",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "examples": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/tax-payers/create-file-to-existing-taxPayer": {
+      "post": {
+        "summary": "Create_File_To_Existing_TaxPayer",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileId": {
+                    "example": "3",
+                    "type": "string"
+                  },
+                  "tradeName": {
+                    "example": "سوبر ماركت حمزة",
+                    "type": "string"
+                  },
+                  "commercialRecord": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf"
+                  },
+                  "activityLicense": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf"
+                  },
+                  "tradePict": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf"
+                  },
+                  "insuranceCard": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf"
+                  },
+                  "propertyDocPict": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf"
+                  },
+                  "fileType": {
+                    "example": "CharitableCompany",
+                    "type": "string"
+                  },
+                  "regionId": {
+                    "example": "1",
+                    "type": "string"
+                  },
+                  "districtId": {
+                    "example": "2",
+                    "type": "string"
+                  },
+                  "byLawsCopy": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf"
+                  }
+                }
+              },
+              "example": {
+                "fileId": "3",
+                "tradeName": "سوبر ماركت حمزة",
+                "commercialRecord": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf",
+                "activityLicense": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf",
+                "tradePict": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf",
+                "insuranceCard": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf",
+                "propertyDocPict": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf",
+                "fileType": "CharitableCompany",
+                "regionId": "1",
+                "districtId": "2",
+                "byLawsCopy": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/get-tax-payers-with-source": {
+      "get": {
+        "summary": "Get_All_TaxPayers_With_Source",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {},
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "servers": [],
+  "security": []
+}

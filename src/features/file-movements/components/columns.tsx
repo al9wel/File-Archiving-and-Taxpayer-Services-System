@@ -10,9 +10,9 @@ export const columns: ColumnDef<FileMovement>[] = [
     },
     {
         id: "tradeName",
-        accessorFn: (row) => row.file?.taxPayer.tradeName || "",
+        accessorFn: (row) => row.file?.taxPayers?.[0]?.tradeName || row.file?.taxPayer?.tradeName || (row.file?.user ? `${row.file.user.firstName} ${row.file.user.lastName}` : "") || "",
         header: "الاسم التجاري",
-        cell: ({ row }) => <span>{row.original.file?.taxPayer.tradeName || "-"}</span>
+        cell: ({ row }) => <span>{row.original.file?.taxPayers?.[0]?.tradeName || row.original.file?.taxPayer?.tradeName || (row.original.file?.user ? `${row.original.file.user.firstName} ${row.original.file.user.lastName}` : "-")}</span>
     },
     {
         accessorKey: "file.id",

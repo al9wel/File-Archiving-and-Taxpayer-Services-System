@@ -1,10 +1,13 @@
 export interface TaxPayers {
     taxPayerId: string | number;
-    taxPayerName: string;
+    fileId?: string | number;
+    taxPayerName?: string;
     taxPayerFileType: string;
     tradeName: string;
-    phone: string;
-    userId: string | number;
-    companyId: string | number | null;
-    charitableCompanyId: string | number | null;
+    phone?: string;
+    userId?: string | number;
+    companyId?: string | number | null;
+    charitableCompanyId?: string | number | null;
+    taxNumber?: string | number | null;
 }
+

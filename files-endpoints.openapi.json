@@ -1,0 +1,444 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Default module",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/files": {
+      "post": {
+        "summary": "Create_File",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "inventoryNumber": {
+                    "example": "1122",
+                    "type": "string"
+                  },
+                  "taxNumber": {
+                    "example": "1152",
+                    "type": "string"
+                  },
+                  "docsCount": {
+                    "example": "45",
+                    "type": "string"
+                  },
+                  "userId": {
+                    "example": "2",
+                    "type": "string"
+                  },
+                  "departmentId": {
+                    "example": "1",
+                    "type": "string"
+                  },
+                  "fileStatusId": {
+                    "example": "1",
+                    "type": "string"
+                  },
+                  "activityTypeId": {
+                    "example": "1",
+                    "type": "string"
+                  },
+                  "paymentTypeId": {
+                    "example": "1",
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "inventoryNumber": "1122",
+                "taxNumber": "1152",
+                "docsCount": "45",
+                "userId": "2",
+                "departmentId": "1",
+                "fileStatusId": "1",
+                "activityTypeId": "1",
+                "paymentTypeId": "1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "Get_All_Files",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "س",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "examples": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/files/1": {
+      "get": {
+        "summary": "Get_Files_By_Id",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "examples": {}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete_File",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update_File",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "departmentId": {
+                    "example": "1",
+                    "type": "string"
+                  },
+                  "note": {
+                    "example": "ملاحظة للملف",
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "departmentId": "1",
+                "note": "ملاحظة للملف"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/files/create-file-with-user": {
+      "post": {
+        "summary": "Create-File-With-User",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "example": "الشريف",
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "example": "باوزير",
+                    "type": "string"
+                  },
+                  "idCard": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf"
+                  },
+                  "phone": {
+                    "example": "774771772",
+                    "type": "string"
+                  },
+                  "image": {
+                    "format": "binary",
+                    "type": "string",
+                    "example": "file://C:\\Users\\Asiana\\Pictures\\Bawazir(1).png"
+                  },
+                  "role": {
+                    "example": "Tax_Payer",
+                    "type": "string"
+                  },
+                  "departmentID": {
+                    "example": "1",
+                    "type": "string"
+                  },
+                  "inventoryNumber": {
+                    "example": "124",
+                    "type": "string"
+                  },
+                  "docsCount": {
+                    "example": "55",
+                    "type": "string"
+                  },
+                  "departmentId": {
+                    "example": "1",
+                    "type": "string"
+                  },
+                  "fileStatusId": {
+                    "example": "1",
+                    "type": "string"
+                  },
+                  "activityTypeId": {
+                    "example": "1",
+                    "type": "string"
+                  },
+                  "paymentTypeId": {
+                    "example": "1",
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "firstName": "الشريف",
+                "lastName": "باوزير",
+                "idCard": "file://C:\\Users\\Asiana\\Desktop\\ABDULLAH BAWAZIR LARAVEL-BACKEND.pdf",
+                "phone": "774771772",
+                "image": "file://C:\\Users\\Asiana\\Pictures\\Bawazir(1).png",
+                "role": "Tax_Payer",
+                "departmentID": "1",
+                "inventoryNumber": "124",
+                "docsCount": "55",
+                "departmentId": "1",
+                "fileStatusId": "1",
+                "activityTypeId": "1",
+                "paymentTypeId": "1"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {},
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "servers": [],
+  "security": []
+}

@@ -11,7 +11,7 @@ export function generateAllFilesHtmlTemplate(files: File["fileInfo"][]): string 
     let charitableCount = 0;
 
     files.forEach((f) => {
-        const type = f.taxPayer?.fileType;
+        const type = f.taxPayers?.[0]?.fileType || f.taxPayer?.fileType;
         if (type === "Individual") individualCount++;
         else if (type === "Company") companyCount++;
         else if (type === "CharitableCompany") charitableCount++;
@@ -19,14 +19,16 @@ export function generateAllFilesHtmlTemplate(files: File["fileInfo"][]): string 
 
     const rowsHtml = files
         .map((f, index) => {
-            const fileId = escapeHtml(f.id);
-            const tradeName = escapeHtml(f.taxPayer?.tradeName);
-            const activityName = escapeHtml(f.activityType?.name);
-            const fileType = escapeHtml(getFileTypeLabel(f.taxPayer?.fileType));
-            const statusName = escapeHtml(f.fileStatus?.statusName);
-            const regionName = escapeHtml(f.region?.name);
-            const districtName = escapeHtml(f.district?.name);
-            const departmentName = escapeHtml(f.department?.name);
+            const fileId = escapeHtml(f.inventoryNumber || f.id);
+            const firstActivity = f.taxPayers?.[0] || f.taxPayer;
+            const ownerName = f.user ? `${f.user.firstName || ""} ${f.user.lastName || ""}`.trim() : "";
+            const tradeName = escapeHtml(firstActivity?.tradeName || ownerName || "—");
+            const activityName = escapeHtml(f.activityType?.name || "—");
+            const fileType = escapeHtml(getFileTypeLabel(firstActivity?.fileType));
+            const statusName = escapeHtml(f.fileStatus?.statusName || "—");
+            const regionName = escapeHtml(firstActivity?.region?.name || f.region?.name || "—");
+            const districtName = escapeHtml(firstActivity?.district?.name || f.district?.name || "—");
+            const departmentName = escapeHtml(f.department?.name || "—");
             const location = `${regionName} / ${districtName}`;
 
             return `
