@@ -5,25 +5,32 @@ export function generateSingleFileHtmlTemplate(file: File["fileInfo"]): string {
     const today = formatArabicDate();
 
     const fileId = escapeHtml(file.id);
-    const taxNumber = escapeHtml(file.taxNumber);
-    const inventoryNumber = escapeHtml(file.inventoryNumber);
+    const taxNumber = escapeHtml(file.taxNumber || "—");
+    const inventoryNumber = escapeHtml(file.inventoryNumber || "—");
     const activityStartDate = escapeHtml(formatArabicDate(file.activityStartDate));
     const docsCount = escapeHtml(file.docsCount);
     const note = escapeHtml(file.note || "لا توجد ملاحظات");
 
-    const tradeName = escapeHtml(file.taxPayer?.tradeName);
-    const fileType = escapeHtml(getFileTypeLabel(file.taxPayer?.fileType));
-    const commercialRecordHtml = formatUrlOrText(file.taxPayer?.commercialRecord);
-    const activityLicenseHtml = formatUrlOrText(file.taxPayer?.activityLicense);
-    const source = escapeHtml(file.taxPayer?.source);
+    const ownerName = escapeHtml(
+        file.user
+            ? `${file.user.firstName || ""} ${file.user.lastName || ""}`.trim() || file.user.userName
+            : "—"
+    );
+
+    const firstActivity = file.taxPayers?.[0] || file.taxPayer;
+    const tradeName = escapeHtml(firstActivity?.tradeName || ownerName);
+    const fileType = escapeHtml(getFileTypeLabel(firstActivity?.fileType));
+    const commercialRecordHtml = formatUrlOrText(firstActivity?.commercialRecord);
+    const activityLicenseHtml = formatUrlOrText(firstActivity?.activityLicense);
+    const source = escapeHtml(firstActivity?.source || "—");
 
     const departmentName = escapeHtml(file.department?.name);
     const statusName = escapeHtml(file.fileStatus?.statusName);
     const activityTypeName = escapeHtml(file.activityType?.name);
     const paymentTypeName = escapeHtml(file.paymentType?.name);
-    const regionName = escapeHtml(file.region?.name);
-    const districtName = escapeHtml(file.district?.name);
-    const fullAddress = escapeHtml(file.fullAddress);
+    const regionName = escapeHtml(firstActivity?.region?.name || file.region?.name);
+    const districtName = escapeHtml(firstActivity?.district?.name || file.district?.name);
+    const fullAddress = escapeHtml(file.fullAddress || `${regionName || ""} - ${districtName || ""}`);
 
     const creatorName = escapeHtml(
         file.creator

@@ -9,7 +9,8 @@ export interface CompanyTaxPayer {
     },
     taxPayerInfo: {
         id: string | number;
-        userId: number;
+        fileId?: string | number;
+        userId?: number;
         tradeName?: string;
         commercialRecord?: string;
         activityLicense?: string;
@@ -17,6 +18,8 @@ export interface CompanyTaxPayer {
         insuranceCard?: string;
         propertyDocPict?: string;
         fileType: "Individual" | "Company" | "CharitableCompany";
+        regionId?: number | string;
+        districtId?: number | string;
     }
     userInfo: {
         id: string | number;

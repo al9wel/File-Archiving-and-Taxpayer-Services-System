@@ -52,8 +52,11 @@ export function FileSearchSelect({
     );
 
     const getFileLabel = (file: File["fileInfo"]) => {
-        return `ملف رقم: ${file.taxNumber} - ${file.taxPayer?.tradeName || "مكلف"}`;
+        const ownerName = file.user ? `${file.user.firstName || ""} ${file.user.lastName || ""}`.trim() || file.user.userName : ""
+        const num = file.taxNumber ? `ضريبي: ${file.taxNumber}` : `حصر: ${file.inventoryNumber}`
+        return `ملف (${num}) - ${ownerName || "مكلف"}`;
     };
+
 
     const isSearchMode = mode === "search";
     const triggerPlaceholder = placeholder || (isSearchMode ? "البحث عن ملف..." : "اختر الملف...");

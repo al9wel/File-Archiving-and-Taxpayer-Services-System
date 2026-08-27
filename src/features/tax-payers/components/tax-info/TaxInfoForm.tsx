@@ -7,10 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Check, FileText, Loader2, Upload } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTaxTypes } from "@/features/basic-info/hooks/tax-type/useTaxTypes";
-import { TaxPayerSearchSelect } from "../tax-payers/TaxPayerSearchSelect";
+import { FileSearchSelect } from "@/features/files/components/files/FileSearchSelect";
 
 const taxInfoSchema = z.object({
-    taxPayerId: z.string().min(1, "يجب اختيار المكلف"),
+    fileId: z.string().min(1, "يجب اختيار الملف الضريبي"),
     taxTypeId: z.string().min(1, "يجب اختيار نوع الضريبة"),
     taxAmount: z.string().min(1, "يجب إدخال مبلغ الضريبة"),
     lastPayment: z.string().min(1, "يجب إدخال آخر دفعة"),
@@ -21,6 +21,7 @@ type TaxInfoFormValues = z.infer<typeof taxInfoSchema>;
 
 interface TaxInfoFormProps {
     initialData?: {
+        fileId?: string | number;
         taxPayerId?: string | number;
         taxTypeId?: string | number;
         taxAmount?: string | number;
@@ -41,7 +42,7 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<TaxInfoFormValues>({
         resolver: zodResolver(taxInfoSchema),
         defaultValues: {
-            taxPayerId: initialData?.taxPayerId?.toString() || "",
+            fileId: initialData?.fileId?.toString() || "",
             taxTypeId: initialData?.taxTypeId?.toString() || "",
             taxAmount: initialData?.taxAmount?.toString() || "",
             lastPayment: initialData?.lastPayment?.toString() || "",
@@ -53,7 +54,7 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
 
     useEffect(() => {
         if (initialData) {
-            setValue("taxPayerId", initialData.taxPayerId?.toString() || "");
+            setValue("fileId", (initialData.fileId || initialData.taxPayerId)?.toString() || "");
             setValue("taxTypeId", initialData.taxTypeId?.toString() || "");
             setValue("taxAmount", initialData.taxAmount?.toString() || "");
             setValue("lastPayment", initialData.lastPayment?.toString() || "");
@@ -96,112 +97,115 @@ export const TaxInfoForm = ({ initialData, onSubmit, onCancel, isLoading }: TaxI
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4 pt-2" dir="rtl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <label className="text-sm font-medium">المكلف <span className="text-destructive">*</span></label>
-                    <TaxPayerSearchSelect
-                        value={watch("taxPayerId") ? Number(watch("taxPayerId")) : undefined}
-                        onSelect={(id) => setValue("taxPayerId", id.toString(), { shouldValidate: true })}
-                        disabled={isLoading || isDataLoading}
+                    <label className="text-sm font-medium">الملف الضريبي <span className="text-destructive">*</span></label>
+                    <FileSearchSelect
+                        value={watch("fileId") ? Number(watch("fileId")) : undefined}
+                        onSelect={(id) => setValue("fileId", id.toString(), { shouldValidate: true })}
+                        disabled={isLoading}
                     />
-                    {errors.taxPayerId && <p className="text-xs text-destructive">{errors.taxPayerId.message}</p>}
+                    {errors.fileId && (
+                        <p className="text-xs text-destructive">{errors.fileId.message}</p>
+                    )}
                 </div>
 
                 <div className="space-y-2">
                     <label className="text-sm font-medium">نوع الضريبة <span className="text-destructive">*</span></label>
-                    <div className="h-12 w-full">
-                        <Select
-                            disabled={isLoading || isDataLoading}
-                            value={taxTypeId}
-                            onValueChange={(val) => setValue("taxTypeId", val, { shouldValidate: true })}
-                        >
-                            <SelectTrigger style={{ height: "100%" }} className="w-full h-full bg-muted/30">
-                                {isLoadingTaxTypes ? (
-                                    <div className="flex items-center gap-2">
-                                        <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                                        <span className="text-muted-foreground">جاري التحميل...</span>
-                                    </div>
-                                ) : (
-                                    <SelectValue placeholder="اختر نوع الضريبة" />
-                                )}
-                            </SelectTrigger>
-                            <SelectContent>
-                                {(taxTypes?.data || []).map((type: any) => (
-                                    <SelectItem key={type.id} value={type.id.toString()}>
-                                        {type.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    {errors.taxTypeId && <p className="text-xs text-destructive">{errors.taxTypeId.message}</p>}
+                    <Select
+                        value={taxTypeId}
+                        onValueChange={(value) => setValue("taxTypeId", value, { shouldValidate: true })}
+                        disabled={isLoadingTaxTypes}
+                    >
+                        <SelectTrigger className="w-full h-12 rounded-xl bg-muted/30">
+                            <SelectValue placeholder="اختر نوع الضريبة" />
+                        </SelectTrigger>
+                        <SelectContent dir="rtl">
+                            {taxTypes?.data?.map((taxType) => (
+                                <SelectItem key={taxType.id} value={taxType.id.toString()}>
+                                    {taxType.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    {errors.taxTypeId && (
+                        <p className="text-xs text-destructive">{errors.taxTypeId.message}</p>
+                    )}
                 </div>
+            </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                     <label className="text-sm font-medium">مبلغ الضريبة <span className="text-destructive">*</span></label>
                     <Input
-                        disabled={isLoading || isDataLoading}
-                        placeholder="0.00"
                         type="number"
+                        placeholder="0.00"
                         {...register("taxAmount")}
-                        className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10"
+                        className="h-12 bg-muted/30 rounded-xl"
                     />
-                    {errors.taxAmount && <p className="text-xs text-destructive">{errors.taxAmount.message}</p>}
+                    {errors.taxAmount && (
+                        <p className="text-xs text-destructive">{errors.taxAmount.message}</p>
+                    )}
                 </div>
 
                 <div className="space-y-2">
                     <label className="text-sm font-medium">آخر دفعة <span className="text-destructive">*</span></label>
                     <Input
-                        disabled={isLoading || isDataLoading}
-                        placeholder="0.00"
                         type="number"
+                        placeholder="0.00"
                         {...register("lastPayment")}
-                        className="h-12 rounded-xl bg-muted/30 border-muted-foreground/10"
+                        className="h-12 bg-muted/30 rounded-xl"
                     />
-                    {errors.lastPayment && <p className="text-xs text-destructive">{errors.lastPayment.message}</p>}
-                </div>
-
-                <div className="space-y-3 md:col-span-2">
-                    <label className="text-sm font-bold block text-right">ملحقات البيانات الضريبية</label>
-                    <div className="relative border-2 border-dashed border-muted-foreground/20 rounded-xl p-4 flex flex-col items-center justify-center group hover:border-primary/50 transition-colors cursor-pointer text-center bg-muted/5 h-[100px]">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
-                            {attachmentName ? <Check size={16} /> : <Upload size={16} />}
-                        </div>
-                        <div className="flex items-center gap-1 max-w-full px-2">
-                            {attachmentName && <FileText size={14} className="shrink-0 text-muted-foreground" />}
-                            <span className="text-[10px] text-muted-foreground truncate max-w-full">
-                                {attachmentName || "انقر لرفع ملف أو صورة"}
-                            </span>
-                        </div>
-                        <input
-                            type="file"
-                            accept=".pdf,image/*"
-                            className="absolute inset-0 opacity-0 cursor-pointer"
-                            disabled={isLoading || isDataLoading}
-                            onChange={handleAttachmentChange}
-                        />
-                    </div>
+                    {errors.lastPayment && (
+                        <p className="text-xs text-destructive">{errors.lastPayment.message}</p>
+                    )}
                 </div>
             </div>
 
-            <div className="flex items-center gap-3 pt-4">
-                <Button
-                    type="submit"
-                    disabled={isLoading || isDataLoading}
-                    className="bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-xl h-12 flex-1 gap-2"
-                >
-                    {isLoading ? (
-                        <Loader2 className="size-5 animate-spin" />
-                    ) : (
-                        <Check className="size-5" />
-                    )}
-                    <span>{initialData ? "تحديث" : "حفظ"}</span>
-                </Button>
+            <div className="space-y-2">
+                <label className="text-sm font-medium">المرفق {initialData ? "(اختياري للتحديث)" : "(مطلوب)"}</label>
+                <div className="relative border-2 border-dashed border-muted-foreground/20 rounded-xl p-4 flex flex-col items-center justify-center hover:border-primary/50 transition-colors cursor-pointer bg-muted/5 h-[110px]">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1">
+                        {attachmentName ? <Check size={16} /> : <Upload size={16} />}
+                    </div>
+                    <span className="text-xs text-muted-foreground truncate max-w-full px-2">
+                        {attachmentName || "انقر لرفع ملف المرفق الضريبي"}
+                    </span>
+                    <input
+                        type="file"
+                        className="absolute inset-0 opacity-0 cursor-pointer"
+                        onChange={handleAttachmentChange}
+                    />
+                </div>
+                {errors.attachment && (
+                    <p className="text-xs text-destructive">{errors.attachment.message as string}</p>
+                )}
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-4 border-t">
                 <Button
                     type="button"
-                    onClick={onCancel}
                     variant="outline"
-                    className="rounded-xl h-12 px-8 border-none bg-muted text-muted-foreground hover:bg-muted/80"
+                    onClick={onCancel}
+                    disabled={isLoading}
+                    className="rounded-xl h-11 px-6 font-bold"
                 >
                     إلغاء
+                </Button>
+                <Button
+                    type="submit"
+                    disabled={isLoading}
+                    className="rounded-xl h-11 px-6 font-bold bg-primary hover:bg-primary-hover shadow-md transition-all active:scale-95"
+                >
+                    {isLoading ? (
+                        <div className="flex items-center gap-2">
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            <span>جاري الحفظ...</span>
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-2">
+                            <FileText className="h-4 w-4" />
+                            <span>{initialData ? "تحديث البيانات" : "حفظ البيانات"}</span>
+                        </div>
+                    )}
                 </Button>
             </div>
         </form>

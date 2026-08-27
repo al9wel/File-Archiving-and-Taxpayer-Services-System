@@ -1,54 +1,45 @@
 
+import type { File } from "./File";
+import type { User } from "./User";
+
 export interface TaxInfo {
     taxInfo: {
         id: string | number;
         taxTypeId: string | number;
-        taxPayerId: string | number;
-        taxAmount: string | number,
-        lastPayment: string | number,
-        attachment: string,
+        fileId: string | number;
+        taxPayerId?: string | number;
+        taxAmount: string | number;
+        lastPayment: string | number;
+        attachment?: string | null;
         taxType: {
             id: string | number;
             name: string;
-        },
-        taxPayer: {
+        };
+        file?: File['fileInfo'] | null;
+        taxPayer?: {
             id: number | string;
-            userId: number | string;
-            tradeName: string;
+            userId?: number | string;
+            tradeName?: string;
             commercialRecord?: string;
             activityLicense?: string;
             tradePict?: string;
             insuranceCard?: string;
             propertyDocPict?: string;
             fileType?: "Individual" | "Company" | "CharitableCompany";
-        }
+        };
     };
+    fileInfo?: File['fileInfo'] | null;
     taxPayerInfo?: {
         id: string | number;
-        userId: number;
+        userId?: number;
         tradeName?: string;
         commercialRecord?: string;
         activityLicense?: string;
         tradePict?: string;
         insuranceCard?: string;
         propertyDocPict?: string;
-        fileType: "Individual" | "Company" | "CharitableCompany";
+        fileType?: "Individual" | "Company" | "CharitableCompany";
     } | null;
-    userInfo?: {
-        id: string | number;
-        firstName?: string;
-        lastName?: string;
-        fullName: string;
-        userName: string;
-        phone: string;
-        role: string;
-        idCard?: string;
-        image?: string;
-        department?: {
-            id: number | string;
-            name: string;
-        };
-        mustChangePassword?: boolean;
-        createdBy?: number | string;
-    } | null;
+    userInfo?: User | null;
 }
+

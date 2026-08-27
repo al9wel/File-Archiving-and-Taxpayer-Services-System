@@ -84,10 +84,12 @@ export const FileSearchInput = () => {
                 onClick={() => handleSelectFile(file)}
                 className="w-full text-right px-4 py-3 hover:bg-muted transition-colors border-b last:border-b-0 cursor-pointer"
               >
-                <div className="font-medium">{file.taxPayer.tradeName}</div>
+                <div className="font-medium">
+                  {file.user ? `${file.user.firstName || ""} ${file.user.lastName || ""}`.trim() : "ملف ضريبي"}
+                </div>
 
                 <div className="text-xs text-muted-foreground">
-                  الرقم الضريبي: {file.taxNumber}
+                  رقم الحصر: {file.inventoryNumber || "—"} | الرقم الضريبي: {file.taxNumber || "—"}
                 </div>
               </button>
             ))}

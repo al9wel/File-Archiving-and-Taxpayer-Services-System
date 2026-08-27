@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { ROUTES } from "@/constants/routes"
 import { toast } from "sonner"
 import { usePermission } from "@/hooks/usePermission"
@@ -20,6 +20,8 @@ import { ExistingCharitableCompanyTaxPayerForm } from "../../components/tax-paye
 
 const CreateTaxPayerPage = () => {
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
+    const fileId = searchParams.get("fileId") || null
     const { mutate: createIndividualTaxPayer, isPending: isPendingIndividual } = useCreateIndividualTaxPayer()
     const { mutate: createIndividualTaxPayerExisting, isPending: isPendingIndividualExisting } = useCreateIndividualTaxPayerExisting()
     const { mutate: createCompanyTaxPayer, isPending: isPendingCompany } = useCreateCompanyTaxPayer()
@@ -112,47 +114,44 @@ const CreateTaxPayerPage = () => {
                     <TabsTrigger value="charitable-company">شركة خيريه</TabsTrigger>
                 </TabsList>
                 <TabsContent value="individual" className="animate-in slide-in-from-right-5 duration-300">
-                    <Tabs defaultValue="new" className="w-full">
+                    <Tabs defaultValue={fileId ? "existing" : "new"} className="w-full">
                         <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-8">
-                            <TabsTrigger value="new">إضافة مكلف جديد</TabsTrigger>
-                            <TabsTrigger value="existing">ربط بمكلف موجود</TabsTrigger>
+                            <TabsTrigger value="new">إضافة مكلف ونشاط جديد</TabsTrigger>
+                            <TabsTrigger value="existing">ربط نشاط بملف موجود</TabsTrigger>
                         </TabsList>
                         <TabsContent value="new" className="animate-in slide-in-from-right-5 duration-300">
                             <IndividualTaxPayerForm onSubmit={handleIndividualSubmit} isLoading={isPendingIndividual} />
                         </TabsContent>
                         <TabsContent value="existing" className="animate-in slide-in-from-right-5 duration-300">
-                            <h1 className="text-center text-2xl font-bold mb-4">مستخدم موجود</h1>
-                            <ExistingIndividualTaxPayerForm onSubmit={handleIndividualSubmitExisting} isLoading={isPendingIndividualExisting} />
+                            <ExistingIndividualTaxPayerForm initialFileId={fileId} onSubmit={handleIndividualSubmitExisting} isLoading={isPendingIndividualExisting} />
                         </TabsContent>
                     </Tabs>
                 </TabsContent>
                 <TabsContent value="company" className="animate-in slide-in-from-right-5 duration-300">
-                    <Tabs defaultValue="new" className="w-full">
+                    <Tabs defaultValue={fileId ? "existing" : "new"} className="w-full">
                         <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-8">
-                            <TabsTrigger value="new">إضافة مكلف جديد</TabsTrigger>
-                            <TabsTrigger value="existing">ربط بمكلف موجود</TabsTrigger>
+                            <TabsTrigger value="new">إضافة مكلف ونشاط جديد</TabsTrigger>
+                            <TabsTrigger value="existing">ربط نشاط بملف موجود</TabsTrigger>
                         </TabsList>
                         <TabsContent value="new" className="animate-in slide-in-from-right-5 duration-300">
                             <CompanyTaxPayerForm onSubmit={handleCompanySubmit} isLoading={isPendingCompany} />
                         </TabsContent>
                         <TabsContent value="existing" className="animate-in slide-in-from-right-5 duration-300">
-                            <h1 className="text-center text-2xl font-bold mb-4">مستخدم موجود</h1>
-                            <ExistingCompanyTaxPayerForm onSubmit={handleCompanySubmitExisting} isLoading={isPendingCompanyExisting} />
+                            <ExistingCompanyTaxPayerForm initialFileId={fileId} onSubmit={handleCompanySubmitExisting} isLoading={isPendingCompanyExisting} />
                         </TabsContent>
                     </Tabs>
                 </TabsContent>
                 <TabsContent value="charitable-company" className="animate-in slide-in-from-right-5 duration-300">
-                    <Tabs defaultValue="new" className="w-full">
+                    <Tabs defaultValue={fileId ? "existing" : "new"} className="w-full">
                         <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-8">
-                            <TabsTrigger value="new">إضافة مكلف جديد</TabsTrigger>
-                            <TabsTrigger value="existing">ربط بمكلف موجود</TabsTrigger>
+                            <TabsTrigger value="new">إضافة مكلف ونشاط جديد</TabsTrigger>
+                            <TabsTrigger value="existing">ربط نشاط بملف موجود</TabsTrigger>
                         </TabsList>
                         <TabsContent value="new" className="animate-in slide-in-from-right-5 duration-300">
                             <CharitableCompanyTaxPayerForm onSubmit={handleCharitableCompanySubmit} isLoading={isPendingCharitableCompany} />
                         </TabsContent>
                         <TabsContent value="existing" className="animate-in slide-in-from-right-5 duration-300">
-                            <h1 className="text-center text-2xl font-bold mb-4">مستخدم موجود</h1>
-                            <ExistingCharitableCompanyTaxPayerForm onSubmit={handleCharitableCompanySubmitExisting} isLoading={isPendingCharitableCompanyExisting} />
+                            <ExistingCharitableCompanyTaxPayerForm initialFileId={fileId} onSubmit={handleCharitableCompanySubmitExisting} isLoading={isPendingCharitableCompanyExisting} />
                         </TabsContent>
                     </Tabs>
                 </TabsContent>

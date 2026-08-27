@@ -39,7 +39,7 @@ export const individualTaxPayersApi = {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     createTaxPayerExisting: (data: FormData): Promise<{ data: any; message: string }> => {
-        return fetchClient(`/tax-payers/create-file-to-existing`, {
+        return fetchClient(`/tax-payers/create-file-to-existing-taxPayer`, {
             method: 'POST',
             body: data,
         })
